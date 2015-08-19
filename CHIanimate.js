@@ -159,7 +159,7 @@
 							}
 						}
 					} catch (e) {
-						console.log("Exception when executing events");
+						log("Exception when executing events");
 					}
 
 					oResult.next();
@@ -320,7 +320,6 @@
 			var key, A = Math.abs(a);
 			//最后一个条件，无法得到非负整数项
 			if (a < 0 && b < A) return oResult;
-			console.log(22222222222);
 			//系数a为0，正数常量（前边已经抛掉了a=0&&b<=0的情况）就代表对应的次数，执行一次，创建键名"b"
 			if (!A) key = b.toString();
 			//此种情况，任何集合都由最小的正整数开始，将an+b中的常数项b，整理成不大于系数|a|的非负整数，以重复利用相同集合的键值
@@ -330,12 +329,10 @@
 			}
 			//其它情况a!=0&&b>0，常量决定了不同的集合
 			else key = a + ',' + b;
-			console.log(3333333333);
 			if (!events[key]) { //不存在的键，删则直接返回，添则增加新键值为数组
 				if (bOut) return oResult;
 				else events[key] = [];
 			}
-			console.log(44444444444);
 			var arr = events[key];
 			for (var n = 0; n < arr.length; n++) { //因为只删除一个，所以不用倒序
 				if (arr[n] == oCHI) {
@@ -344,10 +341,8 @@
 					return oResult;
 				}
 			}
-			console.log(5555555555555);
 			//要添加，且没有找到参数，则入栈
 			!bOut && arr.push(oCHI);
-			console.log(events);
 			return oResult;
 		}
 		//删除所有事件中的指定行为
