@@ -125,7 +125,8 @@
 			//最终配置参数集合，如果并入新配置，则将新配置及基础配置并入最终配置，否则只使用新配置，没有新配置使用基础配置
 			var oFinalOptions = {};
 			oNewOptions instanceof Object && (
-			bMerge && merge(oFinalOptions, oBasicOptions, oNewOptions, true, true) && true || merge(oFinalOptions, oNewOptions, true, true)) || merge(oFinalOptions, oBasicOptions, true, true);
+				bMerge && merge(oFinalOptions, oBasicOptions, oNewOptions, true, true) || merge(oFinalOptions, oNewOptions, true, true)
+			) || merge(oFinalOptions, oBasicOptions, true, true);
 			var b = oAttrs_sAction instanceof Object,
 				delay = oFinalOptions.delay || 0;
 			delay instanceof Function && (delay = delay(object.length));
@@ -160,6 +161,7 @@
 						}
 					} catch (e) {
 						log("Exception when executing events");
+						return false;
 					}
 
 					oResult.next();
@@ -171,12 +173,12 @@
 				isJQ ? (indexMe = para1, oMe = para2) : (indexMe = para2, oMe = para1);
 				for (var n in oFinalOptions) { //计算独立设置集合，要把done、each、delta、step排除在计算之外，直接赋值
 					var x = oFinalOptions[n];
-					if (x instanceof Function && $.inArray(n, 'done,each,delta,step'.split(',')) == -1) x = x(indexMe, oMe);
+					if (x instanceof Function && $.inArray(n, 'done,each,delta,step'.split(',')) == -1) x = x.call(oMe, indexMe);
 					oThisOption[n] = x;
 				}
 				//如果delta是数字，则自动与索引正向或反向相乘，如果是函数，则直接获取函数返回值
 				var delta = oThisOption.delta;
-				if (delta instanceof Function) delta = delta(indexMe);
+				if (delta instanceof Function) delta = delta.call(oMe, indexMe);
 				else delta *= delta > 0 ? indexMe : (indexMe - niBasicInsideLock + 1);
 				if (b) {
 					var oThisAttrs = {};
