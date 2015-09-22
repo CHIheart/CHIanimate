@@ -43,24 +43,13 @@ var a=CHIanimate(actor, oAttrs_sAction, oOptions);
 * `.set(oNewOptions, bReset)`：修改某些参数，`oNewOptions`使用的就是{attr:value}的形式，`bReset`默认为`false`，如果为`true`的话会先清空原有配置，写入新配置
 * `.duration(n)`：设置本动作的消耗，此处只限制使用正整数值
 * `.delay(n)`：设置本动作的总延迟，此处只限制使用正整数值
+* `.change(param)`：改变本动作的执行对象，参数`param`的说明与构造函数中的`actor`一样
 
 ### 复杂一些的配置方法
 在`oAttrs_sAction`中使用的键值对，或`oOptions`中的`delta`、`delay`，都可以使用函数，对集合中的每个单元返回不同的值，而不必只使用简单的值  
 * `oAttrs_sAction.*`：函数的this是对应的每个单元对象，唯一参数是单元对象在集合中的索引号
 * `oOptions.delta`：同上，可以对每个元素生成不一样的延迟（比如在函数中返回随机数）
 * `oOptions.delay`：函数的this是actor对象的元素，函数的唯一参数是actor对象的单元总数
-
-## 将动作连接在一起
-### 开放的动作连接方法
-可以在CHIanimate对象的前后，链接另一个CHIanimate对象，或一个普通的function
-* `.lead(o1,o2,...)`：在本对象的下向接入若干个CHIanimate对象或一个普通的function，重复的元素会被忽略
-> 当本动作完全执行完毕后，会按顺序调用连接的下线动作  
-* `.nolead(o1,o2,...)` ：将若干个下向接入的对象从本对象的下线删除，不存在的会被忽略
-* `.follow(o1,o2,...)`：在本对象的上向接入若干个CHIanimate对象或一个普通的function，重复的元素会被忽略
-> 当本动作的上线所有动作完成之后，才会执行本动作  
-* `.nofollow(o1,o2,...)`：将若干个上向接入的对象从本对象的上线删除，不存在的会被忽略
-* `.next(bool_force)`：手动触发下线动作，bool_force是**布尔型**，默认为`false`，即非强制执行，如果为`true`的话则不管本动作是否完成，强制执行下线动作
-> 这些连接动作都是直接返回CHIanimate对象本身的，所以大家可以像JQ一样使用链式写法
 
 ## 执行动作
 ```javascript
@@ -69,6 +58,18 @@ a(oNewOptions, bMerge);
 CHIanimate对象返回的是一个带有额外属性的function对象，所以可以直接使用括号()来执行动作。  
 * `oNewOptions`：可以在临时执行时，修改当次的配置（即构造对象时的`oOptions`参数），以达到动态改变效果的目的  
 * `bMerge`：默认为`false`，使`oNewOptions`只作用在这执行的一次，如果为`true`则会将本次配置并入构造对象时的`oOptions`中，修改原配置  
+
+## 将动作连接在一起
+### 开放的动作连接方法
+可以在CHIanimate对象的前后，链接另一个CHIanimate对象
+* `.lead(o1,o2,...)`：在本对象的下向接入若干个CHIanimate对象，重复的元素会被忽略
+> 当本动作完全执行完毕后，会按顺序调用连接的下线动作  
+* `.nolead(o1,o2,...)` ：将若干个下向接入的对象从本对象的下线删除，不存在的会被忽略
+* `.follow(o1,o2,...)`：在本对象的上向接入若干个CHIanimate对象，重复的元素会被忽略
+> 当本动作的上线所有动作完成之后，才会执行本动作  
+* `.nofollow(o1,o2,...)`：将若干个上向接入的对象从本对象的上线删除，不存在的会被忽略
+* `.next(bool_force)`：手动触发下线动作，bool_force是**布尔型**，默认为`false`，即非强制执行，如果为`true`的话则不管本动作是否完成，强制执行下线动作
+> 这些连接动作都是直接返回CHIanimate对象本身的，所以大家可以像JQ一样使用链式写法
 
 ## 计数器事件
 当动作为循环动作时（自己调用自己），内部会有一个计数器，记录（完整的）动作总共执行了多少次，我们可以给这些次数上增加一些事件。  
@@ -89,8 +90,11 @@ CHIanimate对象返回的是一个带有额外属性的function对象，所以�
 ### 其它方法
 * `.clone(bDeep)`：克隆本动作，默认`bDeep=false`，只复制构造函数上的三个参数（如果修改过配置的话，新对象的配置是当前生效的配置）；如果为`true`则会复制所有内容，包括动作的上下线及事件
 其中`bDeep`参数也可以是一个{attr:Boolean}对象，可以使用的属性有	 
-* `events`：是否复制事件  
-* `nexts`：是否复制下线动作
-* `follows`：是否复制上线动作
+
+> `events`：是否复制事件  
+> `nexts`：是否复制下线动作
+> `follows`：是否复制上线动作
+
+* `.destroy()`：破坏对象，使对象指向`null`
 
 ### 更多使用的实例，请参考WIKI页面 

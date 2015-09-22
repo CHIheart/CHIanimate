@@ -42,7 +42,8 @@
 	如果bAppend=true，则后续对象的新出现属性会被添加到模板属性中，否则只查看固有属性
 	如果bUpdate和bAppend全为false则不进行任何操作
 	*/
-	function merge(template, multipleJSONs, bUpdate, bAppend) {
+	//merge(template, multipleJSONs, bUpdate, bAppend)
+	function merge() {
 		var args = arguments,
 			length = args.length;
 		if (length < 4) return;
@@ -56,7 +57,7 @@
 		for (var n = 1; n < length - 2; n++) {
 			var json = args[n];
 			for (var x in json) {
-				if (x in template && bUpdate || !(x in template) && bAppend) template[x] = json[x]
+				if (x in template && bUpdate || !(x in template) && bAppend) template[x] = json[x];
 			}
 		}
 		return true;
@@ -65,17 +66,24 @@
 	function CHIanimate(actor, oAttrs_sAction, oOptions) {
 		//包含JQ的话，可能是选择器或JQ对象或DOM对象，否则被视为Raphael对象
 		var isJQ = false,
+			isRaphael = false,
 			object;
-		if (hasJQuery) {
-			isJQ = true;
-			if (typeof actor == 'string') object = $(actor);
-			else if (actor instanceof $) object = actor;
-			else if (actor instanceof Object) object = $(actor);
-			else isJQ = false;
-		} else {
-			actor instanceof Object && actor.toString().indexOf("Rapha") === 0 && (object = actor);
+		function Judge(param){
+			if(hasRaphael && param instanceof Object && param.toString().indexOf("Rapha") === 0)
+			{//使用Raphael的Element对象或Set对象
+				object = param;
+				return true;
+			}
+			else if (hasJQuery && (typeof param == 'string' || param instanceof $ || param instanceof Object))
+			{//使用JQ对象，DOM对象，或JQ选择器字符串
+				isJQ = true;
+				object = $(param);
+				return true;
+			}
+			return false;
 		}
-		if (!object || !object.length) {
+		
+		if (!Judge(actor)) {
 			log("首参必须使用\n1.Raphael对象或集合\n2.JQ对象或选择器\n3.DOM对象");
 			return false;
 		}
@@ -127,46 +135,42 @@
 			oNewOptions instanceof Object && (
 				bMerge && merge(oFinalOptions, oBasicOptions, oNewOptions, true, true) || merge(oFinalOptions, oNewOptions, true, true)
 			) || merge(oFinalOptions, oBasicOptions, true, true);
+
 			var b = oAttrs_sAction instanceof Object,
 				delay = oFinalOptions.delay || 0;
 			delay instanceof Function && (delay = delay(object.length));
 
 			var done = oFinalOptions.done ? oFinalOptions.done : $.noop,
 				each = oFinalOptions.each ? oFinalOptions.each : $.noop;
+			
 			oFinalOptions.done = function(para) {
 				var oMe = this,
 					indexMe = isJQ ? object.index(this) : object.indexOf(this);
 				each.call(this, indexMe);
 				niInsideLock--; //只有内置锁解除后才可以执行最终的回调函数
-				if (!niInsideLock) {
-					done.call(object, niCounter);
-					try {
-						for (var nums in events) {
-/*
-								斜率与截距遵循CSS3表达式选择器的规则
-								an+b=y(n=1,2...)
-								当y>=0时才有效，所以ab不能同时为负或零（一负一零也不行）
-							*/
-							var ns = nums.split(','),
-								two = ns.length == 2,
-								//是否有两个参数，只有一个参数时被视为b
-								a = two ? ns[0] * 1 : 0,
-								b = ns[two ? 1 : 0] * 1,
-								y = niCounter;
-							if (!a && b == y || a && y + b >= 0 && (y - b / a) >= 0) {
-								for (var x = 0; x < events[nums].length; x++) events[nums][x](niCounter);
-								//删除固定序号及负系数到达上限的元素，以节省资源
-								if (!a && b == y || a < 0 && y >= b) delete(events[nums]);
-							}
-						}
-					} catch (e) {
-						log("Exception when executing events");
-						return false;
-					}
+				if(niInsideLock) return;
 
-					oResult.next();
-					niInsideLock = niBasicInsideLock;
+				done.call(object, niCounter);
+				for (var nums in events) {
+/*
+						斜率与截距遵循CSS3表达式选择器的规则
+						an+b=y(n=1,2...)
+						当y>=0时才有效，所以ab不能同时为负或零（一负一零也不行）
+					*/
+					var ns = nums.split(','),
+						two = ns.length == 2,
+						//是否有两个参数，只有一个参数时被视为b
+						a = two ? ns[0] * 1 : 0,
+						b = ns[two ? 1 : 0] * 1,
+						y = niCounter;
+					if (!a && b == y || a && y + b >= 0 && (y - b / a) >= 0) {
+						for (var x = 0; x < events[nums].length; x++) events[nums][x](niCounter);
+						//删除固定序号及负系数到达上限的元素，以节省资源
+						if (!a && b == y || a < 0 && y >= b) delete(events[nums]);
+					}
 				}
+				oResult.next();
+				niInsideLock = niBasicInsideLock;
 			}
 			object[isJQ ? 'each' : 'forEach'](function(para1, para2) {
 				var oThisOption = {};
@@ -177,7 +181,7 @@
 					oThisOption[n] = x;
 				}
 				//如果delta是数字，则自动与索引正向或反向相乘，如果是函数，则直接获取函数返回值
-				var delta = oThisOption.delta;
+				var delta = oThisOption.delta || 0;
 				if (delta instanceof Function) delta = delta.call(oMe, indexMe);
 				else delta *= delta > 0 ? indexMe : (indexMe - niBasicInsideLock + 1);
 				if (b) {
@@ -219,6 +223,16 @@
 			if (isPos(piMilliseconds)) oBasicOptions.duration = piMilliseconds;
 			return oResult;
 		}
+		oResult.change = function(param){
+			if (!Judge(param)) {
+				log("首参必须使用\n1.Raphael对象或集合\n2.JQ对象或选择器\n3.DOM对象");
+				return false;
+			}
+			return oResult;
+		}
+		oResult.destroy = function(){
+			oResult = null;
+		}
 /*
 		前置后续共用的事件进出方法
 		array，为nexts或follows数组指针
@@ -232,7 +246,6 @@
 				var o = arg[n];
 				switch (o.constructor) {
 				case CHIanimate:
-				case Function:
 					var x = array.indexOf(o);
 					//堆入行为，且行为未被堆入时
 					if (bInput && x < 0) {
