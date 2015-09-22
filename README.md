@@ -16,5 +16,12 @@
 ```javascript
 var a=CHIanimate(actor, oAttrs_sAction, oOptions);
 ```
+`actor`：可以是一个JQ对象/选择器，也可以是一个Raphael对象  
+`oAttrs_sAction`：可以是一个JQ/Raphael的动画命令（如`fadeIn`,`slideUp`或其它自扩展指令等)，也可以是一个{attr:value}对象  
 
+>	如果是JQ动画的话，这个键值对对象，可以是attr:[value,easing]的形式
+>	如果是Raphael动画的话，如果想用每个属性不同缓冲的话，请分成多个动画实例，然后连接在动画链的同一位置
+
+`oOptions`：也是一个{attr:value}对象，可以包含的属性有：  
+* `duration`：对于JQ来说可以省略，但Raphael的话就必须写，该动画动作耗时
 
