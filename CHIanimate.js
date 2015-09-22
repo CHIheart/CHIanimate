@@ -150,7 +150,7 @@
 				niInsideLock--; //只有内置锁解除后才可以执行最终的回调函数
 				if(niInsideLock) return;
 
-				done.call(object, niCounter);
+				done instanceof Function && done.call(object, niCounter);
 				for (var nums in events) {
 /*
 						斜率与截距遵循CSS3表达式选择器的规则
@@ -171,6 +171,8 @@
 				}
 				oResult.next();
 				niInsideLock = niBasicInsideLock;
+
+				done=='destroy' && oResult.destroy();
 			}
 			object[isJQ ? 'each' : 'forEach'](function(para1, para2) {
 				var oThisOption = {};
@@ -436,6 +438,7 @@ oOptions，是额外用于设置动画效果的参数集合对象
 	duration，动画耗时
 	easing，缓冲函数
 	done，总动画回调函数，默认为空函数，第一参为actor对应的对象，第二参为总动画执行完成的次数
+	*****还可以设置成关键字“destroy”，则动作完全完成之后，本动画对象会被销毁
 	step，步进回调函数，默认为空函数，它是要放进JQ动画的options中或Raphael的onAnimation中
 	delta，单元动画时间差，默认为0，可以为函数或任意整数，或关键字random
 		为函数时，参数为每一单元的索引号
