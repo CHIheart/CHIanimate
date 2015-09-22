@@ -176,13 +176,13 @@
 				}
 				//如果delta是数字，则自动与索引正向或反向相乘，如果是函数，则直接获取函数返回值
 				var delta = oThisOption.delta;
-				if (delta instanceof Function) delta = delta();
+				if (delta instanceof Function) delta = delta(indexMe);
 				else delta *= delta > 0 ? indexMe : (indexMe - niBasicInsideLock + 1);
 				if (b) {
 					var oThisAttrs = {};
 					for (var n in oAttrs_sAction) { //计算独立属性集合
 						var x = oAttrs_sAction[n];
-						if (x instanceof Function) x = x(indexMe, oMe);
+						if (x instanceof Function) x = x.call(oMe, indexMe);
 						oThisAttrs[n] = x;
 					}
 					if (isJQ) $(oMe).delay(delta + delay).animate(oThisAttrs, oThisOption);
@@ -250,7 +250,7 @@
 			return oResult;
 		}
 /*
-		行为堆入，可堆入animate对象，或queue对象
+		行为堆入，可堆入animate对象，或一般的function对象
 		堆入的对象可以是使用set方法返回的修改过后的animate对象
 		不可重复堆入同一行为
 		*/
@@ -426,7 +426,6 @@ oOptions，是额外用于设置动画效果的参数集合对象
 		为函数时，参数为每一单元的索引号
 		为正整数时，单元集合按正序逐一延迟
 		为负整数时，单元集合按倒序逐一延迟
-		为random时，单元集合随机生成延迟
 	delay，总动画延迟，默认为0，可以为函数或正整数
 		为函数时，参数为集合元素总数量
 		为正整数时，即动画总的延迟毫秒数
