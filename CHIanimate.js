@@ -162,7 +162,9 @@
 						b = ns[two ? 1 : 0] * 1,
 						y = niCounter;
 					if (!a && b == y || a && y + b >= 0 && (y - b / a) >= 0) {
-						for (var x = 0; x < events[nums].length; x++) for (var x = 0; x < events[nums].length; x++) events[nums][x].call(object, niCounter);
+						for (var x = 0; x < events[nums].length; x++)
+							for (var x = 0; x < events[nums].length; x++)
+								events[num][x] instanceof Function && events[nums][x].call(object, niCounter);
 						//删除固定序号及负系数到达上限的元素，以节省资源
 						if (!a && b == y || a < 0 && y >= b) delete(events[nums]);
 					}
@@ -297,7 +299,7 @@
 		oResult.next = function(bForce) {
 			if (bForce || niInsideLock <= 0) {
 				for (var n = 0; n < nexts.length; n++)
-				nexts[n]();
+				nexts[n].constructor == CHIanimate && nexts[n]();
 			}
 		}
 		//动画终止，参数的含义与$.stop的相同
@@ -368,7 +370,10 @@
 			for (var x in events) {
 				var arr = events[x];
 				for (var n = arr.length - 1; n >= 0; n--)
-				if (arr[n] == oCHI) arr.splice(n, 1);
+				if (arr[n] == oCHI) {
+					arr.splice(n, 1);
+					break;
+				}
 			}
 			return oResult;
 		}
