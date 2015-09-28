@@ -232,9 +232,6 @@
 			}
 			return oResult;
 		}
-		oResult.destroy = function() {
-			oResult = null;
-		}
 /*
 		前置后续共用的事件进出方法
 		array，为nexts或follows数组指针
@@ -329,7 +326,7 @@
 		}
 /*
 		符合an+b公式的次数时执行，n=1,2,3...，当公式值为正整数时有效，与CSS3的nth-of-type中使用的表达式意义相同
-		只处理CHIanimate或CHIqueue对象，或一般的Function对象，当bOut=true时，删除指定的行为
+		只处理CHIanimate，或一般的Function对象，当bOut=true时，删除指定的行为
 		*/
 		oResult.when = function(a, b, oCHI, bOut) {
 			var con;
