@@ -43,6 +43,7 @@
 	如果bUpdate和bAppend全为false则不进行任何操作
 	*/
 	//merge(template, multipleJSONs, bUpdate, bAppend)
+
 	function merge() {
 		var args = arguments,
 			length = args.length;
@@ -68,21 +69,19 @@
 		var isJQ = false,
 			isRaphael = false,
 			object;
-		function Judge(param){
-			if(hasRaphael && param instanceof Object && param.toString().indexOf("Rapha") === 0)
-			{//使用Raphael的Element对象或Set对象
+
+		function Judge(param) {
+			if (hasRaphael && param instanceof Object && param.toString().indexOf("Rapha") === 0) { //使用Raphael的Element对象或Set对象
 				object = param;
 				return true;
-			}
-			else if (hasJQuery && (typeof param == 'string' || param instanceof $ || param instanceof Object))
-			{//使用JQ对象，DOM对象，或JQ选择器字符串
+			} else if (hasJQuery && (typeof param == 'string' || param instanceof $ || param instanceof Object)) { //使用JQ对象，DOM对象，或JQ选择器字符串
 				isJQ = true;
 				object = $(param);
 				return true;
 			}
 			return false;
 		}
-		
+
 		if (!Judge(actor)) {
 			log("首参必须使用\n1.Raphael对象或集合\n2.JQ对象或选择器\n3.DOM对象");
 			return false;
@@ -133,8 +132,7 @@
 			//最终配置参数集合，如果并入新配置，则将新配置及基础配置并入最终配置，否则只使用新配置，没有新配置使用基础配置
 			var oFinalOptions = {};
 			oNewOptions instanceof Object && (
-				bMerge && merge(oFinalOptions, oBasicOptions, oNewOptions, true, true) || merge(oFinalOptions, oNewOptions, true, true)
-			) || merge(oFinalOptions, oBasicOptions, true, true);
+			bMerge && merge(oFinalOptions, oBasicOptions, oNewOptions, true, true) || merge(oFinalOptions, oNewOptions, true, true)) || merge(oFinalOptions, oBasicOptions, true, true);
 
 			var b = oAttrs_sAction instanceof Object,
 				delay = oFinalOptions.delay || 0;
@@ -142,13 +140,13 @@
 
 			var done = oFinalOptions.done ? oFinalOptions.done : $.noop,
 				each = oFinalOptions.each ? oFinalOptions.each : $.noop;
-			
+
 			oFinalOptions.done = function(para) {
 				var oMe = this,
 					indexMe = isJQ ? object.index(this) : object.indexOf(this);
 				each.call(this, indexMe);
 				niInsideLock--; //只有内置锁解除后才可以执行最终的回调函数
-				if(niInsideLock) return;
+				if (niInsideLock) return;
 
 				done instanceof Function && done.call(object, niCounter);
 				for (var nums in events) {
@@ -164,7 +162,7 @@
 						b = ns[two ? 1 : 0] * 1,
 						y = niCounter;
 					if (!a && b == y || a && y + b >= 0 && (y - b / a) >= 0) {
-						for (var x = 0; x < events[nums].length; x++) events[nums][x](niCounter);
+						for (var x = 0; x < events[nums].length; x++) for (var x = 0; x < events[nums].length; x++) events[nums][x].call(object, niCounter);
 						//删除固定序号及负系数到达上限的元素，以节省资源
 						if (!a && b == y || a < 0 && y >= b) delete(events[nums]);
 					}
@@ -172,7 +170,7 @@
 				oResult.next();
 				niInsideLock = niBasicInsideLock;
 
-				done=='destroy' && oResult.destroy();
+				done == 'destroy' && oResult.destroy();
 			}
 			object[isJQ ? 'each' : 'forEach'](function(para1, para2) {
 				var oThisOption = {};
@@ -225,14 +223,14 @@
 			if (isPos(piMilliseconds)) oBasicOptions.duration = piMilliseconds;
 			return oResult;
 		}
-		oResult.change = function(param){
+		oResult.change = function(param) {
 			if (!Judge(param)) {
 				log("首参必须使用\n1.Raphael对象或集合\n2.JQ对象或选择器\n3.DOM对象");
 				return false;
 			}
 			return oResult;
 		}
-		oResult.destroy = function(){
+		oResult.destroy = function() {
 			oResult = null;
 		}
 /*
