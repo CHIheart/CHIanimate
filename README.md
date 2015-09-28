@@ -95,5 +95,6 @@ CHIanimate对象返回的是一个带有额外属性的function对象，所以�
 > `nexts`：是否复制下线动作
 > `follows`：是否复制上线动作
 
+* `.destroy()`：破坏对象，使对象指向`null`
 
 ### 更多使用的实例，请参考WIKI页面 
