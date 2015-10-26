@@ -57,7 +57,7 @@ oCallbacks，回调函数列表对象，可以使用的属性有
 
 
 define(function(require,exports,module){
-	var $=jQuery;
+	var $=require("incs/src/jquery");
 	return function CHImovieFull(sJQcontainer,sJQkids,oControllers,oOptions,oCallbacks)
 	{
 		function FIND(sJQ) {
@@ -146,14 +146,15 @@ define(function(require,exports,module){
 					objCss={},
 					objAnimate={};
 				//下一帧入屏
+				var bBehind = niAimIndex > niCurrent;
 				objCss.zIndex=2;
-				objCss[sPosName] = "100%";
+				objCss[sPosName] = bBehind ? "100%" : "-100%";
 				objAnimate[sPosName] = 0;
 				oJQkids.eq(niAimIndex).css(objCss).animate(objAnimate,function(){
 					$(this).css("zIndex",1);
 					cbfun();
 				});
-				objAnimate[sPosName]="-100%";
+				objAnimate[sPosName]=bBehind ? "-100%" : "100%";
 				//上一帧出屏
 				oJQkids.eq(niCurrent).animate(objAnimate,function(){
 					$(this).css('zIndex', 0);

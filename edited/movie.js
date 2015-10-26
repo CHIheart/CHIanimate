@@ -28,6 +28,7 @@ oCallbacks，回调函数列表对象，可以使用的属性有
 	.cur()，返回当前作为标志的子元素索引
 */
 define(function(require,exports,module){
+	var $=require("incs/src/jquery");
 	return function CHImovie(sJQcontainer, sJQkid, oControllers, oOptions, oCallbacks) {
 		function FIND(sJQ) {
 			return sJQ && $(sJQ).size();
@@ -172,8 +173,12 @@ define(function(require,exports,module){
 				oResult.show($(this).index(oControllers.indices));
 			});
 		}
-		if (FIND(oControllers.prev)) $(oControllers.prev).click(oResult.prev);
-		if (FIND(oControllers.next)) $(oControllers.next).click(oResult.next);
+		if (FIND(oControllers.prev)) $(oControllers.prev).click(function(){
+			!$(this).hasClass('disabled') && oResult.prev();
+		});
+		if (FIND(oControllers.next)) $(oControllers.next).click(function(){
+			!$(this).hasClass('disabled') && oResult.next();
+		});
 		if (FIND(oControllers.stop)) $(oControllers.stop).click(oResult.off);
 		if (FIND(oControllers.start)) $(oControllers.start).click(oResult.on);
 
