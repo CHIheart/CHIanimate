@@ -1,0 +1,389 @@
+//背景部分
+.bg(...){
+	background: @arguments;
+}
+.bg-c(@color : transparent){
+	background-color: @color;
+}
+.bg-c-a(@rgbacolor : rgba(0,0,0,.5)){
+	background-color: @rgbacolor;
+	@argbcolor : argb(@rgbacolor);
+	background-color: transparent\9;
+	filter:~"progid:DXImageTransform.Microsoft.gradient(startColorstr=@{argbcolor},endColorstr=@{argbcolor})\9";
+}
+.bg-c-a(@color : black, @alpha : .5){
+	@rchannel : red(@color);
+	@gchannel : green(@color);
+	@bchannel : blue(@color);
+	@rgbacolor : rgba(@rchannel, @gchannel, @bchannel, @alpha);
+	background-color: @rgbacolor;
+	@argbcolor : argb(@rgbacolor);
+	background-color: transparent\9;
+	filter:~"progid:DXImageTransform.Microsoft.gradient(startColorstr=@{argbcolor},endColorstr=@{argbcolor})\9";
+}
+.bg-i(@url) when (@url = none){
+	background-image: none;
+}
+.bg-i(@url) when (default()){
+	background-image: url(@url);
+}
+.bg-p(...){
+	background-position: @arguments;
+}
+.bg-r(@d) when(@d = x){
+	background-repeat: repeat-x;
+}
+.bg-r(@d) when(@d = y){
+	background-repeat: repeat-y;
+}
+.bg-r(@d) when(@d = no), (@d = false){
+	background-repeat: no-repeat;
+}
+.bg-r(@d) when(@d = yes), (@d = true){
+	background-repeat: repeat;
+}
+//边框部分
+.bd(...){
+	border: @arguments;
+}
+.bd-c(...){
+	border-color: @arguments;
+}
+.bd-w(...){
+	border-width: @arguments;
+}
+.bd-s(...){
+	border-style: @arguments;
+}
+.bd-l(...){
+	border-left: @arguments;
+}
+.bd-l-c(@color : transparent){
+	border-left-color: @color;
+}
+.bd-l-w(@width){
+	border-left-width: @width;
+}
+.bd-l-s(@style){
+	border-left-style: @style;
+}
+.bd-r(...){
+	border-right: @arguments;
+}
+.bd-r-c(@color : transparent){
+	border-right-color: @color;
+}
+.bd-r-w(@width){
+	border-right-width: @width;
+}
+.bd-r-s(@style){
+	border-right-style: @style;
+}
+.bd-b(...){
+	border-bottom: @arguments;
+}
+.bd-b-c(@color : transparent){
+	border-bottom-color: @color;
+}
+.bd-b-w(@width){
+	border-bottom-width: @width;
+}
+.bd-b-s(@style){
+	border-bottom-style: @style;
+}
+.bd-t(...){
+	border-top: @arguments;
+}
+.bd-t-c(@color : transparent){
+	border-top-color: @color;
+}
+.bd-t-w(@width){
+	border-top-width: @width;
+}
+.bd-t-s(@style){
+	border-top-style: @style;
+}
+.out(...){
+	outline: @arguments;
+}
+.radius(...){
+	border-radius: @arguments;
+}
+.round(){
+	border-radius: 50%;
+}
+
+
+//效果，一些杂七杂八的效果
+//透明
+.alpha(@float){
+	opacity : @float;
+	@intnum : @float * 100;
+	filter: ~"alpha(opacity=@{intnum})";
+}
+//盒阴影
+.shadow(...){
+	box-shadow: @arguments;
+}
+//文本阴影
+.t-shadow(...){
+	text-shadow: @arguments;
+}
+//鼠标
+.cur(@shape){
+	cursor: @shape;
+}
+.c-d(){
+	cursor: default;
+}
+.c-w(){
+	cursor: wait;
+}
+.c-h(){
+	cursor: help;
+}
+.c-p(){
+	cursor: pointer;
+}
+.c-n(){
+	cursor: not-allowed;
+}
+.c-t(){
+	cursor: text;
+}
+.c-m(){
+	cursor: move;
+}
+
+//盒模型，尺寸/边距/填充
+//尺寸
+.h(@height : auto){
+	height: @height;
+}
+.line(@n : 200%){
+	line-height: @n;
+}
+.hline(@h){
+	height: @h;
+	line-height: @h;
+}
+.w(@width : auto){
+	width: @width;
+}
+.wh(@size){
+	width: @size;
+	height: @size;
+}
+.whline(@size){
+	width: @size;
+	height: @size;
+	line-height: @size;
+}
+.maxh(@height : none){
+	max-height: @height;
+}
+.maxw(@width : none){
+	max-width: @width;
+}
+.minh(@height : 0){
+	min-height: @height;
+}
+.minw(@width : 0){
+	min-width: @width;
+}
+//边距
+.m(...){
+	margin: @arguments;
+}
+.ml(@m : auto){
+	margin-left: @m;
+}
+.mr(@m : auto){
+	margin-right: @m;
+}
+.mt(@m : auto){
+	margin-top: @m;
+}
+.mb(@m : auto){
+	margin-bottom: @m;
+}
+.ma(){
+	margin-left: auto;
+	margin-right: auto;
+}
+//填充
+.p(...){
+	padding: @arguments;
+}
+.pl(@p){
+	padding-left: @p;
+}
+.pr(@p){
+	padding-right: @p;
+}
+.pt(@p){
+	padding-top: @p;
+}
+.pb(@p){
+	padding-bottom: @p;
+}
+//溢出
+.o(@way : hidden){
+	overflow: @way;
+}
+.o-s(){
+	overflow: scroll;
+}
+.o-a(){
+	overflow: auto;
+}
+//盒模式
+.block(){
+	display: block;
+}
+.inline(){
+	display: inline;
+}
+.inblock(){
+	display: inline-block;
+}
+.none(){
+	display: none;
+}
+.display(@w : default){
+	display: @w;
+}
+//可见
+.visible(){
+	visibility: visible;
+}
+.hidden(){
+	visibility: hidden;
+}
+//盒式
+.bbox(){
+	box-sizing: border-box;
+}
+.cbox(){
+	box-sizing: content-box;
+}
+//定位，浮动，z轴
+.absolute(){
+	position: absolute;
+}
+.relative(){
+	position: relative;
+}
+.fixed(){
+	position: fixed;
+}
+.clear(){
+	clear: both;
+}
+.l(@p : 0){
+	left: @p;
+}
+.r(@p : 0){
+	right: @p;
+}
+.t(@p : 0){
+	top: @p;
+}
+.b(@p : 0){
+	bottom: @p;
+}
+.z(@z : 1){
+	z-index: @z;
+}
+.fl(){
+	float: left;
+}
+.fr(){
+	float: right;
+}
+.fn(){
+	float: none;
+}
+//文本效果，基本的对文字的操作
+.c(@c){
+	color: @c;
+}
+.family(@n : Microsoft Yahei){
+	font-family: @n;
+}
+.yahei(){
+	font-family: Microsoft Yahei;
+}
+.symsun(){
+	font-family: symsun;
+}
+.icon(){
+	font-family: lechezai;
+}
+.size(@s : 12px){
+	font-size: @s;
+}
+.bold(@bool : true) when (@bool = true){
+	font-weight: bold;
+}
+.bold(@bool : true) when (@bool = false){
+	font-weight: normal;
+}
+.italic(@bool : true) when (@bool = true){
+	font-style: oblique;
+	font-style: italic;
+}
+.italic(@bool : true) when (@bool = false){
+	font-style: normal;
+}
+.t-l(){
+	text-align: left;
+}
+.t-c(){
+	text-align: center;
+}
+.t-r(){
+	text-align: right;
+}
+.nowrap(){
+	white-space: nowrap;
+}
+.valign(@d : middle){
+	vertical-align: @d;
+}
+.cnt(@s : ''){
+	content: @s;
+}
+.indent(@n : 2em){
+	text-indent: @n;
+}
+.decorate(@w : none){
+	text-decoration: @w;
+}
+.ellipsis{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.break(){
+	word-break: break-all;
+	word-wrap: break-word;
+}
+//CSS转换/过渡
+.transition(...){
+	transition: @arguments;
+	-webkit-transition: @arguments;
+}
+.trans(@speed : normal) when (@speed = normal){
+	.transition(all linear .2s);
+}
+//满尺寸，通常用于图片
+.full(){
+	width: 100%;
+	height: 100%;
+}
+//可调整大小
+.noresize(){
+	resize: none !important;
+}
+
