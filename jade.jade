@@ -1,0 +1,144 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible",content="IE=edge,chrome=1")
+		title 新建文档
+		meta(name="description",content="")
+		meta(name="keywords",content="")
+		link(href="",rel="stylesheet")
+
+	//- 这段是低端上使用的HTML条件性注释，以<小于号开头的代码，会被视为普通文本
+	<!--[if IE 9]>
+	link(href="css/ie9.css",rel="stylesheet")
+	<![endif]-->
+	<!--[if IE 8]>
+	link(href="css/ie8.css",rel="stylesheet")
+	<![endif]-->
+	<!--[if lte IE 7]>
+	.TOOLOW 您使用的浏览器版本过低，请升级IE，或者换用其它浏览器
+	script.
+		document.execCommand("stop");
+	<![endif]-->
+
+
+	body
+		-user = { id:12 , name:"<string>" }
+		ul
+			li.first: a(href='#') foo
+			li: a(href='#') bar
+			li.last: a(href='#') baz
+
+		//- 在生成HTML上输出一个换行，避免标签之前首尾相接
+		= '\n'
+
+		//- JS对象嵌入在JADE中，及转义输出和不转义输出，转义输出会将特殊字符转成安全的HTML原型
+		a(href='/user/#{user.id}')= user.name
+		a(href='/user/#{user.id}')!= user.name
+
+		//- 使用变量作为属性的值，而且还可以运算
+		- author="Villor", home="China"
+		a(id=author+"-"+home)
+		//- 使用对象作为属性的值
+		a(style={color: 'red', background: 'green'})
+
+		//- 使用数组作为属性的值
+		- var classes = ['foo', 'bar', 'baz']
+		a(class=classes)
+
+		//- 其它格式文件的嵌入
+		
+		//- 定义一个数组，及each的双参循环
+		- colors = ["red","yellow","blue","green"]
+		each color,index in colors
+			p(class=color) color[#{index}]=#{color}
+
+		//- for循环，及if型条件分支
+		for color in colors
+			if color=="red"
+				pre The first color is #{color}
+			else if color=="blue"
+				pre Maybe you'll come to #{color}
+			else
+				pre= 'the rest color is ' + color
+
+		//- each的单参数循环，及case型条件分支，及条件穿透，有第一二条是块形式代码，第三四条是行内形式代码
+		each color in colors
+			case color
+				when "red"
+				when "yellow"
+					p You've get an #{color} alarm...
+				when "blue": p I'll tell you something!
+				default: p What a beautiful day!!!!
+
+		// 居然还支持white循环，这个注释是唯一能在HTML上看到的注释，因为它前边双斜线后边没有减号
+		ul
+			- n=0
+			while n<3
+				li= n++
+
+		//- js定义变量，可以直接用等号（视为JS串）输出，也可以不用等号（视为HTML串），插入时可以进行运算
+		-friend = 5, fname="abc"
+		blockquote= friend + 3 + "位"
+		blockquote #{fname.toUpperCase()}
+		//- 用花括号是插入变量，用方括号就是插入JADE语法，别忘了前边的#井号
+		blockquote.
+			可以插入一个a标签像这样#[a(target="_blank",href="http://www.baidu.com") 链接到百度]
+
+		//- 否条件，相当于if !
+		unless friend==5
+		q 这段相当于 if friend!=5
+
+		//- 可重复使用的代码块
+		mixin myblock(title,content)
+			dl.Block.clearfix
+				dt 一个标题 #{title}
+				dd
+					| 一些内容
+					| 有很多的内容
+					.warnning
+						| #{content}
+						if block
+							block
+							<如果调用的时候跟着一个子块，子块就会被输出在这个位置上
+
+		+myblock("警告","内存不足")
+		+myblock("子块","带有子块的内容")
+			p 这就是那个子块
+			p 子块要在调用的时候，往后缩一格
+			p.
+				可以用点来输出一大段文字
+				可以是折行的，每一行前边不用写竖线“｜”
+
+
+		//- 带有附加参数的mixin
+		mixin newone(param)
+			.default
+				= param+'是默认参数'
+			.addup
+				ul
+					each value,key in attributes
+						li= "新参数："+ key+"，值为："+value
+
+		+newone("只使用可用的参数param")
+		+newone("有额外的param")(class="btn",target="_blank")
+
+		//- 下边是有不定参数的mixin
+		mixin unlimit(...items)
+			each value,key in items
+				span= key + ',' + value
+
+		+unlimit(1,2,3,4)
+
+		//- 也可以混合使用
+		mixin mixed(id,...items)
+			dl
+				dt= id
+				dd
+					for item in items
+						samp= item
+
+		+mixed("topic","a","b","c")
+
+		//- 包含文件
+		include include.jade
