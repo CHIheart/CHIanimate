@@ -22,28 +22,28 @@ module.exports = function(grunt){
                 },
                 files : [{
                     cwd : 'tmp',
-                    src : "*.js",
+                    src : ["**/*.js","!incs/**/*.js"],
                     expand : true,
                     dest : "dist"
                 }]
             }
         },
         clean : {
-            dest : ["tmp"]
+            dest : ["tmp","dist/incs","dist/*/*/"]
         },
         uglify : {
             options: {
-              mangle: {
-                except: ['require', 'exports',"module"]
-              }
+                mangle: {
+                    except: ['require', 'exports',"module"]
+                }
             },
             dest: {
-              files: [{
-                expand: true,
-                cwd: "dist",
-                src: ["**/*.js","!incs/*.js","!**/*-debug.js"],
-                dest: "dist"
-              }]
+                files: [{
+                    expand: true,
+                    cwd: "dist",
+                    src: ["**/*.js","!**/*-debug.js"],
+                    dest: "dist"
+                }]
             }
         }
     });
