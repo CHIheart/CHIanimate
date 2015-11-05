@@ -11,8 +11,8 @@
 *{margin:0;padding:0;}
 #Canvas{
 	background-color:#ffac13;
-	width:300px;
-	height:300px;
+	width:500px;
+	height:500px;
 	position:relative;
 }
 
@@ -26,7 +26,8 @@
 <script src="http://apps.bdimg.com/libs/raphael/2.1.2/raphael-min.js"></script>
 <!-- <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> -->
 <script>
-var paper=Raphael("Canvas",300,300);
+var paper=Raphael("Canvas",500,500);
+paper.setViewBox(-200,-200,500,500);
 	//if(typeof Raphael=='undefined') return false;
 	Raphael.fn.angle=function(x1,y1,x2,y2,x3,y3){
 		return this.path("M0,0Z").data({
@@ -110,12 +111,15 @@ var paper=Raphael("Canvas",300,300);
 				d3=curpath[2],
 				x3=d3[1],
 				y3=d3[2],
-				b=x1==x2;
-			path_shadow.attr({path:Raphael.format("M{0},{1}L{2},{3}L{4},{5}Z",o[0],o[1],x1,y1,b?x3:x2,b?y3:y2)});
+				b=x1==x2 && y1==y2,
+				str=Raphael.format("M{0},{1}L{2},{3}L{4},{5}Z",o[0],o[1],x1,y1,b?x3:x2,b?y3:y2);
+			path_shadow.attr({path:str});
 		});
 	}
 
-var angle1=paper.angle(0,0,0,40,70,0);
-angle1.flipShadow({},500);
+//var angle1=paper.angle(50,150,100,100,150,200);
+//angle1.flipShadow({original:2,reversed:false},500);
+var angle2=paper.angle(0,0,0,40,70,0);
+angle2.flipShadow({original:2,reversed:false},500);
 
 </script>
