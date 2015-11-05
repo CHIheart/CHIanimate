@@ -51,6 +51,7 @@ function triangleShadowExpand(x1,y1,x2,y2,x3,y3,x0,y0)
 
 flipShadow(0,0,150,0,0,100);
 flipShadow(300,300,300,150,150,300);
+flipShadow(50,150,150,200,100,100);
 
 function flipShadow(ox,oy,h1x,h1y,h2x,h2y)
 {
@@ -69,8 +70,9 @@ function flipShadow(ox,oy,h1x,h1y,h2x,h2y)
 		m_oh2=module(v_oh2),
 		v_h1h2=[h2[0]-h1[0],h2[1]-h1[1]],
 		m_h1h2=module(v_h1h2),
-		m_op=m_oh1*m_oh2/m_h1h2,
-		m_og=2*m_op,
+		p=(m_oh1+m_oh2+m_h1h2)/2,//海伦公式
+		size=Math.sqrt(p * (p- m_oh1)*(p- m_oh2)*(p- m_h1h2)),
+		m_og=4*size/m_h1h2,
 		v_og_n=[-v_h1h2[1],v_h1h2[0]],//[x,y]垂直于[-y,x]
 		m_og_n=module(v_og_n),
 		uv_og=[v_og_n[0]/m_og_n,v_og_n[1]/m_og_n],
