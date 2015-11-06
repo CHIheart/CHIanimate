@@ -46,15 +46,15 @@
 
 		if (!$(sJQcontainer).size()) return false;
 		if (!oOptions) oOptions = {};
-		var piDuration = 1e3,
+		var piDuration = isPos(oOptions.duration) ? oOptions.duration : 1e3,
 			//每次切帧时的耗时（毫秒）
-			sInWay = 'slide-left',
+			sInWay = isWay(oOptions.inWay) ? oOptions.inWay : 'slide-left',
 			//本帧的入场方式
-			sInEasing = 'swing',
+			sInEasing = isEasing(oOptions.inEasing) ? oOptions.inEasing : 'swing',
 			//本帧入场时的easing方法
-			sOutWay = 'slide-left',
+			sOutWay = isWay(oOptions.outWay) ? oOptions.outWay : 'slide-left',
 			//本帧的出场方式
-			sOutEasing = 'swing',
+			sOutEasing = isEasing(oOptions.outEasing) ? oOptions.outEasing : 'swing',
 			//本帧出场时的easing方法
 			aCollections = [],
 			//本帧的动画集合，方便执行各动画的stop过程
@@ -70,10 +70,7 @@
 		oResult.toString = function() {
 			return oJQscene.selector;
 		}
-		oJQscene.css({
-			width: piSceneWidth,
-			height: piSceneHeight
-		});
+		
 
 	/*
 		设置上边的若干变量
@@ -103,6 +100,12 @@
 				if (isWay(way)) sInWay = way;
 				if (isEasing(easing)) sInEasing = easing;
 				break;
+			case 'inWay':
+				isWay(value) && sInWay = value;
+				break;
+			case 'inEasing':
+				isEasing(value) && sInEasing = easing;
+				break;
 			case 'out':
 				var way, easing = '';
 				if (value.indexOf(',') > 0) {
@@ -113,6 +116,12 @@
 				} else way = value;
 				if (isWay(way)) sOutWay = way;
 				if (isEasing(easing)) sOutEasing = easing;
+				break;
+			case 'outWay':
+				isWay(value) && outWay = value;
+				break;
+			case 'outEasing':
+				isEasing(value) && outEasing = easing;
 				break;
 			case 'duration':
 			case 'time':
