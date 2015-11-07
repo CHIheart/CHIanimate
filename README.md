@@ -5,8 +5,8 @@
 ## 重要内容
 
 1. [**CHIanimate**](https://github.com/CHIheart/CHIanimate/wiki/CHIanimate-0.%E6%A6%82%E8%A6%81%E6%89%8B%E5%86%8C)：动画动作链接
-2. **CHIscene**：动画帧动作控制
-3. **CHIstage**：动画帧播放控制
+2. [**CHIscene**](https://github.com/CHIheart/CHIanimate/wiki/CHIscene-%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C)：动画帧动作控制
+3. [**CHIstage**](https://github.com/CHIheart/CHIanimate/wiki/CHIstage-%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C)：动画帧播放控制
 
 ## 常用特效
 
