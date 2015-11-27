@@ -97,14 +97,14 @@ define(function(require,exports,module){
 					easing = arr[1];
 					arr = null;
 				} else way = value;
-				if (isWay(way)) sInWay = way;
-				if (isEasing(easing)) sInEasing = easing;
+				isWay(way) && (sInWay = way);
+				isEasing(easing) && (sInEasing = easing);
 				break;
 			case 'inWay':
-				isWay(value) && sInWay = value;
+				isWay(value) && (sInWay = value);
 				break;
 			case 'inEasing':
-				isEasing(value) && sInEasing = easing;
+				isEasing(value) && (sInEasing = easing);
 				break;
 			case 'out':
 				var way, easing = '';
@@ -114,18 +114,18 @@ define(function(require,exports,module){
 					easing = arr[1];
 					arr = null;
 				} else way = value;
-				if (isWay(way)) sOutWay = way;
-				if (isEasing(easing)) sOutEasing = easing;
+				isWay(way) && (sOutWay = way);
+				isEasing(easing) && (sOutEasing = easing);
 				break;
 			case 'outWay':
-				isWay(value) && outWay = value;
+				isWay(value) && (outWay = value);
 				break;
 			case 'outEasing':
-				isEasing(value) && outEasing = easing;
+				isEasing(value) && (outEasing = easing);
 				break;
 			case 'duration':
 			case 'time':
-				if (isPos(value)) piDuration = parseInt(value);
+				isPos(value) && (piDuration = parseInt(value));
 				break;
 			}
 		}
@@ -171,7 +171,7 @@ define(function(require,exports,module){
 		}
 
 		function InOut(sWay, sEasing, bOut, fCallback) {
-			if (!$.isFunction(fCallback) fCallback = $.noop;
+			if (!$.isFunction(fCallback)) fCallback = $.noop;
 			var bLeft = sWay.indexOf('left') >= 0,
 				bRight = sWay.indexOf('right') >= 0,
 				bTop = sWay.indexOf('top') >= 0,

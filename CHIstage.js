@@ -59,12 +59,12 @@ define(function(require,exports,module){
 			piLock = 2;
 
 			var sceneThis = aScenes[niCurrent],
-				sceneNext = aScenes[index],
-				inWay = this.inWay && (',' + sWays + ',').indexOf(',' + this.inWay + ',') >= 0 ? this.inWay : RandomString(sWays),
-				outWay = this.outWay && (',' + sWays + ',').indexOf(',' + this.outWay + ',') >= 0 ? this.outWay : OppositeString(inWay);
+				sceneNext = aScenes[index]/*,
+				inWay = this.inWay && (',' + sWays + ',').indexOf(',' + this.inWay + ',') >= 0 ? this.inWay : random(sWays),
+				outWay = this.outWay && (',' + sWays + ',').indexOf(',' + this.outWay + ',') >= 0 ? this.outWay : opposite(inWay)*/;
 
-			sceneThis.set('out', outWay);
-			sceneNext.set('in', inWay);
+			//sceneThis.set('out', outWay);
+			//sceneNext.set('in', inWay);
 
 			function nextStart() { //入场帧的开始动作
 				piLock--;
@@ -129,6 +129,7 @@ define(function(require,exports,module){
 			aScenes[0].on().show().ready(function() {
 				aScenes[0].start(function() {
 					bLock = false;
+					if(aScenes[0].startOnce) aScenes[0].startAfterIn=false;
 					if ($.isFunction(fFun)) fFun();
 				});
 			});
