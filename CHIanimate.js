@@ -201,7 +201,7 @@ define(function(require,exports,module) {
 						});
 						oMe.animate(Animation.delay(delta + delay));
 					}
-				} else $(oMe)[oAttrs_sAction](oThisOption);
+				} else $(oMe).delay(delta + delay)[oAttrs_sAction](oThisOption);
 			});
 			return oResult;
 		}
