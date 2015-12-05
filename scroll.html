@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>窗口滚动</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<style>
+*{margin:0;padding:0;}
+body{
+	height:10000px;
+}
+#ori,p{
+	position:fixed;
+	left:0;
+	width:100px;
+	height:100px;
+	padding:20px;
+	border:10px solid black;
+	background-image:url(images/pro.png);
+	z-index:0;
+}
+#ori{
+	top:0;
+}
+p{
+	background-image:url(images/pro2.png);
+	background-position:10px 20px;
+	background-repeat:no-repeat;
+	background-origin:padding-box;
+	top:100px;
+	padding:10%;
+}
+
+#d1{
+	margin:100px;
+	padding:50px;
+	position:relative;
+	background-color:red;
+	width:100px;
+	height:100px;
+	border:100px solid pink;
+	z-index:111;
+	border-radius:10%;
+}
+#d2{
+	margin:10%;
+	padding:10%;
+	width:50%;
+	height:50%;
+	background-color:green;
+	text-indent:10%;
+}
+#d4{
+	margin:10%;
+	padding:10%;
+	left:15%;
+	width:50%;
+	height:50%;
+	background-color:blue;
+	position:absolute;
+	top:10%;
+	text-indent:10%;
+}
+#d3{
+	margin:10%;
+	padding:10%;
+	left:10%;
+	width:50%;
+	height:50%;
+	background-color:yellow;
+	position:relative;
+	text-indent:10%;
+}
+
+#d5{
+	margin:10%;
+	padding:10%;
+	left:10%;
+	width:100%;
+	height:100%;
+	background-color:white;
+	text-indent:10%;
+}
+</style>
+</head>
+<body>
+<!-- <div id="d1">
+	<div id="d5">
+		
+		<div id="d2">一地在要工上是中同民和的有人我说不为这</div>
+		<div id="d3">一地在要工上是中同民和的有人我说不为这</div>
+		<div id="d4">一地在要工上是中同民和的有人我说不为这</div>
+	</div>
+</div> -->
+
+<div id="ori"></div>
+<p></p>
+</body>
+</html>
+<script src="jquery.js"></script>
+<script src="js/easing.js"></script>
+<script>
+/*
+如果不带参数，则解绑滚动事件
+如果带参数，则参数必须是一个JSON对象，可以使用的属性有
+goal，必选，目标样式，使用与animate首参一样的格式
+start，可选，默认为0，指开始有动作时的滚动高度
+over，可选，默认为窗口高，指动作结束时的滚动高度
+easing，可选，默认为linear，动作缓冲用函数名
+
+暂时只支持单位“  %  px  em  ”三种
+margin/width/height/left/top/bottom/right不接受auto作为终止值，auto值将会被终止时直接设成属性用（因为没办法预计在最终效果上auto到底是多少数值）
+*****left/top/bottom/right的初始auto值，将会被计算成真正的像素值
+*****width/height的初始auto值？？？？？
+*****margin的初始auto值？？？？？
+backgroundPosition接受left/right/top/bottom/center值
+color类型，接受transparent值
+可以使用inherit及none关键字作为终止值
+
+可以接受双/三/四参设定的margin/padding/border/outline/shadow(不算inset)
+
+以下是某些标准属性的非标准子属性，可以放在终止属性配置参数中，它们在运算时会被合并成标准整体属性
+*****可以单独使用backgroundPositionX/Y
+*****可以单独使用text/boxShadowColor/X/Y/Blur/Spread（boxShadow才有Spread）
+
+百分比说明、浏览器兼容性及bug，子元素的某些属性的百分比值，是按父级尺寸计算的
+0.这些属性有margin系列，padding系列，position系列，textIndent，width，height
+1.如果子元素是相对relative或静态static定位，则这些属性按照直接父元素的内容区contentBox计算
+2.如果子元素是绝对absolute定位，width/height/textIndent按照定位父元素（最近的position为relative/absolute的父级元素）内容区计算
+3.如果子元素是绝对定位，margin/position系列按照定位父元素的填充区paddingBox计算
+4.BUG::WEBKIT下，绝对定位的子元素的left百分比值，无论是F12工具还是JQ，都获取到的是错误的值（按contentBox计算），但界面渲染效果是正确的（按paddingBox计算）
+5.兼容性问题::FIREFOX下，绝对定位的子元素的padding是按照定位父级的paddingBox计算，而WEBKIT下是按照定位父级的contentBox计算，而且渲染效果也不一样
+*/
+
+//可变换的属性
+var attrs=[
+	'backgroundColor',
+	'backgroundPosition',
+	'backgroundPositionX',
+	'backgroundPositionY',
+	'border',
+	'borderColor',
+	'borderWidth',
+	'borderBottom',
+	'borderBottomColor',
+	'borderBottomWidth',
+	'borderLeft',
+	'borderLeftColor',
+	'borderLeftWidth',
+	'borderRight',
+	'borderRightColor',
+	'borderRightWidth',
+	'borderTop',
+	'borderTopColor',
+	'borderTopWidth',
+	'borderRadius',
+	'borderBottomLeftRadius',
+	'borderBottomRightRadius',
+	'borderTopLeftRadius',
+	'borderTopRightRadius',
+	'bottom',
+	'left',
+	'right',
+	'top',
+	'boxShadow',
+	'boxShadowColor',
+	'boxShadowX',
+	'boxShadowY',
+	'boxShadowBlur',
+	'boxShadowSpread',
+	'color',
+	'fontSize',
+	'height',
+	'width',
+	'lineHeight',
+	'letterSpacing',
+	'margin',
+	'marginBottom',
+	'marginLeft',
+	'marginRight',
+	'marginTop',
+	'outline',
+	'outlineColor',
+	'outlineWidth',
+	'outlineOffset',
+	'padding',
+	'paddingBottom',
+	'paddingLeft',
+	'paddingRight',
+	'paddingTop',
+	'textIndent',
+	'textShadow',
+	'textShadowColor',
+	'textShadowX',
+	'textShadowY',
+	'textShadowBlur',
+	'wordSpacing',
+	'zIndex'
+];
+
+//复杂组成的属性
+var complex={
+	'backgroundPosition':'X,Y'.split(','),
+	'margin':'Top,Right,Bottom,Left'.split(','),
+	'padding':'Top,Right,Bottom,Left'.split(','),
+	'borderWidth':'Top,Right,Bottom,Left'.split(','),
+	'borderColor':'Top,Right,Bottom,Left'.split(','),
+	'borderBottom':'Width,Color,Style'.split(','),
+	'borderLeft':'Width,Color,Style'.split(','),
+	'borderRight':'Width,Color,Style'.split(','),
+	'borderTop':'Width,Color,Style'.split(','),
+	'boxShadow':'Color,X,Y,Blur,Spread,Inset'.split(','),
+	'textShadow':'Color,X,Y,Blur'.split(','),
+	'outline':'Width,Color,Style'.split(','),
+	'borderRadius':'Topleft,TopRight,BottomRight,BottomLeft'.split(',')
+};
+for(var n in complex)
+{
+	for(var m in complex[n])
+	{
+		var reg=n.match('border(Radius|Width|Color)');
+		if(reg) complex[n][m]=[
+			'border',complex[n][m],reg[1]
+		].join('');
+		else complex[n][m]=n+complex[n][m];
+	}
+}
+complex.border=[complex.borderBottom,complex.borderTop,complex.borderRight,complex.borderLeft].join(',').split(',');
+//以上将复杂属性整理成正确的名称及组成部分(除了shadow系列)
+
+var easings={
+	linear: function (t, b, c, d){
+		return (c-b)*t/d + b;
+	},
+	easeInQuad: function (t, b, c, d) {
+		return c*(t/=d)*t + b;
+	},
+	easeOutQuad: function (t, b, c, d) {
+		return -c *(t/=d)*(t-2) + b;
+	},
+	easeInOutQuad: function (t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t + b;
+		return -c/2 * ((--t)*(t-2) - 1) + b;
+	},
+	easeInCubic: function (t, b, c, d) {
+		return c*(t/=d)*t*t + b;
+	},
+	easeOutCubic: function (t, b, c, d) {
+		return c*((t=t/d-1)*t*t + 1) + b;
+	},
+	easeInOutCubic: function (t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t + b;
+		return c/2*((t-=2)*t*t + 2) + b;
+	},
+	easeInQuart: function (t, b, c, d) {
+		return c*(t/=d)*t*t*t + b;
+	},
+	easeOutQuart: function (t, b, c, d) {
+		return -c * ((t=t/d-1)*t*t*t - 1) + b;
+	},
+	easeInOutQuart: function (t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t*t + b;
+		return -c/2 * ((t-=2)*t*t*t - 2) + b;
+	},
+	easeInQuint: function (t, b, c, d) {
+		return c*(t/=d)*t*t*t*t + b;
+	},
+	easeOutQuint: function (t, b, c, d) {
+		return c*((t=t/d-1)*t*t*t*t + 1) + b;
+	},
+	easeInOutQuint: function (t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t*t*t + b;
+		return c/2*((t-=2)*t*t*t*t + 2) + b;
+	},
+	easeInSine: function (t, b, c, d) {
+		return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+	},
+	easeOutSine: function (t, b, c, d) {
+		return c * Math.sin(t/d * (Math.PI/2)) + b;
+	},
+	easeInOutSine: function (t, b, c, d) {
+		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+	},
+	easeInExpo: function (t, b, c, d) {
+		return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+	},
+	easeOutExpo: function (t, b, c, d) {
+		return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+	},
+	easeInOutExpo: function (t, b, c, d) {
+		if (t==0) return b;
+		if (t==d) return b+c;
+		if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+		return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+	},
+	easeInCirc: function (t, b, c, d) {
+		return -c * (Math.sqrt(1 - (t/=d)*t) - 1) + b;
+	},
+	easeOutCirc: function (t, b, c, d) {
+		return c * Math.sqrt(1 - (t=t/d-1)*t) + b;
+	},
+	easeInOutCirc: function (t, b, c, d) {
+		if ((t/=d/2) < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;
+		return c/2 * (Math.sqrt(1 - (t-=2)*t) + 1) + b;
+	},
+	easeInElastic: function (t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+	},
+	easeOutElastic: function (t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+	},
+	easeInOutElastic: function (t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+		return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+	},
+	easeInBack: function (t, b, c, d, s) {
+		if (s == undefined) s = 1.70158;
+		return c*(t/=d)*t*((s+1)*t - s) + b;
+	},
+	easeOutBack: function (t, b, c, d, s) {
+		if (s == undefined) s = 1.70158;
+		return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+	},
+	easeInOutBack: function (t, b, c, d, s) {
+		if (s == undefined) s = 1.70158; 
+		if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+		return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+	},
+	easeInBounce: function (t, b, c, d) {
+		return c - easings.easeOutBounce (d-t, 0, c, d) + b;
+	},
+	easeOutBounce: function (t, b, c, d) {
+		if ((t/=d) < (1/2.75)) {
+			return c*(7.5625*t*t) + b;
+		} else if (t < (2/2.75)) {
+			return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+		} else if (t < (2.5/2.75)) {
+			return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+		} else {
+			return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+		}
+	},
+	easeInOutBounce: function (t, b, c, d) {
+		if (t < d/2) return easings.easeInBounce (t*2, 0, c, d) * .5 + b;
+		return easings.easeOutBounce (t*2-d, 0, c, d) * .5 + c*.5 + b;
+	}
+}
+easings.swing=easings.easeOutQuad;
+
+//返回元素边框内外8个顶点相对于文档的坐标
+$.fn.ps8=function(point){
+	var offset=this.offset(),
+		olt={
+			x:offset.left,
+			y:offset.top
+		},
+		ilt={
+			x: olt.x + parseInt(this.css("borderLeftWidth")),
+			y: olt.y + parseInt(this.css("borderTopWidth"))
+		},
+		ort={
+			x: olt.x + this.outerWidth(),
+			y: olt.y
+		},
+		irt={
+			x: ort.x - parseInt(this.css("borderRightWidth")),
+			y: ilt.y
+		},
+		olb={
+			x: olt.x,
+			y: olt.y + this.outerHeight()
+		},
+		ilb={
+			x: ilt.x,
+			y: olb.y - parseInt(this.css("borderBottomWidth")),
+		},
+		orb={
+			x: ort.x,
+			y: olb.y
+		},
+		irb={
+			x: irt.x,
+			y: ilb.y
+		},
+		result
+		;
+	if(!point) return {
+		outerLeftTop: olt,
+		innerLeftTop: ilt,
+		outerRightTop: ort,
+		innerRightTop: irt,
+		outerLeftBottom: olb,
+		innerLeftBottom: ilb,
+		outerRightBottom: orb,
+		innerRightBottom: irb
+	};
+	switch(point.toString().toLowerCase())
+	{
+		case "outerlefttop":
+		case "olt":
+			result=olt;
+			break;
+		case "innerlefttop":
+		case "ilt":
+			result=ilt;
+			break;
+		case "outerrighttop":
+		case "ort":
+			result=ort;
+			break;
+		case "innerrighttop":
+		case "irt":
+			result=irt;
+			break;
+		case "outerleftbottom":
+		case "olb":
+			result=olb;
+			break;
+		case "innerleftbottom":
+		case "ilb":
+			result=ilb;
+			break;
+		case "outerrightbottom":
+		case "orb":
+			result=orb;
+			break;
+		case "innerrightbottom":
+		case "irb":
+			result=irb;
+			break;
+	}
+	olt=ilt=ort=irt=olb=ilb=orb=irb=null;
+	return result;
+}
+
+/*
+返回准确定位：计算出某一absolute元素的四个定位值（当它们是auto的时候）
+direction可以是all（默认）/left/right/top/bottom
+*/
+function ucfirst(str){return str.charAt(0).toUpperCase()+ str.substring(1);}
+$.fn.exactPosition=function(direction){
+	function isAuto(str){return /auto/i.test(str);}
+	!direction && (direction='all');
+	var bHorizontal=/^all|left|right$/i.test(direction),
+		bVertical=/^all|top|bottom$/i.test(direction);
+	if(!bHorizontal && !bVertical) return false;
+	var css={
+			left:this.css("left"),
+			right:this.css("right"),
+			top:this.css("top"),
+			bottom:this.css("bottom"),
+		},
+		bool={
+			left:isAuto(css.left),
+			right:isAuto(css.right),
+			top:isAuto(css.top),
+			bottom:isAuto(css.bottom),
+		},
+		par=this.offsetParent(),
+		THIS=this;
+	function calc(horizontal)
+	{
+		var first= horizontal ? "left":"top",
+			second=horizontal ? "right":"bottom",
+			size=  horizontal ? "width":"height",
+			Size= ucfirst(size),
+			parSize= par["inner"+Size](),
+			mySize= THIS["outer"+Size](true);
+		if(bool[first] && bool[second])//两个都为auto，先算左，然后就可以用左（上）算右（下）
+		{
+			css[first]=parseFloat(par.css("padding-"+first));
+			THIS.parentsUntil(par).each(function(index, el) {
+				css[first]+= parseFloat($(this).css("margin-"+first))
+							+parseFloat($(this).css("padding-"+first))
+							+parseFloat($(this).css("border-"+first+"-width"));
+ 			});
+			bool[first]=false;
+		}
+		if(bool[second] && !bool[first])//用左（上）算右（下）
+		{
+			css[second]=parSize - mySize - parseFloat(css[first]);
+		}
+		else//用右（下）算左（上）
+		{
+			css[first]=parSize - mySize - parseFloat(css[second]);
+		}
+	}
+	bHorizontal && calc(true);
+	bVertical && calc(false);
+	par=THIS=bool=null;
+	return bHorizontal && bVertical ? css : css[direction.toLowerCase()];
+}
+
+$.fn.roll=function(setOptions){
+	if(!setOptions)
+	{
+		$(window).off("scroll",update);
+		return this;
+	}
+	var goal= setOptions.goal;
+	if(!$.isPlainObject(goal)) return this;
+	var init={},original={},terminal={};
+	
+	//遍历非标准属性驼峰终止值，生成标准属性初始值及终止值，并计算可计算的初始值及终止值
+	for(var attr in goal)
+	{
+		var key=cammel(attr);
+		if(attrs.indexOf(key)==-1) continue;
+		
+		init[key]=$(this).css(key);
+		original[key]=clearSpace(init[key]);
+		terminal[key]=clearSpace(goal[attr]);
+		
+		console.warn('before translate',original[key],terminal[key]);
+		translate.call(this,key,original);
+		translate.call(this,key,terminal);
+		console.info('after translate',original[key],terminal[key]);
+		compare.call(this,key,original,terminal);
+		console.log('after compare',original[key],terminal[key]);
+	}
+	var start=isPosInt(setOptions.start) ? parseInt(setOptions.start) : 0,
+		over= isPosInt(setOptions.over)  ? parseInt(setOptions.over) : $(document).height() - $(window).height(),
+		easing= setOptions.easing in easings ? setOptions.easing : "linear",
+		duration= over - start,
+		THIS=this;
+	
+	easing=easings[easing];
+	if(duration<=0) return this;
+
+	$(window).on("scroll",update);
+	return this;
+
+	//每步更新效果
+	function update(){
+		var scrollTop=$(window).scrollTop();
+		if(scrollTop>over || scrollTop<start) return;
+		if(scrollTop==over) THIS.css(goal);
+		else if(scrollTop==start) THIS.css(init);
+		else
+		{
+			var current={},
+				curStep=scrollTop-start;
+			for(var attr in original)
+			{
+				//如果是对象，则分别计算tween值
+				if($.isPlainObject(original[attr]))
+				{
+					var startObj=original[attr],
+						overObj=terminal[attr],
+						cssObj={};
+					for(var subAttr in startObj)
+					{
+						cssObj[subAttr]=tween(easing,curStep, startObj[subAttr], overObj[subAttr], duration);
+					}
+					$.extend(current, cssObj);
+				}
+				else current[attr]=tween(easing,curStep, original[attr], terminal[attr], duration);
+			}
+			THIS.css(current);
+		}
+	}
+}
+//运算过程，返回一个中间值，如果是关键字则直接返回终值
+function tween(easing,step,startVal,overVal,duration){
+	if(keywords_reg.test(startVal)) return overVal;
+	//对于颜色的特殊处理
+	if(isColor(startVal))
+	{
+		var startColorObj=parseColor(startVal),
+			overColorObj=parseColor(overVal),
+			newColorObj={};
+		for(var n in startColorObj)
+		{
+			var isSL=/l|s/i.test(n),
+				startNum=getNum(startColorObj[n]),
+				overNum=getNum(overColorObj[n]),
+				unit=isSL ? "%":"",
+				val=startNum!=overNum ? easing(step,startNum,overNum,duration) : overNum;
+			n!='a' && (val=parseInt(val));
+			val<0 && (val=0)
+			newColorObj[n]=val+unit;
+		}
+		return combine(newColorObj);
+	}
+	//对于其它数据的处理
+	var unit=getUnit(startVal),
+		startNum=getNum(startVal),
+		overNum=getNum(overVal);
+	return easing(step,startNum,overNum,duration) + unit;
+}
+
+
+//比较两个对象中的项目，如果单位不一致则统一单位，或某一方为不确定时，使用另一方的值确定
+function compare(attr,startObj,overObj)
+{
+	var startAttr=startObj[attr],
+		overAttr=overObj[attr];
+	if($.isPlainObject(startAttr))
+	{
+		for(var n in startAttr)
+		{
+			unify.call(this,n,startAttr,overAttr);
+		}
+	}
+	else unify.call(this,attr,startObj,overObj);
+}
+//统一单位
+function unify(attr,startObj,overObj)
+{
+	var startAttr=startObj[attr],
+		overAttr=overObj[attr],
+		snull=startAttr===null,
+		onull=overAttr===null,
+		bStyle=/style/i.test(attr),
+		bColor=/color/i.test(attr);
+	if(snull || onull)
+	{
+		if(snull && onull)//初终值都为null时，使用默认值
+		{
+			startObj[attr]=overObj[attr]=  bStyle ? "solid" : bColor ? "rgb(0,0,0)" : "0px";
+		}
+		else if(snull)//初值为null时，颜色或样式取终值，数字取0
+		{
+			startObj[attr]=bStyle || bColor ? overAttr : "0px";
+		}
+		else//终值为null时，取初值
+		{
+			overObj[attr]=startAttr;
+		}
+	}
+	if(bStyle) return;//样式不做比较，也不做运算
+	startAttr=startObj[attr],overAttr=overObj[attr];
+	if(bColor)//颜色运算时采用终值的模式计算
+	{
+		var startColorObj=parseColor(startAttr),
+			overColorObj=parseColor(overAttr),
+			transStart=/transparent/i.test(startColorObj),
+			transOver=/transparent/i.test(overColorObj);
+		if(transStart && transOver)
+		{
+			startColorObj=overColorObj={
+				r:0,
+				g:0,
+				b:0,
+				a:0
+			};
+		}
+		else if(transStart) startColorObj=transColor(overColorObj);
+		else if(transOver) overColorObj=transColor(startColorObj);
+		else if(isRGBobj(startColorObj) && isHSLobj(overColorObj)) startColorObj=RGB2HSL(startColorObj);
+		else if(isHSLobj(startColorObj) && isRGBobj(overColorObj)) startColorObj=HSL2RGB(startColorObj);
+		startObj[attr]=combine(startColorObj);
+		overObj[attr]=combine(overColorObj);
+		return;
+	}
+	//为0的值直接改为非0值的单位，不同单位的非0值，全计算成像素px值
+	var startUnit=getUnit(startAttr),
+		overUnit=getUnit(overAttr),
+		startNum=getNum(startAttr),
+		overNum=getNum(overAttr);
+	if(startUnit!=overUnit)
+	{
+		var startZero=startNum*1.0==0,
+			overZero=overNum*1.0==0;
+		if(startZero && overZero) startObj[attr]=overObj[attr]="0px";
+		else if(startZero) startObj[attr]="0"+overUnit;
+		else if(overZero) overObj[attr]="0"+startUnit;
+		else
+		{
+			startObj[attr]=parseToPx.call(this,attr,startObj);
+			overObj[attr]=parseToPx.call(this,attr,overObj);
+		}
+	}
+	else if(attr!='zIndex') startObj[attr]=startNum+startUnit, overObj[attr]=overNum+overUnit;
+}
+/*
+1、补齐缺省值，并纠正位置（backgroundPosition/shadow系列）
+2、将关键字翻译成可计算的值
+	backgroundPosition接受left/right/top/bottom/center值
+	shadow/border系列的none
+	任意的inherit
+*/
+function translate(attr,tweenObj)
+{
+	var value=tweenObj[attr].toString(),
+		arr,
+		obj;
+	//关键字inherit直接读取父级对应属性，读取到的肯定不会还是inherit
+	if(/inherit/i.test(value)) value=tweenObj[attr]=$(this).parent().css(attr);
+	//复杂多值属性需要补足值
+	if(complex[attr])
+	{
+		arr=value.split(' ');
+		switch(attr)
+		{
+			case "backgroundPosition"://默认为center，保证第一参一定为水平方向
+				if(arr.length==1) arr.push("center");
+				if(/^(top|bottom)$/i.test(arr[0])) arr[2]=arr[0],arr[0]=arr[1],arr[1]=arr[2],delete(arr[2]);
+				tweenObj[attr]={
+					backgroundPositionX: arr[0],
+					backgroundPositionY: arr[1]
+				};
+				break;
+			//四值补齐，四值顺序为固定顺序
+			case "borderRadius":
+			case "margin":
+			case "padding":
+			case "borderWidth":
+			case "borderColor":
+				switch(arr.length)
+				{
+					case 1:
+						arr[3]=arr[2]=arr[1]=arr[0];
+						break;
+					case 2:
+						arr[2]=arr[0];
+						arr[3]=arr[1];
+						break;
+					case 3:
+						arr[3]=arr[1];
+						break;
+				}
+				var x=0;
+				tweenObj[attr]={};
+				for(var n in complex[attr])
+				{
+					var subAttr=complex[attr][n];
+					if(attr=='borderColor') tweenObj[attr][subAttr]=name2RGB(arr[x++]);
+					else tweenObj[attr][subAttr]=arr[x++];
+				}
+				break;
+			//边框三值补齐，三值顺序不固定，但类型不同
+			case "borderLeft":
+			case "borderRight":
+			case "borderTop":
+			case "borderBottom":
+			case "outline":
+			case "border":
+				var keys='Width,Style,Color'.split(',');
+				obj={
+					Width:null,
+					Style:null,
+					Color:null
+				};
+				for(var n in arr)
+				{
+					var v=arr[n];
+					if(isValue(v)) obj.Width=v;
+					else if(isColor(v)) obj.Color=name2RGB(v);
+					else obj.Style=v;
+				}
+				if(obj.Style=='none') obj.Style=null,obj.Width="0px";
+				tweenObj[attr]={};
+				for(var n in complex[attr])
+				{
+					var subAttr=complex[attr][n];
+					for(var i in obj)
+					{
+						if(subAttr.indexOf(i)>-1)
+							tweenObj[attr][subAttr]=obj[i];
+					}
+				}
+				break;
+			//阴影的默认颜色是黑，默认模糊度是0，扩散度是0
+			//根据CSS标准，颜色只能位于最前或最后一位
+			case "textShadow"://文本阴影有4参数，无扩散度
+			case "boxShadow"://盒阴影有5参数，扩散度放在最后一维
+				var colorIndex=-1,
+					color=null,
+					x=null,
+					y=null,
+					blur=null,
+					spread=null,//最后一个只有boxShadow有
+					l=arr.length;
+				obj={};
+				for(var n in complex[attr])
+				{
+					obj[complex[attr][n]]=null;
+				}
+
+				//以下为了方便计算，颜色放在第一位
+				switch(l)
+				{
+					case 1://只能是none
+						break;
+					case 2://两个参数一定是横纵偏移
+					case 3://三个参数，颜色只能位于最前或最后，否则为模糊度
+					case 4://四个参数，一定没有spread
+					case 5://五个参数，一定是boxShadow，全参
+						if(isColor(arr[0])) color=arr[0],colorIndex=0;
+						else if(isColor(arr[l-1])) colorIndex=l-1,color=arr[colorIndex];
+						var cnt=0,minLen=2;
+						//五个参数必须有颜色
+						if(colorIndex==-1 && l==5)
+						{
+							console.error("boxShadow属性的值个数不对");
+							return;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+						}
+						else cnt=colorIndex ? 0 : 1;
+						obj[attr+"X"]=arr[cnt++];
+						obj[attr+"Y"]=arr[cnt++];
+						//如果没有颜色，最多四个参数，blur一定位于索引2处；否则要有blur的话至少有四个参数，按顺序排在y后边
+						colorIndex!=-1 && (minLen=3,obj[attr+"Color"]=arr[colorIndex]);
+						l>minLen++ && (obj[attr+"Blur"]=arr[cnt++],true) && l>minLen++ && (obj[attr+"Spread"]=arr[cnt++],true)
+						break;
+					default:
+						console.error(attr+"属性的值个数不对");
+						return;
+				}
+				tweenObj[attr]=obj;
+				arr=obj=null;
+		}
+	}
+	else if(/color/i.test(attr)) tweenObj[attr]=name2RGB(value);
+	
+	//几种关键字的翻译（color的transparent在tween时临时计算，shadow的none在上边计算过了）
+	if(/backgroundPosition|lineHeight|left|right|top|bottom/.test(attr))
+	{
+		switch(attr)
+		{
+			case "backgroundPositionX":
+			case "backgroundPositionY":
+				arr=value.split(' ');
+			case "backgroundPosition":
+				for(var n in arr)
+				{
+					switch(arr[n])
+					{
+						//backgroundPosition属性值
+						case "left":
+						case "top":
+							arr[n]="0%";
+							break;
+						case "right":
+						case "bottom":
+							arr[n]="100%"
+							break;
+						case "center":
+							arr[n]="50%";
+							break;
+					}
+				}
+				if(attr=="backgroundPosition")
+				{
+					tweenObj[attr]={
+						backgroundPositionX:arr[0],
+						backgroundPositionY:arr[1]
+					}
+				}
+				else tweenObj[attr]=arr[0];
+				break;
+			case "lineHeight"://行高的默认倍数是1.15
+				/normal/i.test(value) && (tweenObj[attr]="115%");
+				getNum(tweenObj[attr])==tweenObj[attr] && (tweenObj[attr]*=100,tweenObj[attr]+='%');
+				break;
+			case "left":
+			case "right":
+			case "top":
+			case "bottom":
+				if(!/auto/i.test(value)) return;///////////////////////////////////////////////////////////////////////////
+				//把要变化的值计算出来并设置到CSS上，再把相反方向的设置成auto
+				var oppoAttr=(function(){
+					switch(attr)
+					{
+						case 'left':return 'right';
+						case 'right':return 'left';
+						case 'top':return 'bottom';
+						case 'bottom':return 'top';
+					}
+				})();
+				tweenObj[attr]=this.exactPosition(attr);
+				this.css(oppoAttr,'auto').css(attr,tweenObj[attr]);
+				break;
+		}
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////数值代码部分，各种正则表达式及数值操作
+var int_reg=/^[\+\-]?\d+$/,
+	posInt_reg=/^[\+]?\d+$/,
+	negInt_reg=/^[\-]?\d+$/,
+	float_reg=/[\+\-]?(?:\d+(?:\.\d+)?|\d*\.\d+)/,
+	per_reg=/^[\+\-]?(\d+(?:\.\d+)?|\d*\.\d+)\%$/,
+	px_reg=/^[\+\-]?(\d+(?:\.\d+)?|\d*\.\d+)px$/i,
+	em_reg=/^[\+\-]?(\d+(?:\.\d+)?|\d*\.\d+)em$/i,
+	rem_reg=/^[\+\-]?(\d+(?:\.\d+)?|\d*\.\d+)rem$/i,
+	//units_reg=/\%|in|cm|mm|em|ex|pt|pc|px|rem/i,
+	units_reg=/\%|em|rem|px/gi
+;
+
+function isInt(n){return isNaN(n) ? int_reg.test(n) : parseInt(n)==n;}
+function isPosInt(n){return isNaN(n) ? posInt_reg.test(n) : (n>0 && parseInt(n)==n);}
+function isFloat(n){return isNaN(n) ? float_reg.test(n) : true;}
+function isPer(n){return per_reg.test(n.toString());}
+function isEm(n){return em_reg.test(n.toString());}
+function isPx(n){return px_reg.test(n.toString());}
+function isValue(n){return isPer(n) || isEm(n) || isPx(n) || !isNaN(n);}
+//将任意值转化成像素值
+function parseToPx(attr,tweenObj)
+{
+	var val=tweenObj[attr],
+		unit=getUnit(val).toLowerCase(),
+		num=getNum(val);
+	switch(unit)
+	{
+		case 'em':
+			return emToPx.call(this,val);
+		case '%'://背景图片回调试用格式
+			return perToPx.call(this,attr,val,tweenObj);
+		case 'rem':
+			return remToPx.call(this,val);
+		default:
+			return num+'px';
+	}
+}
+//字号值转像素值 em->px，要使用.call(this...)来调用
+function emToPx(val){
+	return getNum(val.toString()) * getNum(this.css("fontSize")) + "px";
+}
+//rem->px
+function remToPx(val){
+	return getNum(val.toString()) * getNum($("body").css("fontSize")) + "px";
+}
+//百分比值转像素值 %->px，要使用.call(this...)来调用
+function perToPx(attr,val,tweenObj){
+	var wholeVal,
+		num=perToFloat(val),
+		position=$(this).css("position"),
+		absolute=/absolute/i.test(position),
+		parent=$(this)[absolute ? "offsetParent":"parent"](),
+		bgOrigin=$(this).css("backgroundOrigin"),
+		cssAttr,
+		firefox=navigator.userAgent.indexOf(/firefox/i)>-1;
+	//根据backgroundOrigin属性，返回背景整体尺寸所对应的盒尺寸关键字
+	function bgSwitch(horizontal)
+	{
+		switch(bgOrigin)
+		{
+			case "border-box":  return 'outer'+(horizontal?'Width':'Height');
+			case "content-box": return horizontal?'width':'height';
+			//低端下默认的是填充盒
+			case "padding-box":
+			default: return 'inner'+(horizontal?'Width':'Height');
+		}
+	}
+	//根据属性不同，百分比代表的整体也不同
+	switch(attr)
+	{
+		//基于（直接或定位）父级的对应尺寸
+		case "textIndent":
+			wholeVal=parent.innerWidth();
+			break;
+		//如果子元素有绝对定位，那么它的百分比padding，在FF下按padding-box计算的，在Webkit下按content-box计算的
+		case "paddingLeft":
+		case "paddingRight":
+			wholeVal=parent[absolute && firefox ? "innerWidth" : "width"]();
+			break;
+		case "paddingTop":
+		case "paddingBottom":
+			wholeVal=parent[absolute && firefox ? "innerHeight" : "height"]();
+			break;
+		case "marginLeft":
+		case "marginRight":
+		case "left":
+		case "right":
+		case "width":
+			wholeVal=parent[absolute ? "innerWidth" : "width"]();
+			break;
+		case "marginTop":
+		case "marginBottom":
+		case "top":
+		case "bottom":
+		case "height":
+			wholeVal=parent[absolute ? "innerHeight" : "height"]();
+			break;
+		//基于自身的对应尺寸
+		case "backgroundPositionX":
+			wholeVal=$(this)[bgSwitch(true)]();
+			break;
+		case "backgroundPositionY":
+			wholeVal=$(this)[bgSwitch(false)]();
+			break;
+		//边框圆角基于自身边框盒
+		case "borderTopLeftRadius":
+		case "borderTopRightRadius":
+			wholeVal=$(this).outerWidth();
+			break;
+		case "borderBottomLeftRadius":
+		case "borderBottomRightRadius":
+			wholeVal=$(this).outerHeight();
+			break;
+		//较特殊的两项
+		case "lineHeight":
+			wholeVal=parseFloat($(this).css("fontSize"));
+			break;
+		case "fontSize":
+			wholeVal=parseFloat($(this).parent().css("fontSize"));
+			break;
+	}
+	if(/backgroundPosition/i.test(attr))
+	{
+		var bgimg=$(this).css("backgroundImage");
+		if(bgimg=='none') return "0px";
+		var src=bgimg.replace('url(','').replace(')',''),
+			img=new Image(),
+			size=attr=='backgroundPositionY' ? "height":"width";
+		img.src=src;
+		if(img.complete) wholeVal-=img[size];
+		else
+		{
+			img.data={
+				object:tweenObj,
+				attr:attr,
+				size:size,
+				wholeVal:wholeVal,
+				num:num
+			}
+			img.onload=function(){
+				this.data.object[this.data.attr]=(this.data.wholeVal - this[this.data.size]) * this.data.num + 'px';
+				delete(this.data);
+			}
+		}
+	}
+	return num * wholeVal + "px";
+}
+//百分比值转浮点数
+function perToFloat(per){
+	return per.toString().match(float_reg)[0]/100 .toFixed(2);
+}
+function floatToPer(n){return parseInt(n*100)+'%';}
+
+//获取纯值字符串中的值与单位
+function getNum(str){
+	var arr=str.toString().match(float_reg);
+	return Number(isNaN(str) && arr ? arr[0] : str);
+}
+function getUnit(str){
+	var arr=str.toString().match(units_reg);
+	return isNaN(str) && arr ? arr[0] : 'px';
+}
+//将CSS属性转换成驼峰写法
+function cammel(str){
+	var words=str.split('-');
+	for(var n=1;n<words.length;n++)
+	{
+		words[n]=words[n].charAt(0).toUpperCase() + words[n].substring(1);
+	}
+	return words.join("");
+}
+////////////////////////////////////////////////////////////////////////////////颜色代码部分，可以使用HEX/RGB(A)/HSL(A)色彩，网站色彩名，或关键字transparent/inherit
+var rgb_reg=/rgb\((?:\d{1,3})\,(?:\d{1,3})\,(?:\d{1,3})\)/,
+	rgba_reg=/rgba\((?:\d{1,3})\,(?:\d{1,3})\,(?:\d{1,3})\,(?:0|0?\.\d+|1)\)/,
+	hex3_reg=/\#(?:[\da-f])(?:[\da-f])(?:[\da-f])(?![\da-f])/i,
+	hex6_reg=/\#(?:[\da-f]{2})(?:[\da-f]{2})(?:[\da-f]{2})/i,
+	hsl_reg=/hsl\((?:\d{1,3})\,(?:\d+\%)\,(?:\d+\%)\)/,
+	hsla_reg=/hsla\((?:\d{1,3})\,(?:\d+\%)\,(?:\d+\%)\,(?:0|0?\.\d+|1)\)/,
+	colors={
+		AliceBlue:"rgb(240,248,255)",
+		AntiqueWhite:"rgb(250,235,215)",
+		Aqua:"rgb(0,255,255)",
+		Aquamarine:"rgb(127,255,212)",
+		Azure:"rgb(240,255,255)",
+		Beige:"rgb(245,245,220)",
+		Bisque:"rgb(255,228,196)",
+		Black:"rgb(0,0,0)",
+		BlanchedAlmond:"rgb(255,235,205)",
+		Blue:"rgb(0,0,255)",
+		BlueViolet:"rgb(138,43,226)",
+		Brown:"rgb(165,42,42)",
+		BurlyWood:"rgb(222,184,135)",
+		CadetBlue:"rgb(95,158,160)",
+		Chartreuse:"rgb(127,255,0)",
+		Chocolate:"rgb(210,105,30)",
+		Coral:"rgb(255,127,80)",
+		CornflowerBlue:"rgb(100,149,237)",
+		Cornsilk:"rgb(255,248,220)",
+		Crimson:"rgb(220,20,60)",
+		Cyan:"rgb(0,255,255)",
+		DarkBlue:"rgb(0,0,139)",
+		DarkCyan:"rgb(0,139,139)",
+		DarkGoldenRod:"rgb(184,134,11)",
+		DarkGray:"rgb(169,169,169)",
+		DarkGreen:"rgb(0,100,0)",
+		DarkKhaki:"rgb(189,183,107)",
+		DarkMagenta:"rgb(139,0,139)",
+		DarkOliveGreen:"rgb(85,107,47)",
+		DarkOrange:"rgb(255,140,0)",
+		DarkOrchid:"rgb(153,50,204)",
+		DarkRed:"rgb(139,0,0)",
+		DarkSalmon:"rgb(233,150,122)",
+		DarkSeaGreen:"rgb(143,188,143)",
+		DarkSlateBlue:"rgb(72,61,139)",
+		DarkSlateGray:"rgb(47,79,79)",
+		DarkTurquoise:"rgb(0,206,209)",
+		DarkViolet:"rgb(148,0,211)",
+		DeepPink:"rgb(255,20,147)",
+		DeepSkyBlue:"rgb(0,191,255)",
+		DimGray:"rgb(105,105,105)",
+		DodgerBlue:"rgb(30,144,255)",
+		FireBrick:"rgb(178,34,34)",
+		FloralWhite:"rgb(255,250,240)",
+		ForestGreen:"rgb(34,139,34)",
+		Fuchsia:"rgb(255,0,255)",
+		Gainsboro:"rgb(220,220,220)",
+		GhostWhite:"rgb(248,248,255)",
+		Gold:"rgb(255,215,0)",
+		GoldenRod:"rgb(218,165,32)",
+		Gray:"rgb(128,128,128)",
+		Green:"rgb(0,128,0)",
+		GreenYellow:"rgb(173,255,47)",
+		HoneyDew:"rgb(240,255,240)",
+		HotPink:"rgb(255,105,180)",
+		IndianRed:"rgb(205,92,92)",
+		Indigo:"rgb(75,0,130)",
+		Ivory:"rgb(255,255,240)",
+		Khaki:"rgb(240,230,140)",
+		Lavender:"rgb(230,230,250)",
+		LavenderBlush:"rgb(255,240,245)",
+		LawnGreen:"rgb(124,252,0)",
+		LemonChiffon:"rgb(255,250,205)",
+		LightBlue:"rgb(173,216,230)",
+		LightCoral:"rgb(240,128,128)",
+		LightCyan:"rgb(224,255,255)",
+		LightGoldenRodYellow:"rgb(250,250,210)",
+		LightGray:"rgb(211,211,211)",
+		LightGreen:"rgb(144,238,144)",
+		LightPink:"rgb(255,182,193)",
+		LightSalmon:"rgb(255,160,122)",
+		LightSeaGreen:"rgb(32,178,170)",
+		LightSkyBlue:"rgb(135,206,250)",
+		LightSlateGray:"rgb(119,136,153)",
+		LightSteelBlue:"rgb(176,196,222)",
+		LightYellow:"rgb(255,255,224)",
+		Lime:"rgb(0,255,0)",
+		LimeGreen:"rgb(50,205,50)",
+		Linen:"rgb(250,240,230)",
+		Magenta:"rgb(255,0,255)",
+		Maroon:"rgb(128,0,0)",
+		MediumAquaMarine:"rgb(102,205,170)",
+		MediumBlue:"rgb(0,0,205)",
+		MediumOrchid:"rgb(186,85,211)",
+		MediumPurple:"rgb(147,112,219)",
+		MediumSeaGreen:"rgb(60,179,113)",
+		MediumSlateBlue:"rgb(123,104,238)",
+		MediumSpringGreen:"rgb(0,250,154)",
+		MediumTurquoise:"rgb(72,209,204)",
+		MediumVioletRed:"rgb(199,21,133)",
+		MidnightBlue:"rgb(25,25,112)",
+		MintCream:"rgb(245,255,250)",
+		MistyRose:"rgb(255,228,225)",
+		Moccasin:"rgb(255,228,181)",
+		NavajoWhite:"rgb(255,222,173)",
+		Navy:"rgb(0,0,128)",
+		OldLace:"rgb(253,245,230)",
+		Olive:"rgb(128,128,0)",
+		OliveDrab:"rgb(107,142,35)",
+		Orange:"rgb(255,165,0)",
+		OrangeRed:"rgb(255,69,0)",
+		Orchid:"rgb(218,112,214)",
+		PaleGoldenRod:"rgb(238,232,170)",
+		PaleGreen:"rgb(152,251,152)",
+		PaleTurquoise:"rgb(175,238,238)",
+		PaleVioletRed:"rgb(219,112,147)",
+		PapayaWhip:"rgb(255,239,213)",
+		PeachPuff:"rgb(255,218,185)",
+		Peru:"rgb(205,133,63)",
+		Pink:"rgb(255,192,203)",
+		Plum:"rgb(221,160,221)",
+		PowderBlue:"rgb(176,224,230)",
+		Purple:"rgb(128,0,128)",
+		Red:"rgb(255,0,0)",
+		RosyBrown:"rgb(188,143,143)",
+		RoyalBlue:"rgb(65,105,225)",
+		SaddleBrown:"rgb(139,69,19)",
+		Salmon:"rgb(250,128,114)",
+		SandyBrown:"rgb(244,164,96)",
+		SeaGreen:"rgb(46,139,87)",
+		SeaShell:"rgb(255,245,238)",
+		Sienna:"rgb(160,82,45)",
+		Silver:"rgb(192,192,192)",
+		SkyBlue:"rgb(135,206,235)",
+		SlateBlue:"rgb(106,90,205)",
+		SlateGray:"rgb(112,128,144)",
+		Snow:"rgb(255,250,250)",
+		SpringGreen:"rgb(0,255,127)",
+		SteelBlue:"rgb(70,130,180)",
+		Tan:"rgb(210,180,140)",
+		Teal:"rgb(0,128,128)",
+		Thistle:"rgb(216,191,216)",
+		Tomato:"rgb(255,99,71)",
+		Turquoise:"rgb(64,224,208)",
+		Violet:"rgb(238,130,238)",
+		Wheat:"rgb(245,222,179)",
+		White:"rgb(255,255,255)",
+		WhiteSmoke:"rgb(245,245,245)",
+		Yellow:"rgb(255,255,0)",
+		YellowGreen:"rgb(154,205,50)",
+	},
+	colorNames=(function(){
+		var str=['transparent','inherit'];
+		for(var n in colors)
+			str.push(n);
+		return str.join('|');
+	})(),
+	colorNames_reg=new RegExp(colorNames,"i"),
+	keywords='none|hidden|dotted|dashed|solid|double|groove|ridge|inset|outset|inherit|auto|none|contain|cover|left|right|center|top|bottom|auto|normal',
+	keywords_reg=new RegExp(keywords,"i"),
+	colors_reg=[rgb_reg,rgba_reg,hex3_reg,hex6_reg,hsl_reg,hsla_reg,colorNames_reg];
+
+//这个是要过滤掉颜色中逗号旁边的空格的
+function clearSpace(str){
+	if(!str) return str;
+	str=str.toString();
+	var chars=',|(|)'.split('|');
+	for(var n in chars)
+	{
+		var c=chars[n],
+			reg=new RegExp('\\s*\\'+c+(c==')'?"":'\\s*'),'gi');
+		str=str.replace(reg,c);
+	}
+	return str;
+}
+
+//测试字符串是否为合法颜色，返回颜色类型正则表达式，否则返回false
+function isColor(str){
+	for(var n in colors_reg)
+		if(colors_reg[n].test(str)) return colors_reg[n];
+	return false;
+}
+
+//根据颜色名返回颜色的HEX值
+function name2RGB(name){
+	for(var n in colors)
+	{
+		if(name==n.toLowerCase())
+			return colors[n];
+	}
+	return name;
+}
+
+//把一个单一的合法颜色值转化成颜色对象，inherit返回自己
+function parseColor(str){
+	if(/transparent|inherit/i.test(str) || str===null) return str;
+
+	var reg=isColor(str);
+	if(!reg) return false;
+	var source=reg.source,
+		catch_source=source.replace(/\?\:/g,''),
+		catch_reg=new RegExp(catch_source,'i'),
+		arr=str.match(catch_reg);
+	
+	switch(reg)
+	{
+		case rgb_reg:
+			return {
+				r:Number(arr[1]),
+				g:Number(arr[2]),
+				b:Number(arr[3]),
+				a:1
+			}
+		case rgba_reg:
+			return {
+				r:Number(arr[1]),
+				g:Number(arr[2]),
+				b:Number(arr[3]),
+				a:Number(arr[4])
+			}
+		case hex3_reg:
+			return {
+				r: eval("0x"+arr[1]+arr[1]),
+				g: eval("0x"+arr[2]+arr[2]),
+				b: eval("0x"+arr[3]+arr[3]),
+				a: 1
+			}
+		case hex6_reg:
+			return {
+				r: eval("0x"+arr[1]),
+				g: eval("0x"+arr[2]),
+				b: eval("0x"+arr[3]),
+				a: 1
+			}
+		case hsl_reg:
+			return {
+				h: Number(arr[1]),
+				s: arr[2],
+				l: arr[3],
+				a: 1
+			}
+		case hsla_reg:
+			return {
+				h: Number(arr[1]),
+				s: arr[2],
+				l: arr[3],
+				a: Number(arr[4])
+			}
+		case colorNames_reg:
+			return parseColor(name2RGB(str));
+	}
+	return false;
+}
+function RGB2HSL(rgba){
+	var r=rgba.r/255,
+		g=rgba.g/255,
+		b=rgba.b/255,
+		minv=Math.min(r,g,b),
+		maxv=Math.max(r,g,b),
+		delta=maxv-minv,
+		sum=maxv+minv,
+		h,s,l;
+	l=sum/2;
+	if ( minv === maxv ) {
+		h = 0;
+	} else if ( r === maxv ) {
+		h = ( 60 * ( g - b ) / delta ) + 360;
+	} else if ( g === maxv ) {
+		h = ( 60 * ( b - r ) / delta ) + 120;
+	} else {
+		h = ( 60 * ( r - g ) / delta ) + 240;
+	}
+
+	// chroma (diff) == 0 means greyscale which, by definition, saturation = 0%
+	// otherwise, saturation is based on the ratio of chroma (diff) to lightness (add)
+	if ( delta === 0 ) {
+		s = 0;
+	} else if ( l <= 0.5 ) {
+		s = delta / sum;
+	} else {
+		s = delta / ( 2 - sum );
+	}
+	return {
+		h:h,
+		s:floatToPer(s),
+		l:floatToPer(l),
+		a:rgba.a
+	}
+}
+function HSL2RGB(hsla){
+	var h = hsla.h / 360,
+		s = perToFloat(hsla.s),
+		l = perToFloat(hsla.l),
+		q = l <= 0.5 ? l * ( 1 + s ) : l + s - l * s,
+		p = 2 * l - q;
+
+	return {
+		r:Math.round( hue2RGB( p, q, h + ( 1 / 3 ) ) * 255 ),
+		g:Math.round( hue2RGB( p, q, h ) * 255 ),
+		b:Math.round( hue2RGB( p, q, h - ( 1 / 3 ) ) * 255 ),
+		a:hsla.a
+	}
+	function hue2RGB( p, q, h ) {
+		h = ( h + 1 ) % 1;
+		if ( h * 6 < 1 ) {
+			return p + (q - p) * h * 6;
+		}
+		if ( h * 2 < 1) {
+			return q;
+		}
+		if ( h * 3 < 2 ) {
+			return p + (q - p) * ((2/3) - h) * 6;
+		}
+		return p;
+	}
+}
+//判断颜色对象
+function isRGBobj(o){
+	return o && "a" in o && "r" in o && "b" in o && "g" in o;
+}
+function isHSLobj(o){
+	return o && "a" in o && "h" in o && "s" in o && "l" in o
+}
+function isColorObj(o){
+	return isRGBobj || isHSLobj;
+}
+//将对象结合成字符串，可以结合复杂属性中的所有属性，及颜色对象，但没办法拼border（12个元素）
+//但在使用的时候，只用来合并color及shadow系列，其它的都被extend进去的
+function combine(o){
+	var arr,bColor=false;
+	if(isRGBobj(o)) arr=['rgba(',[o.r,o.g,o.b,o.a].join(','),')'],bColor=true;
+	else if(isHSLobj(o)) arr=['hsla(',[o.h,o.s,o.l,o.a].join(','),')'],bColor=true;
+	else if('boxShadowColor' in o || 'textShadowColor' in o) shadow();
+	else if('borderTopLeftRadius' in o) arr=[o.borderTopLeftRadius, o.borderTopRightRadius, o.borderBottomRightRadius, o.borderBottomLeftRadius];
+	else if(
+		'borderTopColor' in o && 'borderBottomColor' in o
+		|| 'borderTopWidth' in o && 'borderBottomWidth' in o
+		|| 'marginTop' in o && 'marginBottom' in o
+		|| 'paddingTop' in o && 'paddingBottom' in o
+	) trbl();
+	else for(var n in o) arr.push(o[n]);
+	return arr.join(bColor ? '': ' ') || false;
+	function special(regs)
+	{
+		arr=[];
+		for(var n in o)
+		{
+			for(var index in regs)
+			{
+				if(regs[index].test(n))
+				{
+					arr[index]=o[n];
+					break;
+				}
+			}
+		}
+	}
+	function trbl()
+	{
+		var regs=[/top/i,/right/i,/bottom/i,/left/i];
+		special(regs);
+	}
+	function shadow()
+	{
+		var regs=[/color/i,/x/i,/y/i,/blur/i,/spread/i];
+		special(regs);
+	}
+}
+//使用一个颜色对象，构造透明
+function transColor(temp){
+	var obj={};
+	for(var n in temp)
+	{
+		obj[n]=temp[n]
+	}
+	obj.a=0;
+	return obj;
+}
+
+
+//获取boxShadow的某个配置
+var boxShadowKeys='Color,X,Y,Blur,Spread,Inset'.split(',');
+$.fn.boxShadowParams=function(param){
+	var params=clearSpace($(this).css("boxShadow"));
+	if(params=='none') return param ? (/color/i.test(param) ? "rgb(0,0,0)" : "0px") : ["rgb(0,0,0)","0px","0px","0px","0px"];
+	params=params.split(' ');
+	if(!param) return params;
+	//inset配置有可能不存在
+	for(var n in boxShadowKeys) if((new RegExp(boxShadowKeys[n],"i")).test(param)) return params[n] || '';
+}
+for(var n in boxShadowKeys)
+{
+	var key=boxShadowKeys[n];
+	$.cssHooks["boxShadow"+key]={
+		key: key,
+		index: n,
+		get: function(elem, computed, extra){
+			return $(elem).boxShadowParams(this.key);
+		},
+		set: function(elem, value){
+			var params=$(elem).boxShadowParams();
+			params[this.index]=value;
+			$(elem).css("boxShadow", params.join(' '));
+		}
+	}
+}
+var textShadowKeys='Color,X,Y,Blur'.split(',');
+$.fn.textShadowParams=function(param){
+	var params=clearSpace($(this).css("textShadow"));
+	if(params=='none') return param ? (/color/i.test(param) ? "rgb(0,0,0)" : "0px") : ["rgb(0,0,0)","0px","0px","0px"];
+	params=params.split(' ');
+	if(!param) return params;
+	for(var n in textShadowKeys) if((new RegExp(textShadowKeys[n],"i")).test(param)) return params[n] || '';
+}
+for(var n in textShadowKeys)
+{
+	var key=textShadowKeys[n];
+	$.cssHooks["textShadow"+key]={
+		key: key,
+		index: n,
+		get: function(elem, computed, extra){
+			return $(elem).textShadowParams(this.key);
+		},
+		set: function(elem, value){
+			var params=$(elem).textShadowParams();
+			params[this.index]=value;
+			$(elem).css("textShadow", params.join(' '));
+		}
+	}
+}
+var backgroundPositionKeys=['X','Y'];
+for(var n in backgroundPositionKeys)
+{
+	var key=backgroundPositionKeys[n];
+	$.cssHooks["backgroundPosition"+key]={
+		key: key,
+		index: n,
+		get: function(elem, computed, extra){
+			return $(elem).css("backgroundPosition").split(' ')[this.index];
+		},
+		set: function(elem, value){
+			var params=$(elem).css('backgroundPosition').split(' ');
+			params[this.index]=value;
+			$(elem).css("backgroundPosition", params.join(' '));
+		}
+	}
+}
+
+
+
+
+var json={
+	//'backgroundColor':'red',
+	'backgroundPosition':'center',
+	// 'backgroundPositionX':'right',
+	// 'backgroundPositionY':'center',
+	// 'border':'1px solid pink',
+	// 'borderColor':'red yellow',
+	// 'borderWidth':'2px 5px 3px',
+	// 'borderBottom':'4px dotted',
+	// 'borderBottomColor':'purple',
+	// 'borderBottomWidth':'10px',
+	// 'borderLeft':'2px green',
+	// 'borderLeftColor':'navy',
+	// 'borderLeftWidth':'20px',
+	// 'borderRight':'3px outset rgb(255,123,63)',
+	// 'borderRightColor':'orange',
+	// 'borderRightWidth':'0',
+	// 'borderTop':'dotted black 12px',
+	// 'borderTopColor':'#fff',
+	// 'borderTopWidth':'15px',
+	// 'borderRadius':'10%',
+	// 'borderBottomLeftRadius':'15%',
+	// 'borderBottomRightRadius':'2em',
+	// 'borderTopLeftRadius':'8px',
+	// 'borderTopRightRadius':'0',
+	// 'bottom':'10%',
+	// 'left':'-20px',
+	// 'right':'5',
+	// 'top':'0',
+	// 'boxShadow':'fuchsia 5px 5px 12px 3px',
+	// 'color':'lime',
+	// 'fontSize':'2em',
+	// 'height':'50px',
+	// 'width':'20%',
+	// 'lineHeight':3,
+	// 'letterSpacing':'2px',
+	// 'margin':'10%',
+	// 'marginBottom':'20px',
+	// 'marginLeft':'20%',
+	// 'marginRight':'-10',
+	// 'marginTop':'0',
+	// 'outline':'5px rgba(255,255,0,.5)',
+	// 'outlineColor':'hsl(222,20%,30%)',
+	// 'outlineWidth':'1em',
+	// 'outlineOffset':'10%',
+	// 'padding':'1% 2px 3em 4px',
+	// 'paddingBottom':'5px',
+	// 'paddingLeft':'6em',
+	// 'paddingRight':'7%',
+	// 'paddingTop':'8',
+	// 'textIndent':'25%',
+	// 'textShadow':'2px 3px 5px blue',
+	// 'wordSpacing':'1em',
+	// 'zIndex':8
+}
+
+//$(window).load(function(){
+	$("p").roll({
+		goal:json
+	})
+	// $("div").roll({
+	// 	goal:json
+	// })
+//})
+window.scrollTo(0,0);
+
+</script>e
