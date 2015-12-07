@@ -30,8 +30,11 @@ p{
 	background-position:10px 20px;
 	background-repeat:no-repeat;
 	background-origin:padding-box;
-	top:100px;
+	top:200px;
 	padding:10%;
+	box-shadow:fuchsia 5px 5px 12px 3px;
+	outline: 5px rgba(255,255,0,.5) dashed;
+	text-shadow:2px 3px 5px blue;
 }
 
 #d1{
@@ -97,7 +100,7 @@ p{
 </div> -->
 
 <div id="ori"></div>
-<p></p>
+<p>that is an apple</p>
 </body>
 </html>
 <script src="jquery.js"></script>
@@ -215,7 +218,7 @@ var complex={
 	'boxShadow':'Color,X,Y,Blur,Spread,Inset'.split(','),
 	'textShadow':'Color,X,Y,Blur'.split(','),
 	'outline':'Width,Color,Style'.split(','),
-	'borderRadius':'Topleft,TopRight,BottomRight,BottomLeft'.split(',')
+	'borderRadius':'TopLeft,TopRight,BottomRight,BottomLeft'.split(',')
 };
 for(var n in complex)
 {
@@ -471,7 +474,8 @@ $.fn.exactPosition=function(direction){
 			top:isAuto(css.top),
 			bottom:isAuto(css.bottom),
 		},
-		par=this.offsetParent(),
+		position=this.css('position'),
+		par=/fixed/i.test(position) ? $(window) : this.offsetParent(),
 		THIS=this;
 	function calc(horizontal)
 	{
@@ -523,6 +527,21 @@ $.fn.roll=function(setOptions){
 		if(attrs.indexOf(key)==-1) continue;
 		
 		init[key]=$(this).css(key);
+		//在变化的定位上，必须将相反的参数一直设置为auto才可以，但必须保留初始值
+		if(/^(top|left|bottom|right)$/i.test(key))
+		{
+			var oppoPos='';
+			switch(key)
+			{
+				case 'top': oppoPos='bottom';break;
+				case 'bottom': oppoPos='top';break;
+				case 'left': oppoPos='right';break;
+				case 'right': oppoPos='left';break;
+			}
+			init[oppoPos]=$(this).css(oppoPos);
+			original[oppoPos]=terminal[oppoPos]='auto';
+		}
+
 		original[key]=clearSpace(init[key]);
 		terminal[key]=clearSpace(goal[attr]);
 		
@@ -571,6 +590,7 @@ $.fn.roll=function(setOptions){
 				}
 				else current[attr]=tween(easing,curStep, original[attr], terminal[attr], duration);
 			}
+			console.log(current)
 			THIS.css(current);
 		}
 	}
@@ -600,8 +620,10 @@ function tween(easing,step,startVal,overVal,duration){
 	//对于其它数据的处理
 	var unit=getUnit(startVal),
 		startNum=getNum(startVal),
-		overNum=getNum(overVal);
-	return easing(step,startNum,overNum,duration) + unit;
+		overNum=getNum(overVal),
+		result=easing(step,startNum,overNum,duration);
+	//这种写法是为了处理zIndex，因为别的属性使用浮点数都会被自动转换成整数，但是zIndex的浮点数值会被视为非法值而被忽略
+	return  startNum==startVal ? parseInt(result) : result + unit;
 }
 
 
@@ -743,6 +765,7 @@ function translate(attr,tweenObj)
 					if(attr=='borderColor') tweenObj[attr][subAttr]=name2RGB(arr[x++]);
 					else tweenObj[attr][subAttr]=arr[x++];
 				}
+				console.log(tweenObj[attr])
 				break;
 			//边框三值补齐，三值顺序不固定，但类型不同
 			case "borderLeft":
@@ -883,6 +906,7 @@ function translate(attr,tweenObj)
 						case 'bottom':return 'top';
 					}
 				})();
+				console.log(this.exactPosition());
 				tweenObj[attr]=this.exactPosition(attr);
 				this.css(oppoAttr,'auto').css(attr,tweenObj[attr]);
 				break;
@@ -941,7 +965,8 @@ function perToPx(attr,val,tweenObj){
 		num=perToFloat(val),
 		position=$(this).css("position"),
 		absolute=/absolute/i.test(position),
-		parent=$(this)[absolute ? "offsetParent":"parent"](),
+		fixed=/fixed/i.test(position),
+		parent=fixed ? $(window) : $(this)[absolute ? "offsetParent":"parent"](),
 		bgOrigin=$(this).css("backgroundOrigin"),
 		cssAttr,
 		firefox=navigator.userAgent.indexOf(/firefox/i)>-1;
@@ -1015,11 +1040,12 @@ function perToPx(attr,val,tweenObj){
 	{
 		var bgimg=$(this).css("backgroundImage");
 		if(bgimg=='none') return "0px";
-		var src=bgimg.replace('url(','').replace(')',''),
+		var src=bgimg.replace('url(','').replace(')','').replace(/"/g,''),
+			//读取到的src中，FF下带双引号
 			img=new Image(),
 			size=attr=='backgroundPositionY' ? "height":"width";
 		img.src=src;
-		if(img.complete) wholeVal-=img[size];
+		if(img.complete) wholeVal-=img[size],console.log(size,img[size]);
 		else
 		{
 			img.data={
@@ -1030,6 +1056,7 @@ function perToPx(attr,val,tweenObj){
 				num:num
 			}
 			img.onload=function(){
+				console.log(this.data.size,this[this.data.size]);
 				this.data.object[this.data.attr]=(this.data.wholeVal - this[this.data.size]) * this.data.num + 'px';
 				delete(this.data);
 			}
@@ -1512,12 +1539,12 @@ for(var n in backgroundPositionKeys)
 
 var json={
 	//'backgroundColor':'red',
-	'backgroundPosition':'center',
-	// 'backgroundPositionX':'right',
-	// 'backgroundPositionY':'center',
-	// 'border':'1px solid pink',
-	// 'borderColor':'red yellow',
-	// 'borderWidth':'2px 5px 3px',
+	// 'backgroundPosition':'center',
+	// 'backgroundPositionX':'80%',
+	// 'backgroundPositionY':'90%',
+	// 'border':'transparent',
+	// 'borderColor':'red transparent',
+	// 'borderWidth':'2px 5px 3px 0',
 	// 'borderBottom':'4px dotted',
 	// 'borderBottomColor':'purple',
 	// 'borderBottomWidth':'10px',
@@ -1534,27 +1561,32 @@ var json={
 	// 'borderBottomLeftRadius':'15%',
 	// 'borderBottomRightRadius':'2em',
 	// 'borderTopLeftRadius':'8px',
-	// 'borderTopRightRadius':'0',
+	// 'borderTopRightRadius':'20px',
 	// 'bottom':'10%',
 	// 'left':'-20px',
 	// 'right':'5',
 	// 'top':'0',
 	// 'boxShadow':'fuchsia 5px 5px 12px 3px',
+	// 'boxShadowColor':'pink',
+	// 'boxShadowX':-5,
+	// 'boxShadowY':'10px',
+	// 'boxShadowBlur':20,
+	// 'boxShadowSpread':'3em',
 	// 'color':'lime',
 	// 'fontSize':'2em',
-	// 'height':'50px',
+	// 'height':'50%',
 	// 'width':'20%',
 	// 'lineHeight':3,
-	// 'letterSpacing':'2px',
+	// 'letterSpacing':'10px',
 	// 'margin':'10%',
 	// 'marginBottom':'20px',
 	// 'marginLeft':'20%',
 	// 'marginRight':'-10',
-	// 'marginTop':'0',
-	// 'outline':'5px rgba(255,255,0,.5)',
+	// 'marginTop':'20px',
+	// 'outline':'5px rgba(255,255,0,.5) dashed',
 	// 'outlineColor':'hsl(222,20%,30%)',
 	// 'outlineWidth':'1em',
-	// 'outlineOffset':'10%',
+	// 'outlineOffset':'10px',
 	// 'padding':'1% 2px 3em 4px',
 	// 'paddingBottom':'5px',
 	// 'paddingLeft':'6em',
@@ -1562,18 +1594,22 @@ var json={
 	// 'paddingTop':'8',
 	// 'textIndent':'25%',
 	// 'textShadow':'2px 3px 5px blue',
+	// 'textShadowX':'20px',
+	// 'textShadowY':'-20px',
+	// 'textShadowBlur':'10px',
+	// 'textShadowColor':'green',
 	// 'wordSpacing':'1em',
-	// 'zIndex':8
+	'zIndex':8
 }
 
-//$(window).load(function(){
+$(window).load(function(){
 	$("p").roll({
 		goal:json
 	})
 	// $("div").roll({
 	// 	goal:json
 	// })
-//})
+})
 window.scrollTo(0,0);
 
-</script>e
+</script>
