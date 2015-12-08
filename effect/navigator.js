@@ -7,7 +7,8 @@ oOptions，配置参数集合对象，可以使用的属性有
 	offset，偏移，默认为0，为正数的话会延后响应，为负数的话会提前响应（一般为负数，以适应顶部的静止化导航遮挡的部分）
 oCallbacks，回调函数集合对象，可以使用的属性有
 	init()，初始化完成时执行的函数，只发生在window.onload事件上
-	show(oJQnavShowed,oJQnavHidden)，显示隐藏事件发生时的函数，仅当有新的项目被显示出来的时候才发生（重复点击被显示出来的内容则不会发生，在同一内容区域滚动时也不会发生），参数1是被显示出来的导航项目的JQ对象，参数2是被隐藏掉的导航项目的JQ对象
+	show(oJQnavShowed,oJQnavHidden)，显示隐藏事件发生时的函数，仅当有新的项目被显示出来的时候才发生（重复点击被显示出来的内容则不会发生，在同一内容区域滚动时也不会发生）
+		参数1是被显示出来的导航项目的JQ对象，参数2是被隐藏掉的导航项目的JQ对象
 */
 function CHInavigator(sJQnavs, sJQcontents, oOptions, oCallbacks) {
 	var timer = 0,
@@ -15,7 +16,7 @@ function CHInavigator(sJQnavs, sJQcontents, oOptions, oCallbacks) {
 		oJQcontents = $(sJQcontents);
 	if (!oJQnavs.length || !oJQcontents.length) return false;
 	if (!$.isPlainObject(oOptions)) oOptions = {};
-	var dir = oOptions.dir && oOptions.dir.toLowerCase() == 'h' ? 'h' : 'v',
+	var dir = /^h$/i.test(oOptions.dir) ? 'h' : 'v',
 		scrollAttr = dir == 'v' ? 'scrollTop' : 'scrollLeft',
 		offsetAttr = dir == 'v' ? 'top' : 'left',
 		offset = isNaN(oOptions.offset) ? 0 : parseInt(oOptions.offset);
