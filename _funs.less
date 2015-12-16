@@ -373,6 +373,8 @@
 .transition(...){
 	transition: @arguments;
 	-webkit-transition: @arguments;
+	-ms-transition: @arguments;
+	-o-transition: @arguments;
 }
 .trans(@speed : normal) when (@speed = normal){
 	.transition(all linear .2s);
@@ -387,3 +389,87 @@
 	resize: none !important;
 }
 
+.FILTER{
+	//灰度效果，0为无效果
+	.grayscale(@float: 1){
+		@per: percentage(@float);
+		filter:grayscale(@per);
+		-moz-filter:grayscale(@per);
+		-o-filter:grayscale(@per);
+		-ms-filter:grayscale(@per);
+		-webkit-filter:grayscale(@per);
+		filter:Gray\9;
+	}
+	//图片古典化效果，0为无效果
+	.sepia(@float: 1){
+		@per: percentage(@float);
+	    -webkit-filter: sepia(@per);  
+	    -moz-filter:sepia(@per);
+	    -o-filter: sepia(@per);
+	    -ms-filter: sepia(@per);
+	    filter: sepia(@per);  
+	}
+	//高斯模糊，参数整数，0为无效果
+	.blur(@px: 1px){
+	    -webkit-filter: blur(@px);
+	    -moz-filter: blur(@px);
+	    -o-filter: blur(@px);
+	    -ms-filter: blur(@px);
+	    filter: blur(@px); 
+	    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=@px, MakeShadow=false)~"\9";
+	}
+	//反色，0为无效果
+	.invert(@float : 1){
+		-webkit-filter: invert(@float);
+		-moz-filter: invert(@float);
+		-o-filter: invert(@float);
+		-ms-filter: invert(@float);
+		filter: invert(@float); 
+	}
+	//饱和度，1为无效果
+	.saturate(@int : 1){
+	    -webkit-filter: saturate(@int);
+	    -moz-filter: saturate(@int);
+	    -o-filter: saturate(@int);
+	    -ms-filter: saturate(@int);
+	    filter: saturate(@int); 
+	}
+	//对比度，1为无效果
+    .contrast(@int : 1){
+	    -webkit-filter: contrast(@int);
+	    -moz-filter: contrast(@int);
+	    -o-filter: contrast(@int);
+	    -ms-filter: contrast(@int);
+	    filter: contrast(@int); 
+    }
+    //亮度，1为无效果
+   .brightness(@int : 1){
+	    -webkit-filter: brightness(@int);
+	    -moz-filter: brightness(@int);
+	    -o-filter: brightness(@int);
+	    -ms-filter: brightness(@int);
+	    filter: brightness(@int); 
+    }
+    //色调旋转，0-359deg
+    .hue-rotate(@deg: 0deg){
+	    -webkit-filter: hue-rotate(@deg);
+	    -moz-filter: hue-rotate(@deg);
+	    -o-filter: hue-rotate(@deg);
+	    -ms-filter: hue-rotate(@deg);
+	    filter: hue-rotate(@deg); 
+    }
+    /**  格式，filer: drop-shadow(x-offset y-offset 阴影模糊半径 阴影颜色)
+     *  x-offset和y-offset为阴影的相对于元素左上角的位移距离；
+     * 注意：
+     *     1. 阴影的外观受border-radius样式的影响；
+     *     2. :after和:before等伪元素会继承阴影的效果。
+     */
+    .drop-shadow(@x:0, @y:0, @blur:0, @c: black){
+		-webkit-filter: drop-shadow(@x @y @blur @c);
+		-moz-filter: drop-shadow(@x @y @blur @c);
+		-o-filter: drop-shadow(@x @y @blur @c);
+		-ms-filter: drop-shadow(@x @y @blur @c);
+		filter: drop-shadow(@x @y @blur @c); 
+		filter: DropShadow(Color=@c,OffX=@x,OffY=@y,Positive=1)~"\9";
+    }
+}
