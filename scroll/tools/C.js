@@ -157,7 +157,7 @@ define(function(require,exports,module){
 		},
 		name2color:function(name){
 			if(!name || this.type(name)!='names') return false;
-			for(var n in this.names) if(n.toLowerCase()==str.toLowerCase()) return this.names[n];
+			for(var n in this.names) if(n.toLowerCase()==name.toLowerCase()) return this.names[n];
 		},
 		//是否为rgb颜色
 		isRGBobj:function(o){
@@ -169,8 +169,8 @@ define(function(require,exports,module){
 		},
 		//将颜色转化为字符串
 		toString:function(o){
-			if(this.isRGBobj(o)) return ['rgba(',o.r,',',o.g,',',o.b,',',("a" in o ? o.a : 1),')'];
-			if(this.isHSLobj(o)) return ['hsla(',o.h,',',o.s,',',o.l,',',("a" in o ? o.a : 1),')'];
+			if(this.isRGBobj(o)) return ['rgba(',o.r,',',o.g,',',o.b,',',("a" in o ? o.a : 1),')'].join('');
+			if(this.isHSLobj(o)) return ['hsla(',o.h,',',o.s,',',o.l,',',("a" in o ? o.a : 1),')'].join('');
 			if(this.type(o)) return o;
 			return false;
 		},
@@ -233,8 +233,74 @@ define(function(require,exports,module){
 			{
 				if(this.reg[n].test(str)) return n;
 			}
+			if(this.isRGBobj(str)) return 'rgb';
+			if(this.isHSLobj(str)) return 'hsl';
 			return false;
+		},
+		rgb2hsl:function (rgba){
+			var r=rgba.r/255,
+				g=rgba.g/255,
+				b=rgba.b/255,
+				minv=Math.min(r,g,b),
+				maxv=Math.max(r,g,b),
+				delta=maxv-minv,
+				sum=maxv+minv,
+				h,s,l;
+			l=sum/2;
+			if ( minv === maxv ) {
+				h = 0;
+			} else if ( r === maxv ) {
+				h = ( 60 * ( g - b ) / delta ) + 360;
+			} else if ( g === maxv ) {
+				h = ( 60 * ( b - r ) / delta ) + 120;
+			} else {
+				h = ( 60 * ( r - g ) / delta ) + 240;
+			}
+
+			// chroma (diff) == 0 means greyscale which, by definition, saturation = 0%
+			// otherwise, saturation is based on the ratio of chroma (diff) to lightness (add)
+			if ( delta === 0 ) {
+				s = 0;
+			} else if ( l <= 0.5 ) {
+				s = delta / sum;
+			} else {
+				s = delta / ( 2 - sum );
+			}
+			return {
+				h:h,
+				s:floatToPer(s),
+				l:floatToPer(l),
+				a:rgba.a
+			}
+		},
+		hsl2rgb:function (hsla){
+			var h = hsla.h / 360,
+				s = perToFloat(hsla.s),
+				l = perToFloat(hsla.l),
+				q = l <= 0.5 ? l * ( 1 + s ) : l + s - l * s,
+				p = 2 * l - q;
+
+			return {
+				r:Math.round( hue2RGB( p, q, h + ( 1 / 3 ) ) * 255 ),
+				g:Math.round( hue2RGB( p, q, h ) * 255 ),
+				b:Math.round( hue2RGB( p, q, h - ( 1 / 3 ) ) * 255 ),
+				a:hsla.a
+			}
+			function hue2RGB( p, q, h ) {
+				h = ( h + 1 ) % 1;
+				if ( h * 6 < 1 ) {
+					return p + (q - p) * h * 6;
+				}
+				if ( h * 2 < 1) {
+					return q;
+				}
+				if ( h * 3 < 2 ) {
+					return p + (q - p) * ((2/3) - h) * 6;
+				}
+				return p;
+			}
 		}
+
 	};
 	(function(){
 		var names=[];

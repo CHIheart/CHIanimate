@@ -1,6 +1,5 @@
 //字符串处理函数
 define(function(require,exports,module){
-	var IS=require("./IS");
 	return {
 		//首字母大写
 		ucfirst:function(str){
@@ -37,7 +36,7 @@ define(function(require,exports,module){
 		toRegExp:function(str,settings){
 			if(!str) return str;
 			if(!settings)settings={};
-			if(IS.s(str)) str=str.split(this.seperators);
+			if(str.split) str=str.split(this.seperators);
 			str=str.join('|');
 			str=['(',str,')'];
 			if(settings.begging) str.unshift('^');
