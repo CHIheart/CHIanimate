@@ -10,10 +10,12 @@ define(function(require,exports,module){
 			BAR=this.BAR,
 			TRBL='Top,Right,Bottom,Left'.split(','),
 			value=database[attr],
-			arr=value.split(' '),
 			parts=this.parts,
+			arr=value===null ? [null] : value.split(' '),
 			obj={};
-		database[attr]=obj;
+
+		//删除总属性，将子属性放进去
+		delete(database[attr]);
 		switch(arr.length)
 		{
 			case 1: arr.push(arr[0],arr[0],arr[0]); break;
@@ -32,7 +34,8 @@ define(function(require,exports,module){
 		}
 		for(var n in obj)
 		{
-			BAR[n].parse(database[attr]);
+			database[n]=obj[n];
+			BAR[n].parse(database);
 		}
 		obj=arr=TRBL=parts=BAR=null;
 	}

@@ -16,7 +16,7 @@ define(function(require,exports,module){
 		},
 		//过滤颜色或转换矩阵中逗号或括号旁边的空格（过滤左括号两边的空格，但不过滤右括号右边的空格）
 		clear:function(str){
-			if(!str) return str;
+			if(!str || typeof str=='object') return str;
 			return str.toString()
 				.replace(/ *\( */g,'(')
 				.replace(/ *\, */g,',')

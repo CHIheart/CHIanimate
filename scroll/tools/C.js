@@ -227,8 +227,9 @@ define(function(require,exports,module){
 					return this.toObject(this.name2color(str));
 			}
 		},
-		//返回颜色类型或数值类型（正则表达式名）
+		//返回颜色类型或数值类型（正则表达式名），缺省null则返回null
 		type:function(str){
+			if(str===null) return null;
 			for(var n in this.reg)
 			{
 				if(this.reg[n].test(str)) return n;
@@ -300,7 +301,6 @@ define(function(require,exports,module){
 				return p;
 			}
 		}
-
 	};
 	(function(){
 		var names=[];

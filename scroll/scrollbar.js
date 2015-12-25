@@ -5,6 +5,7 @@ define(function(require,exports,module){
 		U=require("tools/U"),
 		P=require("tools/P"),
 		IS=require("tools/IS");
+	require("tools/B");
 	var defaultSettings={
 		/*
 		可选，用于统一属性单位的函数，接收的是对象选择器（一般为this），运算中转值original和terminal对象
@@ -45,7 +46,7 @@ define(function(require,exports,module){
 			};
 			$.extend(this[attr], defaultSettings, settings);
 			//如果有钩子则自动钩进去
-			IS.hook(this[attr].cssHook) && ($.cssHooks[attr]=this[attr].cssHook);
+			IS.f(this[attr].hook) && this[attr].hook();
 			return this;
 		},
 		//检测基本属性值是否合法（单位以及关键字），复杂属性不使用本测试
@@ -146,25 +147,16 @@ define(function(require,exports,module){
 		console.warn("终止值",terminal)
 		console.groupEnd();
 
-		traverse(original,terminal);
-		function traverse(base1,base2)
+		for(var n in original)
 		{
-			if(IS.o(base1) && IS.o(base2))
+			if(!(n in terminal))
 			{
-				for(var n in base1)
-				{
-					if(!(n in base2))
-					{
-						console.warn("属性"+n+"不存在于终止值对象之中！已删除！");
-						delete(base2[n]);
-					}
-					if(!isNaN(n))console.warn(base1,base2);
-					if(IS.s(base1[n]) && IS.s(base2[n])) BAR[n].unify(THIS,base1,base2);
-					traverse(base1[n],base2[n]);
-				}
+				console.warn("属性"+n+"不存在于终止值对象之中！已删除！");
+				delete(terminal[n]);
 			}
+				BAR[n].unify(THIS,original,terminal);
 		}
-		console.group("初始读值");
+		console.group("统一后的值");
 		console.info("初始值",original)
 		console.warn("终止值",terminal)
 		console.groupEnd();

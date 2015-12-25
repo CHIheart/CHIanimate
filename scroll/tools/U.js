@@ -7,6 +7,11 @@ define(function(require,exports,module){
 		if(!(attr in original) || !(attr in terminal)) return false;
 		var val1=original[attr],
 			val2=terminal[attr];
+		if(val2===null)
+		{//终止如果是null则直接取初值
+			terminal[attr]=original[attr];
+			return true;
+		}
 		if(val1==val2) return true;
 		var type=$.scrollbar[attr].type.toString().toLowerCase(),
 			error;

@@ -20,7 +20,7 @@ define(function(require,exports,module){
 		},
 		//浮点数转百分量
 		float2per:function(num){
-			if(!isNaN(num)) return false;
+			if(isNaN(num)) return false;
 			return (num * 100).toFixed(2) + '%';
 		},
 		//给值保留指定的小数位

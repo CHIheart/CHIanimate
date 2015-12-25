@@ -11,10 +11,12 @@ define(function(require,exports,module){
 		var attr=this.name,
 			BAR=this.BAR,
 			value=database[attr],
-			arr=value.split(' '),
+			arr=value===null ? [null] : value.split(' '),
 			parts=this.parts,
 			obj={};
-		database[attr]=obj;
+
+		//删除总属性，将子属性放进去
+		delete(database[attr]);
 		for(var n in parts)
 		{
 			var sa=parts[n];
@@ -31,7 +33,8 @@ define(function(require,exports,module){
 		}
 		for(var n in obj)
 		{
-			BAR[n].parse(database[attr]);
+			database[n]=obj[n];
+			BAR[n].parse(database);
 		}
 		obj=arr=null;
 	}

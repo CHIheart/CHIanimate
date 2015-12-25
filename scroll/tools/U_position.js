@@ -43,7 +43,11 @@ define(function(require,exports,module){
 			unit1=N.type(val1),
 			unit2=N.type(val2);
 		if(unit1=='%') original[attr]=N.per2float(val1) * wholeSize + 'px';
-		else terminal[attr]=N.per2float(val2) * wholeSize + 'px';
+		else
+		{//把非像素值转化成像素值，再除商后转百分比数
+			var px=parseFloat(unit1=='px' ? val1 : N[unit1+"2px"](val1));
+			terminal[attr]=N.float2per(px/wholeSize);	
+		}
 		return U.call(this,selector,original,terminal,true);
 	}
 	;

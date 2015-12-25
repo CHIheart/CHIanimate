@@ -29,7 +29,10 @@ define(function(require,exports,module){
 						var o={};
 						for(var n in TRBL) o[TRBL[n]]=object.css(TRBL[n]);
 						return o;
-					})();
+					})(),
+					offset=object.offset(),
+					owidth=object.outerWidth(),
+					oheight=object.outerHeight();
 			}
 		});
 	}

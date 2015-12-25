@@ -33,7 +33,7 @@ direction可以是all（默认）/left/right/top/bottom
 			var first= horizontal ? "left":"top",
 				second=horizontal ? "right":"bottom",
 				size=  horizontal ? "width":"height",
-				Size= size.charAt(0).toUpperCase() + size.substring(1);,
+				Size= size.charAt(0).toUpperCase() + size.substring(1),
 				parSize= par["inner"+Size](),
 				mySize= THIS["outer"+Size](true);
 			if(bool[first] && bool[second])//两个都为auto，先算左，然后就可以用左（上）算右（下）
