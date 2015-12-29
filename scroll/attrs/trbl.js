@@ -4,8 +4,11 @@ define(function(require,exports,module){
 	var BAR=$.scrollbar,
 		parseTRBL=require("tools/P_trbl"),
 		TRBL='top,right,bottom,left'.split(','),
+		//火狐下没有整合属性，需要cssHook的get（set居然是可以的……）
+		NEED=/firefox|msie/i.test(BROWSER),
 		U_position=require("tools/U_position")
 	;
+	require("tools/exactPosition");
 	for(var n in TRBL)
 	{
 		var name=TRBL[n];
@@ -24,15 +27,8 @@ define(function(require,exports,module){
 					delete(database[isLow ? attr : oppo]);
 					if(isLow || !isAuto) return true;
 				}
-				var object=$(selector),
-					data=(function(){
-						var o={};
-						for(var n in TRBL) o[TRBL[n]]=object.css(TRBL[n]);
-						return o;
-					})(),
-					offset=object.offset(),
-					owidth=object.outerWidth(),
-					oheight=object.outerHeight();
+				//如果发现有auto值，就直接计算四个方向值，这样下次再用就不会出现auto了
+				isAuto && (database[attr]=$(selector).css($(selector).exactPosition()).css(attr));
 			}
 		});
 	}

@@ -20,6 +20,8 @@ define(function(require,exports,module){
 			case 'value':
 				var type1=N.type(val1),
 					type2=N.type(val2);
+				type1==='' && (original[attr]+='px',type1='px');
+				type2==='' && (terminal[attr]+='px',type2='px');
 				if(type1==type2) return true;
 				var funName=type1+'2'+type2;
 				if(funName in N)

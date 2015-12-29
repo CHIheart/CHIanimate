@@ -142,10 +142,10 @@ define(function(require,exports,module){
 			BAR[attr].parse(original,this);
 			BAR[attr].parse(terminal,this);
 		}
-		console.group("初始读值");
+		//console.group("初始读值");
 		console.info("初始值",original)
 		console.warn("终止值",terminal)
-		console.groupEnd();
+		//console.groupEnd();
 
 		for(var n in original)
 		{
@@ -156,10 +156,10 @@ define(function(require,exports,module){
 			}
 				BAR[n].unify(THIS,original,terminal);
 		}
-		console.group("统一后的值");
+		//console.group("统一后的值");
 		console.info("初始值",original)
 		console.warn("终止值",terminal)
-		console.groupEnd();
+		//console.groupEnd();
 		
 		return this;
 		$(window).on('scroll load', update);

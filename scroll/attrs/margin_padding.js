@@ -4,7 +4,10 @@ define(function(require,exports,module){
 		BAR=$.scrollbar,
 		parseTRBL=require("tools/P_trbl"),
 		TRBL='Top,Right,Bottom,Left'.split(','),
-		U_position=require("tools/U_position")
+		U_position=require("tools/U_position"),
+		//火狐下没有整合属性，需要cssHook的get（set居然是可以的……）
+		NEED=/firefox|msie/i.test(BROWSER),
+		H_trbl=require("tools/H_trbl")
 	;
 	for(var x in mp)
 	{
@@ -21,6 +24,7 @@ define(function(require,exports,module){
 			});
 		}
 		BAR.extend(attr,{
+			hook:NEED ? H_trbl : $.noop,
 			parts:parts,
 			parse:parseTRBL
 		});

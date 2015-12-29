@@ -27,27 +27,27 @@ define(function(require,exports,module){
 				top:isAuto(css.top),
 				bottom:isAuto(css.bottom),
 			},
+			THIS=this,
 			par=(function(){
 				switch(position)
 				{
 					case 'fixed': return $(window);
-					case 'absoltue': return this.offsetParent();
-					case 'relative': return this.parent();
+					case 'absolute': return THIS.offsetParent();
+					case 'relative': return THIS.parent();
 				}
-			})(),
-			THIS=this;
+			})();
 		function calc(horizontal)
 		{
 			var first= horizontal ? "left":"top",
 				second=horizontal ? "right":"bottom",
 				size=  horizontal ? "width":"height",
-				Size= horizontal ? "Width":"Height";
+				Size=  horizontal ? "Width":"Height";
 			//相对定位的两对属性互为相反数
 			if('relative'==position)
 			{
 				if(bool[first] && bool[second]) css[first]=css[second]=0;
-				else if(bool[first]) css[first]=-css[second];
-				else css[second]=-css[first];//无论第二属性为何值，都是第一属性的相反数
+				else if(bool[first]) css[first]=-parseInt(css[second])+'px';
+				else css[second]=-parseInt(css[first])+'px';//无论第二属性为何值，都是第一属性的相反数
 			}
 			else
 			{

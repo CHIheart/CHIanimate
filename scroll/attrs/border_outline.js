@@ -13,8 +13,9 @@ define(function(require,exports,module){
 			return arr;
 		})(),
 		//火狐下没有整合属性，需要cssHook的get（set居然是可以的……）
-		FIREFOX=BROWSER=='firefox',
-		S=require("tools/S")
+		NEED=/firefox|msie/i.test(BROWSER),
+		S=require("tools/S"),
+		H_trbl=require("tools/H_trbl")
 	;
 	for(var n in borders)
 	{
@@ -31,43 +32,13 @@ define(function(require,exports,module){
 			keys:STYLES
 		});
 		BAR.extend(attr,{
-			hook:FIREFOX ? combine : $.noop,
+			hook:NEED ? H_trbl : $.noop,
 			parts:[attr+"Width",attr+"Color",attr+"Style"],
 			parse:parseWCS
 		});
 	}
 	//弹出outline，只剩border的属性，以供下边使用
 	borders.pop();
-	
-	//Firefox下必须要组合复合属性，它们可以set但不可以get，所以要手动写
-	function combine()
-	{
-		var attr=this.name,
-			parts=this.parts;
-		$.cssHooks[attr]={
-			get: function(elem, computed, extra){
-				var str=[];
-				for(var n in parts)
-					str.push($(elem).css(parts[n]));
-				//四属性，返回合并属性
-				if(str.length==4)
-				{
-					if(str[3]==str[1])
-					{
-						str.pop();
-						if(str[2]==str[0])
-						{
-							str.pop();
-							if(str[1]==str[0])
-								str.pop();
-						}
-					}
-				}
-				return str.join(' ');
-			}
-		}
-	}
-
 
 	var borderWCS=['Width','Color','Style'],
 		borderParts=[];
@@ -81,7 +52,7 @@ define(function(require,exports,module){
 			parts.push('border' + TRBL[m] + WCS);
 		}
 		BAR.extend(attr,{
-			hook:FIREFOX ? combine : $.noop,
+			hook:NEED ? H_trbl : $.noop,
 			parts:parts,
 			parse:parseTRBL
 		});
