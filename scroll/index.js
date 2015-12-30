@@ -7,10 +7,10 @@ define(function(require,exports,module){
 	$("p").scrollbar({
 		goal:{
 			//"margin":"10px 20px 30px 40px",
-			//"padding":"1em 20% 30px 4rem",
+			"padding":"1em 20% 30px 4rem",
 			"left":100,
 			right:200,
-			top:300,
+			top:"15%",
 			bottom:400
 		}
 	});

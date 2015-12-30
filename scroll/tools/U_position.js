@@ -46,7 +46,7 @@ define(function(require,exports,module){
 		else
 		{//把非像素值转化成像素值，再除商后转百分比数
 			var px=parseFloat(unit1=='px' ? val1 : N[unit1+"2px"](val1));
-			terminal[attr]=N.float2per(px/wholeSize);	
+			original[attr]=N.float2per(px/wholeSize);	
 		}
 		return U.call(this,selector,original,terminal,true);
 	}
