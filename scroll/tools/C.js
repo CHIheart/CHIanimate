@@ -153,7 +153,7 @@ define(function(require,exports,module){
 			White:"rgb(255,255,255)",
 			WhiteSmoke:"rgb(245,245,245)",
 			Yellow:"rgb(255,255,0)",
-			YellowGreen:"rgb(154,205,50)",
+			YellowGreen:"rgb(154,205,50)"
 		},
 		name2color:function(name){
 			if(!name || this.type(name)!='names') return false;
@@ -167,10 +167,16 @@ define(function(require,exports,module){
 		isHSLobj:function(o){
 			return typeof o == "object" && "h" in o && "s" in o && "l" in o;
 		},
-		//将颜色转化为字符串
-		toString:function(o){
-			if(this.isRGBobj(o)) return ['rgba(',o.r,',',o.g,',',o.b,',',("a" in o ? o.a : 1),')'].join('');
-			if(this.isHSLobj(o)) return ['hsla(',o.h,',',o.s,',',o.l,',',("a" in o ? o.a : 1),')'].join('');
+		//将颜色转化为字符串，第二参是当o是transparent时的参照对象，会取它的rgb或hsl值
+		toString:function(o,template){
+			if(this.isRGBobj(o)){
+				if(o.r===null) o.r=template.r,o.g=template.g,o.b=template.b;
+				return ['rgba(',o.r,',',o.g,',',o.b,',',("a" in o ? o.a : 1),')'].join('');	
+			}
+			if(this.isHSLobj(o)){
+				if(o.h===null) o.h=template.h,o.s=template.s,o.l=template.l;
+				return ['hsla(',o.h,',',o.s,',',o.l,',',("a" in o ? o.a : 1),')'].join('');	
+			}
 			if(this.type(o)) return o;
 			return false;
 		},

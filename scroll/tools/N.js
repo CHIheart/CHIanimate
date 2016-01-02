@@ -35,15 +35,15 @@ define(function(require,exports,module){
 			//纯数字的话，按px处理（zIndex属性会在自己的函数中处理这个问题）
 			return isNaN(str) ? false : 'px';
 		},
-		px2em:function(px){
+		px2em:function(px,selector){
 			var f=fix,
-				fs=fontSize(this),
+				fs=fontSize(selector),
 				p=f(px,2);
 			return f(p/fs,2)+'em';
 		},
-		em2px:function(em){
+		em2px:function(em,selector){
 			var f=fix,
-				fs=fontSize(this),
+				fs=fontSize(selector),
 				e=f(em,2);
 			return f(e*fs,2)+'px';
 		},
@@ -59,11 +59,11 @@ define(function(require,exports,module){
 				r=f(rem,2);
 			return f(r*fs,2)+'px';
 		},
-		em2rem:function(em){
-			return this.px2rem(this.em2px(em))+'rem';
+		em2rem:function(em,selector){
+			return this.px2rem(this.em2px(em,selector))+'rem';
 		},
-		rem2em:function(rem){
-			return this.px2em(this.rem2px(rem))+'em';
+		rem2em:function(rem,selector){
+			return this.px2em(this.rem2px(rem),selector)+'em';
 		}
 	};
 	//添加带有各种单位的正则表达式

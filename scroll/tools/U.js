@@ -26,7 +26,7 @@ define(function(require,exports,module){
 				var funName=type1+'2'+type2;
 				if(funName in N)
 				{
-					original[attr]=N[funName].call(selector,val1);
+					original[attr]=N[funName](val1,selector);
 					return true;
 				}
 				error="预置的单位转化函数无法处理这两个数值："+val1+','+val2;
@@ -46,11 +46,14 @@ define(function(require,exports,module){
 				{
 					if(type1!=type2) obj1=C[type1+"2"+type2](obj1);
 					original[attr]=C.toString(obj1);
-					terminal[attr]=C.toString(obj2);
+					terminal[attr]=C.toString(obj2,obj1);
 					return true;
 				}
 				break;
-			case 'style': return true;
+			case 'style':
+				val1!=val2 && (/none/i.test(val1) && (original[attr]=val2))
+					|| (/none/i.test(val2) && (terminal[attr]=val1));
+				return true;
 			case 'matrix': return true;
 			default: error="目前只支持数值/颜色/样式/矩阵作为值！";
 		}

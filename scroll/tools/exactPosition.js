@@ -19,13 +19,13 @@ define(function(require,exports,module){
 				left:this.css("left"),
 				right:this.css("right"),
 				top:this.css("top"),
-				bottom:this.css("bottom"),
+				bottom:this.css("bottom")
 			},
 			bool={
 				left:isAuto(css.left),
 				right:isAuto(css.right),
 				top:isAuto(css.top),
-				bottom:isAuto(css.bottom),
+				bottom:isAuto(css.bottom)
 			},
 			THIS=this,
 			par=(function(){
@@ -59,29 +59,38 @@ define(function(require,exports,module){
 					//fixed元素会经过html及body元素，到达window，而window本身没有padding
 					css[first]=position=='fixed' ? 0 : parseFloat(par.css("padding-"+first));
 					THIS.parentsUntil(par).each(function(index, el) {
+						var x=$(this).css("border-"+first+'-width');
+						switch(x)
+						{
+							case 'thin': x=1; break;
+							case 'medium': x=3; break;
+							case 'thick': x=5; break;
+						}
 						css[first]+= parseFloat($(this).css("margin-"+first))
 									+parseFloat($(this).css("padding-"+first))
-									+parseFloat($(this).css("border-"+first+"-width"));
+									+parseFloat(x);
 		 			});
+					css[first]+='px';
 					bool[first]=false;
 				}
 				//因为webkit浏览器出现不同程度的百分比数值BUG，所以都要重新计算准确的像素值
-				else
+				else if(/webkit/i.test(navigator.userAgent))
 				{
 					css[first]=$(THIS).offset()[first]
-						- par.offset()[first]
+						- (par.offset()[first] || 0)
 						- parseFloat(par.css("border-"+first))
-						- parseFloat($(THIS).css("margin-"+first));
+						- parseFloat($(THIS).css("margin-"+first))
+						+ 'px';
+					bool[first]=false;
 				}
 				if(bool[second] && !bool[first])//用左（上）算右（下）
 				{
-					css[second]=parSize - mySize - parseFloat(css[first]);
+					css[second]=parSize - mySize - parseFloat(css[first]) + 'px';
 				}
 				else//用右（下）算左（上）
 				{
-					css[first]=parSize - mySize - parseFloat(css[second]);
+					css[first]=parSize - mySize - parseFloat(css[second]) + 'px';
 				}
-
 			}
 		}
 		bHorizontal && calc(true);

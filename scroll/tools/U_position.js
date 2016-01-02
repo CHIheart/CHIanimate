@@ -29,13 +29,11 @@ define(function(require,exports,module){
 				返回参照父元素所对应的尺寸属性
 				宽及左右，对应width；高级上下，对应height
 				absolute对应填充区，其它情况对应内容区
+				但在FIREFOX下，absolute的padding对应填充区，其它浏览器对应内容区
 				*/
 				var s=/width|left|right/i.test(attr) ? "Width":"Height";
-				switch(position)
-				{
-					case "absolute": return "inner"+s;
-					default: return s.toLowerCase();
-				}
+				return position=='absolute' && (attr!='padding' || BROWSER=='firefox') ?
+					'inner'+s : s.toLowerCase();
 			})(),
 			wholeSize=parent[size](),
 			val1=original[attr],

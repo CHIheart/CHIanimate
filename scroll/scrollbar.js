@@ -1,11 +1,11 @@
 //JQ扩展，滚动条计算CSS属性
 define(function(require,exports,module){
-	var S=require("tools/S"),
-		N=require("tools/N"),
-		U=require("tools/U"),
-		P=require("tools/P"),
-		IS=require("tools/IS");
-	require("tools/B");
+	var S=require("./tools/S"),
+		N=require("./tools/N"),
+		U=require("./tools/U"),
+		P=require("./tools/P"),
+		IS=require("./tools/IS");
+	require("./tools/B");
 	var defaultSettings={
 		/*
 		可选，用于统一属性单位的函数，接收的是对象选择器（一般为this），运算中转值original和terminal对象
@@ -14,27 +14,27 @@ define(function(require,exports,module){
 		*/
 		unify:U,
 		type:'value',						//默认为value值，还可以为color，style，matrix等
-		defaultValue:'',					//必选，本CSS属性的默认值，当值被检测为null或不合法的值（单位或关键字）时，使用本默认值
 		hook:$.noop,						//非标准CSS属性必选，额外用于识别CSS属性的jq.cssHooks函数
 		units:'px|em|rem',					//本CSS属性可接受的单位类型，在本单位数组之外的单位，将会被抛弃
 		keys:'',							//本CSS属性可接受的关键字数组，非数值之外的其它字符串将会被抛弃
 		parts:'',							//复合属性必选，本CSS属性的基元，有些属性是由多个属性缩合而成，比如说margin由margin-top/right/bottom/top四个属性组成
 		parse:P, 							//复合属性解析终止值使用，除了要拆分子属性之外还要将各个属性解析出来，并补足缺少的属性
-		assemble:$.noop 					//复合属性组装属性使用，一般情况下除了border不组装之外，其它的复合属性都组装一次
+		negative:true						//属性是否可为负，有些属性是不能为负值的
+		//assemble:$.noop 					//复合属性组装属性使用，一般情况下除了border不组装之外，其它的复合属性都组装一次
 	};
 	defaultSettings.BAR=$.scrollbar={
 		/*
 		其中，name属性是自动生成的驼峰属性名
 		cssAttr:{
 			name,
+			type,
 			hook,
-			unify,
 			units,
 			keys,
-			defaultValue,
 			parts,
 			parse,
-			type
+			unify,
+			negative
 		}
 		*/
 		extend:function(attr,settings){
@@ -57,16 +57,16 @@ define(function(require,exports,module){
 			{
 				//颜色只验证是否能找到符合的类型
 				case 'color':
-					var C=require("tools/C");
+					var C=require("./tools/C");
 					return !!C.type(value);
-				//值如果是纯数字，则为真，否则需要验证单位及关键字，有一者符合则为真
+				//值如果是纯数字，则为真，否则需要验证单位及关键字，有一者符合则为真，还需要验证一下非负设置
 				case 'value':
 					if(!isNaN(value)) return true;
 					var units=S.toRegExp(ATTR.units),
 						keys=S.toRegExp(ATTR.keys);
 					if(keys && keys.test(value)) return true;
 					var type=N.type(value);
-					return type!==false && units.test(type);
+					return type!==false && units.test(type) && (ATTR.negative || value.indexOf('-')==-1);
 				//样式只验证关键字
 				case 'style':
 					var keys=S.toRegExp(ATTR.keys);
@@ -100,7 +100,7 @@ define(function(require,exports,module){
 		if(isNaN(over)) over=$(document).height() - $(window).height();
 		var duration=over-start;
 		if(duration<=0){
-			console.error("动画区间是非正数！")
+			console.error("动画区间是非正数！");
 			return this;	
 		}
 		//其它验证
@@ -143,8 +143,10 @@ define(function(require,exports,module){
 			BAR[attr].parse(terminal,this);
 		}
 		//console.group("初始读值");
-		console.info("初始值",original)
-		console.warn("终止值",terminal)
+		console.warn("统一之前初始值");
+		CONSOLE(original)
+		console.warn("统一之前终止值");
+		CONSOLE(terminal)
 		//console.groupEnd();
 
 		for(var n in original)
@@ -157,8 +159,10 @@ define(function(require,exports,module){
 				BAR[n].unify(THIS,original,terminal);
 		}
 		//console.group("统一后的值");
-		console.info("初始值",original)
-		console.warn("终止值",terminal)
+		console.warn("统一之后初始值");
+		CONSOLE(original)
+		console.warn("统一之后终止值");
+		CONSOLE(terminal)
 		//console.groupEnd();
 		
 		return this;
