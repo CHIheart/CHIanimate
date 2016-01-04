@@ -9,6 +9,7 @@ define(function(require,exports,module){
 		loading(counter,allnum)，每个图片资源调用完成之后调用，参数counter为计数器，allnum为总图片量
 		show/hide(n)，在显示/隐藏第n张图片时候调用
 		loop(n)，在循环播放时调用，n为剩余的循环次数
+		stop()，在停止播放时调用，用以处理播放完成时的行为
 	生成的对象是控制播放的功能对象，可以使用的属性有
 		loaded，布尔值，指fill命令所填充的图片资源是否全部调用完成
 		step，正整数，播放步长，所有图片是每隔几个播放一次
@@ -29,7 +30,8 @@ define(function(require,exports,module){
 				loading:$.noop,
 				show:$.noop,
 				hide:$.noop,
-				loop:$.noop
+				loop:$.noop,
+				stop:$.stop
 			}, setFuns),
 			timer
 		;
@@ -113,6 +115,7 @@ define(function(require,exports,module){
 			stop:function(){
 				clearInterval(timer);
 				timer=0;
+				funs.stop();
 				return this;
 			},
 			show:function(n){
