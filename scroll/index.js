@@ -8,6 +8,7 @@ define(function(require,exports,module){
 	require("./attrs/color");
 	require("./attrs/text");
 	require("./attrs/width_height");
+	require("./attrs/shadow");
 	$("p").scrollbar({
 		goal:{
 			//"margin":"10px 20px 30px 40px",
@@ -25,7 +26,9 @@ define(function(require,exports,module){
 			lineHeight:"300%",
 			textIndent:"-20%",
 			wordSpacing:"1em",
-			letterSpacing:"10px"
+			letterSpacing:"10px",
+			textShadow:"5px 2px yellow",
+			boxShadow:"3px 5px 6px 2px white inset"
 		}
 	});
 });
