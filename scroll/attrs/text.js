@@ -103,7 +103,7 @@ define(function(require,exports,module){
 			var position=$(selector).css("position"),
 				parent=(function(){
 					//IE8-是按直接父元素计算，而其它浏览器按参照父元素计算
-					if(window.ie && window.ie<9) return $(selector).parent();
+					if(window.low) return $(selector).parent();
 					/*
 					返回元素的参照父元素，根据元素的position属性值有所区别
 					fixed，window对象
@@ -123,7 +123,7 @@ define(function(require,exports,module){
 					一般是按照参数父元素的  内容区  宽计算的
 					IE8-是按照直接父元素的  填充区  宽计算的
 					*/
-					return window.ie && window.ie<9 ? 'innerWidth' : 'width';
+					return window.low ? 'innerWidth' : 'width';
 				})();
 			return unify.call(this,selector,original,terminal,parent[size]());
 		}

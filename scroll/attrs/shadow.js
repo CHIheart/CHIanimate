@@ -1,6 +1,6 @@
 //shadow系列，text-shadow需要IE10+，box-shadow需要IE9+
 define(function(require,exports,module){
-	if(window.ie<9) return false;
+	if(window.low) return false;
 	var S=require("tools/S"),
 		BAR=$.scrollbar,
 		bt=['box','text'],
@@ -10,7 +10,7 @@ define(function(require,exports,module){
 		;
 	for(var x in bt)
 	{
-		if(window.ie<10 && bt[x]=='text') continue;
+		if(window.ie && window.ie<10 && bt[x]=='text') continue;
 		BAR.extend(bt[x]+'Shadow',{
 			key:'none',
 			parse:function(database){
@@ -18,7 +18,6 @@ define(function(require,exports,module){
 					box=/box/i.test(attr),
 					valueAttrs='x,y,blur'.split(','),
 					value=S.clear(database[attr]);
-					alert(attr);
 				/none/i.test(value) && (value='rgb(0,0,0) 0px 0px 0px'+(box ? ' 0px':''));
 				var arr=value.split(' '),
 					obj={
@@ -48,6 +47,7 @@ define(function(require,exports,module){
 				arr=[obj.color,obj.x,obj.y,obj.blur];
 				box && arr.push(obj.spread) && obj.inset && arr.push('inset');
 				database[attr]=arr.join(' ');
+				arr=obj=valueAttrs=null;
 			},
 			unify:function(selector,original,terminal){
 				var attr=this.name,
@@ -67,6 +67,7 @@ define(function(require,exports,module){
 				}
 				original[attr]=arr1.join(' ');
 				terminal[attr]=arr2.join(' ');
+				arr1=arr2=null;
 			}
 		})
 	}
