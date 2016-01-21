@@ -62,9 +62,11 @@ define(function(require,exports,module){
 				}
 				for(var n in nums)
 				{
+					n*=1;
 					var img=new Image();
 					img.src=srcPattern.replace(/\{n\}/ig,nums[n]);
-					n-1 && $(img).hidden();
+					!!n && $(img).hidden();
+					console.log(n,!!n,typeof n)
 					$(img).appendTo(THIS);
 					if(img.complete) done();
 					else img.onload=done;
