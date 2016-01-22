@@ -25,6 +25,8 @@ define(function(require,exports,module){
 			loop，布尔值，是否循环播放，默认为0，可以为正整数，为-1时无限循环
 			from，从第几张开始播放，可以为0~n-1，也可以为关键字all（即n-1）
 			to，播放到第几张，说明同from
+			key，循环关键帧，如果是循环的话，会从这一帧开始循环，默认为false，为从最头/尾帧开始
+			callback，回调函数，可以额外设置与生成对象时不同的回调函数，会一起执行
 		forward/rewind(speed,loop)，正向/反向播放全图，参数同上
 	*/
 	$.fn.sprite=function(setFuns){
@@ -66,7 +68,6 @@ define(function(require,exports,module){
 					var img=new Image();
 					img.src=srcPattern.replace(/\{n\}/ig,nums[n]);
 					!!n && $(img).hidden();
-					console.log(n,!!n,typeof n)
 					$(img).appendTo(THIS);
 					if(img.complete) done();
 					else img.onload=done;
@@ -90,7 +91,8 @@ define(function(require,exports,module){
 					loop:0,
 					from:0,
 					to:'all',
-					key:false
+					key:false,
+					callback:$.noop
 				};
 				$.extend(options, settings);
 				var imgs=THIS.find("img"),
@@ -102,7 +104,8 @@ define(function(require,exports,module){
 					SPRITE=this,
 					reversed=cur>end,
 					dir=reversed ? -1:1,
-					step=this.step * dir;
+					step=this.step * dir,
+					cbfun=$.isFunction(options.callback) ? options.callback : $.noop;
 				timer=setInterval(function(){
 					var last=(cur-step+l)%l;
 					SPRITE.at=cur;
@@ -113,8 +116,8 @@ define(function(require,exports,module){
 					//判断是否数字在范围外，如果是则判断是否循环
 					(reversed && cur<end || !reversed && cur>end) && (
 						loops ?
-						(cur=key,loops--,funs.loop(loops),console.log(123)) :
-						(SPRITE.stop(dir),funs[reversed ? 'rewound':'played']())
+						(cur=key,loops--,funs.loop(loops)) :
+						(SPRITE.stop(dir),funs[reversed ? 'rewound':'played'](),cbfun())
 					);
 				},options.speed);
 				return this;
