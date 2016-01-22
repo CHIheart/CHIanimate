@@ -42,6 +42,12 @@
 .bg-r(@d) when(@d = yes), (@d = true){
 	background-repeat: repeat;
 }
+.bg-a(@d) when(@d = true), (@d = yes){
+	background-attachment: fixed;
+}
+.bg-a(@d) when(@d = false), (@d = no){
+	background-attachment: scroll;
+}
 //边框部分
 .bd(...){
 	border: @arguments;
@@ -374,10 +380,14 @@
 	transition: @arguments;
 	-webkit-transition: @arguments;
 	-ms-transition: @arguments;
+	-moz-transition: @arguments;
 	-o-transition: @arguments;
 }
 .trans(@speed : normal) when (@speed = normal){
 	.transition(all linear .2s);
+}
+.trans(@speed : normal) when (@speed = no){
+	.transition(none);
 }
 //满尺寸，通常用于图片
 .full(){
