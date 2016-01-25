@@ -97,16 +97,16 @@ define(function(require,exports,module){
 			if(pers.length){
 				//在image对象上调用的方法，当图片可以获取正确的尺寸之后，计算背景图片占容器的百分比量
 				function cal(){
-					var attr=this.attr,
+					var //attr=this.attr,
 						val1=original[attr],
 						val2=terminal[attr],
 						arr1=val1.split(' '),
 						arr2=val2.split(' '),
-						SIZES=dimension(this.selector),
+						SIZES=dimension(/*this.*/selector),
 						sizes=[this.width,this.height];
-					for(var n in this.pers)
+					for(var n in /*this.*/pers)
 					{
-						var index=this.pers[n],
+						var index=/*this.*/pers[n],
 							v1=arr1[index],
 							v2=arr2[index],
 							type1=N.type(v1),
@@ -120,7 +120,7 @@ define(function(require,exports,module){
 						}
 						arr1[attr]=arr1[index];
 						arr2[attr]=arr2[index];
-						U.call(attr,this.selector,arr1,arr2);
+						U.call(attr,/*this.*/selector,arr1,arr2);
 					}
 					original[attr]=arr1.join(' ');
 					terminal[attr]=arr2.join(' ');
@@ -134,9 +134,9 @@ define(function(require,exports,module){
 				src=src.replace(/url\(/,'').replace(/\)/,'').replace(/\"/ig,'');
 				var img=new Image();
 				img.src=src;
-				img.attr=this.name;
-				img.pers=pers;
-				img.selector=selector;
+				//img.attr=this.name;
+				//img.pers=pers;
+				//img.selector=selector;
 				img.width && img.height ? cal.call(img) : $(img).load(cal);
 				
 			}
