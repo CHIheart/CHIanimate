@@ -8,7 +8,7 @@ define(function(require,exports,module){
 		var val1=original[attr],
 			val2=terminal[attr];
 		if(val2===null)
-		{//终止如果是null则直接取初值
+		{//终值如果是null则直接取初值
 			terminal[attr]=original[attr];
 			return true;
 		}

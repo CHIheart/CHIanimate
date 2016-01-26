@@ -32,7 +32,7 @@ define(function(require,exports,module){
 				但在FIREFOX下，absolute的padding对应填充区，其它浏览器对应内容区
 				*/
 				var s=/width|left|right/i.test(attr) ? "Width":"Height";
-				return position=='absolute' && (attr!='padding' || BROWSER=='firefox') ?
+				return position=='absolute' && (!/padding/.test(attr) || BROWSER=='firefox') ?
 					'inner'+s : s.toLowerCase();
 			})(),
 			wholeSize=parent[size](),
@@ -43,7 +43,7 @@ define(function(require,exports,module){
 		if(unit1=='%') original[attr]=N.per2float(val1) * wholeSize + 'px';
 		else
 		{//把非像素值转化成像素值，再除商后转百分比数
-			var px=parseFloat(unit1=='px' ? val1 : N[unit1+"2px"](val1));
+			var px=parseFloat(/px|/i.test(unit1) ? val1 : N[unit1+"2px"](val1));
 			original[attr]=N.float2per(px/wholeSize);
 		}
 		return U.call(this,selector,original,terminal,true);

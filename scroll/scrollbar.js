@@ -139,14 +139,14 @@ define(function(require,exports,module){
 			init[n]=$(this).css(n);
 			original[attr]=S.clear(init[n]);
 			terminal[attr]=S.clear(goal[n]);
-			BAR[attr].parse(original,this);
-			BAR[attr].parse(terminal,this);
+			BAR[attr].parse(original,this,init);
+			BAR[attr].parse(terminal,this,goal);
 		}
 		//console.group("初始读值");
-		console.warn("统一之前初始值");
-		CONSOLE(original)
-		console.warn("统一之前终止值");
-		CONSOLE(terminal)
+		// console.warn("统一之前初始值");
+		// CONSOLE(original)
+		// console.warn("统一之前终止值");
+		// CONSOLE(terminal)
 		//console.groupEnd();
 
 		for(var n in original)
@@ -159,14 +159,14 @@ define(function(require,exports,module){
 				BAR[n].unify(THIS,original,terminal);
 		}
 		//console.group("统一后的值");
-		console.warn("统一之后初始值");
-		CONSOLE(original)
-		console.warn("统一之后终止值");
-		CONSOLE(terminal)
+		// console.warn("统一之后初始值");
+		// CONSOLE(original)
+		// console.warn("统一之后终止值");
+		// CONSOLE(terminal)
 		//console.groupEnd();
-		
-		return this;
+
 		$(window).on('scroll load', update);
+		return this;
 		function update()
 		{
 			var scrollTop=$(window).scrollTop();
@@ -177,25 +177,45 @@ define(function(require,exports,module){
 			{
 				var current={},
 					curStep=scrollTop-start;
+				//console.group('分组');
 				for(var attr in original)
 				{
 					//如果是对象，则分别计算tween值
-					if(IS.o(original[attr]))
-					{
-						var startObj=original[attr],
-							overObj=terminal[attr],
-							cssObj={};
-						for(var subAttr in startObj)
+					var startValue=original[attr],
+						overValue=terminal[attr],
+						regFloat=N.reg[''].source.replace('^','').replace('$',''),
+						regStart=new RegExp(regFloat,"ig"),
+						regOver=new RegExp(regFloat,"ig"),
+						val1,newValue=overValue.toString(),
+						cnt=0;
+					newValue=newValue.replace(regOver,function(val2){
+						val1=regStart.exec(startValue);
+						if(val1!==null)
 						{
-							cssObj[subAttr]=tween(easing,curStep, startObj[subAttr], overObj[subAttr], duration);
+							val1=val1[0]*1;
+							val2*=1;
+							var v=$.easing[easing](0,curStep,val1,val2,duration) + val1,
+								before=RegExp['$`'],
+								after=RegExp["$'"],
+								maxcnt=before.match(/rgb/ig) ? 3 : before.match(/hsl/ig) ? 1 : 0,
+								needInt=false;
+							//颜色值不能使用小数，所以要把前三位rgb或hsl转成整数
+							before.match(/(rgb|hsl)[a]?\(/) && before.indexOf(')')<0 && after.indexOf(')')>=0 && cnt!=maxcnt && (cnt++,needInt=true);
+							return needInt ? parseInt(v) : v.toFixed(2);
 						}
-						$.extend(current, cssObj);
-					}
-					else current[attr]=tween(easing,curStep, original[attr], terminal[attr], duration);
+						return val2;
+					});
+					val1=val2=regStart=regOver=null;
+					current[attr]=newValue;
 				}
+				//console.groupEnd();
 				THIS.css(current);
+				// console.log(current)
 			}
 		}
+	}
+	$.easing.linear=function(x, t, b, c, d){
+		return t*(c-b)/d;
 	}
 	return;
 });

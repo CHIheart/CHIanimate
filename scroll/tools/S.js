@@ -14,13 +14,18 @@ define(function(require,exports,module){
 			}
 			return words.join("");
 		},
-		//过滤颜色或转换矩阵中逗号或括号旁边的空格（过滤左括号两边的空格，但不过滤右括号右边的空格）
+		/*
+		过滤颜色或转换矩阵中逗号或括号旁边的空格（过滤左括号两边的空格，但不过滤右括号右边的空格）
+		过滤字符串首或尾部的空格
+		将多个连续的空格换成一个空格
+		*/
 		clear:function(str){
 			if(!str || typeof str=='object') return str;
-			return str.toString()
+			return $.trim(str.toString())
 				.replace(/ *\( */g,'(')
 				.replace(/ *\, */g,',')
-				.replace(/ *\)/g,')');
+				.replace(/ *\)/g,')')
+				.replace(/ +/g,' ');
 		},
 		//分隔符，竖线、逗号、分号、除法斜线
 		seperators:/[\|\,\;\/]/g,

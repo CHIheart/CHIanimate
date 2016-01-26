@@ -1,5 +1,6 @@
 //颜色类函数
 define(function(require,exports,module){
+	var N=require("./N");
 	var C={
 		//HTML合法颜色值
 		reg:{
@@ -7,8 +8,8 @@ define(function(require,exports,module){
 			rgba:/^rgba\((\d{1,3})\,(\d{1,3})\,(\d{1,3})\,(0|0?\.\d+|1)\)$/i,
 			hex3:/^#([\da-f])([\da-f])([\da-f])$/i,
 			hex6:/^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i,
-			hsl:/^hsl\((\d{1,3})\,(\d+\%)\,(\d+\%)\)$/i,
-			hsla:/^hsla\((\d{1,3})\,(\d+\%)\,(\d+\%)\,(0|0?\.\d+|1)\)$/i,
+			hsl:/^hsl\((\d{1,3})\,((?:\d{1,2}(?:\.\d+)?|\d{0,2}\.\d+)\%)\,((?:\d{1,2}(?:\.\d+)?|\d{0,2}\.\d+)\%)\)$/i,
+			hsla:/^hsla\((\d{1,3})\,((?:\d{1,2}(?:\.\d+)?|\d{0,2}\.\d+)\%)\,((?:\d{1,2}(?:\.\d+)?|\d{0,2}\.\d+)\%)\,(0|0?\.\d+|1)\)$/i,
 			transparent:/^transparent$/i,
 			inherit:/^inherit$/i
 		},
@@ -275,8 +276,8 @@ define(function(require,exports,module){
 			}
 			return {
 				h:h,
-				s:floatToPer(s),
-				l:floatToPer(l),
+				s:N.float2per(s),
+				l:N.float2per(l),
 				a:rgba.a
 			}
 		},
