@@ -127,6 +127,9 @@
 	@intnum : @float * 100;
 	filter: ~"alpha(opacity=@{intnum})";
 }
+.opacity(@float){
+	.alpha(@float);
+}
 //盒阴影
 .shadow(...){
 	box-shadow: @arguments;
@@ -243,6 +246,14 @@
 .o-a(){
 	overflow: auto;
 }
+.o-a-h(){
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+.o-a-v(){
+	overflow-y: auto;
+	overflow-x: hidden;
+}
 //盒模式
 .block(){
 	display: block;
@@ -298,6 +309,22 @@
 .b(@p : 0){
 	bottom: @p;
 }
+.lt(){
+	left: 0;
+	top: 0;
+}
+.lb(){
+	left: 0;
+	bottom: 0;
+}
+.rt(){
+	right: 0;
+	top: 0;
+}
+.rb(){
+	right: 0;
+	bottom: 0;
+}
 .z(@z : 1){
 	z-index: @z;
 }
@@ -322,9 +349,6 @@
 }
 .symsun(){
 	font-family: symsun;
-}
-.icon(){
-	font-family: lechezai;
 }
 .size(@s : 12px){
 	font-size: @s;

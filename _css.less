@@ -1,28 +1,9 @@
 /*新的基础样式*/
 @import url(_funs);
-@import url(_icon);
 
-
-//风格颜色定义
-@globalbg:		#f7f7f7;
-@placeholder:	#999;
-@deepblack:		#333;
-@middleblack:	#424242;
-@lightblack: 	#696969;
-
-@deepgray:		#b0b0b0;
-@middlegray:	#dcdcdc;
-@lightgray:		#e0e0e0;
-
-@pale:			#eee;
-@green: 		#83c44e;
-@red: 			#f03226;
-@yellow: 		#ffac13;
-@blue: 			#2196f3;
-@cyan: 			#00c0a5;
-@gold: 			#ffd600;
-
-
+@placeholder: #999;
+//相对路径变量
+@relativePath:  ;
 
 /* 整站通用样式 全站兼容标准IE8+*/
 *{
@@ -47,7 +28,12 @@ a img{
 	.clear();
 }
 body{
-	.bg-c(@globalbg);
+	&.cover:before{
+		.cnt();
+		.full();
+		.bg-c-a(black,.5);
+		.lt();
+	}
 }
 input::-ms-clear{
 	.none();
@@ -62,15 +48,15 @@ input::-ms-clear{
 :-ms-input-placeholder {
 	.c(@placeholder);
 }
-:focus{
+:focus,:invalid{
 	.out(none);
 }
 textarea{
 	.noresize();
 }
 .clearfix{
-	clear:both !important;
-	float:none !important;
+	.clear() !important;
+	.fn() !important;
 	zoom:~"1\9";
 }
 .clearfix:after{
@@ -89,38 +75,37 @@ table{
 //	_background-attachment: fixed;     /* prevent screen flash in IE6 确保滚动条滚动时，元素不闪动*/
 //}
 /*半透明背景*/
-.black5{
-	.bg-c-a(black,.5);
-}
-
+// .black5{
+// 	.bg-c-a(black,.5);
+// }
+// .black8{
+// 	.bg-c-a(black,.8);
+// }
 //.fixed{
 //	.fixed();
-	// _position:absolute;
+// 	_position:absolute;
 //}
-.fixed-top{
-	.fixed();
-	.t();
-	// _top:expression(eval(document.documentElement.scrollTop));
-}
-.fixed-bottom{
-	.fixed();
-	.b();
-	// _bottom:auto;
-	// _top:expression(eval(document.documentElement.scrollTop + document.documentElement.clientHeight - this.clientHeight - (parseInt(this.currentStyle.marginTop) || 0) - (parseInt(this.currentStyle.marginBottom) || 0)));
-}
+// .fixed-top{
+// 	.fixed();
+// 	.t();
+// 	// _top:expression(eval(document.documentElement.scrollTop));
+// }
+// .fixed-bottom{
+// 	.fixed();
+// 	.b();
+// 	// _bottom:auto;
+// 	// _top:expression(eval(document.documentElement.scrollTop + document.documentElement.clientHeight - this.clientHeight - (parseInt(this.currentStyle.marginTop) || 0) - (parseInt(this.currentStyle.marginBottom) || 0)));
+// }
 /*全屏插件，为了方便横竖居中，使用表格*/
-.FullScreenPlugin{
-	.none();
-	.full();
-	.z(55555);
-	// _height:expression(eval(document.documentElement.clientHeight));
+// .FullScreenPlugin{
+// 	.none();
+// 	.full();
+// 	.z(55555);
+// 	// _height:expression(eval(document.documentElement.clientHeight));
+// }
+
+/*禁用*/
+.disabled,[disabled]{
+	.c-n() !important;
 }
 
-/*按钮手型与禁用*/
-.btn{
-	.bd(0);
-	.c-p();
-}
-.disabled,[disabled]{
-	.c-n();
-}
