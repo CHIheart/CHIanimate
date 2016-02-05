@@ -23,8 +23,14 @@
 	height: 100px;
 	outline: 1px solid black;
 }
+#Infor{
+	position: fixed;
+	left: 0;
+	top: 0;
+}
 </style>
 <body>
+<div id="Infor"></div>
 <div id="Stage">
 	<div style="background-color:#f00;" class="obj red"></div>
 	<div style="background-color:#0f0;" class="obj green"></div>
@@ -218,23 +224,26 @@ $.fn.stage3D=function(){
 		},
 		//竖直方向上旋转镜头
 		rotateX:function(angle,bRefresh){
-			var matrix=rotate3D(camera[0],angle);
+			var matrix=rotate3D([1,0,0,1],angle);
+			camera[0]=premultiply(camera[0],matrix);
 			camera[1]=premultiply(camera[1],matrix);
 			camera[2]=premultiply(camera[2],matrix);
 			return bRefresh ? this.refresh() : this;
 		},
 		//水平方向上旋转镜头
 		rotateY:function(angle,bRefresh){
-			var matrix=rotate3D(camera[1],angle);
+			var matrix=rotate3D([0,1,0,1],angle);
 			camera[0]=premultiply(camera[0],matrix);
+			camera[1]=premultiply(camera[1],matrix);
 			camera[2]=premultiply(camera[2],matrix);
 			return bRefresh ? this.refresh() : this;
 		},
 		//在投影面上旋转镜头
 		rotateZ:function(angle,bRefresh){
-			var matrix=rotate3D(camera[2],angle);
+			var matrix=rotate3D([0,0,1,1],angle);
 			camera[0]=premultiply(camera[0],matrix);
 			camera[1]=premultiply(camera[1],matrix);
+			camera[2]=premultiply(camera[2],matrix);
 			return bRefresh ? this.refresh() : this;
 		},
 		//刷新全景
@@ -245,6 +254,14 @@ $.fn.stage3D=function(){
 				ME.setObject(this,xyz[0],xyz[1],xyz[2]);
 			});
 			return ME;
+		},
+		//重置镜头
+		reset:function(){
+			for(var i=0;i<4;i++)
+				for(var j=0;j<4;j++)
+					camera[i][j]=i==j ? 1:0;
+			original[0]=original[1]=original[2]=0;
+			return this.refresh();
 		},
 		//扩大/缩小视角，这个效果不太好看
 		// zoom:function(dq){
@@ -298,6 +315,7 @@ $.fn.stage3D=function(){
 		3.none，关闭控制
 		*/
 		mouse:function(mode){
+			var stage=this;
 			//解绑过程
 			if(mode=='none')
 			{
@@ -326,8 +344,8 @@ $.fn.stage3D=function(){
 						},
 						trans:true,
 						left:function(h,v){
-							!isNaN(h) && this.trans ? stage.transX(-h) : stage.rotateY(h/2);
-							!isNaN(v) && this.trans ? stage.transY(v)  : stage.rotateX(v/2);
+							!isNaN(h) && this.trans ? stage.transX(-h) : stage.rotateY(-h/2);
+							!isNaN(v) && this.trans ? stage.transY(v)  : stage.rotateX(-v/2);
 							stage.refresh();
 						},
 						wheel:function(v){
@@ -337,16 +355,7 @@ $.fn.stage3D=function(){
 					},
 					//球面镜头的处理器
 					global:{
-						init:function(){
-							camera=[
-								[1,0,0,0],//X轴
-								[0,1,0,0],//Y轴
-								[0,0,1,0],//Z轴
-								[0,0,0,1] //原点
-							];
-							original=camera[3];
-							stage.refresh();
-						},
+						init:stage.reset,
 						left:function(h,v){},
 						right:function(h,v){},
 						wheel:function(v){}
@@ -368,17 +377,26 @@ $.fn.stage3D=function(){
 			mouse.handler.init(DOM);
 			if(bound) return true;
 			//绑定鼠标按下事件（单次），及鼠标滚轮事件
-			$(DOM).one('mousedown',startDrag);
+			$(DOM).on('mousedown',startDrag);
 			$(DOM).on('mousewheel',wheeling);
 			//相对于浏览器的最后一次鼠标坐标
-			var lastx=0,lasty=0,stage=this,
+			var lastx=0,lasty=0,
 			//是否可以移动
 				bMove=false;
 			//鼠标按下行为，启动拖拽
 			function startDrag(event){
-				if(!mouse || bMove || event.which!=1) return false;
+				if(!mouse || bMove) return false;
 				event.preventDefault();
 				event.stopPropagation();
+				switch(event.which)
+				{
+					case 3://右键复原
+					console.log('right')
+						stage.reset();
+						return;
+					case 1: break;
+					default: return;
+				}
 				bMove=true;
 				lastx=event.clientX;
 				lasty=event.clientY;
@@ -402,7 +420,6 @@ $.fn.stage3D=function(){
 				lastx=event.clientX;
 				lasty=event.clientY;
 				bMove=false;
-				$(this).one('mousedown',startDrag);
 				$(document).off('mousemove',dragging);
 			}
 			//鼠标滚轮行为，旋转镜头
