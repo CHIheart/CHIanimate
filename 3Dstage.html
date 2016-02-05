@@ -155,9 +155,9 @@ $.fn.stage3D=function(){
 			[1,0,0,0],//X轴
 			[0,1,0,0],//Y轴
 			[0,0,1,0],//Z轴
-			[0,0,0,1] //原点
+			[0,0,0,1]
 		],
-		original=camera[3],
+		original=[0,0,0], //原点
 	//镜头到容器的转换矩阵
 		container=[
 			[1,0,0,0],
@@ -203,17 +203,17 @@ $.fn.stage3D=function(){
 	return {
 		//沿X轴平移镜头
 		transX:function(x,bRefresh){
-			for(var n in original) original[n]-=camera[0][n]*x;
+			for(var n in original) original[n]+=camera[0][n]*x;
 			return bRefresh ? this.refresh() : this;
 		},
 		//沿Y轴平移镜头
 		transY:function(y,bRefresh){
-			for(var n in original) original[n]-=camera[1][n]*y;
+			for(var n in original) original[n]+=camera[1][n]*y;
 			return bRefresh ? this.refresh() : this;
 		},
 		//沿Z轴平移镜头
 		transZ:function(z,bRefresh){
-			for(var n in original) original[n]-=camera[2][n]*z;
+			for(var n in original) original[n]+=camera[2][n]*z;
 			return bRefresh ? this.refresh() : this;
 		},
 		//竖直方向上旋转镜头
@@ -267,7 +267,8 @@ $.fn.stage3D=function(){
 					q=container[2][3];
 				if(!xyz) xyz=[0,0,0],this.xyz=xyz;
 				xyz[0]=x,xyz[1]=y,xyz[2]=z;
-				var project=[xyz[0],xyz[1],xyz[2],1];
+				var o=original,
+					project=[xyz[0]-o[0],xyz[1]-o[1],xyz[2]-o[2],1];
 				project=premultiply(project,camera);
 				project=premultiply(project,container);
 				for(var n=0;n<3;n++) project[n]=project[n]/project[3];
@@ -292,8 +293,8 @@ $.fn.stage3D=function(){
 		},
 		/*
 		开启鼠标控制镜头或更改镜头模式，开启镜头后无法在舞台元素上使用鼠标拖选及右键菜单，mode参数，可以为
-		1.normal，默认，普通镜头，鼠标左键拖拽平移镜头，鼠标右键拖拽原地旋转镜头，滚轮向上向前移动/向下向后移动
-		2.global，球面镜头，以灭点一半为球心，在球面上移动，镜头与球心距离不变，只是改变经纬度，左键拖拽上下改变纬度，左右改变经度，右键拖拽上左使镜头逆时针旋转，下右顺时针旋转
+		1.normal，默认，普通镜头，鼠标左键拖拽平移/旋转镜头，滚轮向上向前移动/向下向后移动或顺逆时针旋转镜头，单按滚轮切换平移/旋转模式
+		2.global，球面镜头，以灭点一半为球心，在球面上移动，镜头与球心距离不变，只是改变经纬度，左键拖拽上下改变纬度，左右改变经度，滚轮顺逆时针旋转
 		3.none，关闭控制
 		*/
 		mouse:function(mode){
@@ -316,20 +317,21 @@ $.fn.stage3D=function(){
 				modes:{
 					//普通镜头的处理器
 					normal:{
-						init:$.noop,
-						left:function(h,v){
-							h && stage.transX(-h);
-							v && stage.transY(v);
-							stage.refresh();
+						init:function(DOM){
+							var CTRL=this;
+							$(DOM).click(function(event) {
+								if(event.which==2) CTRL.trans=!CTRL.trans,console.info('mode changes ',CTRL.trans ? 'trans':'rotate');
+								$(DOM).one('mousedown',startDrag);
+							});
 						},
-						right:function(h,v){
-							console.log(h,v);
-							h && stage.rotateY(h);
-							v && stage.rotateX(v);
+						trans:true,
+						left:function(h,v){
+							!isNaN(h) && this.trans ? stage.transX(-h) : stage.rotateY(h/2);
+							!isNaN(v) && this.trans ? stage.transY(v)  : stage.rotateX(v/2);
 							stage.refresh();
 						},
 						wheel:function(v){
-							v && stage.transZ(v);
+							!isNaN(v) && this.trans ? stage.transZ(v) : stage.rotateZ(v/2);
 							stage.refresh();
 						}
 					},
@@ -363,7 +365,7 @@ $.fn.stage3D=function(){
 			|| (bound=true);
 			//改变镜头模式
 			mouse.handler=mouse.modes[mode];
-			mouse.handler.init();
+			mouse.handler.init(DOM);
 			if(bound) return true;
 			//绑定鼠标按下事件（单次），及鼠标滚轮事件
 			$(DOM).one('mousedown',startDrag);
@@ -374,39 +376,27 @@ $.fn.stage3D=function(){
 				bMove=false;
 			//鼠标按下行为，启动拖拽
 			function startDrag(event){
-				if(!mouse || bMove) return false;
+				if(!mouse || bMove || event.which!=1) return false;
 				event.preventDefault();
 				event.stopPropagation();
 				bMove=true;
 				lastx=event.clientX;
 				lasty=event.clientY;
-				var name=(function(){
-					switch(event.which)
-					{
-						case 1: return 'left';
-						case 2: return 'wheel';
-						case 3: return 'right';
-					}
-				})();
-				console.log(name);
-				$(document).mousemove(name,dragging)
+				$(document).mousemove(dragging)
 					.one('mouseup',stopDrag);
-				return false;
 			}
 			//鼠标移动行为，开始拖拽
 			function dragging(event){
-				if(!mouse || !bMove) return false;
-				var name=event.data
-				console.log(name)
+				if(!mouse || !bMove || event.which!=1) return false;
 				event.preventDefault();
 				event.stopPropagation();
 				refuse(DOM);
-				mouse.handler[name]((event.clientX-lastx) * mouse.senses[name],(event.clientY-lasty) * mouse.senses[name]);
+				mouse.handler.left((event.clientX-lastx) * mouse.senses.left,(event.clientY-lasty) * mouse.senses.left);
 				lastx=event.clientX;lasty=event.clientY;
 			}
 			//鼠标释放行为，停止拖拽
 			function stopDrag(event){
-				if(!mouse || !bMove) return false;
+				if(!mouse || !bMove || event.which!=1) return false;
 				event.preventDefault();
 				event.stopPropagation();
 				lastx=event.clientX;
