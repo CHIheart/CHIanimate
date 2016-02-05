@@ -80,18 +80,28 @@
 (function(){
 
 })();
-//向量左乘矩阵
-function premultiply(vector,matrix,negative){
-	var newv=[];
-	for(var n in vector)
+//M*N的矩阵mat1，左乘，N*P的矩阵mat2，返回一个M*P的矩阵
+function premultiply(mat1,mat2){
+	if(!mat1 || !mat2) return false;
+	var M=mat1.length,N=mat2.length;
+	if(!M || !N) return false;
+	var N2=mat1[0].length,P=mat2[0].length;
+	if(!P || !N2 || N2!=N) return false;
+	var newv=[],step=N;
+
+	for(var i=0;i<M;i++)
 	{
-		newv[n]=(function(){
-			var s=0;
-			for(var m in vector){
-				s+=vector[m] * matrix[m][n] * (negative ? -1:1);
-			}
-			return s;
-		})();
+		if(mat1[i].length!=step) return false;
+		newv[i]=[];
+		for(var j=0;j<step;j++)
+		{
+			newv[i][j]=(function(){
+				var s=0;
+				for(var n=0;n<step;n++)
+					s+= mat1[i][n] * mat2[n][j];
+				return s;
+			})();
+		}
 	}
 	return newv;
 }
@@ -163,7 +173,7 @@ $.fn.stage3D=function(){
 			[0,0,1,0],//Z轴
 			[0,0,0,1]
 		],
-		original=[0,0,0], //原点
+		original=[0,0,0,1], //原点
 	//镜头到容器的转换矩阵
 		container=[
 			[1,0,0,0],
@@ -208,43 +218,43 @@ $.fn.stage3D=function(){
 	kids.wrapAll(wrapper);
 	return {
 		//沿X轴平移镜头
-		transX:function(x,bRefresh){
+		transX:function(x,bStatic){
 			for(var n in original) original[n]+=camera[0][n]*x;
-			return bRefresh ? this.refresh() : this;
+			return bStatic ? this : this.refresh();
 		},
 		//沿Y轴平移镜头
-		transY:function(y,bRefresh){
+		transY:function(y,bStatic){
 			for(var n in original) original[n]+=camera[1][n]*y;
-			return bRefresh ? this.refresh() : this;
+			return bStatic ? this : this.refresh();
 		},
 		//沿Z轴平移镜头
-		transZ:function(z,bRefresh){
+		transZ:function(z,bStatic){
 			for(var n in original) original[n]+=camera[2][n]*z;
-			return bRefresh ? this.refresh() : this;
+			return bStatic ? this : this.refresh();
 		},
 		//竖直方向上旋转镜头
-		rotateX:function(angle,bRefresh){
+		rotateX:function(angle,bStatic){
 			var matrix=rotate3D([1,0,0,1],angle);
-			camera[0]=premultiply(camera[0],matrix);
-			camera[1]=premultiply(camera[1],matrix);
-			camera[2]=premultiply(camera[2],matrix);
-			return bRefresh ? this.refresh() : this;
+			camera=premultiply(camera,matrix);
+			// console.log(camera.join())
+			return bStatic ? this : this.refresh();
 		},
 		//水平方向上旋转镜头
-		rotateY:function(angle,bRefresh){
+		rotateY:function(angle,bStatic){
 			var matrix=rotate3D([0,1,0,1],angle);
-			camera[0]=premultiply(camera[0],matrix);
-			camera[1]=premultiply(camera[1],matrix);
-			camera[2]=premultiply(camera[2],matrix);
-			return bRefresh ? this.refresh() : this;
+			camera=premultiply(camera,matrix);
+			return bStatic ? this : this.refresh();
 		},
 		//在投影面上旋转镜头
-		rotateZ:function(angle,bRefresh){
+		rotateZ:function(angle,bStatic){
 			var matrix=rotate3D([0,0,1,1],angle);
-			camera[0]=premultiply(camera[0],matrix);
-			camera[1]=premultiply(camera[1],matrix);
-			camera[2]=premultiply(camera[2],matrix);
-			return bRefresh ? this.refresh() : this;
+			camera=premultiply(camera,matrix);
+			return bStatic ? this : this.refresh();
+		},
+		//镜头绕“焦点”横转
+		rotateH:function(angle,bStatic){
+
+			return bStatic ? this : this.refresh();
 		},
 		//刷新全景
 		refresh:function(){
@@ -260,7 +270,8 @@ $.fn.stage3D=function(){
 			for(var i=0;i<4;i++)
 				for(var j=0;j<4;j++)
 					camera[i][j]=i==j ? 1:0;
-			original[0]=original[1]=original[2]=0;
+			var o=original;
+			o[0]=o[1]=o[2]=0;
 			return this.refresh();
 		},
 		//扩大/缩小视角，这个效果不太好看
@@ -285,9 +296,10 @@ $.fn.stage3D=function(){
 				if(!xyz) xyz=[0,0,0],this.xyz=xyz;
 				xyz[0]=x,xyz[1]=y,xyz[2]=z;
 				var o=original,
-					project=[xyz[0]-o[0],xyz[1]-o[1],xyz[2]-o[2],1];
+					project=[[xyz[0]-o[0],xyz[1]-o[1],xyz[2]-o[2],1]];
 				project=premultiply(project,camera);
 				project=premultiply(project,container);
+				project=project[0];
 				for(var n=0;n<3;n++) project[n]=project[n]/project[3];
 				x=project[0],y=project[1],z=project[2];
 
@@ -321,7 +333,7 @@ $.fn.stage3D=function(){
 			{
 				mouse=null;
 				//其实应该只off事件down跟wheel就行了，但为了防止意外就都写
-				return this.off('mousedown',startDrag)
+				return $(DOM).off('mousedown',startDrag)
 					.off('mousemove',dragging)
 					.off('mouseup',stopDrag)
 					.off('mousewheel',wheeling);
@@ -336,29 +348,36 @@ $.fn.stage3D=function(){
 					//普通镜头的处理器
 					normal:{
 						init:function(DOM){
-							var CTRL=this;
-							$(DOM).click(function(event) {
-								if(event.which==2) CTRL.trans=!CTRL.trans,console.info('mode changes ',CTRL.trans ? 'trans':'rotate');
-								$(DOM).one('mousedown',startDrag);
-							});
+							$(DOM).on('click',this,mouse.modes.normal.change);
+						},
+						change:function(event){
+							if(event.which==2) event.data.trans=!event.data.trans;
 						},
 						trans:true,
 						left:function(h,v){
-							!isNaN(h) && this.trans ? stage.transX(-h) : stage.rotateY(-h/2);
-							!isNaN(v) && this.trans ? stage.transY(v)  : stage.rotateX(-v/2);
+							!isNaN(h) && this.trans ? stage.transX(h,false) : stage.rotateY(-h/2,false);
+							!isNaN(v) && this.trans ? stage.transY(-v,false)  : stage.rotateX(-v/2,false);
 							stage.refresh();
 						},
 						wheel:function(v){
-							!isNaN(v) && this.trans ? stage.transZ(v) : stage.rotateZ(v/2);
+							!isNaN(v) && this.trans ? stage.transZ(v,false) : stage.rotateZ(v/2,false);
 							stage.refresh();
 						}
 					},
 					//球面镜头的处理器
 					global:{
-						init:stage.reset,
-						left:function(h,v){},
-						right:function(h,v){},
-						wheel:function(v){}
+						init:function(){
+							stage.reset();
+							$(DOM).off('click',mouse.modes.normal.change);
+						},
+						left:function(h,v){
+							!isNaN(h) && 
+							stage.refresh();
+						},
+						wheel:function(v){
+
+							stage.refresh();
+						}
 					},
 				},
 				//鼠标处理器，会指向modes下的normal或global
@@ -376,9 +395,9 @@ $.fn.stage3D=function(){
 			mouse.handler=mouse.modes[mode];
 			mouse.handler.init(DOM);
 			if(bound) return true;
-			//绑定鼠标按下事件（单次），及鼠标滚轮事件
-			$(DOM).on('mousedown',startDrag);
-			$(DOM).on('mousewheel',wheeling);
+			//绑定鼠标按下事件，及鼠标滚轮事件
+			$(DOM).on('mousedown',startDrag)
+				.on('mousewheel',wheeling);
 			//相对于浏览器的最后一次鼠标坐标
 			var lastx=0,lasty=0,
 			//是否可以移动
