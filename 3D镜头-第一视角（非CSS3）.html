@@ -230,11 +230,20 @@
 			mouse;
 		kids.wrapAll(wrapper);
 		return {
-			//改变镜头的坐标水平角及仰角，基于原始镜头坐标系及方向
+			//设置镜头的坐标及三个旋转角，基于世界坐标系
 			setCamera:function(x,y,z,theta,phi,gama){
 				!isNaN(x) && (original[0]=x);
 				!isNaN(y) && (original[1]=y);
 				!isNaN(z) && (original[2]=z);
+				camera=[
+					[1,0,0,0],//X轴
+					[0,1,0,0],//Y轴
+					[0,0,1,0],//Z轴
+					[0,0,0,1]
+				];
+				!isNaN(theta) && (camera=premultiply(camera,rotate3D(camera[1],theta)));
+				!isNaN(phi) && (camera=premultiply(camera,rotate3D(camera[0],phi)));
+				!isNaN(gama) && (camera=premultiply(camera,rotate3D(camera[2],gama)));
 				return this.refresh();
 			},
 			//沿X轴平移镜头
