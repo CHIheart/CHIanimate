@@ -222,6 +222,7 @@
 				refresh:[],
 				reset:[],
 				set:[],
+				put:[],
 				append:[],
 				remove:[],
 				sense:[]
@@ -231,7 +232,7 @@
 		kids.wrapAll(wrapper);
 		return {
 			//设置镜头的坐标及三个旋转角，基于世界坐标系
-			setCamera:function(x,y,z,theta,phi,gama){
+			set:function(x,y,z,theta,phi,gama){
 				!isNaN(x) && (original[0]=x);
 				!isNaN(y) && (original[1]=y);
 				!isNaN(z) && (original[2]=z);
@@ -248,21 +249,25 @@
 			},
 			//沿X轴平移镜头
 			transX:function(x,bStatic){
+				if(isNaN(x)) return false;
 				for(var n in original) original[n]+=camera[0][n]*x;
 				return bStatic ? this : this.refresh();
 			},
 			//沿Y轴平移镜头
 			transY:function(y,bStatic){
+				if(isNaN(y)) return false;
 				for(var n in original) original[n]+=camera[1][n]*y;
 				return bStatic ? this : this.refresh();
 			},
 			//沿Z轴平移镜头
 			transZ:function(z,bStatic){
+				if(isNaN(z)) return false;
 				for(var n in original) original[n]+=camera[2][n]*z;
 				return bStatic ? this : this.refresh();
 			},
 			//竖直方向上旋转镜头
 			rotateX:function(angle,bStatic){
+				if(isNaN(angle)) return false;
 				var matrix=rotate3D(camera[0],angle);
 				camera=premultiply(camera,matrix);
 				matrix=null;
@@ -270,6 +275,7 @@
 			},
 			//水平方向上旋转镜头
 			rotateY:function(angle,bStatic){
+				if(isNaN(angle)) return false;
 				var matrix=rotate3D(camera[1],angle);
 				camera=premultiply(camera,matrix);
 				matrix=null;
@@ -277,6 +283,7 @@
 			},
 			//在投影面上旋转镜头
 			rotateZ:function(angle,bStatic){
+				if(isNaN(angle)) return false;
 				var matrix=rotate3D(camera[2],angle);
 				camera=premultiply(camera,matrix);
 				matrix=null;
@@ -287,7 +294,7 @@
 				var ME=this;
 				kids.each(function(index, el) {
 					var xyz=this.xyz;
-					ME.set(this,xyz[0],xyz[1],xyz[2]);
+					ME.put(this,xyz[0],xyz[1],xyz[2]);
 				});
 				ME=null;
 				return this;
@@ -316,7 +323,8 @@
 			3.缩放度公式 Scale= q * z + 1，最小为0
 			4.透明度公式 Opacity= 1 - q * abs(z)，最小为0
 			*/
-			set:function(obj,x,y,z){
+			put:function(obj,x,y,z){
+				if(!$(obj).length || isNaN(x) || isNaN(y) || isNaN(z)) return false;
 				var xyz,
 					o=original,
 					project,
@@ -464,7 +472,7 @@
 			append:function(o){
 				wrapper.append(o);
 				kids.add(o);
-				return this.set(o,0,0,0);
+				return this.put(o,0,0,0);
 			},
 			//彻底删除一个元素
 			remove:function(o){
@@ -490,7 +498,8 @@
 			绑定/解绑/触发事件，可以使用的事件名及其参数有（函数中的所有this语境都为stage对象本身）
 			rotate(direction,degree)及rotateX/Y/Z(degree)
 			trans(direction,degree)及transX/Y/Z(pixel)
-			set(o,x,y,z)
+			set(x,y,z,t,p,g)
+			put(o,x,y,z)
 			append/remove(o)
 			sense(opt,val)
 			reset/refresh()
@@ -540,7 +549,7 @@ stage.each(function(index, el) {
 	})();
 	args[2]+=500;
 	args.unshift(this);
-	stage.set.apply(null,args);
+	stage.put.apply(null,args);
 });
 stage.mouse();
 // setInterval(function(){
