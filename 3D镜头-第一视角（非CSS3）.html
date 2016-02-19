@@ -171,7 +171,11 @@
 			obj.onmouseup=new Function("return true");
 		}
 	}
-	$.fn.stage3D=function(){
+	!($.fn.stage3D) && ($.fn.stage3D=function(mode){
+		return stage3D[mode]? stage3D[mode].call(this) : false;
+	});
+	var stage3D={};
+	stage3D.first=function(){
 		var wrapper=$('<div/>')
 			.css({
 				width:0,
@@ -221,7 +225,7 @@
 				append:[],
 				remove:[],
 				sense:[]
-			}*/,
+			},*/
 		//鼠标控制器
 			mouse;
 		kids.wrapAll(wrapper);
@@ -510,7 +514,7 @@
 	}
 })();
 
-var stage=$("#Stage").stage3D();
+var stage=$("#Stage").stage3D('first');
 stage.each(function(index, el) {
 	var id=this.id,
 		args=(function(){
