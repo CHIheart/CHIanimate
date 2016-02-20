@@ -58,8 +58,8 @@
 	<div style="background-color:#f0f;" class="obj cyan" id="Yneg"></div>
 	<div style="background-color:#0ff;" class="obj rose" id="Zpos"></div>
 	<div style="background-color:#000;" class="obj black" id="Zneg"></div>
-	<!-- <div style="background-color:purple;" class="obj purple"></div>
-	<div style="background-color:#fff;" class="obj white"></div>
+	<div style="background-color:purple;" class="obj purple"></div>
+	<!-- <div style="background-color:#fff;" class="obj white"></div>
 	<div style="background-color:pink;" class="obj pink"></div>
 	<div style="background-color:#f00;" class="obj red"></div>
 	<div style="background-color:#0f0;" class="obj green"></div>
@@ -544,21 +544,13 @@
 	}
 })();
 
-var stage=$("#Stage").stage3D('first');
+var stage=$("#Stage").stage3D('first'),
+	l=stage.length;
 stage.each(function(index, el) {
-	var id=this.id,
-		args=(function(){
-		switch(id)
-		{
-			case "Refer": return [0,0,0];
-			case "Xpos":  return [500,0,0];
-			case "Xneg":  return [-500,0,0];
-			case "Ypos":  return [0,500,0];
-			case "Yneg":  return [0,-500,0];
-			case "Zpos":  return [0,0,500];
-			case "Zneg":  return [0,0,-500];
-		}
-	})();
+	var r=400,
+		id=this.id,
+		theta=index/l * Math.PI * 2,
+		args=[r*cos(theta),0,r*sin(theta)];
 	args[2]+=500;
 	args.unshift(this);
 	stage.put.apply(null,args);

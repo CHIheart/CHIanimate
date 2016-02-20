@@ -22,7 +22,8 @@
 #Stage .obj{
 	width: 100px;
 	height: 100px;
-	outline: 1px solid black;
+	border: 1px solid black;
+	border-radius:50%;
 }
 #Refer:before{
 	content: '';
@@ -58,7 +59,7 @@
 	<div style="background-color:#f0f;" class="obj cyan" id="Yneg"></div>
 	<div style="background-color:#0ff;" class="obj rose" id="Zpos"></div>
 	<div style="background-color:#000;" class="obj black" id="Zneg"></div>
-	<!-- <div style="background-color:purple;" class="obj purple"></div>
+	<div style="background-color:purple;" class="obj purple"></div>
 	<div style="background-color:#fff;" class="obj white"></div>
 	<div style="background-color:pink;" class="obj pink"></div>
 	<div style="background-color:#f00;" class="obj red"></div>
@@ -72,7 +73,7 @@
 	<div style="background-color:#fff;" class="obj white"></div>
 	<div style="background-color:pink;" class="obj pink"></div>
 	<div style="background-color:#f00;" class="obj red"></div>
-	<div style="background-color:#0f0;" class="obj green"></div>
+	<!-- <div style="background-color:#0f0;" class="obj green"></div>
 	<div style="background-color:#00f;" class="obj blue"></div>
 	<div style="background-color:#ff0;" class="obj yellow"></div>
 	<div style="background-color:#f0f;" class="obj cyan"></div>
@@ -503,25 +504,59 @@
 
 })();
 
-var stage=$("#Stage").stage3D('third');
+var stage=$("#Stage").stage3D('third'),
+	cur=$("#Stage").children().eq(0).children().eq(0);
+stage.put(cur,0,0,0);
+cur=cur.next();
+var r=250;
+
+var R=r/Math.sqrt(3);
+r=(Math.sqrt(5)-1)/2;
+var r_=1/r;
+r*=R,r_*=R;
+var xyz=[
+	[0,r_,r],[0,-r_,r],[0,r_,-r],[0,-r_,-r],
+	[r_,r,0],[-r_,r,0],[r_,-r,0],[-r_,-r,0],
+	[r,0,r_],[r,0,-r_],[-r,0,r_],[-r,0,-r_],
+	[R,R,R],[-R,R,R],[R,-R,R],[R,R,-R],
+	[-R,-R,R],[-R,R,-R],[R,-R,-R],[-R,-R,-R],
+];
 stage.each(function(index, el) {
-	var id=this.id,
-		me=this,
-		args=(function(){
-		switch(id)
-		{
-			case "Refer": return [0,0,0];
-			case "Xpos":  return [500,0,0];
-			case "Xneg":  return [-500,0,0];
-			case "Ypos":  return [0,500,0];
-			case "Yneg":  return [0,-500,0];
-			case "Zpos":  return [0,0,500];
-			case "Zneg":  return [0,0,-500];
-		}
-	})();
-	args.unshift(this);
-	stage.put.apply(null,args);
+	var pos=index ? xyz[index-1] : [0,0,0];
+	pos.unshift(this);
+	stage.put.apply(null,pos);
 });
+
+
+
+
+
+// function a2t(a){return a/180*Math.PI;}
+// var count=1;
+// for(var phi=90;phi>=-90;phi-=30)
+// {
+// 	var num=Math.round(3-Math.abs(phi/30)),
+// 		offset=num*90;
+// 	num ? (num*=2) : (num=1);
+// 	for(var theta=-180;theta<180;theta+=360/num)
+// 	{
+// 		var p=a2t(phi),
+// 			t=a2t(theta+offset),
+// 			sp=Math.sin(p),
+// 			cp=Math.cos(p),
+// 			st=Math.sin(t),
+// 			ct=Math.cos(t),
+// 			x=r*st*cp,
+// 			z=r*ct*cp,
+// 			y=r*sp;
+// 		stage.put(cur,x,y,z);
+// 		cur.html([phi,theta,num].join('<br>'));
+// 		console.log(phi,theta,num,cur.get(0));
+// 		count++;
+// 	cur=cur.next();
+// 		// console.warn(x,y,z);
+// 	}
+// }
 stage.mouse();
 // setInterval(function(){
 // 	stage.rotateX(1/PI);
