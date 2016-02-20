@@ -169,26 +169,6 @@
 			],[0,0,0,1]
 		];
 	}
-	//方阵的转置
-	function transpose(matrix){
-		if(!$.isArray(matrix)) return false;
-		var MATRIX=[];
-		for(var i=0;i<matrix.length;i++)
-		{
-			var row=matrix[i];
-			if(!$.isArray(row))
-			{
-				MATRIX=null;
-				return false;
-			}
-			MATRIX[i]=[];
-			for(var j=0;j<row.length;j++)
-			{
-				MATRIX[i][j]=matrix[j][i];
-			}
-		}
-		return MATRIX;
-	}
 	//禁止拖选 
 	function refuse(obj){
 		if(typeof obj.onselectstart!='undefined')
@@ -223,7 +203,7 @@
 					$(this).css({
 						position:'absolute',
 						left:-this.size[0]/2,
-						top:-this.size[0]/2,
+						top:-this.size[1]/2,
 						opacity:1
 					});
 				}),
@@ -262,6 +242,7 @@
 			];
 		kids.wrapAll(wrapper);
 		return {
+			length:kids.length,
 			//设置镜头的坐标及三个旋转角，基于世界坐标系
 			set:function(theta,phi,gamma){
 				transform=[
@@ -327,7 +308,7 @@
 			3.缩放度公式 Scale= q * z + 1，最小为0
 			4.透明度公式 Opacity= 1 - q * abs(z)，最小为0
 			*/
-			put:function(obj,x,y,z){
+			put:function(obj,x,y,z,bAnimate,sOptions){
 				var xyz,
 					project,
 					ow,oh,scale,
@@ -350,16 +331,18 @@
 					scale=max(1-q * z,0),
 					w=ow*scale,
 					h=oh*scale,
-					opacity=min(max(1-q*abs(z),0),1);
+					opacity=min(max(1-abs(q)*abs(z),0),1);
 
-					$(this).css({
+					bAnimate && !sOptions && (sOptions={});
+					$(this)[bAnimate ? "animate":"css"]({
 						width:w,
 						height:h,
 						left:-w/2 + x,
 						top:-h/2 + y,
 						opacity:opacity,
-						zIndex:round(z)
-					}).html([x.toFixed(2),y.toFixed(2),z.toFixed(2)].join('<br>'));
+						zIndex:round(z) + 2/q
+					},sOptions)
+					//.html([x.toFixed(2),y.toFixed(2),z.toFixed(2)].join('<br>'));
 				});
 				project=null;
 				return this;
@@ -463,12 +446,14 @@
 			append:function(o){
 				wrapper.append(o);
 				kids.add(o);
+				this.length=kids.length;
 				return this.set(o,0,0,0);
 			},
 			//彻底删除一个元素
 			remove:function(o){
 				wrapper.find(o).remove();
 				kids=kids.not(o);
+				this.length=kids.length;
 				return this;
 			},
 			/*
@@ -476,7 +461,7 @@
 			transX/Y/Z，平移灵敏度，单位为像素（普通镜头）
 			rotateX/Y/Z，旋转灵敏度，单位为度（普通镜头及球面镜头）
 			*/
-			setSense:function(option,value){
+			sense:function(option,value){
 				mouse && value && mouse.senses[options] && (mouse.senses[options]=parseFloat(value));
 				return this;
 			},
@@ -526,12 +511,12 @@ stage.each(function(index, el) {
 		switch(id)
 		{
 			case "Refer": return [0,0,0];
-			case "Xpos":  return [200,0,0];
-			case "Xneg":  return [-200,0,0];
-			case "Ypos":  return [0,200,0];
-			case "Yneg":  return [0,-200,0];
-			case "Zpos":  return [0,0,200];
-			case "Zneg":  return [0,0,-200];
+			case "Xpos":  return [500,0,0];
+			case "Xneg":  return [-500,0,0];
+			case "Ypos":  return [0,500,0];
+			case "Yneg":  return [0,-500,0];
+			case "Zpos":  return [0,0,500];
+			case "Zneg":  return [0,0,-500];
 		}
 	})();
 	args.unshift(this);

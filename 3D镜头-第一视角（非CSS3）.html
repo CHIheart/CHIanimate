@@ -96,6 +96,9 @@
 !function(a){"function"==typeof define&&define.amd?define(["jquery"],a):"object"==typeof exports?module.exports=a:a(jQuery)}(function(a){function b(b){var g=b||window.event,h=i.call(arguments,1),j=0,l=0,m=0,n=0,o=0,p=0;if(b=a.event.fix(g),b.type="mousewheel","detail"in g&&(m=-1*g.detail),"wheelDelta"in g&&(m=g.wheelDelta),"wheelDeltaY"in g&&(m=g.wheelDeltaY),"wheelDeltaX"in g&&(l=-1*g.wheelDeltaX),"axis"in g&&g.axis===g.HORIZONTAL_AXIS&&(l=-1*m,m=0),j=0===m?l:m,"deltaY"in g&&(m=-1*g.deltaY,j=m),"deltaX"in g&&(l=g.deltaX,0===m&&(j=-1*l)),0!==m||0!==l){if(1===g.deltaMode){var q=a.data(this,"mousewheel-line-height");j*=q,m*=q,l*=q}else if(2===g.deltaMode){var r=a.data(this,"mousewheel-page-height");j*=r,m*=r,l*=r}if(n=Math.max(Math.abs(m),Math.abs(l)),(!f||f>n)&&(f=n,d(g,n)&&(f/=40)),d(g,n)&&(j/=40,l/=40,m/=40),j=Math[j>=1?"floor":"ceil"](j/f),l=Math[l>=1?"floor":"ceil"](l/f),m=Math[m>=1?"floor":"ceil"](m/f),k.settings.normalizeOffset&&this.getBoundingClientRect){var s=this.getBoundingClientRect();o=b.clientX-s.left,p=b.clientY-s.top}return b.deltaX=l,b.deltaY=m,b.deltaFactor=f,b.offsetX=o,b.offsetY=p,b.deltaMode=0,h.unshift(b,j,l,m),e&&clearTimeout(e),e=setTimeout(c,200),(a.event.dispatch||a.event.handle).apply(this,h)}}function c(){f=null}function d(a,b){return k.settings.adjustOldDeltas&&"mousewheel"===a.type&&b%120===0}var e,f,g=["wheel","mousewheel","DOMMouseScroll","MozMousePixelScroll"],h="onwheel"in document||document.documentMode>=9?["wheel"]:["mousewheel","DomMouseScroll","MozMousePixelScroll"],i=Array.prototype.slice;if(a.event.fixHooks)for(var j=g.length;j;)a.event.fixHooks[g[--j]]=a.event.mouseHooks;var k=a.event.special.mousewheel={version:"3.1.12",setup:function(){if(this.addEventListener)for(var c=h.length;c;)this.addEventListener(h[--c],b,!1);else this.onmousewheel=b;a.data(this,"mousewheel-line-height",k.getLineHeight(this)),a.data(this,"mousewheel-page-height",k.getPageHeight(this))},teardown:function(){if(this.removeEventListener)for(var c=h.length;c;)this.removeEventListener(h[--c],b,!1);else this.onmousewheel=null;a.removeData(this,"mousewheel-line-height"),a.removeData(this,"mousewheel-page-height")},getLineHeight:function(b){var c=a(b),d=c["offsetParent"in a.fn?"offsetParent":"parent"]();return d.length||(d=a("body")),parseInt(d.css("fontSize"),10)||parseInt(c.css("fontSize"),10)||16},getPageHeight:function(b){return a(b).height()},settings:{adjustOldDeltas:!0,normalizeOffset:!0}};a.fn.extend({mousewheel:function(a){return a?this.bind("mousewheel",a):this.trigger("mousewheel")},unmousewheel:function(a){return this.unbind("mousewheel",a)}})});
 </script>
 <script>
+/*
+第一视角镜头，世界坐标系为：x+向右，y+向上，z+向屏幕里，原点在容器中心
+*/
 (function(){
 	var sin=Math.sin,
 		cos=Math.cos,
@@ -188,10 +191,13 @@
 		//所有子元素
 			kids=this.css('overflow','hidden')
 				.children().each(function(index, el) {
-					this.size=[$(this).width(),$(this).height()];
+					this.size=[$(this).outerWidth(),$(this).outerHeight()];
 					this.xyz=[0,0,0];
 					$(this).css({
-						position:'absolute'
+						position:'absolute',
+						left:-this.size[0]/2,
+						top:-this.size[1]/2,
+						opacity:1
 					});
 				}),
 		//透视量，Z轴上灭点z坐标的倒数
@@ -231,6 +237,7 @@
 			mouse;
 		kids.wrapAll(wrapper);
 		return {
+			length:kids.length,
 			//设置镜头的坐标及三个旋转角，基于世界坐标系
 			set:function(x,y,z,theta,phi,gama){
 				!isNaN(x) && (original[0]=x);
@@ -316,14 +323,14 @@
 			// 	return this.refresh();
 			// },
 			/*
-			设置一个子元素的“**盒中心**”位置
+			设置一个子元素的“**盒中心**”世界坐标位置
 			因为是透视，所以远小近大
-			1.q为透视量，Z轴上灭点z值的倒数，正常为负，默认取-0.002（即灭点为用户坐标(0,0,-500)）
+			1.q为透视量，Z轴上灭点z值的倒数，正常为负，默认取0.002（即灭点为世界坐标(0,0,500)）
 			2.当在0点上时为正常大小且完全不透明，越向灭点或镜头靠拢，透明度越大，离镜头远小近大
 			3.缩放度公式 Scale= q * z + 1，最小为0
 			4.透明度公式 Opacity= 1 - q * abs(z)，最小为0
 			*/
-			put:function(obj,x,y,z){
+			put:function(obj,x,y,z,bAnimate,sOptions){
 				if(!$(obj).length || isNaN(x) || isNaN(y) || isNaN(z)) return false;
 				var xyz,
 					o=original,
@@ -355,14 +362,17 @@
 					w=ow*scale,
 					h=oh*scale,
 					opacity=max(1-q*abs(z),0);
-					$(this).css({
+
+					bAnimate && !sOptions && (sOptions={});
+					$(this)[bAnimate ? "animate":"css"]({
 						width:w,
 						height:h,
 						left:-w/2 + x,
 						top:-h/2 + y,
 						opacity:opacity,
-						zIndex:round(z)
-					}).html([x.toFixed(2),y.toFixed(2),z.toFixed(2)].join('<br>'));
+						zIndex:round(z) + 2/q
+					},sOptions)
+					//.html([x.toFixed(2),y.toFixed(2),z.toFixed(2)].join('<br>'));
 				});
 				o=project=null;
 				return this;
@@ -472,12 +482,14 @@
 			append:function(o){
 				wrapper.append(o);
 				kids.add(o);
+				this.length=kids.length;
 				return this.put(o,0,0,0);
 			},
 			//彻底删除一个元素
 			remove:function(o){
 				wrapper.find(o).remove();
 				kids=kids.not(o);
+				this.length=kids.length;
 				return this;
 			},
 			/*
