@@ -17,8 +17,8 @@ function parseTemplate($sFilepath,$aData,$sCurPath='')
 		return '';
 	}
 	$sFileContent=file_get_contents($sFileCompletePath);
-	//替换资源绝对路径
 	$sFileContent=str_replace('{STATIC_RESOURCE_URI}',STATIC_RESOURCE_URI,$sFileContent);
+	//替换资源绝对路径
 	if(ON)
 	{
 		echo "<strong>Parse template ".$sFileCompletePath." using data </strong>";
@@ -27,12 +27,12 @@ function parseTemplate($sFilepath,$aData,$sCurPath='')
 	}
 	//遍历所有include标志，来读取子文件嵌套
 	$regIncludes='/<!--[\s]*include[\s\S]+?-->/i';
-	preg_match_all($regIncludes, $sFileContent, $matches);
-	$matches=$matches[0];
-	if(count($matches))
+	preg_match_all($regIncludes, $sFileContent, $aIncludes);
+	$aIncludes=$aIncludes[0];
+	if(count($aIncludes))
 	{
 		$all='="([\s\S]+?(?<!\\\\))"';
-		foreach($matches as $value)
+		foreach($aIncludes as $value)
 		{
 			//读取文件路径 
 			$regSrc='/src="((?:\.{1,2}\/)*(?:[\w\d_]+\/)*[\w\d_\-]+(?:\.[\w\d_\-]+)+)"/i';
@@ -142,27 +142,6 @@ function parseTemplate($sFilepath,$aData,$sCurPath='')
 		foreach ($aKeys as $key => $value) {
 			//echo 'variable <var>'.$aVars[$key].'</var> has value: '. $aData[$value] .'<br>';
 			$sFileContent=str_replace($aVars[$key], $aData[$value], $sFileContent);
-		}
-	}
-
-	//如果是第一层，即最终输出页面，则整理css及js位置
-	if($sCurPath==='')
-	{
-		//读取CSS放到</head>标签之前
-		$regCss='/\<link href\=\"[\w\d\.\-\/]+\.css\" rel\=\"stylesheet\"\>/i';
-		preg_match_all($regCss, $sFileContent, $matches);
-		$matches=$matches[0];
-		foreach ($matches as $value) {
-			$sFileContent=str_replace($value,'',$sFileContent);
-			$sFileContent=str_replace('</head>', $value.PHP_EOL.'</head>', $sFileContent);
-		}
-		//读取JS放到</body>标签之前
-		$regJs='/\<script src\=\"[\w\d\.\-\/]+\.js\"\>\<\/script\>/i';
-		preg_match_all($regJs, $sFileContent, $matches);
-		$matches=$matches[0];
-		foreach ($matches as $value) {
-			$sFileContent=str_replace($value,'',$sFileContent);
-			$sFileContent=str_replace('</body>', $value.PHP_EOL.'</body>', $sFileContent);
 		}
 	}
 	return $sFileContent;

@@ -1,0 +1,82 @@
+/*新的基础样式*/
+@import "_funs";
+@import "_theme";
+@import "_icons";
+@import "_style";
+
+//相对路径变量
+@relativePath:  ;
+
+
+
+//按钮样式
+.button:extend(.transSlow){
+	.bd(0);
+	.c-p();
+	a&{
+		.inblock();
+		.t-c();
+	}
+	&-small{
+		.w(80px);
+		.hline(20px);
+		.size(12px);
+	}
+	&-middle{
+		.w(100px);
+		.hline(24px);
+		.size(14px);
+	}
+	&-large{
+		.w(120px);
+		.hline(30px);
+		.size(16px);
+	}
+
+	//红色的确定按钮
+	&-red{
+		.bg-c(@red);
+		.c(white);
+		&:hover{
+			.bg-c(darken(@red,10%));
+		}
+	}
+	//深灰的取消按钮
+	&-gray{
+		.bg-c(@middlegray);
+		.c(black);
+		.bd(1px,solid,@middlegray);
+		&:hover{
+			.bg-c(white);
+		}
+	}
+	//苍白的无效按钮
+	&-pale{
+		.bg-c(white);
+		.bd(1px,solid,@lightgray);
+		.c(@deepgray);
+	}
+	//白色的链接按钮
+	&-white{
+		.bg-c(white);
+		.bd(1px,solid,@red);
+		.c(@red);
+		&:hover{
+			.bg-c(@red);
+			.c(white);
+		}
+	}
+}
+
+//普通链接颜色
+.anchors a:extend(.transSlow){
+	.c(@deepblack);
+	&:hover{
+		.c(@red);
+	}
+}
+
+//阴影
+.shadowLarge{
+	.shadow(3px,3px,3px,rgba(127,127,127,.3));
+}

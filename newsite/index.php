@@ -1,54 +1,36 @@
 <?php
 define("ON", false);
 define("PATH_FROM_ROOT",$_SERVER['DOCUMENT_ROOT'].'/');
+define("STATIC_RESOURCE_URI",'');
 ON && header('Content-Type: text/html; charset=utf-8');
 include "inc.php";
 
 $data = array(
-	"header"=>array(
-		"webtitle"=>"同级引用",
-		"navs"=>array(
-			array(
-				"href"=>"about.html",
-				"alt"=>"关于我们-网站标题",
-				"title"=>"关于我们",
-				"others"=>'target="_blank"',
-				"text"=>"关于我们"
-			),
-			array(
-				"href"=>"pros.html",
-				"alt"=>"产品中心-网站标题",
-				"title"=>"产品中心",
-				"others"=>'target="_blank"',
-				"text"=>"产品中心",
-				"navs"=>array(
-					array(
-						"href"=>"pros.html/1",
-						"alt"=>"类型1-产品中心-网站标题",
-						"title"=>"类型1-产品中心",
-						"others"=>'target="_blank"',
-						"text"=>"类型1"
-					),
-					array(
-						"href"=>"pros.html/2",
-						"alt"=>"类型2-产品中心-网站标题",
-						"title"=>"类型2-产品中心",
-						"others"=>'target="_blank"',
-						"text"=>"类型2"
-					)
-				)
-			)
-		)
-	),
-	"something"=>"主要内容",
+	"title"=>"乐车仔商城首页",
+	"description"=>"空调格 行车记录仪 汽车配件 汽车坐垫",
+	"keywords"=>"空调格 行车记录仪 汽车配件 汽车坐垫",
 	"login"=>true,
-	"login_action"=>"#login_url",
-	"user"=>array(
-		"name"=>"用户小明",
-		"last_time"=>"上个礼拜"
+	"user"=>"用户账号",
+	"cart_href"=>"#购物车页面地址",
+	"usermenu"=>array(
+		array(
+			"href"=>"#1",
+			"blank"=>"_blank",
+			"name"=>"账号中心"
+		),
+		array(
+			"href"=>"#2",
+			"blank"=>"_blank",
+			"name"=>"服务中心"
+		),
+		array(
+			"href"=>"#3",
+			"blank"=>"",
+			"name"=>"退出登陆"
+		),
 	)
 );
 
-echo parseTemplate("index.html",$data);
+echo parseTemplate("index/index.html",$data);
 
 

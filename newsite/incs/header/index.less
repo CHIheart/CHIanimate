@@ -1,0 +1,206 @@
+//首页用头部样式
+
+@import "../../srcs/css/_funs";
+@import "../../srcs/css/_theme";
+
+
+.HEADER{
+	.hline(40px);
+	.bd-b(1px,solid,@lightgray);
+	.bg-c(white);
+	.size();
+	.t-r();
+	.common > *{
+		.inblock();
+		.valign(top);
+	}
+	.links{
+		.o();
+		.t-l();
+		.size(0);
+		a{
+			.inblock();
+			.bd-r(1px,solid,@lightgray);
+			.hline(16px);
+			.size();
+			.m(12px,0);
+			.p(0,1.5em);
+		}
+		i.lcz{
+			.fl();
+			.m(-2px,.5em,0,0);
+			.size(16px);
+		}
+	}
+}
+.USERMENU,.TOPCART{
+	.relative();
+	.w(120px);
+	> dt{
+		.c-p();
+	}
+	> dd{
+		.none();
+		.absolute();
+		.bg-c(white);
+		.bd(1px,solid,@lightgray);
+	}
+}
+
+.USERMENU{
+	.t-c();
+	dt,dd em{
+		.c(@deepblack);
+		i.lcz{
+			.ml(4px);
+		}
+	}
+	var:extend(.ellipsis){
+		.maxw(6em);
+	}
+	> dt{
+		.hline(40px);
+		.c(@deepblack);
+		*{
+			.inblock();
+			.valign();
+		}
+	}
+	> dd{
+		.l(-1px);
+		.t();
+		.w(100%);
+		.on&{
+			.block();
+		}
+		ul{
+			.none();
+			.pb(10px);
+		}
+		li{
+			.hline(30px);
+		}
+		em{
+			.block();
+			.c-p();
+			.hline(40px);
+		}
+		a{
+			.block();
+			&:hover{
+				.bg-c(@pale);
+			}
+		}
+	}
+}
+
+.TOPCART{
+	.relative();
+	> dt{
+		.t-c();
+		.bg-c(@pale);
+		i{
+			.size(16px);
+			.pr(6px);
+		}
+		.have&{
+			.bg-c(@red);
+			.c(white);
+		}
+	}
+	> dd{
+		.r();
+		.w(300px);
+		.none();
+	}
+}
+
+.TOPCARTLOAD{
+	p{
+		.bg(url("../../srcs/images/loading.gif") left center no-repeat);
+		.indent(20px);
+		.m(0,60px);
+		.hline(80px);
+		.t-l();
+	}
+}
+.TOPCARTINFO{
+}
+
+.TOPCARTLIST{
+	.maxh(240px);
+	.o-a();
+	.t-l();
+	.size();
+	.mt(10px);
+	li{
+		.h(80px);
+		.bd-b(1px,solid,@lightgray);
+		.p(0,100px,0,80px);
+	}
+	var{
+		.block();
+		.fl();
+		.wh(60px);
+		.m(10px,0,0,-70px);
+	}
+	img{
+		.full();
+	}
+	h6,p{
+		.o();
+		.h(50px);
+		.line(25px);
+	}
+	h6{
+		.fl();
+		.w(100%);
+		.m(15px,0);
+	}
+	p,q{
+		.fr();
+	}
+	p{
+		.w(60px);
+		.m(15px,-60px,0,0);
+		.t-r();
+		.c(@middleblack);
+	}
+	q{
+		.whline(20px);
+		.pt(18px);
+		.mr(-100px);
+		.c(@deepgray);
+		i.lcz-times{
+			.c-p();
+			.size(12px);
+		}
+	}
+}
+
+.TOPCARTSTAT{
+	.p(10px,20px);
+	p{
+		.fl();
+		.w(60%);
+		.t-l();
+		.line(24px);
+		> *{
+			.block();
+		}
+		span{
+			.c(@middleblack);
+		}
+		samp,small{
+			.c(@red);
+			.size(14px);
+		}
+		strong{
+			.size(18px);
+		}
+	}
+	a{
+		.mt(12px);
+		.fr();
+	}
+}
