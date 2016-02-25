@@ -8,17 +8,20 @@ condition，可选，默认为无，即无条件执行，还可以为可计算�
 variable，可选，默认为$aData，即函数的第二参数本身，还可以为可计算的表达式
 repeat，可选，默认为1，只引入1次，-1是引入N次，直到将变量引用完为止
 */
-function parseTemplate($sFilepath,$aData)
+function parseTemplate($sFilepath,$aData,$sCurPath='')
 {
-	if(!file_exists(PATH_FROM_ROOT.$sFilepath))
+	$sFileCompletePath=PATH_FROM_ROOT.$sCurPath.$sFilepath;
+	if(!file_exists($sFileCompletePath))
 	{
-		echo "File does not exist: ".PATH_FROM_ROOT.$sFilepath."<br>";
+		echo "File does not exist: ".$sFileCompletePath."<br>";
 		return '';
 	}
-	$sFileContent=file_get_contents(PATH_FROM_ROOT.$sFilepath);
+	$sFileContent=file_get_contents($sFileCompletePath);
+	$sFileContent=str_replace('{STATIC_RESOURCE_URI}',STATIC_RESOURCE_URI,$sFileContent);
+	//替换资源绝对路径
 	if(ON)
 	{
-		echo "<strong>Parse template ".PATH_FROM_ROOT.$sFilepath." using data </strong>";
+		echo "<strong>Parse template ".$sFileCompletePath." using data </strong>";
 		var_dump($aData);
 		echo "<br>";
 	}
@@ -87,11 +90,17 @@ function parseTemplate($sFilepath,$aData)
 					echo "Exception occurs when excuting {$con}: <br>";
 				}
 			}
+			//读取本文件路径（以方便其内部的相对路径使用此路径作为前缀）
+			$regFileName='/[\w\d\-\_]+.html/i';
+			preg_match_all($regFileName, $sFilepath, $matches);
+			$sFileName=$matches[0][0];
+			$sNextCurPath=$sCurPath.str_replace($sFileName, '', $sFilepath);
+			// echo $sFilepath.'<br>'.$sFileName.'<br>'.$sCurPath.'<br>';
 			//开始循环
 			switch($repeats)
 			{
 				case 0://不循环，直接用数据来填充
-					$parsedString=parseTemplate($srcCur,$aCurData);
+					$parsedString=parseTemplate($srcCur,$aCurData,$sNextCurPath);
 					break;
 				case -1://无限循环，使用穿透条件
 					$repeats=count($aCurData) +1;
@@ -105,7 +114,7 @@ function parseTemplate($sFilepath,$aData)
 					$repeats=min($repeats,count($aCurData));
 					for($n=0;$n<$repeats;$n++)
 					{
-						$parsedString[]=parseTemplate($srcCur,$aCurData[$n]);
+						$parsedString[]=parseTemplate($srcCur,$aCurData[$n],$sNextCurPath);
 					}
 					$parsedString=implode('', $parsedString);
 			}
