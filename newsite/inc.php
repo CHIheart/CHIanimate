@@ -149,7 +149,7 @@ function parseTemplate($sFilepath,$aData,$sCurPath='')
 	if($sCurPath==='')
 	{
 		//读取CSS放到</head>标签之前
-		$regCss='/\<link href\=\"[\w\d\.\-\/]+\.css\" rel\=\"stylesheet\"\>/i';
+		$regCss='/\<link rel\=\"stylesheet\" href\=\"[\w\d\.\-\/]+\.css\"\>/i';
 		preg_match_all($regCss, $sFileContent, $matches);
 		$matches=$matches[0];
 		foreach ($matches as $value) {

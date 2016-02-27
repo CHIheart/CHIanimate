@@ -1,0 +1,18 @@
+<!-- 警告窗或询问窗 -->
+<link rel="stylesheet" href="{STATIC_RESOURCE_URI}/incs/winlit/winlit.css">
+<dl class="WINLIT" ng-controller="CtrlGlobalWinlit">
+	<dt>
+		<strong>{{title}}</strong>
+		<q ng-click="close();">&times;</q>
+	</dt>
+	<dd>
+		<!-- <i class="lcz lcz-{{smile:result,frown:!result}}"></i> -->
+		<i class="lcz lcz-smile emotion"></i>
+		<div class="tips">{{content}}</div>
+		<div class="btns">
+			<button class="button button-red button-middle" ng-click="confirm();">确定</button>
+			<button class="button button-white button-middle" ng-click="cancel();">取消</button>
+		</div>
+	</dd>
+</dl>
+<script src="{STATIC_RESOURCE_URI}/incs/winlit/winlit.js"></script>

@@ -1,0 +1,50 @@
+//顶用户菜单
+
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+.USERMENU{
+	.t-c();
+	dt,dd em{
+		.c(@deepblack);
+		i.lcz{
+			.ml(4px);
+		}
+	}
+	var:extend(.ellipsis){
+		.maxw(6em);
+	}
+	> dt{
+		.hline(40px);
+		.c(@deepblack);
+		*{
+			.inblock();
+			.valign();
+		}
+	}
+	> dd{
+		.l(-1px);
+		.t();
+		.w(100%);
+		.on&{
+			.block();
+		}
+		ul{
+			.none();
+			.pb(10px);
+		}
+		li{
+			.hline(30px);
+		}
+		em{
+			.block();
+			.c-p();
+			.hline(40px);
+		}
+		a{
+			.block();
+			&:hover{
+				.bg-c(@pale);
+			}
+		}
+	}
+}

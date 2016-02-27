@@ -1,0 +1,26 @@
+<dl class="TOPCART ng-class:{have:allNums>0};" ng-mouseleave="close();" ng-controller="Ctrl_TopCart">
+	<dt ng-mouseenter="update();"><i class="lcz lcz-cart-{{allNums ? 'full':'empty'}}"></i>购物车(<span ng-bind="allNums">0</span>)</dt>
+	<dd class="TOPCARTLOAD">
+		<p><i></i>正在读取购物车，请稍候……</p>
+	</dd>
+	<dd class="TOPCARTNONE">
+		<p><i class="lcz lcz-smile"></i>还没有商品，请先购物吧</p>
+	</dd>
+	<dd class="TOPCARTINFO">
+		<ul class="TOPCARTLIST anchors clearfix">
+			<li data-cart-id="{{cart.id}}" data-cart-parent-id="{{cart.parent}}" ng-repeat="cart in carts">
+				<var><a ng-href="{{cart.pro.href}}" target="_blank"><img ng-src="{{cart.pro.img}}" alt="{{cart.pro.title}}"></a></var>
+				<h6><a ng-href="{{cart.pro.href}}" target="_blank">{{cart.pro.title}}</a></h6>
+				<q><i class="lcz lcz-{{cart.pro.price ? 'times' : 'gift'}}"></i></q>
+				<p>{{cart.pro.price ? cart.pro.price > 0 ? cart.pro.price.toFixed(2)+'元' : '待报价' :'赠品'}}<br>&times;{{cart.num}}</p>
+			</li>
+		</ul>
+		<div class="TOPCARTSTAT clearfix">
+			<p>
+				<span>总数量：<var ng-bind="allNums">0</var>件</span>
+				<samp>总价格：<strong ng-bind="allPrice">0.00<small>元</small></strong></samp>
+			</p>
+			<a href="{cart_href}" class="button button-middle button-red">查看购物车</a>
+		</div>
+	</dd>
+</dl>
