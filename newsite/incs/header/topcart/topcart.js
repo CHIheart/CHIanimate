@@ -43,7 +43,7 @@ define(function(require,exports,module){
 			{
 				lock=true;
 				jqInfo.hide();
-				jqLoad.stop().slideDown();
+				jqLoad.stop(true,true).slideDown();
 				timer=$timeout(function(){
 					lock=false;
 				},3000);
@@ -65,7 +65,7 @@ define(function(require,exports,module){
 				carts.length ? 
 				(
 					jqNone.hide(),
-					jqInfo.stop().delay(100).slideDown()
+					jqInfo.stop(true,true).delay(100).slideDown()
 				):(
 					jqInfo.hide(),
 					jqNone.show()
@@ -87,11 +87,9 @@ define(function(require,exports,module){
 			for(var n=carts.length-1; n>=0; n--)
 			{
 				cart=carts[n];
-				
 				// 1.当前记录
 				// 2.当前记录的附加记录
-				
-				(cart.id==cartid || cart.parent==cartid) && (carts.splice(n,1),delids.push(cart.id),console.log(n));
+				(cart.id==cartid || cart.parent==cartid) && (carts.splice(n,1),delids.push(cart.id));
 			}
 			calculate();
 			$scope.$apply();
@@ -109,6 +107,14 @@ define(function(require,exports,module){
 				}
 				else
 				{
+					require.async("../../winlit/winlit",function(result){
+						result(function(){
+							CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
+								ALERT('删除失败',response.message,false);
+							});
+						});
+					});
+					
 					$scope.close();
 				}
 			})

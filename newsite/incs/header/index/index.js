@@ -1,10 +1,9 @@
 /** 首页头文件碎片使用的js
  */
 
-define('/incs/header/index/index',['../usermenu/usermenu','../topcart/topcart'],function(require,exports,module){
-	require('../usermenu/usermenu');
-	require('../topcart/topcart');
-	return ;
-});
+define(function(require,exports,module){
+	require("/incs/header/usermenu/usermenu");
+	require("/incs/header/topcart/topcart");
+})
 
 seajs.use('/incs/header/index/index');
