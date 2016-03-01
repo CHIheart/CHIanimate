@@ -1,12 +1,13 @@
+<link rel="stylesheet" href="topcart.css">
 <dl class="TOPCART ng-class:{have:allNums>0};" ng-mouseleave="close();" ng-controller="Ctrl_TopCart">
 	<dt ng-mouseenter="update();"><i class="lcz lcz-cart-{{allNums ? 'full':'empty'}}"></i>购物车(<span ng-bind="allNums">0</span>)</dt>
-	<dd class="TOPCARTLOAD">
+	<dd class="TOPCARTLOAD shadowLarge">
 		<p><i></i>正在读取购物车，请稍候……</p>
 	</dd>
-	<dd class="TOPCARTNONE">
+	<dd class="TOPCARTNONE shadowLarge">
 		<p><i class="lcz lcz-smile"></i>还没有商品，请先购物吧</p>
 	</dd>
-	<dd class="TOPCARTINFO">
+	<dd class="TOPCARTINFO shadowLarge">
 		<ul class="TOPCARTLIST anchors clearfix">
 			<li data-cart-id="{{cart.id}}" data-cart-parent-id="{{cart.parent}}" ng-repeat="cart in carts">
 				<var><a ng-href="{{cart.pro.href}}" target="_blank"><img ng-src="{{cart.pro.img}}" alt="{{cart.pro.title}}"></a></var>
@@ -24,3 +25,4 @@
 		</div>
 	</dd>
 </dl>
+<script src="topcart.js"></script>

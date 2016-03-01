@@ -1,20 +1,28 @@
 <!-- 警告窗或询问窗 -->
-<link rel="stylesheet" href="{STATIC_RESOURCE_URI}/incs/winlit/winlit.css">
-<link rel="stylesheet" href="{STATIC_RESOURCE_URI}/incs/winlit/winlit.css">
-<dl class="WINLIT" ng-controller="CtrlWinlit">
-	<dt>
-		<strong ng-bind="title"></strong>
-		<q ng-click="close();">&times;</q>
-	</dt>
-	<dd>
-		<i class="lcz emotion lcz-{{emotion}}"></i>
-		<div class="tips" ng-bind="content"></div>
-		<div class="btns" ng-show="mode=='ALERT'">
-			<button class="button button-gray button-middle" ng-click="close();">关闭</button>
-		</div>
-		<div class="btns" ng-show="mode=='CONFIRM'">
-			<button class="button button-red button-middle" ng-click="confirm();">确定</button>
-			<button class="button button-white button-middle" ng-click="cancel();">取消</button>
-		</div>
-	</dd>
-</dl>
+<link rel="stylesheet" href="winlit.css">
+<table class="FullScreenPlugin">
+	<tbody>
+		<tr>
+			<td>
+				<dl class="WINLIT" ng-controller="CtrlWinlit">
+					<dt>
+						<strong ng-bind="title"></strong>
+						<q ng-click="close();">&times;</q>
+					</dt>
+					<dd>
+						<i class="lcz emotion lcz-{{emotion}}"></i>
+						<div class="tips" ng-bind="content"></div>
+						<div class="btns" ng-show="mode=='ALERT'">
+							<button class="button button-gray button-middle" ng-click="close();">关闭</button>
+						</div>
+						<div class="btns" ng-show="mode=='CONFIRM'">
+							<button class="button button-red button-middle" ng-click="confirm();">确定</button>
+							<button class="button button-white button-middle" ng-click="cancel();">取消</button>
+						</div>
+					</dd>
+				</dl>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<script src="winlit.js"></script>

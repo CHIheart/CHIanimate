@@ -1,7 +1,7 @@
 /**
  * 顶购物车的单独应用
  */
-define(function(require,exports,module){
+define('topcart',[],function(require,exports,module){
 	angular
 	.module("TopCart",[])
 	.controller('Ctrl_TopCart',['$scope','$timeout','$http',function($scope,$timeout,$http){
@@ -47,7 +47,7 @@ define(function(require,exports,module){
 				timer=$timeout(function(){
 					lock=false;
 				},3000);
-				$http.get("/ajax/header/topcarts.js")
+				$http.get("/ajax/header/topcarts")
 				    .success(function(response) {
 				    	if(response.result)
 				    	{
@@ -95,7 +95,7 @@ define(function(require,exports,module){
 			$scope.$apply();
 
 			$.ajax({
-				url: '/ajax/header/cart_delete.js',
+				url: '/ajax/header/cart_delete',
 				type: 'POST',
 				dataType: 'json',
 				data: {ids: delids},
@@ -107,12 +107,15 @@ define(function(require,exports,module){
 				}
 				else
 				{
-					require.async("../../winlit/winlit",function(result){
-						result(function(){
-							CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
-								ALERT('删除失败',response.message,false);
-							});
+					function delAsk(){
+						CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
+							ALERT('删除失败',response.message,'frown');
 						});
+					}
+					$(".WINLIT").length ? delAsk() :
+					require.async("../../winlit/winlit.html",function(result){
+						$("body").append(result);
+						delAsk();
 					});
 					
 					$scope.close();
@@ -126,3 +129,5 @@ define(function(require,exports,module){
 	}]);
 	angular.bootstrap($('.TOPCART'), ['TopCart']);
 });
+
+seajs.use('topcart');

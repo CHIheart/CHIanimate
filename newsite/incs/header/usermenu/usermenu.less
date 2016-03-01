@@ -2,8 +2,33 @@
 
 @import (reference) "../../../srcs/css/_funs";
 @import (reference) "../../../srcs/css/_theme";
+.TOPLINKS{
+	.t-l();
+	.size(0);
+	> *{
+		.inblock();
+		.valign(top);
+		// .hidden();
+	}
+	.links a{
+		.inblock();
+		.bd-r(1px,solid,@lightgray);
+		.hline(16px);
+		.size();
+		.m(12px,0);
+		.p(0,1.5em);
+		i.lcz{
+			.fl();
+			.m(-2px,.5em,0,0);
+			.size(16px);
+		}
+	}
+}
+
+
 .USERMENU{
 	.t-c();
+	.size();
 	dt,dd em{
 		.c(@deepblack);
 		i.lcz{

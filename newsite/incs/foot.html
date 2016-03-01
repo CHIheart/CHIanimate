@@ -1,13 +1,15 @@
 <!-- 通用脚文件 -->
-<script src="{STATIC_RESOURCE_URI}/srcs/js/libs/jquery.js" data-skip="true"></script>
-<script src="{STATIC_RESOURCE_URI}/srcs/js/libs/seajs.js" data-skip="true"></script>
-<script src="{STATIC_RESOURCE_URI}/srcs/js/libs/angular.js" data-skip="true"></script>
+<script src="/srcs/js/libs/jquery.js" data-skip="true"></script>
+<script src="/srcs/js/libs/seajs.js" data-skip="true"></script>
+<script src="/srcs/js/libs/seajs-text.js" data-skip="true"></script>
+<script src="/srcs/js/libs/angular.js" data-skip="true"></script>
 <script>
-seajs.config({
-	base:"{STATIC_RESOURCE_URI}/",
-	preload: [
-	    Function.prototype.bind ? '' : 'es5-safe',
-	    this.JSON ? '' : 'json'
-	]
-});
+// 暂时不使用顶级路径，各模块在其各自的JS文件中，使用实名，并自调用，或者使用./开头的相对路径
+// seajs.config({
+// 	base:"/",
+// 	preload: [
+// 	    Function.prototype.bind ? '' : 'es5-safe',
+// 	    this.JSON ? '' : 'json'
+// 	]
+// });
 </script>

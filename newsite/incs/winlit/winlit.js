@@ -2,21 +2,25 @@
  * 小提示窗
  */
 
-define(function(require,exports,module){
-	var SCOPE,done;
-	$.ajax({
-		url: './incs/winlit/winlit.html',
-		dataType: 'html',
-	})
-	.success(function(response) {
-		//将模板内容资源替换后加入到页面中
-		//先加CSS，再加HTML，以防页面刷新样式抖动
-		response=response.replace(/\{STATIC_RESOURCE_URI\}/ig,'');
-		var links=response.match(/\<link rel=\"stylesheet\" href=\"[\w\d\-\_\/]+.css\"\>/ig);
-		for(var n=0; n<links.length;n++) response=response.replace(links[n],'');
-		$("body").append(links.join(' '));
-		setTimeout(function(){
-			$("body").append(response);
+define('WINLIT',[],function(require,exports,module){
+	// var done;
+	// $.ajax({
+	// 	url: './incs/winlit/winlit.html',
+	// 	dataType: 'html',
+	// })
+	// .success(function(response) {
+	// 	//将模板内容资源替换后加入到页面中
+	// 	//先加CSS，再加HTML，以防页面刷新样式抖动
+	// 	response=response.replace(/\{STATIC_RESOURCE_URI\}/ig,'');
+	// 	var links=response.match(/\<link rel=\"stylesheet\" href=\"[\w\d\-\_\/]+.css\"\>/ig);
+	// 	if(links){
+	// 		for(var n=0; n<links.length;n++) response=response.replace(links[n],'');	
+	// 		$("body").append(links.join(' '));
+	// 	}
+	// 	setTimeout(function(){
+	// 		$("body").append(response);
+			var WINLIT=$(".WINLIT"),
+				container=WINLIT.closest('.FullScreenPlugin');
 			//自举生成独立应用
 			angular.module('Winlit',[])
 				.controller('CtrlWinlit',['$scope','$timeout',function($scope,$timeout){
@@ -38,10 +42,10 @@ define(function(require,exports,module){
 						},0);
 					}
 					$scope.open=function(){
-						$('.WINLIT').fadeIn();
+						container.fadeIn();
 					}
 					$scope.close=function(){
-						$('.WINLIT').fadeOut();
+						container.fadeOut();
 					}
 					$scope.confirm=$scope.close;
 					$scope.cancel=$scope.close;
@@ -59,12 +63,13 @@ define(function(require,exports,module){
 						$scope.open();
 					}
 				}]);
-			angular.bootstrap($('.WINLIT'), ['Winlit']);
-			SCOPE=angular.element('.WINLIT').scope();
-			done();
-		},100);
-	});
-	return function(f){
-		done ? done() : done=f;
-	}
+			angular.bootstrap(WINLIT, ['Winlit']);
+	// 		done();
+	// 	},100);
+	// });
+	// return function(f){
+	// 	done ? done() : done=f;
+	// }
 });
+
+seajs.use('WINLIT');

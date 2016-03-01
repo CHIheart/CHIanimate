@@ -8,16 +8,17 @@ condition，可选，默认为无，即无条件执行，还可以为可计算�
 variable，可选，默认为$aData，即函数的第二参数本身，还可以为可计算的表达式
 repeat，可选，默认为1，只引入1次，-1是引入N次，直到将变量引用完为止
 */
-define("STATIC_RESOURCE_URI",'http://'.$_SERVER['HTTP_HOST'].'/');
 function parseTemplate($sFilepath,$aData,$sCurPath='')
 {
-	$sFileCompletePath=cal_url($sFilepath);
-	$sFileContent=file_get_contents(STATIC_RESOURCE_URI.$sFileCompletePath);
-	if(!$sFileContent)
+	$sFileCompletePath=PATH_FROM_ROOT.$sCurPath.$sFilepath;
+	if(!file_exists($sFileCompletePath))
 	{
-		echo "File does not exist: {$sFilepath}=>{$sFileCompletePath}<br>";
+		echo "File does not exist: ".$sFileCompletePath."<br>";
 		return '';
 	}
+	$sFileContent=file_get_contents($sFileCompletePath);
+	//替换资源绝对路径
+	$sFileContent=str_replace('{STATIC_RESOURCE_URI}',STATIC_RESOURCE_URI,$sFileContent);
 	if(ON)
 	{
 		echo "<strong>Parse template ".$sFileCompletePath." using data </strong>";
@@ -41,8 +42,7 @@ function parseTemplate($sFilepath,$aData,$sCurPath='')
 				echo 'Signal "include" does not have the attribute "src": '.htmlentities($value).'<br>';
 				continue;
 			}
-			//资源路径基本上都使用与当前文件相对的路径
-			$srcCur=cal_url($sFileCompletePath,$matches[1][0]);
+			$srcCur=$matches[1][0];
 			//读取条件表达式
 			$regCondition='/condition'.$all.'/';
 			preg_match_all($regCondition, $value, $matches);
@@ -140,19 +140,12 @@ function parseTemplate($sFilepath,$aData,$sCurPath='')
 			return '';
 		}
 		foreach ($aKeys as $key => $value) {
+			//echo 'variable <var>'.$aVars[$key].'</var> has value: '. $aData[$value] .'<br>';
 			$sFileContent=str_replace($aVars[$key], $aData[$value], $sFileContent);
 		}
 	}
 
-	//整理页面中的链接/资源路径，可能是CSS/JS/A/媒体等
-	$links='/(href|src)\=\"([\w\d\.\-\/]+)\"/i';
-	preg_match_all($links, $sFileContent, $matches);
-	foreach ($matches[0] as $key => $value) {
-		$url=$matches[1][$key].'="'.cal_url($sFileCompletePath,$matches[2][$key]).'"';
-		$sFileContent=str_replace($value, $url, $sFileContent);
-	}
-
-	//如果是第一层，即最终输出页面，则整理css及js位置，放到头/体闭合标签之前
+	//如果是第一层，即最终输出页面，则整理css及js位置
 	if($sCurPath==='')
 	{
 		//读取CSS放到</head>标签之前
@@ -182,45 +175,4 @@ function clear($str)
 //判断数组是否为关联数组
 function is_assoc($arr) {
     return is_array($arr) && array_keys($arr) != range(0, count($arr) - 1);  
-}
-//计算成干净的URL，站点跟路径的话，直接返回原路径，如果是相对路径的话，则需要计算
-function cal_url($baseUrl,$relUrl=''){
-	//因为最主要是要计算后边的资源路径，所以先判断资源路径，再判断基本路径（引用资源的这个html文件）
-	if(strlen($relUrl)>0)
-	{
-		if(!need($relUrl[0])) return $relUrl;
-	}
-	elseif(!need($baseUrl[0])) return $baseUrl;
-	// if(strlen($relUrl)>0 && $relUrl[0]=='/') return $relUrl;
-	// if(strlen($baseUrl)>0 && $baseUrl[0]=='/') return $baseUrl;
-	$regFileName='/[\w\d\-\_]+\.(html|js|css)/i';
-	preg_match_all($regFileName, $baseUrl, $matches);
-	$matches=$matches[0];
-	$basePath=count($matches) && $relUrl!=='' ? str_replace($matches[0], '', $baseUrl) : $baseUrl;
-	$absUrl=$basePath.$relUrl;
-	$absUrl=str_replace('//', '/', $absUrl);
-	$urlarr=explode('/', $absUrl);
-	foreach ($urlarr as $key => $value) {
-		switch($value){
-			case '..'://删除当前及前一个
-				unset($urlarr[$key-1]);
-			case '.'://删除当前这个
-				unset($urlarr[$key]);
-		}
-	}
-	$url=implode('/', $urlarr);
-	if(need($url)) $url='/'.$url;
-	return $url;
-}
-//不需要计算的路径，以http/https或/开头的路径名
-function need($url){
-	return !preg_match('/^(http[s]?|\/)/i', $url);
-}
-
-/**
- * 调用插件，将插件的HTML与JS/CSS写在一起，再返回来
- */
-
-function load_plugin($plugin_src){
-	
-}
+}  

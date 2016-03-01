@@ -7,7 +7,18 @@
 //相对路径变量
 @relativePath:  ;
 
-
+//全屏插件容器
+.FullScreenPlugin{
+	.none();
+	.fixed();
+	.lt();
+	.wh(100%);
+	.bg-c-a(black,.8);
+	> tbody > tr> td{
+		.valign();
+		.t-c();
+	}
+}
 
 //按钮样式
 .button:extend(.transSlow){
