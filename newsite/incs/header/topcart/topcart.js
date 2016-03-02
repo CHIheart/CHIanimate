@@ -79,52 +79,56 @@ define('topcart',[],function(require,exports,module){
 		//删除一条
 		$(".TOPCARTINFO").on('click', 'i.lcz-times', function(event) {
 			event.preventDefault();
-			var li=$(this).closest('li'),
-				cartid=li.data("cart-id"),
-				parentid=li.data('cart-parent-id'),
-				delids=[],
-				cart;
-			for(var n=carts.length-1; n>=0; n--)
-			{
-				cart=carts[n];
-				// 1.当前记录
-				// 2.当前记录的附加记录
-				(cart.id==cartid || cart.parent==cartid) && (carts.splice(n,1),delids.push(cart.id));
-			}
-			calculate();
-			$scope.$apply();
+			var THIS=this;
+			function delAsk(){
+				CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
+					var li=$(THIS).closest('li'),
+						cartid=li.data("cart-id"),
+						parentid=li.data('cart-parent-id'),
+						delids=[],
+						cart;
+					for(var n=carts.length-1; n>=0; n--)
+					{
+						cart=carts[n];
+						// 1.当前记录
+						// 2.当前记录的附加记录
+						(cart.id==cartid || cart.parent==cartid) && (carts.splice(n,1),delids.push(cart.id));
+					}
+					calculate();
+					$scope.$apply();
 
+					$.ajax({
+						url: '/ajax/header/cart_delete',
+						type: 'POST',
+						dataType: 'json',
+						data: {ids: delids},
+					})
+					.success(function(response) {
+						if(response.result)
+						{
+							CONFIRM.close();
+						}
+						else
+						{
+							ALERT('删除失败',response.message,'frown');
+						}
+					});
+					li=cart=delids=null;
+				});
+			}
+			$(".WINLIT").length ? delAsk() :
 			$.ajax({
-				url: '/ajax/header/cart_delete',
-				type: 'POST',
-				dataType: 'json',
-				data: {ids: delids},
+				url: '/ajax/loadPlugin.php',
+				type: 'GET',
+				dataType: 'html',
+				data: {plugin: 'winlit'},
 			})
 			.success(function(response) {
-				if(response.result)
-				{
-					//成功删除
-				}
-				else
-				{
-					function delAsk(){
-						CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
-							ALERT('删除失败',response.message,'frown');
-						});
-					}
-					$(".WINLIT").length ? delAsk() :
-					require.async("../../winlit/winlit.html",function(result){
-						$("body").append(result);
-						delAsk();
-					});
-					
-					$scope.close();
-				}
-			})
-			.error(function() {
-				console.error(url);
+				$("body").append(response);
+				delAsk();
 			});
-			li=cart=delids=null;
+			
+			$scope.close();
 		});
 	}]);
 	angular.bootstrap($('.TOPCART'), ['TopCart']);

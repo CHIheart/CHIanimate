@@ -2,6 +2,8 @@
  * 首页独立JS
  */
 
-define(function(require,exports,module){
+define('index',[],function(require,exports,module){
 	return ;
 });
+
+seajs.use('index');
