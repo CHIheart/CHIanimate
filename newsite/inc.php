@@ -1,4 +1,5 @@
 <?php
+include "jsmin.php";
 /*
 解析嵌套文件格式
 <!--include src="footer.html" repeat="2" variable="$aData" condition="count($aData)"-->
@@ -9,47 +10,52 @@ variable，可选，默认为$aData，即函数的第二参数本身，还可以
 repeat，可选，默认为1，只引入1次，-1是引入N次，直到将变量引用完为止
 */
 define("STATIC_RESOURCE_URI",'http://'.$_SERVER['HTTP_HOST']);
-if(!defined('ON')) define('ON', false);
+define("WEB_ROOT_AT_DISK",$_SERVER['DOCUMENT_ROOT']);
+//最后一步解析模板
 function parseTemplate($sFilepath,$aData)
 {
 	$sFileContent=traverseTemplate($sFilepath,$aData);
+	//这两段虽然可以，但先不要缩，有可能规则会改变
 	//如果是第一层，即最终输出页面，则整理css及js位置，放到头/体闭合标签之前
 	//读取CSS放到</head>标签之前
-	$regCss='/\<link rel\=\"stylesheet\" href\=\"[\w\d\.\-\/]+\.css\"\>/i';
+	$regCss='/\<link rel\=\"stylesheet\" href\=\"([\w\d\.\-\/\?\#]+\.css)\"\>/i';
 	preg_match_all($regCss, $sFileContent, $matches);
-	$matches=$matches[0];
-	foreach ($matches as $value) {
+	//如果被包含的碎片含有重复的CSS/JS资源的话，去重复
+	$matches[0]=array_unique($matches[0]);
+	$matches[1]=array_unique($matches[1]);
+	foreach ($matches[0] as $key => $value) {
+		//这句会把重复的资源都清掉
 		$sFileContent=str_replace($value,'',$sFileContent);
+		$src=$matches[1][$key];
+		$value=str_replace($src, STATIC_RESOURCE_URI.$src, $value);
+		//但这句只会插入一次整理过路径的资源
 		$sFileContent=str_replace('</head>', $value.PHP_EOL.'</head>', $sFileContent);
 	}
 	//读取JS放到</body>标签之前
-	$regJs='/\<script src\=\"[\w\d\.\-\/]+\.js\"\>\<\/script\>/i';
+	$regJs='/\<script src\=\"([\w\d\.\-\/\?\#]+\.js)\"\>\<\/script\>/i';
 	preg_match_all($regJs, $sFileContent, $matches);
-	$matches=$matches[0];
-	foreach ($matches as $value) {
+	$matches[0]=array_unique($matches[0]);
+	$matches[1]=array_unique($matches[1]);
+	foreach ($matches[0] as $key => $value) {
 		$sFileContent=str_replace($value,'',$sFileContent);
+		$src=$matches[1][$key];
+		$value=str_replace($src, STATIC_RESOURCE_URI.$src, $value);
 		$sFileContent=str_replace('</body>', $value.PHP_EOL.'</body>', $sFileContent);
 	}
 	return $sFileContent;
 }
-
+//递归读取模板并写入动态数据
 function traverseTemplate($sFilepath,$aData)
 {
 	$sFileCompletePath=calculateUrl($sFilepath);
-	$sFileContent=file_get_contents(STATIC_RESOURCE_URI.$sFileCompletePath);
+	$sFileContent=getContents($sFileCompletePath);
 	if(!$sFileContent)
 	{
 		echo "File does not exist: {$sFilepath}=>{$sFileCompletePath}<br>";
 		return '';
 	}
-	if(ON)
-	{
-		echo "<strong>Parse template ".$sFileCompletePath." using data </strong>";
-		var_dump($aData);
-		echo "<br>";
-	}
 	//遍历所有include标志，来读取子文件嵌套
-	$regIncludes='/<!--[\s]*include[\s\S]+?-->/i';
+	$regIncludes='/<!-- include[\s\S]+? -->/i';
 	preg_match_all($regIncludes, $sFileContent, $matches);
 	$matches=$matches[0];
 	if(count($matches))
@@ -137,6 +143,8 @@ function traverseTemplate($sFilepath,$aData)
 					$repeats=min($repeats,count($aCurData));
 					for($n=0;$n<$repeats;$n++)
 					{
+						//将索引号写入数据中，以便进行有索引区分的判断
+						$aCurData[$n]['index']=$n;
 						$parsedString[]=traverseTemplate($srcCur,$aCurData[$n]);
 					}
 					$parsedString=implode('', $parsedString);
@@ -147,12 +155,6 @@ function traverseTemplate($sFilepath,$aData)
 	//使用变量解析文件，并填充内容
 	$regVars='/\{\$([\w\d_][\w\d_]*)\}*/i';
 	preg_match_all($regVars, $sFileContent, $matches);
-	if(ON)
-	{
-		echo "<i>Parsing {$sFilepath} normal variables including </i>";
-		var_dump($matches);
-		echo "<br>";
-	}
 	if(count($matches)==2)
 	{
 		$aVars=$matches[0];
@@ -163,6 +165,8 @@ function traverseTemplate($sFilepath,$aData)
 			return '';
 		}
 		foreach ($aKeys as $key => $value) {
+			//此处当变量不存在时，选择不报错，直接忽略（后边的模板打包时要用到）
+			if(!isset($aData[$value])) continue;
 			//PHP没办法直接输出true跟false，只能这么写
 			$goalValue=$aData[$value];
 			$goalValue=$goalValue===true ? 'true' : ($goalValue===false ? 'false' : $goalValue);
@@ -171,7 +175,7 @@ function traverseTemplate($sFilepath,$aData)
 	}
 
 	//整理页面中的资源路径，可能是CSS/JS/img/媒体等
-	$regResource='/(\<(?:link|script)[^\>]+)((?:href|src)\=\")([\w\d\.\-\/]+)(\"[^\>]*[\/]?\>)/i';
+	$regResource='/(\<(?:link|script)[^\>]+)((?:href|src)\=\")([\w\d\.\-\/\?\#]+)(\"[^\>]*[\/]?\>)/i';
 	preg_match_all($regResource, $sFileContent, $matches);
 	foreach ($matches[0] as $key => $value) {
 		$url=$matches[1][$key].$matches[2][$key].calculateUrl($sFileCompletePath,$matches[3][$key]).$matches[4][$key];
@@ -179,7 +183,79 @@ function traverseTemplate($sFilepath,$aData)
 	}
 	//a标签的链接不处理，以后台给出的数据为准
 
+	//查看文件是否需要强写缓存文件，如果是cache目录中的文件不会带有此标志，因为在生成文件时已经被删除
+	$sign='<!-- SIGN FOR CACHE -->';
+	if(strpos($sFileContent, $sign)!==false)
+	{
+		//先正则CSS，生成合并文件及新文件名
+		$regCss='/\<link rel\=\"stylesheet\" href\=\"([\w\d\.\-\/\?\#]+\.css)\"\>/i';
+		$aFileNames=array();
+		$aFileCnts=array();
+		preg_match_all($regCss, $sFileContent, $matches);
+		foreach ($matches[1] as $key => $value) {
+			$aFileNames[]=str_replace(".css", '', $value);
+			$aCurCnt=getContents($value);
+			//读取内容后，要把资源路径计算出来，不然统一移动的时候，会不知道哪个资源是相对于哪个样式表文件的
+			$regUrl='/url\(\"?([^\(\)\'\"]+)\)/i';
+			preg_match_all($regUrl, $aCurCnt, $matches2);
+			foreach ($matches2[1] as $src) {
+				//字体文件会自带查询串，这是不重要的，可以抹掉它们，再加入当前的MD5戳
+				$newsrc=preg_replace('/\?[^\'\"\)]+/i', '', $src);
+				//计算资源相对于当前CSS文件的绝对路径
+				$newsrc=STATIC_RESOURCE_URI.calculateUrl($value,$newsrc);
+				//给资源加上MD5戳
+				$newsrc.='?'.substr(md5_file($newsrc),0,6);
+				//将CSS代码中的这个资源替换成绝对且带有MD5戳的地址
+				$aCurCnt=str_replace($src, $newsrc, $aCurCnt);
+			}
+			$aFileCnts[]=$aCurCnt;
+		}
+		//新文件名，是所有包的基本名用下划线连接之后，再加.css
+		$sPkgName='/cache' .implode('_', $aFileNames) . '.css';
+		$sPkgName=STATIC_RESOURCE_URI.$sPkgName;
+		$sCssCnt=implode('', $aFileCnts);
+		echo "<h1>写资源{$sPkgName}</h1>";
+		// echo "<blockquote>". htmlspecialchars($sCssCnt) ."</blockquote>";
+		
+		//然后正则JS，生成合并文件及新文件名
+		$regJs='/\<script src\=\"([\w\d\.\-\/]+\.js)\"\>\<\/script\>/i';
+		$aFileNames=array();
+		$aFileCnts=array();
+		preg_match_all($regJs, $sFileContent, $matches);
+		foreach ($matches[1] as $key => $value) {
+			$aFileNames[]=str_replace(".js", '', $value);
+			$aFileCnts[]=getContents($value);
+		}
+		$sPkgName='/cache' .implode('_', $aFileNames) . '.js';
+		$sPkgName=STATIC_RESOURCE_URI.$sPkgName;
+		echo "<h1>写资源{$sPkgName}</h1>";
+		$sJsMinCnt=implode('', $aFileCnts);
+		if(strpos($sPkgName, '/lib')===false) $sJsMinCnt=JSMin::minify($sJsMinCnt);
+		// echo "<blockquote>". ($sJsMinCnt) ."</blockquote>";
+
+		//清除强缓存标志
+		$sFileContent=str_replace($sign, '', $sFileContent);
+		$cacheSrc= STATIC_RESOURCE_URI."/cache".$sFileCompletePath;
+		echo "<h1>最后生成{$cacheSrc}</h1>";
+	}
 	return $sFileContent;
+}
+//以站点根目录为基准，写一个文件，如果非以/开头会被补上/
+function writeFile($absUrl,$cnt){
+	if($absUrl[0]!='/') $absUrl='/'.$absUrl;
+	$file=@fopen(WEB_ROOT_AT_DISK.$absUrl,'a');
+	if(!$file){
+		$arr=explode('/', $absUrl);
+		$path=WEB_ROOT_AT_DISK;
+		for($n=0;$n<count($arr)-1;$n++)
+		{
+			$path.='/'.$arr[$n];
+			if(!is_dir($path)) @mkdir($path);
+		}
+		$file=@fopen(WEB_ROOT_AT_DISK.$absUrl,'a');
+	}
+	@file_put_contents(WEB_ROOT_AT_DISK.$absUrl, $cnt);
+	return $cnt;
 }
 //清除反斜线
 function clearBackslash($str)
@@ -204,21 +280,42 @@ function calculateUrl($baseUrl,$relUrl=''){
 	$absUrl=$basePath.$relUrl;
 	$absUrl=str_replace('//', '/', $absUrl);
 	$urlarr=explode('/', $absUrl);
-	foreach ($urlarr as $key => $value) {
+	$newarr=array();
+	foreach ($urlarr as $value) {
 		switch($value){
 			case '..'://删除当前及前一个
-				if($key>0) unset($urlarr[$key-1]);
+				array_pop($newarr);
+				break;
 			case '.'://删除当前这个
-				unset($urlarr[$key]);
+				break;
+			default:
+				$newarr[]=$value;
 		}
 	}
-	$url=implode('/', $urlarr);
+	$url=implode('/', $newarr);
 	if(needCalculate($url)) $url='/'.$url;
 	return $url;
 }
 //不需要计算的路径，以http/https或/开头的路径名
 function needCalculate($url){
 	return !preg_match('/^(http[s]?|\/)/i', $url);
+}
+//加上静态资源标识后，获取文件内容，优先获取生成的静态文件
+function getContents($sFile){
+	foreach (array('/cache','') as $value) {
+		$url=STATIC_RESOURCE_URI.$value.$sFile;
+		$content=@file_get_contents($url);
+		if($content) return $content;
+	}
+	return false;
+	// $url=STATIC_RESOURCE_URI.'/cache'.$sFile;
+	// $content=@file_get_contents($url);
+	// if(!$content)
+	// {
+	// 	$url=STATIC_RESOURCE_URI.$sFile;
+	// 	$content=@file_get_contents($url);
+	// }
+	// return $content;
 }
 
 /**
@@ -227,24 +324,18 @@ function needCalculate($url){
  */
 function loadPlugin($plugin){
 	$sFileCompletePath="/incs/{$plugin}/{$plugin}.html";
-	$sFileContent=file_get_contents(STATIC_RESOURCE_URI.$sFileCompletePath);
+	$sFileContent=getContents($sFileCompletePath);
 	if(!$sFileContent)
 	{
 		echo "File does not exist: {$sFilepath}=>{$sFileCompletePath}<br>";
 		return '';
-	}
-	if(ON)
-	{
-		echo "<strong>Parse template ".$sFileCompletePath." using data </strong>";
-		var_dump($aData);
-		echo "<br>";
 	}
 	//读取CSS放到<style></style>标签之内
 	$regCss='/\<link rel\=\"stylesheet\" href\=\"([\w\d\.\-\/]+\.css)\"\>/i';
 	preg_match_all($regCss, $sFileContent, $matches);
 	foreach ($matches[0] as $key => $value) {
 		$srcPath=calculateUrl($sFileCompletePath,$matches[1][$key]);
-		$srcContent=@file_get_contents(STATIC_RESOURCE_URI.$srcPath);
+		$srcContent=getContents($srcPath);
 		if(!$srcContent)
 		{
 			echo "File does not exist: {$srcPath}=>{$matches[1][$key]}<br>";
@@ -256,7 +347,7 @@ function loadPlugin($plugin){
 	preg_match_all($regJs, $sFileContent, $matches);
 	foreach ($matches[0] as $key => $value) {
 		$srcPath=calculateUrl($sFileCompletePath,$matches[1][$key]);
-		$srcContent=@file_get_contents(STATIC_RESOURCE_URI.$srcPath);
+		$srcContent=getContents($srcPath);
 		if(!$srcContent)
 		{
 			echo "File does not exist: {$srcPath}=>{$matches[1][$key]}<br>";

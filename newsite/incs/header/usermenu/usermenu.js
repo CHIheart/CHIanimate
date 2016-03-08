@@ -13,11 +13,11 @@ define('usermenu',[],function(require,exports,module){
 	});
 
 	//根据用户登陆状态来判断显示菜单的哪一部分
-	angular.module("TopLinks",[])
-		.controller("CtrlTopLinks",['$scope',function($scope){
+	angular.module("TOPLINKS",[])
+		.controller("Ctrl_TOPLINKS",['$scope',function($scope){
 			//$scope.online=false;
 		}]);
-	angular.bootstrap($(".TOPLINKS"),['TopLinks']);
+	angular.bootstrap($(".TOPLINKS"),['TOPLINKS']);
 	$(".TOPLINKS .links,.USERMENU").css({
 		visibility: 'visible'
 	})

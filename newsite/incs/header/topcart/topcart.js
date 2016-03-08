@@ -3,8 +3,8 @@
  */
 define('topcart',[],function(require,exports,module){
 	angular
-	.module("TopCart",[])
-	.controller('Ctrl_TopCart',['$scope','$timeout','$http',function($scope,$timeout,$http){
+	.module("TOPCART",[])
+	.controller('Ctrl_TOPCART',['$scope','$timeout','$http',function($scope,$timeout,$http){
 		//购物车列表
 		$scope.carts=[
 			// {
@@ -131,7 +131,7 @@ define('topcart',[],function(require,exports,module){
 			$scope.close();
 		});
 	}]);
-	angular.bootstrap($('.TOPCART'), ['TopCart']);
+	angular.bootstrap($('.TOPCART'), ['TOPCART']);
 });
 
 seajs.use('topcart');
