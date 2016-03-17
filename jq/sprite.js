@@ -114,7 +114,7 @@ define(function(require,exports,module){
 						n+=SPRITE.step
 						: iLoop ?
 							(n=0,iLoop--,funs.loop(iLoop))
-							: SPRITE.stop(1),funs.played();
+							: (SPRITE.stop(1),funs.played());
 				},piSpeed);
 				return this;
 			},
@@ -128,7 +128,7 @@ define(function(require,exports,module){
 						n-=SPRITE.step
 						: iLoop ?
 							(n=0,iLoop--,funs.loop(iLoop))
-							: SPRITE.stop(-1),funs.rewound();
+							: (SPRITE.stop(-1),funs.rewound());
 				},piSpeed);
 				return this;
 			},
