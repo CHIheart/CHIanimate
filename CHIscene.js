@@ -1,4 +1,4 @@
-define(function(require,exports,module){
+(function(){
 	var sWays = 'fold-left,fold-right,fold-top,fold-bottom,fold-lefttop,fold-leftbottom,fold-righttop,fold-rightbottom,fold-vertical,fold-horizontal,slide-left,slide-right,slide-top,slide-bottom,slide-lefttop,slide-leftbottom,slide-righttop,slide-rightbottom,fade,shrink,static,toggle-left,toggle-right,toggle-top,toggle-bottom,toggle-lefttop,toggle-leftbottom,toggle-righttop,toggle-rightbottom',
 		sEasings = 'swing,easeInQuad,easeOutQuad,easeInOutQuad,easeInCubic,easeOutCubic,easeInOutCubic,easeInQuart,easeOutQuart,easeInOutQuart,easeInQuint,easeOutQuint,easeInOutQuint,easeInSine,easeOutSine,easeInOutSine,easeInExpo,easeOutExpo,easeInOutExpo,easeInCirc,easeOutCirc,easeInOutCirc,easeInElastic,easeOutElastic,easeInOutElastic,easeInBack,easeOutBack,easeInOutBack,easeInBounce,easeOutBounce,easeInOutBounce';
 
@@ -118,10 +118,10 @@ define(function(require,exports,module){
 				isEasing(easing) && (sOutEasing = easing);
 				break;
 			case 'outWay':
-				isWay(value) && (outWay = value);
+				isWay(value) && (sOutWay = value);
 				break;
 			case 'outEasing':
-				isEasing(value) && (outEasing = easing);
+				isEasing(value) && (sOutEasing = easing);
 				break;
 			case 'duration':
 			case 'time':
@@ -376,6 +376,5 @@ define(function(require,exports,module){
 		oResult.constructor = CHIscene;
 		return oResult;
 	}
-	return CHIscene;
-});
-
+	window.CHIscene=CHIscene;
+})();

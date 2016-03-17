@@ -16,7 +16,7 @@
 	出场前执行复位动作
 
 */
-define(function(require,exports,module){
+(function(){
 	var sWays = 'fold-left,fold-right,fold-top,fold-bottom,fold-lefttop,fold-leftbottom,fold-righttop,fold-rightbottom,fold-vertical,fold-horizontal,slide-left,slide-right,slide-top,slide-bottom,slide-lefttop,slide-leftbottom,slide-righttop,slide-rightbottom,fade,shrink,static,toggle-left,toggle-right,toggle-top,toggle-bottom,toggle-lefttop,toggle-leftbottom,toggle-righttop,toggle-rightbottom',
 		sEasings = 'swing,easeInQuad,easeOutQuad,easeInOutQuad,easeInCubic,easeOutCubic,easeInOutCubic,easeInQuart,easeOutQuart,easeInOutQuart,easeInQuint,easeOutQuint,easeInOutQuint,easeInSine,easeOutSine,easeInOutSine,easeInExpo,easeOutExpo,easeInOutExpo,easeInCirc,easeOutCirc,easeInOutCirc,easeInElastic,easeOutElastic,easeInOutElastic,easeInBack,easeOutBack,easeInOutBack,easeInBounce,easeOutBounce,easeInOutBounce';
 
@@ -38,7 +38,7 @@ define(function(require,exports,module){
 		return str;
 	}
 	
-	return function CHIstage() {
+	function CHIstage() {
 		var aScenes = [],
 			oResult = {
 				inWay: '',
@@ -105,6 +105,7 @@ define(function(require,exports,module){
 		oResult.push = function(oScene) {
 			var ind = $.inArray(oScene, aScenes);
 			if (ind == -1) aScenes.push(oScene);
+			oScene.stage = this;
 			return oResult;
 		}
 		oResult.pull = function(oScene) {
@@ -184,6 +185,15 @@ define(function(require,exports,module){
 		oResult.locked = function() {
 			return bLock;
 		}
+		oResult.lock = function(){
+			bLock = true;
+			return this;
+		}
+		oResult.unlock = function(){
+			bLock = false;
+			return this;
+		}
 		return oResult;
 	}
-});
+	window.CHIstage=CHIstage;
+})();

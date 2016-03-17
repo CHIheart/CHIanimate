@@ -1,4 +1,4 @@
-define(function(require,exports,module) {
+(function(){
 	//必须包含jQuery或Raphael之一
 	var hasJQuery = typeof $ != 'undefined',
 		hasRaphael = typeof Raphael != 'undefined';
@@ -424,8 +424,9 @@ define(function(require,exports,module) {
 		oResult.constructor = CHIanimate;
 		return oResult;
 	}
-	return CHIanimate;
-});
+	window.CHIanimate=CHIanimate;
+})();
+
 
 /*
 sJQorObj，要执行效果的选择器，至少要符合一个元素；或直接放入JQ对象或Raphael对象/集合
