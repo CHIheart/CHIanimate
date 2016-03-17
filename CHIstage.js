@@ -142,19 +142,17 @@
 			return this;
 		}
 		oResult.next = function() {
-			oResult.play(niCurrent + 1);
+			niCurrent!=aScenes.length-1 && oResult.play(niCurrent + 1);
 			return this;
 		}
 		oResult.prev = function() {
-			oResult.play(niCurrent - 1);
+			niCurrent && oResult.play(niCurrent - 1);
 			return this;
 		}
 		oResult.wheel = function(bool) {
 			$(document)[bool ? 'on' : 'off']('mousewheel', function(event) {
-				var delta = event.deltaY;
-				if (delta > 0) oResult.prev();
-				else oResult.next();
 				event.preventDefault();
+				oResult[event.deltaY > 0 ? "prev" : "next"]();
 			});
 			return this;
 		}
