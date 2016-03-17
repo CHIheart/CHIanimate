@@ -59,12 +59,8 @@
 			piLock = 2;
 
 			var sceneThis = aScenes[niCurrent],
-				sceneNext = aScenes[index]/*,
-				inWay = this.inWay && (',' + sWays + ',').indexOf(',' + this.inWay + ',') >= 0 ? this.inWay : random(sWays),
-				outWay = this.outWay && (',' + sWays + ',').indexOf(',' + this.outWay + ',') >= 0 ? this.outWay : opposite(inWay)*/;
-
-			//sceneThis.set('out', outWay);
-			//sceneNext.set('in', inWay);
+				sceneNext = aScenes[index],
+				bRewind = niCurrent > index;
 
 			function nextStart() { //入场帧的开始动作
 				piLock--;
@@ -85,9 +81,9 @@
 				if (sceneNext.saveAfterOut) sceneNext.on();
 				sceneNext.show();
 				if (sceneNext.readyBeforeIn) sceneNext.ready();
-				sceneNext.runin(nextStart);
+				sceneNext.runin(bRewind, nextStart);
 				//出场帧出场，然后触发入场帧的开始动作，再判断出场帧的节省模式
-				sceneThis.runout(function() {
+				sceneThis.runout(bRewind, function() {
 					nextStart();
 					sceneThis[sceneThis.saveAfterOut ? 'off' : 'hide']();
 				});

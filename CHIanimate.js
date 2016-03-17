@@ -164,7 +164,7 @@
 					if (!a && b == y || a && y + b >= 0 && (y - b / a) >= 0) {
 						for (var x = 0; x < events[nums].length; x++)
 							for (var x = 0; x < events[nums].length; x++)
-								events[num][x] instanceof Function && events[nums][x].call(object, niCounter);
+								events[nums][x] instanceof Function && events[nums][x].call(object, niCounter)
 						//删除固定序号及负系数到达上限的元素，以节省资源
 						if (!a && b == y || a < 0 && y >= b) delete(events[nums]);
 					}

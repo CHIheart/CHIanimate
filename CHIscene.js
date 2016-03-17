@@ -46,16 +46,22 @@
 
 		if (!$(sJQcontainer).size()) return false;
 		if (!oOptions) oOptions = {};
-		var piDuration = isPos(oOptions.duration) ? oOptions.duration : 1e3,
+		var defaultSettings={
 			//每次切帧时的耗时（毫秒）
-			sInWay = isWay(oOptions.inWay) ? oOptions.inWay : 'slide-left',
-			//本帧的入场方式
-			sInEasing = isEasing(oOptions.inEasing) ? oOptions.inEasing : 'swing',
-			//本帧入场时的easing方法
-			sOutWay = isWay(oOptions.outWay) ? oOptions.outWay : 'slide-left',
-			//本帧的出场方式
-			sOutEasing = isEasing(oOptions.outEasing) ? oOptions.outEasing : 'swing',
-			//本帧出场时的easing方法
+			duration:1e3,
+			//本帧从前边帧入场的方式
+			inFromPrevWay:'slide-left',
+			inFromPrevEasing:'swing',
+			//本帧从后边帧入场的方式
+			inFromNextWay:'slide-left',
+			inFromNextEasing:'swing',
+			//本帧向前边帧出场的方式
+			outToPrevWay:'slide-left',
+			outToPrevEasing:'swing',
+			//本帧向后边帧出场的方式
+			outToNextWay:'slide-left',
+			outToNextEasing:'swing',
+		},
 			aCollections = [],
 			//本帧的动画集合，方便执行各动画的stop过程
 			oJQscene = $(sJQcontainer),
@@ -73,7 +79,7 @@
 		
 
 	/*
-		设置上边的若干变量
+		设置上边的defaultSettings的键值
 		可以使用"名称，值"双参数
 		也可以使用键值对对象作为参数
 		
@@ -88,45 +94,13 @@
 		*/
 		function set(name, value) {
 			switch (name) {
-			case 'in':
-				var way, easing = '';
-				var way, easing = '';
-				if (value.indexOf(',') > 0) {
-					var arr = value.split(',');
-					way = arr[0];
-					easing = arr[1];
-					arr = null;
-				} else way = value;
-				isWay(way) && (sInWay = way);
-				isEasing(easing) && (sInEasing = easing);
-				break;
-			case 'inWay':
-				isWay(value) && (sInWay = value);
-				break;
-			case 'inEasing':
-				isEasing(value) && (sInEasing = easing);
-				break;
-			case 'out':
-				var way, easing = '';
-				if (value.indexOf(',') > 0) {
-					var arr = value.split(',');
-					way = arr[0];
-					easing = arr[1];
-					arr = null;
-				} else way = value;
-				isWay(way) && (sOutWay = way);
-				isEasing(easing) && (sOutEasing = easing);
-				break;
-			case 'outWay':
-				isWay(value) && (sOutWay = value);
-				break;
-			case 'outEasing':
-				isEasing(value) && (sOutEasing = easing);
-				break;
-			case 'duration':
-			case 'time':
-				isPos(value) && (piDuration = parseInt(value));
-				break;
+				case 'duration':
+				case 'time':
+					isPos(value) && (piDuration = parseInt(value));
+					break;
+				default:
+					if(name in defaultSettings) defaultSettings[name]=value;
+					else console.error("不可识别的设置：",name);
 			}
 		}
 		oResult.set = function() {
@@ -145,29 +119,26 @@
 			return oResult;
 		}
 		oResult.set(oOptions);
+		//默认用来衔接各个动作的最基本方法
+		var defaultAction=function(fCallback) {
+			if ($.isFunction(fCallback)) fCallback();
+		};
 		//初始化动作，正常情况下只执行一次
-		oResult.init = function(fCallback) {
-			if ($.isFunction(fCallback)) fCallback();
-		}
+		oResult.init = defaultAction;
 		//准备动作，通常全部为瞬间完成的方法
-		oResult.ready = function(fCallback) {
-			if ($.isFunction(fCallback)) fCallback();
-		}
+		oResult.ready = defaultAction;
 		//停止动作，通常全部为瞬间完成的方法
-		oResult.stop = function(fCallback) {
-			if ($.isFunction(fCallback)) fCallback();
-		}
+		oResult.stop = defaultAction;
 		//开始动作，在准备动作之后执行，通常为动画型方法
-		oResult.start = function(fCallback) {
-			if ($.isFunction(fCallback)) fCallback();
-		}
+		oResult.start = defaultAction;
 		//完成动作，在停止动作之后执行，通常为动画型方法
-		oResult.over = function(fCallback) {
-			if ($.isFunction(fCallback)) fCallback();
-		}
+		oResult.over = defaultAction;
 		//复位动作，在开始动作之后执行，通常为动画型方法
-		oResult.reset = function(fCallback) {
-			if ($.isFunction(fCallback)) fCallback();
+		oResult.reset = defaultAction;
+		//将某个动作置为默认方法
+		oResult.drop = function(action){
+			action in oResult && (oResult[action]=defaultAction);
+			return this;
 		}
 
 		function InOut(sWay, sEasing, bOut, fCallback) {
@@ -179,6 +150,7 @@
 				bVertical = sWay.indexOf('vertical') >= 0,
 				bHorizontal = sWay.indexOf('horizontal') >= 0,
 				bShrink = sWay == 'shrink',
+				piDuration = defaultSettings.duration,
 			oCss = {
 				zIndex: bOut ? 2 : 1
 			}, oAnimate = {};
@@ -325,32 +297,21 @@
 				}
 			}
 		}
-		//入场动作，可以放回调函数，easing方法名，way名
-		oResult.runin = function() {
-			var arg = arguments,
-				sWay = sInWay,
-				sEasing = sInEasing,
-				fCallback = $.noop;
-			for (var i = 0; i < arg.length; i++) {
-				var x = arg[i];
-				if ($.isFunction(x)) fCallback = x;
-				else if (isWay(x)) sWay = x;
-				else if (isEasing(x)) sEasing = x;
-			}
+		/*
+		出入场动作，可以使用的参数有
+		1.Bollean，反向进/出场（默认从前帧进为false，从后帧进为true）或出场目标（到之前帧为true，默认到之后帧为false）
+		2.Function，回调函数
+		*/
+		//入场动作
+		oResult.runin = function(bRewind,fCallback) {
+			var sWay = defaultSettings[bRewind ? "inFromNextWay" : "inFromPrevWay"],
+				sEasing = defaultSettings[bRewind ? "inFromNextEasing" : "inFromPrevEasing"];
 			InOut(sWay, sEasing, false, fCallback);
 		}
-		//出场动作，可以放回调函数，easing方法名，way名
-		oResult.runout = function() {
-			var arg = arguments,
-				sWay = sOutWay,
-				sEasing = sOutEasing,
-				fCallback = $.noop;
-			for (var i = 0; i < arg.length; i++) {
-				var x = arg[i];
-				if ($.isFunction(x)) fCallback = x;
-				else if (isWay(x)) sWay = x;
-				else if (isEasing(x)) sEasing = x;
-			}
+		//出场动作
+		oResult.runout = function(bRewind,fCallback) {
+			var sWay = defaultSettings[bRewind ? "outToPrevWay" : "outToNextWay"],
+				sEasing = defaultSettings[bRewind ? "outToPrevEasing" : "outToNextEasing"];
 			InOut(sWay, sEasing, true, fCallback);
 		}
 		//节省资源使用的上下舞台
