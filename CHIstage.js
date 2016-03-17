@@ -100,18 +100,26 @@
 					else InOut();
 				});
 			} else InOut();
+			return this;
 		}
 
 		oResult.push = function(oScene) {
 			var ind = $.inArray(oScene, aScenes);
 			if (ind == -1) aScenes.push(oScene);
+			oScene.saveAfterOut = true;
+			oScene.readyBeforeIn = true;
+			oScene.startAfterIn = true;
+			oScene.startOnce = true;
+			oScene.stopBeforeOut = false;
+			oScene.overBeforeOut = false;
+			oScene.resetBeforeOut = false;
 			oScene.stage = this;
-			return oResult;
+			return this;
 		}
 		oResult.pull = function(oScene) {
 			var ind = $.inArray(oScene, aScenes);
 			if (ind >= 0) aScenes.splice(ind, 1);
-			return oResult;
+			return this;
 		}
 		var inited = false;
 		oResult.init = function() {
@@ -122,6 +130,7 @@
 				aScenes[n][behavior]();
 			}
 			inited = true;
+			return this;
 		}
 		oResult.start = function(fFun) {
 			if (!inited) oResult.init();
@@ -134,12 +143,15 @@
 					if ($.isFunction(fFun)) fFun();
 				});
 			});
+			return this;
 		}
 		oResult.next = function() {
 			oResult.play(niCurrent + 1);
+			return this;
 		}
 		oResult.prev = function() {
 			oResult.play(niCurrent - 1);
+			return this;
 		}
 		oResult.wheel = function(bool) {
 			$(document)[bool ? 'on' : 'off']('mousewheel', function(event) {
@@ -148,6 +160,7 @@
 				else oResult.next();
 				event.preventDefault();
 			});
+			return this;
 		}
 		oResult.key = function(bool) {
 			$(document)[bool ? 'on' : 'off']('keyup', function(event) {
@@ -181,6 +194,7 @@
 				}
 				STAGE[method]();
 			});
+			return this;
 		}
 		oResult.locked = function() {
 			return bLock;
