@@ -48,6 +48,7 @@
 			},
 			niCurrent = 0,
 			piLock, //出入场的整数锁
+			oJQindices = false, //是否有索引控制器
 			bLock = false; //播放状态的状态锁
 		oResult.play = function(index) {
 			if (bLock) return;
@@ -58,6 +59,7 @@
 			bLock = true;
 			piLock = 2;
 
+			oJQindices.length && oJQindices.eq(index).addClass('cur').siblings().removeClass('cur');
 			var sceneThis = aScenes[niCurrent],
 				sceneNext = aScenes[index],
 				bRewind = niCurrent > index;
@@ -199,6 +201,18 @@
 		}
 		oResult.unlock = function(){
 			bLock = false;
+			return this;
+		}
+		//设置索引，selector所对应的JQ集合将被作为控制stage播放的各个帧的触发键
+		//被触发且正常播放的元素将被附加cur类
+		oResult.indices=function(selector){
+			if(!$(selector).length) return false;
+			oJQindices = $(selector).click(function(event) {
+				if($(this).hasClass('cur') || bLock) return true;
+				var index=$(this).index();
+				oResult.play(index);
+				$(this).addClass('cur').siblings().removeClass('cur')
+			});
 			return this;
 		}
 		return oResult;

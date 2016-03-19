@@ -213,7 +213,7 @@
 		oResult.set = function(oNewOptions, bReset) {
 			if (oNewOptions instanceof Object) {
 				if (bReset) oBasicOptions = {};
-				merge(oBasicOptions, oNewOptions);
+				merge(oBasicOptions, oNewOptions, true, true);
 			}
 			return oResult;
 		}
@@ -250,13 +250,13 @@
 					if (bInput && x < 0) {
 						array.push(o);
 						if (bNext) o.follow(oResult);
-						else o.lead(oResult);
+						else o.lead(oResult),niBasicPreLock++,niPrevLock=niBasicPreLock;
 					}
 					//移除行为，且行为未被移除时
 					else if (!bInput && x >= 0) {
 						array.splice(x, 1);
 						if (bNext) o.nofollow(oResult);
-						else o.nolead(oResult);
+						else o.nolead(oResult),niBasicPreLock--,niPrevLock=niBasicPreLock;
 					}
 					break;
 				}
@@ -264,7 +264,7 @@
 			return oResult;
 		}
 /*
-		行为堆入，可堆入animate对象，或一般的function对象
+		行为堆入，目前只可堆入CHIanimate对象
 		堆入的对象可以是使用set方法返回的修改过后的animate对象
 		不可重复堆入同一行为
 		*/
