@@ -113,8 +113,9 @@ define(function(require,exports,module){
 						: n+= SPRITE.step * dir;
 				},piSpeed);
 			},
-			play:function(piSpeed,iLoop){
+			play:function(piSpeed,iLoop,piDelay){
 				if(!piSpeed || isNaN(piSpeed)) piSpeed=50;
+				if(isNaN(piDelay)) piDelay=0;
 				if(isNaN(iLoop)) iLoop=0;
 				var n=this.at+this.step,
 					SPRITE=this;
@@ -122,13 +123,19 @@ define(function(require,exports,module){
 					SPRITE.show(n) ?
 						n+=SPRITE.step
 						: iLoop ?
-							(n=0,iLoop--,funs.loop(iLoop))
+							(
+								setTimeout(function(){
+									SPRITE.show(0).play(piSpeed,iLoop-1,piDelay);
+								}, piDelay),
+								funs.loop(iLoop)
+							)
 							: (SPRITE.stop(1),funs.played());
 				},piSpeed);
 				return this;
 			},
-			rewind:function(piSpeed,iLoop){
+			rewind:function(piSpeed,iLoop,piDelay){
 				if(!piSpeed || isNaN(piSpeed)) piSpeed=50;
+				if(isNaN(piDelay)) piDelay=0;
 				if(isNaN(iLoop)) iLoop=0;
 				var n=this.at-this.step,
 					SPRITE=this;
@@ -136,7 +143,12 @@ define(function(require,exports,module){
 					SPRITE.show(n) ?
 						n-=SPRITE.step
 						: iLoop ?
-							(n=0,iLoop--,funs.loop(iLoop))
+							(
+								setTimeout(function(){
+									SPRITE.show(SPRITE.frames).rewind(piSpeed,iLoop-1,piDelay);
+								}, piDelay),
+								funs.loop(iLoop)
+							)
 							: (SPRITE.stop(-1),funs.rewound());
 				},piSpeed);
 				return this;
@@ -144,12 +156,15 @@ define(function(require,exports,module){
 			stop:function(dir){
 				clearInterval(timer);
 				timer=0;
-				funs.stopped(dir);
+				dir && funs.stopped(dir);
 				return this;
 			},
 			show:function(n){
 				var imgs=THIS.find("img");
-				if(n<0 || n>=this.frames) return false;
+				if(n<0 || n>=this.frames){
+					this.stop();
+					return false;
+				}
 				var cur=this.at;
 				imgs.eq(cur).hidden();
 				funs.hide(cur);
