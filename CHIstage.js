@@ -73,6 +73,8 @@
 						//如果入场帧只需执行一次，则将自动start变量置否
 						if (sceneNext.startOnce) sceneNext.startAfterIn = false;
 						bLock = false;
+						//执行播放后事件
+						trigger("after",index);
 					});
 					else bLock = false;
 				}
@@ -83,6 +85,8 @@
 				if (sceneNext.saveAfterOut) sceneNext.on();
 				sceneNext.show();
 				if (sceneNext.readyBeforeIn) sceneNext.ready();
+				//执行入场前事件
+				trigger("before",index);
 				sceneNext.runin(bRewind, nextStart);
 				//出场帧出场，然后触发入场帧的开始动作，再判断出场帧的节省模式
 				sceneThis.runout(bRewind, function() {
@@ -136,6 +140,7 @@
 			bLock = true;
 			aScenes[0].on().show().ready(function() {
 				aScenes[0].start(function() {
+					trigger("after",0);
 					bLock = false;
 					if(aScenes[0].startOnce) aScenes[0].startAfterIn=false;
 					if ($.isFunction(fFun)) fFun();
@@ -211,8 +216,62 @@
 				if($(this).hasClass('cur') || bLock) return true;
 				var index=$(this).index();
 				oResult.play(index);
-				$(this).addClass('cur').siblings().removeClass('cur')
+				$(this).addClass('cur').siblings().removeClass('cur');
 			});
+			return this;
+		}
+		//事件对象，在指定位置处执行，不要放影响播放流程的函数
+		var events/*={
+			before:{
+				index:[events...]
+			},
+			after:{}
+		}*/;
+		function setEvent(key,index,func,bOut){
+			if($.inArray(key, ['before','after'])<0 || isNaN(index) || !$.isFunction(func)) return false;
+			bOut=!!bOut;
+			if(!bOut)
+			{
+				if(!events) events={};
+				if(!events[key]) events[key]={};
+				if(!events[key][index]) events[key][index]=[];
+			}
+			var funcs=events[key][index],
+				posFun=$.inArray(func, funcs),
+				hasFun=posFun>-1;
+			//有才能出，无才能进
+			hasFun==bOut && (
+				bOut ?
+				(
+					funcs.splice(posFun,1),
+					funcs.length==0 && delete(events[key][index])
+				)
+				: funcs.push(func)
+			);
+			funcs=null;
+		}
+		function trigger(key,index){
+			console.warn('in trigger ',key,index);
+			var es,e;
+			if(events && events[key] && (es=events[key][index]))
+			{
+				for(var n in es)
+				{
+					e=es[n];
+					console.log(e);
+					$.isFunction(e) && e();
+				}
+			}
+			es=e=null;
+		}
+		//在播放第index帧之前执行，在scene.runin之前执行
+		oResult.before=function(index,func,bOut){
+			setEvent("before",index,func,bOut);
+			return this;
+		}
+		//在播放第index帧之后执行，在scene.start的回调中执行
+		oResult.after=function(index,func,bOut){
+			setEvent("after",index,func,bOut);
 			return this;
 		}
 		return oResult;
