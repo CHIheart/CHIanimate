@@ -28,6 +28,7 @@ define(function(require,exports,module){
 		destroy(bool)，放弃对象，如果bool为真则同时清除里边内容
 		goto(num,speed)，从当前帧播到第num帧，会触发stop事件
 		show(num)，每次切换一张图片，会触发show行为
+		on(key,fun)/off(key)，变更或解绑事件处理函数
 
 	*/
 	$.fn.sprite=function(setFuns){
@@ -50,6 +51,14 @@ define(function(require,exports,module){
 			step:1,
 			at:0,
 			frames:0,
+			on:function(key,fun){
+				key in funs && $.isFunction(fun) && (funs[key]=fun);
+				return this;
+			},
+			off:function(key){
+				key in funs && (funs[key]=$.noop);
+				return this;
+			},
 			destroy:function(bClear){
 				THIS.get(0).SPRITE=null;
 				bClear && THIS.empty();
