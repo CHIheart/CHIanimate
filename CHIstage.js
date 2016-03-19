@@ -251,14 +251,12 @@
 			funcs=null;
 		}
 		function trigger(key,index){
-			console.warn('in trigger ',key,index);
 			var es,e;
 			if(events && events[key] && (es=events[key][index]))
 			{
 				for(var n in es)
 				{
 					e=es[n];
-					console.log(e);
 					$.isFunction(e) && e();
 				}
 			}
