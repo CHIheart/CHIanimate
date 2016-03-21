@@ -1,4 +1,13 @@
-(function(){
+/**
+ * 扩展jq.wave/explode
+ * @authors Your Name (you@example.org)
+ * @date    2016-03-21 10:31:05
+ * @version $Id$
+ */
+
+
+
+define(function(require,exports,module){
 	//改变元素可见度，默认参数为true
 	$.fn.visible = function(bool) {
 		var visibility = bool === undefined || bool ? 'visible' : 'hidden';
@@ -113,7 +122,8 @@
 			oCss.position = 'relative';
 
 			var THIS = $(this).visible(),
-				piCount= $(this).children(tagName).length;
+				piCount= $(this).children(tagName).length,
+				piLength= piCount;
 			children.each(function(ind, ele) {
 				if (direction == 'random') {
 					oCssIn = {
@@ -141,7 +151,7 @@
 						duration: duration,
 						easing: easing,
 						done: function() {
-							if (eachFunction) eachFunction(ind, ele);
+							if (eachFunction) eachFunction.call(this, ind, ele, piLength-piCount);
 							piCount--;
 							if (!piCount) {
 								if (mode == 'text') {
@@ -149,7 +159,7 @@
 									if (action == 'leave') THIS.visible(false);
 									THIS.text(text);
 								}
-								doneFunction(THIS, children);
+								doneFunction.call(THIS, children);
 							}
 						}
 					});
@@ -157,4 +167,4 @@
 			});
 		});
 	}
-})()
+});
