@@ -78,7 +78,7 @@ define(function(require,exports,module){
 					nums.push(n);
 					x=$.isFunction(delta) ? delta(n,maxnum) : delta;
 				}
-				for(var n in nums)
+				for(var n=0;n<nums.length;n++)
 				{
 					var img=new Image();
 					img.src=srcPattern.replace(/\{n\}/ig,nums[n]);

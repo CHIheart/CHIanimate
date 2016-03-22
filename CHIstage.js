@@ -1,8 +1,8 @@
 /*
 以下属性将由舞台对象赋值给帧对象
-	saveAfterOut = false,
+	saveAfterOut = true,
 	是否使用节省模式，非循环动画建议使用，出场的帧将被暂时移出文档，以节省资源
-	readyBeforeIn = false,
+	readyBeforeIn = true,
 	入场前执行准备动作
 	startAfterIn = true,
 	入场后执行开始动作
@@ -38,7 +38,7 @@
 		return str;
 	}
 	
-	function CHIstage() {
+	function CHIstage(selector) {
 		var aScenes = [],
 			oResult = {
 				inWay: '',
@@ -49,7 +49,9 @@
 			niCurrent = 0,
 			piLock, //出入场的整数锁
 			oJQindices = false, //是否有索引控制器
-			bLock = false; //播放状态的状态锁
+			bLock = false, //播放状态的状态锁
+			oJQstage = $(selector);
+		if(!oJQstage.length) return false;
 		oResult.play = function(index) {
 			if (bLock) return;
 			var piLength = aScenes.length;
@@ -157,7 +159,7 @@
 			return this;
 		}
 		oResult.wheel = function(bool) {
-			$(document)[bool ? 'on' : 'off']('mousewheel', function(event) {
+			$(oJQstage)[bool ? 'on' : 'off']('mousewheel', function(event) {
 				event.preventDefault();
 				oResult[event.deltaY > 0 ? "prev" : "next"]();
 			});
