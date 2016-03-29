@@ -92,33 +92,21 @@
 		
 		在设置in跟out时，可以使用逗号连接入场方式跟easing方法，如果没有则按入场方式算，如果只改变easing的话可以使用逗号加easing，省略入场方式
 		*/
-		function set(name, value) {
-			switch (name) {
-				case 'duration':
-				case 'time':
-					isPos(value) && (piDuration = parseInt(value));
-					break;
-				default:
-					if(name in defaultSettings) defaultSettings[name]=value;
-					else console.error("不可识别的设置：",name);
-			}
-		}
 		oResult.set = function() {
 			var arg = arguments;
 			switch (arg.length) {
 			case 1:
-				var o = arg[0];
-				if ($.isPlainObject(o))
-					for (var name in o)
-						set(name, o[name]);
+				if ($.isPlainObject(arg[0])) $.extend(true, defaultSettings, arg[0]);
 				break;
 			case 2:
-				set(arg[0], arg[1]);
+				if(arg[0] in defaultSettings) defaultSettings[arg[0]]=arg[1];
 				break;
 			}
 			return oResult;
 		}
+		$.extend(true, defaultSettings, oOptions);
 		oResult.set(oOptions);
+		
 		//默认用来衔接各个动作的最基本方法
 		var defaultAction=function(fCallback) {
 			if ($.isFunction(fCallback)) fCallback();
