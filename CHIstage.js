@@ -259,7 +259,7 @@
 				for(var n in es)
 				{
 					e=es[n];
-					$.isFunction(e) && e();
+					$.isFunction(e) && e(index);
 				}
 			}
 			es=e=null;
@@ -272,6 +272,34 @@
 		//在播放第index帧之后执行，在scene.start的回调中执行
 		oResult.after=function(index,func,bOut){
 			setEvent("after",index,func,bOut);
+			return this;
+		}
+		//在每帧播放完成之后执行
+		oResult.afterEach=function(func,excepts){
+			for(var n=0;n<aScenes.length;n++)
+			{
+				if(excepts===undefined || //如果未定义则无限制
+					!isNaN(excepts) && excepts!=n || //如果是数字则跳过相同数字
+					typeof excepts=='string' && !eval(excepts) || //如果是字符串，则返回字符串所代表的表达式值
+					$.isArray(excepts) && ~$.inArray(n, excepts) //如果是数组，则跳过所有存在于数组中的数字
+				){
+					this.after(n,func);
+				}
+			}
+			return this;
+		}
+		//在每帧入场之前执行
+		oResult.beforeEach=function(func,excepts){
+			for(var n=0;n<aScenes.length;n++)
+			{
+				if(excepts===undefined || //如果未定义则无限制
+					!isNaN(excepts) && excepts!=n || //如果是数字则跳过相同数字
+					typeof excepts=='string' && !eval(excepts) || //如果是字符串，则返回字符串所代表的表达式值
+					$.isArray(excepts) && ~$.inArray(n, excepts) //如果是数组，则跳过所有存在于数组中的数字
+				){
+					this.before(n,func);
+				}
+			}
 			return this;
 		}
 		return oResult;
