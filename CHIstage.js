@@ -43,7 +43,7 @@
 			oResult = {
 				inWay: '',
 				//统一的入场方式，空为随机选取
-				outWay: '',
+				outWay: ''
 				//统一的出场方式，空为按inWay方法取反
 			},
 			niCurrent = 0,

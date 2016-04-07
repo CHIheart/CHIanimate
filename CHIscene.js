@@ -60,7 +60,7 @@
 			outToPrevEasing:'swing',
 			//本帧向后边帧出场的方式
 			outToNextWay:'slide-left',
-			outToNextEasing:'swing',
+			outToNextEasing:'swing'
 		},
 			aCollections = [],
 			//本帧的动画集合，方便执行各动画的stop过程
