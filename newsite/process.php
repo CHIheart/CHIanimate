@@ -284,7 +284,8 @@ function loadPlugin($sName){
 	if($txtCnt===false) return false;
 	referenceResources($regLink,$txtCnt,$urlPlugin,'css');
 	referenceResources($regScript,$txtCnt,$urlPlugin,'js');
-	return writeFile('/cache'.$urlPlugin,$txtCnt);
+	writeFile('/cache'.$urlPlugin,$txtCnt);
+	return $txtCnt;
 }
 
 function referenceResources($reg,&$txtCnt,$urlBase,$sType){
@@ -297,14 +298,14 @@ function referenceResources($reg,&$txtCnt,$urlBase,$sType){
 		$txtSrc=getContent($urlAbs);
 		$txtCnt=str_replace($sResource,'', $txtCnt);
 		if($txtSrc===false) echo "File doesn't exist!!! {$urlRel} in {$urlBase}";
-		else $aCnts[]=$txtCnt;
+		else $aCnts[]=$txtSrc;
 	}
 	$txtSrc=implode('', $aCnts);
 	switch ($sType) {
-		case 'js':
+		case 'css':
 			$txtCnt='<style>' . $txtSrc. '</style>' . $txtCnt;
 			break;
-		case 'value':
+		case 'js':
 			$txtCnt.='<script>'. $txtSrc. '</script>';
 			break;
 		
