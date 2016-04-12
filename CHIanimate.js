@@ -210,10 +210,23 @@
 		bReset默认为false，将此时的设置合并到基础设置当中
 		bReset为true时，用此时的设置，替换基础设置
 		*/
-		oResult.set = function(oNewOptions, bReset) {
+		oResult.setOption = function(oNewOptions, bReset) {
 			if (oNewOptions instanceof Object) {
 				if (bReset) oBasicOptions = {};
 				merge(oBasicOptions, oNewOptions, true, true);
+			}
+			return oResult;
+		}
+		/*
+		允许另行更改行为，方法说明同setOption，参数说明同oAttrs_sAction
+		*/
+		oResult.setAction = function(oNewActions, bReset) {
+			if (oNewActions instanceof Object) {
+				if (bReset) oAttrs_sAction = {};
+				$.merge(oAttrs_sAction, oNewActions, true, true);
+			}
+			else if(typeof oNewActions == 'string') {
+				oAttrs_sAction = oNewActions;
 			}
 			return oResult;
 		}
@@ -232,6 +245,7 @@
 			}
 			return oResult;
 		}
+		oResult.setActor = oResult.change;
 /*
 		前置后续共用的事件进出方法
 		array，为nexts或follows数组指针
@@ -265,7 +279,6 @@
 		}
 /*
 		行为堆入，目前只可堆入CHIanimate对象
-		堆入的对象可以是使用set方法返回的修改过后的animate对象
 		不可重复堆入同一行为
 		*/
 		oResult.lead = function() {
