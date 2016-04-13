@@ -1,4 +1,4 @@
-//Written by PROCESS.PHP at the time of 2016-04-13 14:28:42
+//Written by PROCESS.PHP at the time of 2016-04-13 18:14:30
 /** 首页头文件碎片使用的js
  */
 
@@ -10,11 +10,11 @@ seajs.use('index');
  * 顶用户菜单
  */
 
-define('usermenu',[],function(require,exports,module){
+define('toplinks',[],function(require,exports,module){
 	//鼠标指向用户菜单时，菜单下滑
-	$(".USERMENU").mouseenter(function(event) {
+	var oJQ=$(".TOPLINKS").on('mouseenter', '.USERMENU', function(event) {
 		$(this).addClass('on').find('dd ul').slideDown();
-	}).mouseleave(function(event) {
+	}).on('mouseleave', '.USERMENU', function(event) {
 		$(this).find('dd ul').slideUp(function(){
 			$(".USERMENU").removeClass('on');
 		});
@@ -22,10 +22,9 @@ define('usermenu',[],function(require,exports,module){
 
 	//根据用户登陆状态来判断显示菜单的哪一部分
 	angular.module("TOPLINKS",[])
-		.controller("CtrlTopLinks",['$scope',function($scope){
+		.controller("CtrlTopLinks",['$scope','$timeout',function($scope,$timeout){
 			function loginOpen(){
-				var scopeLogin=angular.element(".LOGIN").scope();
-				scopeLogin.open();
+				angular.element(".LOGIN").scope().open();
 			}
 			$scope.login=function(){
 				if(!$(".LOGIN").length)
@@ -41,21 +40,31 @@ define('usermenu',[],function(require,exports,module){
 					});
 				else loginOpen();
 			}
+			$scope.logout=function(){
+				$timeout(function(){
+					$scope.online=false;
+					$timeout(show,100);
+				},100);
+			}
 		}]);
-	angular.bootstrap($(".TOPLINKS"),['TOPLINKS']);
-	$(".TOPLINKS .links,.USERMENU").css({
-		visibility: 'visible'
-	})
+	angular.bootstrap(oJQ,['TOPLINKS']);
+	
+	function show(){
+		oJQ.children().css({
+			visibility: 'visible'
+		})
+	}
+	show();
 	return ;
 });
 
-seajs.use('usermenu');
+seajs.use('toplinks');
 /**
  * 顶购物车的单独应用
  */
 define('topcart',[],function(require,exports,module){
-	angular
-	.module("TOPCART",[])
+	var CONFIRM,ALERT;
+	angular.module("TOPCART",[])
 	.controller('Ctrl_TOPCART',['$scope','$timeout','$http',function($scope,$timeout,$http){
 		//购物车列表
 		$scope.carts=[
@@ -100,10 +109,10 @@ define('topcart',[],function(require,exports,module){
 					lock=false;
 				},3000);
 				$http.get("/ajax/header/topcarts")
-				    .success(function(response) {
-				    	if(response.result)
+				    .success(function(data) {
+				    	if(data.result)
 				    	{
-					    	carts = $scope.carts = response.carts;
+					    	carts = $scope.carts = data.carts;
 					    	open();
 					    	calculate();
 				    	}
@@ -129,11 +138,15 @@ define('topcart',[],function(require,exports,module){
 			jqLoad.add(jqInfo).add(jqNone).stop().slideUp();
 		}
 		//删除一条
-		var CONFIRM,ALERT;
 		$(".TOPCARTINFO").on('click', 'i.lcz-times', function(event) {
 			event.preventDefault();
-			var THIS=this;
-			function delAsk(){
+			var THIS=this,
+			getAlert=function(){
+				var scopeWinlit=angular.element(".WINLIT").scope();
+				CONFIRM=scopeWinlit.confirm;
+				ALERT=scopeWinlit.alert;
+			},
+			delAsk=function(){
 				CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
 					var li=$(THIS).closest('li'),
 						cartid=li.data("cart-id"),
@@ -156,33 +169,31 @@ define('topcart',[],function(require,exports,module){
 						dataType: 'json',
 						data: {ids: delids},
 					})
-					.success(function(response) {
-						if(response.result)
+					.success(function(data) {
+						if(data.result)
 						{
 							CONFIRM.close();
 						}
 						else
 						{
-							ALERT('删除失败',response.message,'frown');
+							ALERT('删除失败',data.message,'frown');
 						}
 					});
 					li=cart=delids=null;
 				});
-			}
-			$(".WINLIT").length ? delAsk() :
-			$.ajax({
+			};
+			!$(".WINLIT").length ? $.ajax({
 				url: '/ajax/loadPlugin.php',
 				type: 'POST',
 				dataType: 'html',
-				data: {plugin: 'winlit'},
+				data: {plugin: 'winlit'}
 			})
-			.success(function(response) {
-				$("body").append(response);
-				var scopeWinlit=angular.element(".WINLIT").scope();
-				CONFIRM=scopeWinlit.confirm;
-				ALERT=scopeWinlit.alert;
+			.success(function(data) {
+				$("body").append(data);
+				getAlert();
 				delAsk();
-			});
+			})
+			: (!ALERT && getAlert() , delAsk());
 			
 			$scope.close();
 		});

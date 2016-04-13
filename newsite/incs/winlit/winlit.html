@@ -12,14 +12,14 @@
 					<dd>
 						<i class="lcz emotion lcz-{{emotion}}"></i>
 						<div class="tips" ng-bind="content"></div>
-						<div class="btns" ng-show="mode=='ALERT'">
+						<div class="btns" ng-if="mode=='ALERT'">
 							<button class="button button-gray button-middle" ng-click="close();">关闭</button>
 						</div>
-						<div class="btns" ng-show="mode=='CONFIRM'">
+						<div class="btns" ng-if="mode=='CONFIRM'">
 							<button class="button button-red button-middle" ng-click="confirm();">确定</button>
 							<button class="button button-white button-middle" ng-click="cancel();">取消</button>
 						</div>
-						<div class="clearfix"><img src="../../srcs/images/logo.png" height="62" width="62" alt=""></div>
+						<!-- <div class="clearfix"><img src="../../srcs/images/logo.png" height="62" width="62" alt=""></div> -->
 					</dd>
 				</dl>
 			</td>

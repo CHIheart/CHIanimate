@@ -1,4 +1,4 @@
-<!--Written by PROCESS.PHP at the time of 2016-04-13 14:28:42-->
+<!--Written by PROCESS.PHP at the time of 2016-04-13 18:14:30-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,15 +25,15 @@ document.execCommand("stop");
 
 <!-- include ending src="/incs/always.html" -->
 <link rel="stylesheet" href="http://www.new.com/cache/srcs/css/css.css?50414c">
-<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_usermenu_topcart.css?a34ba3">
+<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart.css?a34ba3">
 <link rel="stylesheet" href="http://www.new.com/cache/index/ppt/ppt.css?89a153"></head>
 <body>
 <!-- include beginning src="/incs/header/index/index.html" --><!-- 首页使用头文件碎片 -->
 
 <div class="HEADER container">
 	<div class="common clearfix">
-		<!-- include beginning src="/incs/header/usermenu/usermenu.html" -->
-<div class="anchors TOPLINKS" ng-controller="CtrlTopLinks" ng-init="online={$login};">
+		<!-- include beginning src="/incs/header/toplinks/toplinks.html" -->
+<div class="anchors TOPLINKS" ng-controller="CtrlTopLinks" ng-init="online={$login};user='{$user}';">
 	<div class="offline links" ng-if="!online;">
 		<a ng-click="login();"><i class="lcz lcz-user"></i>登陆</a>
 		<a href="{$url_regist}">注册</a>
@@ -42,17 +42,17 @@ document.execCommand("stop");
 		<a href="{$url_orders}">我的订单</a>
 	</div>
 	<dl class="USERMENU" ng-if="online;">
-		<dt><var>{$user}</var><i class="lcz lcz-angle-down"></i></dt>
+		<dt><var ng-bind="user"></var><i class="lcz lcz-angle-down"></i></dt>
 		<dd class="shadowLarge">
-			<em><var>{$user}</var><i class="lcz lcz-angle-up"></i></em>
+			<em><var ng-bind="user"></var><i class="lcz lcz-angle-up"></i></em>
 			<ul class="anchors">
-				<!-- include beginning src="/incs/header/usermenu/item.html" variable="$aData['usermenu']" repeats="-1" --><!-- include beginning src="/incs/header/usermenu/itemNormal.html" condition="$aData['index']!=1" --><li><a ng-href="{$href}" target="{$blank}">{$name}</a></li><!-- include ending src="/incs/header/usermenu/itemNormal.html" -->
-<!-- include beginning src="/incs/header/usermenu/itemCur.html" condition="$aData['index']==1" --><li><a ng-href="{$href}" target="{$blank}" class="cur">{$name}</a></li><!-- include ending src="/incs/header/usermenu/itemCur.html" --><!-- include ending src="/incs/header/usermenu/item.html" -->
+				<!-- include beginning src="/incs/header/toplinks/item.html" variable="$aData['usermenu']" repeats="-1" --><!-- include beginning src="/incs/header/toplinks/itemNormal.html" condition="$aData['index']!=1" --><li><a ng-href="{$href}" target="{$blank}" {$other}>{$name}</a></li><!-- include ending src="/incs/header/toplinks/itemNormal.html" -->
+<!-- include beginning src="/incs/header/toplinks/itemCur.html" condition="$aData['index']==1" --><li><a ng-href="{$href}" target="{$blank}" class="cur" {$other}>{$name}</a></li><!-- include ending src="/incs/header/toplinks/itemCur.html" --><!-- include ending src="/incs/header/toplinks/item.html" -->
 			</ul>
 		</dd>
 	</dl>	
 </div>
-<!-- include ending src="/incs/header/usermenu/usermenu.html" -->
+<!-- include ending src="/incs/header/toplinks/toplinks.html" -->
 		<!-- include beginning src="/incs/header/topcart/topcart.html" -->
 <dl class="TOPCART ng-class:{have:allNums>0};" ng-mouseleave="close();" ng-controller="Ctrl_TOPCART">
 	<dt ng-mouseenter="update();"><i class="lcz lcz-cart-{{allNums ? 'full':'empty'}}"></i>购物车(<span ng-bind="allNums">0</span>)</dt>
@@ -94,6 +94,6 @@ document.execCommand("stop");
 <img src="http://www.new.com/srcs/images/elephant.png?813b46" height="281" width="281" alt="">
 
 <script src="http://www.new.com/cache/srcs/js/libs/jquery_seajs_angular.js?df0d4b"></script>
-<script src="http://www.new.com/cache/incs/header/index/index_usermenu_topcart.js?bbe8e0"></script>
+<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart.js?3accc4"></script>
 <script src="http://www.new.com/cache/index/index_ppt.js?0c09e5"></script></body>
 </html>

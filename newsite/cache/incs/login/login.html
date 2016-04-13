@@ -1,4 +1,4 @@
-<!--Written by PROCESS.PHP at the time of 2016-04-13 14:28:45-->
+<!--Written by PROCESS.PHP at the time of 2016-04-13 18:14:31-->
 <style>.LOGIN{background-color:#fff;width:600px;height:350px;margin-left:auto;margin-right:auto;overflow:hidden}.LOGIN button i.lcz{font-size:20px;position:relative;left:-2px}.LOGIN button i.lcz-heart{top:3px}.LOGIN button i.lcz-home2{top:2px}.LOGIN>*{float:left}.LOGIN .pic{margin:30px 20px 30px 10px}.LOGIN form,.LOGIN h6{width:280px}.LOGIN h6{font-size:24px;text-align:center;margin:50px 0 20px}.LOGIN .TEXTCONTAINER{margin:20px 16px}.LOGIN .TEXTS{width:100%}.LOGIN .BTNCONTAINER{margin-top:30px;font-size:0}.LOGIN .button-red{margin-right:8px}</style><!-- 即时登陆插件 -->
 
 <table class="FullScreenPlugin">
@@ -8,7 +8,7 @@
 				<div class="LOGIN" ng-controller="CtrlLogin">
 					<div class="pic"><img src="http://www.new.com/srcs/images/elephant.png?813b46" alt=""></div>
 					<h6>登陆乐车仔</h6>
-					<form novalidate name="LoginForm">
+					<form novalidate name="LoginForm" id="LoginForm">
 						<div class="TEXTCONTAINER">
 							<input ng-model="passport" name="passport" id="passport" ng-required="true" ng-pattern="/^[\w\d][\w\d\_\-]*(\@([\w\d][\w\d\-\_]+\.)+\w{2,})?$/i" class="ng-untouched TEXTS" ng-class="judge('passport');">
 							<label for="passport" class="LABELS">账号/手机/邮箱</label>
@@ -18,7 +18,7 @@
 							<label for="password" class="LABELS">密码</label>
 						</div>
 						<div class="BTNCONTAINER">
-							<button class="button button-large button-red" ng-click="login();"><i class="lcz lcz-heart"></i>登陆</button>
+							<button class="button button-large button-red" ng-click="login();" ng-disabled="LoginForm.passport.$invalid || LoginForm.password.$invalid || LoginForm.$invalid"><i class="lcz lcz-heart"></i>登陆</button>
 							<button class="button button-large button-gray" ng-click="close();"><i class="lcz lcz-home2"></i>取消</button>
 						</div>
 					</form>
@@ -33,36 +33,74 @@
 
 define('LOGIN',[],function(require,exports,module){
 	var LOGIN=$(".LOGIN"),
-		container=LOGIN.closest('.FullScreenPlugin');
+		container=LOGIN.closest('.FullScreenPlugin'),
+		ALERT;
 	angular.module('Login',[])
-		.controller('CtrlLogin',['$scope','$timeout',function($scope,$timeout){
-            $scope.judge=function(name){
-                return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
-            }
-			$scope.open=function(){
-				container.fadeIn();
-			}
-			$scope.close=function(){
-				container.fadeOut();
-				this.reset();
-			}
-			$scope.login=function(){
-				console.log(this.LoginForm);
-				alert('login')
-			}
-			$scope.reset=function(){
-				this.passport='';
-				this.password='';
-				var form=this.LoginForm;
-				form.passport.$setPristine();
-				form.password.$setPristine();
-				$(".ng-touched",LOGIN).each(function(index, el) {
-					$(this).addClass('ng-untouched').removeClass('ng-touched').one('blur', function(event) {
-						$(this).removeClass('ng-untouched').addClass('ng-touched');
+	.controller('CtrlLogin',['$scope','$timeout',function($scope,$timeout){
+        $scope.judge=function(name){
+            return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
+        }
+		$scope.open=function(){
+			container.fadeIn();
+		}
+		$scope.close=function(){
+			container.fadeOut();
+			this.reset();
+		}
+		$scope.login=function(){
+			$.ajax({
+				url: '/ajax/header/login',
+				type: 'POST',
+				dataType: 'json',
+				data: $("#LoginForm").serialize(),
+			})
+			.success(function(data) {
+				if(data.result){
+					$scope.reset();
+					$scope.$apply();
+					var scopeUsermenu=angular.element('.TOPLINKS').scope();
+					scopeUsermenu.online=true;
+					scopeUsermenu.user=data.user;
+					scopeUsermenu.$apply();
+					$('.TOPLINKS').children().css({
+						visibility:'visible'
 					});
+					$scope.close();
+				}else{
+					var fail=function(){
+						ALERT("登陆失败",data.message,"frown");
+					},
+					getAlert=function(){
+						ALERT=angular.element('.WINLIT').scope().alert;
+					};
+					!$(".WINLIT").length ? $.ajax({
+						url: '/ajax/loadPlugin.php',
+						type: 'POST',
+						dataType: 'html',
+						data: {plugin: 'winlit'},
+					})
+					.done(function(html) {
+						$("body").append(html);
+						getAlert();
+						fail();
+					})
+					: (!ALERT && getAlert() , fail());
+				}
+			});
+		}
+		$scope.reset=function(){
+			this.passport='';
+			this.password='';
+			var form=this.LoginForm;
+			form.passport.$setPristine();
+			form.password.$setPristine();
+			$(".ng-touched",LOGIN).each(function(index, el) {
+				$(this).addClass('ng-untouched').removeClass('ng-touched').one('blur', function(event) {
+					$(this).removeClass('ng-untouched').addClass('ng-touched');
 				});
-			}
-		}]);
+			});
+		}
+	}]);
 	angular.bootstrap(LOGIN,['Login']);
 	//点过再失焦后，更换成触摸类
 	$(".ng-untouched",LOGIN).one('blur', function(event) {

@@ -7,7 +7,7 @@
 				<div class="LOGIN" ng-controller="CtrlLogin">
 					<div class="pic"><img src="/srcs/images/elephant.png" alt=""></div>
 					<h6>登陆乐车仔</h6>
-					<form novalidate name="LoginForm">
+					<form novalidate name="LoginForm" id="LoginForm">
 						<div class="TEXTCONTAINER">
 							<input ng-model="passport" name="passport" id="passport" ng-required="true" ng-pattern="/^[\w\d][\w\d\_\-]*(\@([\w\d][\w\d\-\_]+\.)+\w{2,})?$/i" class="ng-untouched TEXTS" ng-class="judge('passport');">
 							<label for="passport" class="LABELS">账号/手机/邮箱</label>
@@ -17,7 +17,7 @@
 							<label for="password" class="LABELS">密码</label>
 						</div>
 						<div class="BTNCONTAINER">
-							<button class="button button-large button-red" ng-click="login();"><i class="lcz lcz-heart"></i>登陆</button>
+							<button class="button button-large button-red" ng-click="login();" ng-disabled="LoginForm.passport.$invalid || LoginForm.password.$invalid || LoginForm.$invalid"><i class="lcz lcz-heart"></i>登陆</button>
 							<button class="button button-large button-gray" ng-click="close();"><i class="lcz lcz-home2"></i>取消</button>
 						</div>
 					</form>

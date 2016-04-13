@@ -2,11 +2,11 @@
  * 顶用户菜单
  */
 
-define('usermenu',[],function(require,exports,module){
+define('toplinks',[],function(require,exports,module){
 	//鼠标指向用户菜单时，菜单下滑
-	$(".USERMENU").mouseenter(function(event) {
+	var oJQ=$(".TOPLINKS").on('mouseenter', '.USERMENU', function(event) {
 		$(this).addClass('on').find('dd ul').slideDown();
-	}).mouseleave(function(event) {
+	}).on('mouseleave', '.USERMENU', function(event) {
 		$(this).find('dd ul').slideUp(function(){
 			$(".USERMENU").removeClass('on');
 		});
@@ -14,10 +14,9 @@ define('usermenu',[],function(require,exports,module){
 
 	//根据用户登陆状态来判断显示菜单的哪一部分
 	angular.module("TOPLINKS",[])
-		.controller("CtrlTopLinks",['$scope',function($scope){
+		.controller("CtrlTopLinks",['$scope','$timeout',function($scope,$timeout){
 			function loginOpen(){
-				var scopeLogin=angular.element(".LOGIN").scope();
-				scopeLogin.open();
+				angular.element(".LOGIN").scope().open();
 			}
 			$scope.login=function(){
 				if(!$(".LOGIN").length)
@@ -33,12 +32,22 @@ define('usermenu',[],function(require,exports,module){
 					});
 				else loginOpen();
 			}
+			$scope.logout=function(){
+				$timeout(function(){
+					$scope.online=false;
+					$timeout(show,100);
+				},100);
+			}
 		}]);
-	angular.bootstrap($(".TOPLINKS"),['TOPLINKS']);
-	$(".TOPLINKS .links,.USERMENU").css({
-		visibility: 'visible'
-	})
+	angular.bootstrap(oJQ,['TOPLINKS']);
+	
+	function show(){
+		oJQ.children().css({
+			visibility: 'visible'
+		})
+	}
+	show();
 	return ;
 });
 
-seajs.use('usermenu');
+seajs.use('toplinks');

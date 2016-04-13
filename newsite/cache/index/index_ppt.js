@@ -1,4 +1,4 @@
-//Written by PROCESS.PHP at the time of 2016-04-13 14:28:42
+//Written by PROCESS.PHP at the time of 2016-04-13 18:14:30
 /**
  * 首页独立JS
  */

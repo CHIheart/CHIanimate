@@ -16,17 +16,20 @@ $data = array(
 		array(
 			"href"=>"ucenter/#1",
 			"blank"=>"_blank",
-			"name"=>"账号中心"
+			"name"=>"账号中心",
+			"other"=>""
 		),
 		array(
 			"href"=>"#2",
 			"blank"=>"_blank",
-			"name"=>"服务中心"
+			"name"=>"服务中心",
+			"other"=>""
 		),
 		array(
 			"href"=>"#3",
 			"blank"=>"",
-			"name"=>"退出登陆"
+			"name"=>"退出登陆",
+			"other"=>"ng-click=\"logout();\""
 		),
 	)
 );

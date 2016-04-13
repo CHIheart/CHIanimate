@@ -2,8 +2,8 @@
  * 顶购物车的单独应用
  */
 define('topcart',[],function(require,exports,module){
-	angular
-	.module("TOPCART",[])
+	var CONFIRM,ALERT;
+	angular.module("TOPCART",[])
 	.controller('Ctrl_TOPCART',['$scope','$timeout','$http',function($scope,$timeout,$http){
 		//购物车列表
 		$scope.carts=[
@@ -48,10 +48,10 @@ define('topcart',[],function(require,exports,module){
 					lock=false;
 				},3000);
 				$http.get("/ajax/header/topcarts")
-				    .success(function(response) {
-				    	if(response.result)
+				    .success(function(data) {
+				    	if(data.result)
 				    	{
-					    	carts = $scope.carts = response.carts;
+					    	carts = $scope.carts = data.carts;
 					    	open();
 					    	calculate();
 				    	}
@@ -77,11 +77,15 @@ define('topcart',[],function(require,exports,module){
 			jqLoad.add(jqInfo).add(jqNone).stop().slideUp();
 		}
 		//删除一条
-		var CONFIRM,ALERT;
 		$(".TOPCARTINFO").on('click', 'i.lcz-times', function(event) {
 			event.preventDefault();
-			var THIS=this;
-			function delAsk(){
+			var THIS=this,
+			getAlert=function(){
+				var scopeWinlit=angular.element(".WINLIT").scope();
+				CONFIRM=scopeWinlit.confirm;
+				ALERT=scopeWinlit.alert;
+			},
+			delAsk=function(){
 				CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
 					var li=$(THIS).closest('li'),
 						cartid=li.data("cart-id"),
@@ -104,33 +108,31 @@ define('topcart',[],function(require,exports,module){
 						dataType: 'json',
 						data: {ids: delids},
 					})
-					.success(function(response) {
-						if(response.result)
+					.success(function(data) {
+						if(data.result)
 						{
 							CONFIRM.close();
 						}
 						else
 						{
-							ALERT('删除失败',response.message,'frown');
+							ALERT('删除失败',data.message,'frown');
 						}
 					});
 					li=cart=delids=null;
 				});
-			}
-			$(".WINLIT").length ? delAsk() :
-			$.ajax({
+			};
+			!$(".WINLIT").length ? $.ajax({
 				url: '/ajax/loadPlugin.php',
 				type: 'POST',
 				dataType: 'html',
-				data: {plugin: 'winlit'},
+				data: {plugin: 'winlit'}
 			})
-			.success(function(response) {
-				$("body").append(response);
-				var scopeWinlit=angular.element(".WINLIT").scope();
-				CONFIRM=scopeWinlit.confirm;
-				ALERT=scopeWinlit.alert;
+			.success(function(data) {
+				$("body").append(data);
+				getAlert();
 				delAsk();
-			});
+			})
+			: (!ALERT && getAlert() , delAsk());
 			
 			$scope.close();
 		});
