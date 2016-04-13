@@ -1,7 +1,7 @@
 <?php
-include "../inc.php";
+include "../process.php";
 
-$plugin=$_GET["plugin"];
+$plugin=$_POST["plugin"];
 if($plugin)
 {
 	echo loadPlugin($plugin);

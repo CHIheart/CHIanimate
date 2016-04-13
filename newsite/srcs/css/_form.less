@@ -1,0 +1,97 @@
+//表单样式
+@import "_funs";
+@import "_theme";
+
+//输入框容器
+.TEXTCONTAINER{
+	.m(20px);
+	.relative();
+	.z(1111);
+	.t-l();
+	&.focus{
+		.z(2222);
+	}
+}
+
+//文本框及标签
+.TEXTS,.LABELS{
+	.transSlow();
+	.size(14px);
+	.line(16px);
+}
+.TEXTS{
+	.bd(1px,solid,silver);
+	.p(12px);
+	.h(40px);
+	.out(none)!important;
+	.c(black);
+	.bbox();
+	&:focus{
+		.bd-c(black);
+		& + .LABELS{
+			.p(2px,5px);
+			.t(-10px);
+		}
+	}
+	&.ng-{
+		&filled,&touched.ng-invalid{
+			& + .LABELS:extend(.TEXTS:focus + .LABELS){}
+		}
+		&empty{
+			&.ng-{
+				&touched,&invalid{
+					&:focus:extend + .LABELS(.TEXTS:focus + .LABELS){}
+				}
+				&untouched,&valid{
+					& + .LABELS{
+						.c(silver);
+						.size(14px);
+						.t(12px);
+					}
+					&:focus + .LABELS:extend(.TEXTS:focus + .LABELS){
+						.c(black);
+						.size();
+					}
+				}
+				&untouched.ng-invalid-required + .LABELS:before{
+					.cnt("(必填)");
+				}
+			}
+		}
+		&touched.ng-invalid{
+			.bd-c(red);
+			& + .LABELS{
+				.c(white);
+				.bg-c(red);
+			}
+			&-required + .LABELS:after{
+				.cnt("不能为空");
+			}
+			&-pattern + .LABELS:after{
+				.cnt("格式错误");
+			}
+		}
+	}
+}
+
+//输入框标签
+.LABELS{
+	.bg-c(white);
+	.absolute();
+	.size();
+	.l(12px);
+	.h(16px);
+}
+
+//按钮组容器
+.BTNCONTAINER{
+	&.left{
+		.t-l();
+	}
+	&.center{
+		.t-c();
+	}
+	&.right{
+		.t-r();
+	}
+}

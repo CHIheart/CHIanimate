@@ -3,6 +3,7 @@
 
 define("WEBROOT_AT_DISK",$_SERVER["DOCUMENT_ROOT"]);
 define("WEBROOT_AT_HOST",'http://'.$_SERVER["HTTP_HOST"]);
+define("DEVELOPING",true);
 
 function say($words,$color='black'){
 	echo '<blockquote style="color:'.$color.'; background-color:#eee; border:1px solid gray; margin:10px; padding:20px;">'.htmlspecialchars($words).'</blockquote>'.PHP_EOL;
@@ -33,8 +34,8 @@ function dump($v){
 
 function outputPage($urlRel,$aData){
 	$urlAbs=calAbsUrl($urlRel);
-	$txtCnt=getContent('/cache'.$urlAbs);
-	if($txtCnt===false) $txtCnt=writeCache($urlAbs);	
+	$txtCnt=DEVELOPING ? false : getContent('/cache'.$urlAbs);
+	if($txtCnt===false || DEVELOPING) $txtCnt=writeCache($urlAbs);	
 	return parseContent($txtCnt,$aData);
 }
 
@@ -144,6 +145,12 @@ function packageResources($aResources){
 	return packaging($aPaths);
 }
 
+function getExtName($sFilename){
+	$regSuffix='/\.(js|css|html)(?:(?=[\?\#][\w\d]+)*|$)/i';
+	preg_match($regSuffix, $sFilename,$matches);
+	return count($matches) ? $matches[1] : false;
+}
+
 function packaging($aPaths,$sParPath=''){
 	static $aFiles=array();
 	$aNames=$aURLs=array();
@@ -152,7 +159,6 @@ function packaging($aPaths,$sParPath=''){
 	foreach ($aPaths as $sDir => $sKid) {
 		if(is_array($sKid)) packaging($sKid,$sParPath.'/'.$sDir);
 		else{
-			// $aCnts[]=getContent($sParPath.'/'.$sKid);
 			$aURLs[]=$sParPath.'/'.$sKid;
 			$aNames[]=$sKid;
 		}
@@ -160,7 +166,7 @@ function packaging($aPaths,$sParPath=''){
 	if(count($aNames)){
 		$sName=$sParPath.'/'. implode('_', $aNames);
 		$sName='/cache'.preg_replace(array($regExtName,$regNameZip), array('_','_$1'), $sName);
-		if(!file_exists($sName)){
+		if(!file_exists($sName) || DEVELOPING){
 			$aCnts=array();
 			foreach ($aURLs as $urlAbs) {
 				$aCnts[]=getContent($urlAbs);
@@ -233,8 +239,8 @@ function locateMedias(&$txtCnt,$urlAbs){
 	$regMedias='/<(?:img|video|audio|embed|source)[^\>]*src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)"/i';
 	$regUrls='/url\([\'\"]?((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+(?:[\?\#][\w\d]+)*)[\'\"]?\)/';
 	$regSuffix='/[\?\#][\w\d]+/i';
-	preg_match('/\.(js|css|html)/i', $urlAbs,$matches);
-	switch ($matches[1]) {
+	$extName=getExtName($urlAbs);
+	switch ($extName) {
 		case 'js':
 			// $txtCnt=minify($txtCnt);
 			return ;
@@ -262,6 +268,25 @@ function locateMedias(&$txtCnt,$urlAbs){
 }
 
 function writeFile($urlAbs,$txtCnt){
+	$extName=getExtName($urlAbs);
+	switch ($extName) {
+		case 'js':
+			$comment=["//",""];
+			break;
+		
+		case 'html':
+			$comment=["<!--","-->"];
+			break;
+		
+		case 'css':
+			$comment=["/*","*/"];
+			break;
+		
+		default:
+			$comment=["",""];
+			break;
+	}
+	$txtCnt=$comment[0]."Written by PROCESS.PHP at the time of ".Date("Y-m-d H:i:s").$comment[1].PHP_EOL . $txtCnt;
 	$bool=@file_put_contents(WEBROOT_AT_DISK.$urlAbs, $txtCnt);
 	if($bool!==false) return ;
 	$aDirs=explode('/', $urlAbs);
@@ -278,7 +303,7 @@ function loadPlugin($sName){
 	$regScript='/<script src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.js)"><\/script>/i';
 	$regLink='/<link rel="stylesheet" href="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.css)" *\/?>/i';
 	$urlPlugin="/incs/{$sName}/{$sName}.html";
-	$txtCnt=getContent('/cache'.$urlPlugin);
+	$txtCnt=DEVELOPING ? false : getContent('/cache'.$urlPlugin);
 	if($txtCnt!==false) return $txtCnt;
 	$txtCnt=getContent($urlPlugin);
 	if($txtCnt===false) return false;

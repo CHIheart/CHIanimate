@@ -77,6 +77,7 @@ define('topcart',[],function(require,exports,module){
 			jqLoad.add(jqInfo).add(jqNone).stop().slideUp();
 		}
 		//删除一条
+		var CONFIRM,ALERT;
 		$(".TOPCARTINFO").on('click', 'i.lcz-times', function(event) {
 			event.preventDefault();
 			var THIS=this;
@@ -119,12 +120,15 @@ define('topcart',[],function(require,exports,module){
 			$(".WINLIT").length ? delAsk() :
 			$.ajax({
 				url: '/ajax/loadPlugin.php',
-				type: 'GET',
+				type: 'POST',
 				dataType: 'html',
 				data: {plugin: 'winlit'},
 			})
 			.success(function(response) {
 				$("body").append(response);
+				var scopeWinlit=angular.element(".WINLIT").scope();
+				CONFIRM=scopeWinlit.confirm;
+				ALERT=scopeWinlit.alert;
 				delAsk();
 			});
 			

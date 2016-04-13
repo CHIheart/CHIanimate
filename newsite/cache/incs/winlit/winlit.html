@@ -1,3 +1,4 @@
+<!--Written by PROCESS.PHP at the time of 2016-04-13 11:35:28-->
 <style>.WINLIT{position:relative;background:url(http://www.new.com/srcs/images/elephant.png?813b46) left center no-repeat;border:1px solid #d4d4d4;background-color:#fff;width:360px;height:240px;margin-left:auto;margin-right:auto}.WINLIT>dt{height:40px;line-height:40px;padding:0 10px;background-color:#f7f7f7;border-bottom:1px solid #eee}.WINLIT>dt strong{font-size:16px;float:left}.WINLIT>dt q{float:right;font-size:20px;cursor:pointer}.WINLIT .emotion{display:block;font-size:36px;width:40px;height:40px;line-height:40px;margin:10px auto;color:#f03226}.WINLIT .tips{margin:10px;text-align:center;font-size:14px;color:#666;line-height:24px}.WINLIT .btns{position:absolute;background:#f7f7f7;border-top:1px solid #eee;width:100%;padding:10px 0;left:0;bottom:0;text-align:center}.WINLIT .button{vertical-align:top}</style><!-- 警告窗或询问窗 -->
 
 <table class="FullScreenPlugin">
@@ -28,7 +29,6 @@
 </table>
 <script>/**
  * 小提示窗
- * 会生成全局变量ALERT及CONFIRM
  */
 
 define('WINLIT',[],function(require,exports,module){
@@ -61,13 +61,13 @@ define('WINLIT',[],function(require,exports,module){
 			$scope.confirm=$scope.close;
 			$scope.cancel=$scope.close;
 
-			ALERT=$scope.alert=function(title,content,emotion,onclose){
+			$scope.alert=function(title,content,emotion,onclose){
 				$scope.mode='ALERT';
 				setWords(title,content,emotion);
 				setFuns(onclose);
 				$scope.open(100);
 			}
-			CONFIRM=$scope.confirm=function(title,content,emotion,onconfirm,oncancel,onclose){
+			$scope.confirm=function(title,content,emotion,onconfirm,oncancel,onclose){
 				$scope.mode='CONFIRM';
 				setWords(title,content,emotion);
 				setFuns(onclose,onconfirm,oncancel);
@@ -77,7 +77,6 @@ define('WINLIT',[],function(require,exports,module){
 				(!delay || isNaN(delay)) && (delay=0);
 				container.delay(delay).fadeOut();
 			}
-			ALERT.close=CONFIRM.close=$scope.close=close;
 		}]);
 	angular.bootstrap(WINLIT, ['Winlit']);
 });

@@ -1,3 +1,4 @@
+//Written by PROCESS.PHP at the time of 2016-04-13 14:28:42
 /*! jQuery v1.10.2 | (c) 2005, 2013 jQuery Foundation, Inc. | jquery.org/license
 //@ sourceMappingURL=jquery-1.10.2.min.map
 */

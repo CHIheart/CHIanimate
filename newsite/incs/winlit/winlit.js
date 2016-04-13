@@ -1,6 +1,5 @@
 /**
  * 小提示窗
- * 会生成全局变量ALERT及CONFIRM
  */
 
 define('WINLIT',[],function(require,exports,module){
@@ -33,13 +32,13 @@ define('WINLIT',[],function(require,exports,module){
 			$scope.confirm=$scope.close;
 			$scope.cancel=$scope.close;
 
-			ALERT=$scope.alert=function(title,content,emotion,onclose){
+			$scope.alert=function(title,content,emotion,onclose){
 				$scope.mode='ALERT';
 				setWords(title,content,emotion);
 				setFuns(onclose);
 				$scope.open(100);
 			}
-			CONFIRM=$scope.confirm=function(title,content,emotion,onconfirm,oncancel,onclose){
+			$scope.confirm=function(title,content,emotion,onconfirm,oncancel,onclose){
 				$scope.mode='CONFIRM';
 				setWords(title,content,emotion);
 				setFuns(onclose,onconfirm,oncancel);
@@ -49,7 +48,6 @@ define('WINLIT',[],function(require,exports,module){
 				(!delay || isNaN(delay)) && (delay=0);
 				container.delay(delay).fadeOut();
 			}
-			ALERT.close=CONFIRM.close=$scope.close=close;
 		}]);
 	angular.bootstrap(WINLIT, ['Winlit']);
 });

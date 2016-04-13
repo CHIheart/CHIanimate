@@ -1,13 +1,13 @@
 <link rel="stylesheet" href="usermenu.css">
-<div class="anchors TOPLINKS" ng-controller="Ctrl_TOPLINKS" ng-init="online={$login};">
-	<div class="offline links" ng-show="!online;">
+<div class="anchors TOPLINKS" ng-controller="CtrlTopLinks" ng-init="online={$login};">
+	<div class="offline links" ng-if="!online;">
 		<a ng-click="login();"><i class="lcz lcz-user"></i>登陆</a>
 		<a href="{$url_regist}">注册</a>
 	</div>
-	<div class="online links" ng-show="online;">
+	<div class="online links" ng-if="online;">
 		<a href="{$url_orders}">我的订单</a>
 	</div>
-	<dl class="USERMENU" ng-show="online;">
+	<dl class="USERMENU" ng-if="online;">
 		<dt><var>{$user}</var><i class="lcz lcz-angle-down"></i></dt>
 		<dd class="shadowLarge">
 			<em><var>{$user}</var><i class="lcz lcz-angle-up"></i></em>

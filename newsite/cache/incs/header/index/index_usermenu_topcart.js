@@ -1,3 +1,4 @@
+//Written by PROCESS.PHP at the time of 2016-04-13 14:28:42
 /** 首页头文件碎片使用的js
  */
 
@@ -21,8 +22,25 @@ define('usermenu',[],function(require,exports,module){
 
 	//根据用户登陆状态来判断显示菜单的哪一部分
 	angular.module("TOPLINKS",[])
-		.controller("Ctrl_TOPLINKS",['$scope',function($scope){
-			//$scope.online=false;
+		.controller("CtrlTopLinks",['$scope',function($scope){
+			function loginOpen(){
+				var scopeLogin=angular.element(".LOGIN").scope();
+				scopeLogin.open();
+			}
+			$scope.login=function(){
+				if(!$(".LOGIN").length)
+					$.ajax({
+						url: '/ajax/loadPlugin.php',
+						type: 'POST',
+						dataType: 'html',
+						data: {plugin: 'login'},
+					})
+					.success(function(data) {
+						$("body").append(data);
+						loginOpen();
+					});
+				else loginOpen();
+			}
 		}]);
 	angular.bootstrap($(".TOPLINKS"),['TOPLINKS']);
 	$(".TOPLINKS .links,.USERMENU").css({
@@ -111,6 +129,7 @@ define('topcart',[],function(require,exports,module){
 			jqLoad.add(jqInfo).add(jqNone).stop().slideUp();
 		}
 		//删除一条
+		var CONFIRM,ALERT;
 		$(".TOPCARTINFO").on('click', 'i.lcz-times', function(event) {
 			event.preventDefault();
 			var THIS=this;
@@ -153,12 +172,15 @@ define('topcart',[],function(require,exports,module){
 			$(".WINLIT").length ? delAsk() :
 			$.ajax({
 				url: '/ajax/loadPlugin.php',
-				type: 'GET',
+				type: 'POST',
 				dataType: 'html',
 				data: {plugin: 'winlit'},
 			})
 			.success(function(response) {
 				$("body").append(response);
+				var scopeWinlit=angular.element(".WINLIT").scope();
+				CONFIRM=scopeWinlit.confirm;
+				ALERT=scopeWinlit.alert;
 				delAsk();
 			});
 			

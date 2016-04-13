@@ -14,8 +14,25 @@ define('usermenu',[],function(require,exports,module){
 
 	//根据用户登陆状态来判断显示菜单的哪一部分
 	angular.module("TOPLINKS",[])
-		.controller("Ctrl_TOPLINKS",['$scope',function($scope){
-			//$scope.online=false;
+		.controller("CtrlTopLinks",['$scope',function($scope){
+			function loginOpen(){
+				var scopeLogin=angular.element(".LOGIN").scope();
+				scopeLogin.open();
+			}
+			$scope.login=function(){
+				if(!$(".LOGIN").length)
+					$.ajax({
+						url: '/ajax/loadPlugin.php',
+						type: 'POST',
+						dataType: 'html',
+						data: {plugin: 'login'},
+					})
+					.success(function(data) {
+						$("body").append(data);
+						loginOpen();
+					});
+				else loginOpen();
+			}
 		}]);
 	angular.bootstrap($(".TOPLINKS"),['TOPLINKS']);
 	$(".TOPLINKS .links,.USERMENU").css({
