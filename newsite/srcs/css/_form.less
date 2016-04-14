@@ -4,13 +4,13 @@
 
 //输入框容器
 .TEXTCONTAINER{
+	// .z(10);
 	.m(20px);
 	.relative();
-	.z(1111);
 	.t-l();
-	&.focus{
-		.z(2222);
-	}
+	// &.focus{
+	// 	.z(2222);
+	// }
 }
 
 //文本框及标签
@@ -93,5 +93,34 @@
 	}
 	&.right{
 		.t-r();
+	}
+}
+
+//自定义下拉列表
+.SELECTS{
+
+}
+
+//邮箱提示列表
+.TEXTS.EMAILS{
+	& ~ ul.EMAILS{
+		.w(100%);
+		.bbox();
+		.size(14px);
+		.absolute();
+		.bg-c(white);
+		.bd(1px,solid,black);
+		.l();
+		.t(39px);
+		.line(30px);
+		.z(2);
+		li:extend(.ellipsis,.transSlow){
+			.p(0,10px);
+			.c(gray);
+			&:hover{
+				.bg-c(silver);
+				.c(black);
+			}
+		}
 	}
 }

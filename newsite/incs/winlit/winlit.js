@@ -23,7 +23,7 @@ define('WINLIT',[],function(require,exports,module){
 			$timeout(function(){
 				$scope.confirm=$.isFunction(onconfirm) ? onconfirm : close;
 				$scope.cancel=$.isFunction(oncancel) ? oncancel : close;
-				$scope.close=$.isFunction(oncancel) ? oncancel : close;
+				$scope.close=$.isFunction(onclose) ? onclose : close;
 			},0);
 		}
 		$scope.open=function(delay){
@@ -31,8 +31,9 @@ define('WINLIT',[],function(require,exports,module){
 			others=$(".FullScreenPlugin").not(container).fadeOut();
 			container.delay(delay).fadeIn();
 		}
-		$scope.confirm=$scope.close;
-		$scope.cancel=$scope.close;
+		$scope.close=close;
+		$scope.confirm=close;
+		$scope.cancel=close;
 
 		$scope.alert=function(title,content,emotion,onclose){
 			$scope.mode='ALERT';
@@ -46,11 +47,11 @@ define('WINLIT',[],function(require,exports,module){
 			setFuns(onclose,onconfirm,oncancel);
 			$scope.open(100);
 		}
-		//lastOne，如果当前小窗是最终操作，则关闭它时，不打开前导窗口（即在打开它之前，显示的那些窗口）
-		function close(delay,lastOne){
+		//goLast，如果当前小窗是最终操作，则关闭它时，不打开前导窗口（即在打开它之前，显示的那些窗口）
+		function close(delay,goLast){
 			(!delay || isNaN(delay)) && (delay=0);
 			container.delay(delay).fadeOut();
-			if(!lastOne) others.fadeIn();
+			if(goLast && others) others.fadeIn(),others=null;
 		}
 	}]);
 	angular.bootstrap(WINLIT, ['Winlit']);

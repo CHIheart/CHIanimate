@@ -5,7 +5,7 @@
 define('LOGIN',[],function(require,exports,module){
 	var LOGIN=$(".LOGIN"),
 		container=LOGIN.closest('.FullScreenPlugin'),
-		ALERT;
+		ALERT,ALERTCLOSE;
 	angular.module('Login',[])
 	.controller('CtrlLogin',['$scope','$timeout',function($scope,$timeout){
         $scope.judge=function(name){
@@ -39,10 +39,15 @@ define('LOGIN',[],function(require,exports,module){
 					$scope.close();
 				}else{
 					var fail=function(){
-						ALERT("登陆失败",data.message,"frown");
+						ALERT("登陆失败",data.message,"frown",function(){
+							console.log(ALERTCLOSE);
+							ALERTCLOSE(0,1);
+						});
 					},
 					getAlert=function(){
-						ALERT=angular.element('.WINLIT').scope().alert;
+						var scopeWinlit=angular.element('.WINLIT').scope();
+						ALERT=scopeWinlit.alert;
+						ALERTCLOSE=scopeWinlit.close;
 					};
 					!$(".WINLIT").length ? $.ajax({
 						url: '/ajax/loadPlugin.php',
@@ -60,9 +65,9 @@ define('LOGIN',[],function(require,exports,module){
 			});
 		}
 		$scope.reset=function(){
-			this.passport='';
-			this.password='';
-			var form=this.LoginForm;
+			$scope.passport='';
+			$scope.password='';
+			var form=$scope.LoginForm;
 			form.passport.$setPristine();
 			form.password.$setPristine();
 			$(".ng-touched",LOGIN).each(function(index, el) {
@@ -70,7 +75,38 @@ define('LOGIN',[],function(require,exports,module){
 					$(this).removeClass('ng-untouched').addClass('ng-touched');
 				});
 			});
+			$scope.reference=true;
 		}
+		$scope.hasAt=function(){
+			return passport.value.indexOf('@')>0;
+		}
+		$scope.beforeAt=function(){
+			var v=passport.value;
+			return v.substring(0,v.indexOf('@'));
+		}
+		$scope.afterAt=function(){
+			var v=passport.value;
+			return v.substring(v.indexOf('@')+1);
+		}
+		$scope.setEmail=function(index){
+			$timeout(function(){
+				$scope.passport=$scope.beforeAt() + '@' + $scope.hosts[index];
+				$scope.reference=false;
+			},10);
+		}
+		$scope.setEmail2=function(index){
+			$timeout(function(){
+				$scope.passport=$scope.beforeAt() + '@' + $scope.hosts[index];
+			},10);
+		}
+		$scope.drop2=function(index){
+			$timeout(function(){
+				$scope.reference=false;
+			},10);
+		}
+		$scope.hosts=['126.com','163.com','sina.com','yeah.net','qq.com','hotmail.com'];
+		$scope.reference=true;
+		console.log($scope.passport)
 	}]);
 	angular.bootstrap(LOGIN,['Login']);
 	//点过再失焦后，更换成触摸类

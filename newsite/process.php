@@ -1,9 +1,12 @@
 <?php
+include "uglify.php";
 //根据流程图敲
 
 define("WEBROOT_AT_DISK",$_SERVER["DOCUMENT_ROOT"]);
 define("WEBROOT_AT_HOST",'http://'.$_SERVER["HTTP_HOST"]);
-define("DEVELOPING",true);
+define("DEVELOPING",false);
+define("PACKAGE_AT_HOST", "/cache");
+define("TEMPORARY_JS", "/tmp.js");
 
 function say($words,$color='black'){
 	echo '<blockquote style="color:'.$color.'; background-color:#eee; border:1px solid gray; margin:10px; padding:20px;">'.htmlspecialchars($words).'</blockquote>'.PHP_EOL;
@@ -34,7 +37,7 @@ function dump($v){
 
 function outputPage($urlRel,$aData){
 	$urlAbs=calAbsUrl($urlRel);
-	$txtCnt=DEVELOPING ? false : getContent('/cache'.$urlAbs);
+	$txtCnt=DEVELOPING ? false : getContent(PACKAGE_AT_HOST.$urlAbs);
 	if($txtCnt===false || DEVELOPING) $txtCnt=writeCache($urlAbs);	
 	return parseContent($txtCnt,$aData);
 }
@@ -94,7 +97,7 @@ function writeCache($urlAbs){
 			$value="<script src=\"{$value}\"></script>";
 		});
 		$txtCnt=str_replace(array('</head>','</body>'), array(implode(PHP_EOL, $aCss).'</head>',implode(PHP_EOL, $aJs).'</body>'), $txtCnt);
-		writeFile('/cache'.$urlAbs, $txtCnt);
+		writeFile(PACKAGE_AT_HOST.$urlAbs, $txtCnt);
 		$urlRootPage='';
 		$aCss=$aJs=array();
 	}
@@ -165,16 +168,24 @@ function packaging($aPaths,$sParPath=''){
 	}
 	if(count($aNames)){
 		$sName=$sParPath.'/'. implode('_', $aNames);
-		$sName='/cache'.preg_replace(array($regExtName,$regNameZip), array('_','_$1'), $sName);
+		$sName=PACKAGE_AT_HOST.preg_replace(array($regExtName,$regNameZip), array('_','_$1'), $sName);
 		if(!file_exists($sName) || DEVELOPING){
 			$aCnts=array();
 			foreach ($aURLs as $urlAbs) {
 				$aCnts[]=getContent($urlAbs);
 			}
 			$txtCnt=implode(PHP_EOL,$aCnts);
-			$md5_print=substr(md5($txtCnt),0,6);
+			$extName=getExtName($sName);
 			writeFile($sName,$txtCnt);
+			if(!DEVELOPING && $extName=='js'){
+				array_walk($aURLs, function(&$value){
+					$value=WEBROOT_AT_DISK . $value;
+				});
+				$ug = new JSUglify2();
+				$ug->uglify($aURLs, WEBROOT_AT_DISK .$sName);
+			}
 		}
+		$md5_print=md5_file(WEBROOT_AT_DISK . $sName);
 		$aFiles[]=WEBROOT_AT_HOST. $sName.'?'.$md5_print;
 	}
 	elseif($sParPath===''){
@@ -303,13 +314,13 @@ function loadPlugin($sName){
 	$regScript='/<script src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.js)"><\/script>/i';
 	$regLink='/<link rel="stylesheet" href="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.css)" *\/?>/i';
 	$urlPlugin="/incs/{$sName}/{$sName}.html";
-	$txtCnt=DEVELOPING ? false : getContent('/cache'.$urlPlugin);
+	$txtCnt=DEVELOPING ? false : getContent(PACKAGE_AT_HOST.$urlPlugin);
 	if($txtCnt!==false) return $txtCnt;
 	$txtCnt=getContent($urlPlugin);
 	if($txtCnt===false) return false;
 	referenceResources($regLink,$txtCnt,$urlPlugin,'css');
 	referenceResources($regScript,$txtCnt,$urlPlugin,'js');
-	writeFile('/cache'.$urlPlugin,$txtCnt);
+	writeFile(PACKAGE_AT_HOST.$urlPlugin,$txtCnt);
 	return $txtCnt;
 }
 
@@ -331,6 +342,14 @@ function referenceResources($reg,&$txtCnt,$urlBase,$sType){
 			$txtCnt='<style>' . $txtSrc. '</style>' . $txtCnt;
 			break;
 		case 'js':
+			if(!DEVELOPING){
+				$fileTmp=WEBROOT_AT_DISK.TEMPORARY_JS;
+				writeFile(TEMPORARY_JS,$txtSrc);
+				$ug=new JSUglify2();
+				$ug->uglify([$fileTmp], $fileTmp);
+				$txtSrc=getContent(TEMPORARY_JS);
+				unlink($fileTmp);
+			}
 			$txtCnt.='<script>'. $txtSrc. '</script>';
 			break;
 		

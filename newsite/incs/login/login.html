@@ -9,8 +9,12 @@
 					<h6>登陆乐车仔</h6>
 					<form novalidate name="LoginForm" id="LoginForm">
 						<div class="TEXTCONTAINER">
-							<input ng-model="passport" name="passport" id="passport" ng-required="true" ng-pattern="/^[\w\d][\w\d\_\-]*(\@([\w\d][\w\d\-\_]+\.)+\w{2,})?$/i" class="ng-untouched TEXTS" ng-class="judge('passport');">
+							<input ng-model="passport" name="passport" id="passport" ng-required="true" ng-pattern="/^[\w\d][\w\d\_\-]*(\@([\w\d][\w\d\-\_]+\.)+\w{2,})?$/i" class="ng-untouched TEXTS EMAILS" ng-class="judge('passport');" ng-focus="reference=true;" ng-value="123123">
 							<label for="passport" class="LABELS">账号/手机/邮箱</label>
+							<ul class="EMAILS" ng-show="hasAt() && reference;">
+								<!-- <li ng-repeat="host in hosts | filter : afterAt()" ng-click="setEmail($index);">{{beforeAt()}}@{{host}}</li> -->
+								<li ng-repeat="host in hosts" ng-mouseenter="setEmail2($index);" ng-click="drop2();">{{beforeAt()}}@{{host}}</li>
+							</ul>
 						</div>
 						<div class="TEXTCONTAINER">
 							<input ng-model="password" name="password" id="password" ng-required="true" ng-pattern="/^[\w\W]{6,}$/i" class="ng-untouched TEXTS" ng-class="judge('password');">
