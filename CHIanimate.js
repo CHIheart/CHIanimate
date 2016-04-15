@@ -394,7 +394,7 @@
 			events,nexts,follows，为true则复制指定的数据
 		*/
 		oResult.clone = function(bDeep) {
-			var newObj = CHIanimate(sJQorObj, oAttrs_sAction, oBasicOptions);
+			var newObj = CHIanimate(actor, oAttrs_sAction, oBasicOptions);
 			if (bDeep) {
 				function copy(array) {
 					var fun;
@@ -442,7 +442,7 @@
 
 
 /*
-sJQorObj，要执行效果的选择器，至少要符合一个元素；或直接放入JQ对象或Raphael对象/集合
+actor，要执行效果的选择器，至少要符合一个元素；或直接放入JQ对象或Raphael对象/集合
 oAttrs_sAction，可以是css键值对对象，也可以是slideUp/slideDown/fadeIn/fadeOut等JQ效果名称
 	如果是JQ动画的话，这个键值对对象，可以是attr:[value,easing]的形式
 	如果是Raphael动画的话，如果想用每个属性不同缓冲的话，请分成多个动画实例，然后连接在动画链的同一位置
@@ -471,7 +471,7 @@ oOptions，是额外用于设置动画效果的参数集合对象
 ----如果使用Raphael对象或集合，则options的特殊性为
 	duration，不可为空
 	easing，默认为linear（源码中的pipe）
-----如果sJQorObj符合若干个元素的话，oOptions等各个位置的options对象，可以增加delta属性delay属性each属性
+----如果actor符合若干个元素的话，oOptions等各个位置的options对象，可以增加delta属性delay属性each属性
 	此delta属性用于本JQ集合中，各个元素之间的动画时间延迟，所有元素都完成动画之后，内部解锁，然后才会执行next堆入的动画对象
 	此delay属性用于本JQ集合动画之前的整体延迟，前置锁完成之后，延迟本段时间后再执行本对象中的行为
 	此each属性用于本JQ集合中，各个元素动画完成之后，执行的一次回调函数，区别于done属性（所有元素完成之后才执行）
