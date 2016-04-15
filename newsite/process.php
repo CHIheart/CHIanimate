@@ -4,7 +4,7 @@ include "uglify.php";
 
 define("WEBROOT_AT_DISK",$_SERVER["DOCUMENT_ROOT"]);
 define("WEBROOT_AT_HOST",'http://'.$_SERVER["HTTP_HOST"]);
-define("DEVELOPING",false);
+define("DEVELOPING",true);
 define("PACKAGE_AT_HOST", "/cache");
 define("TEMPORARY_JS", "/tmp.js");
 
@@ -65,8 +65,8 @@ function calAbsUrl($urlRel,$urlBase='/'){
 
 function writeCache($urlAbs){
 	static $urlRootPage='';
-	static $aCss=array();
-	static $aJs=array();
+	static $aCss=[];
+	static $aJs=[];
 	static $regScript='/<script src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.js)"><\/script>/i';
 	static $regLink='/<link rel="stylesheet" href="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.css)" *\/?>/i';
 	static $regIncInline='/<!-- include src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.html)"[\s\S]*? -->/i';
@@ -82,7 +82,7 @@ function writeCache($urlAbs){
 			$urlIncAbs=calAbsUrl($urlIncRel,$urlAbs);
 			$txtIncCnt=writeCache($urlIncAbs);
 			if($txtIncCnt===false) $txtIncCnt="<div>NO FILE {$urlIncRel} in {$urlAbs} !!!</div>";
-			$sIncludeHead=str_replace(array($urlIncRel,'include'), array($urlIncAbs,'include beginning'), $sInclude);
+			$sIncludeHead=str_replace([$urlIncRel,'include'], [$urlIncAbs,'include beginning'], $sInclude);
 			$txtCnt=str_replace($sInclude, $sIncludeHead. $txtIncCnt. "<!-- include ending src=\"{$urlIncAbs}\" -->", $txtCnt);
 		}
 	}
@@ -96,10 +96,10 @@ function writeCache($urlAbs){
 		array_walk($aJs, function(&$value,$key){
 			$value="<script src=\"{$value}\"></script>";
 		});
-		$txtCnt=str_replace(array('</head>','</body>'), array(implode(PHP_EOL, $aCss).'</head>',implode(PHP_EOL, $aJs).'</body>'), $txtCnt);
+		$txtCnt=str_replace(['</head>','</body>'], [implode(PHP_EOL, $aCss).'</head>',implode(PHP_EOL, $aJs).'</body>'], $txtCnt);
 		writeFile(PACKAGE_AT_HOST.$urlAbs, $txtCnt);
 		$urlRootPage='';
-		$aCss=$aJs=array();
+		$aCss=$aJs=[];
 	}
 	return $txtCnt;
 }
@@ -117,7 +117,7 @@ function collectResources($reg,&$txtCnt,$urlBase,&$aContainer){
 
 function packageResources($aResources){
 	array_unique($aResources);
-	$aPaths=array();
+	$aPaths=[];
 	foreach ($aResources as $sResource) {
 		$aNodes=explode('/', $sResource);
 		array_shift($aNodes);
@@ -138,7 +138,7 @@ function packageResources($aResources){
 							}
 						}
 					default:
-						$ptr[$sNode]=array();
+						$ptr[$sNode]=[];
 						break;
 				}
 			}
@@ -155,8 +155,8 @@ function getExtName($sFilename){
 }
 
 function packaging($aPaths,$sParPath=''){
-	static $aFiles=array();
-	$aNames=$aURLs=array();
+	static $aFiles=[];
+	$aNames=$aURLs=[];
 	$regNameZip='/_([\w\d]+)\/\1/i';
 	$regExtName='/\.\w+_/i';
 	foreach ($aPaths as $sDir => $sKid) {
@@ -167,30 +167,31 @@ function packaging($aPaths,$sParPath=''){
 		}
 	}
 	if(count($aNames)){
-		$sName=$sParPath.'/'. implode('_', $aNames);
-		$sName=PACKAGE_AT_HOST.preg_replace(array($regExtName,$regNameZip), array('_','_$1'), $sName);
-		if(!file_exists($sName) || DEVELOPING){
-			$aCnts=array();
-			foreach ($aURLs as $urlAbs) {
-				$aCnts[]=getContent($urlAbs);
-			}
-			$txtCnt=implode(PHP_EOL,$aCnts);
-			$extName=getExtName($sName);
-			writeFile($sName,$txtCnt);
-			if(!DEVELOPING && $extName=='js'){
-				array_walk($aURLs, function(&$value){
-					$value=WEBROOT_AT_DISK . $value;
-				});
-				$ug = new JSUglify2();
-				$ug->uglify($aURLs, WEBROOT_AT_DISK .$sName);
-			}
+		if(strpos($sParPath, '/srcs/')===false){
+			$aNames=[implode('_', $aNames)];
 		}
-		$md5_print=md5_file(WEBROOT_AT_DISK . $sName);
-		$aFiles[]=WEBROOT_AT_HOST. $sName.'?'.$md5_print;
+		foreach ($aNames as $sName) {
+			$sName=PACKAGE_AT_HOST.preg_replace([$regExtName,$regNameZip], ['_','_$1'], $sParPath.'/'.$sName);
+			if(!file_exists($sName) || DEVELOPING){
+				$aCnts=[];
+				foreach ($aURLs as $urlAbs) {
+					$aCnts[]=getContent($urlAbs);
+				}
+				$txtCnt=implode(PHP_EOL,$aCnts);
+				$extName=getExtName($sName);
+				writeFile($sName,$txtCnt);
+				if(!DEVELOPING && $extName=='js'){
+					$ug = new JSUglify2();
+					$ug->uglify([WEBROOT_AT_DISK .$sName], WEBROOT_AT_DISK .$sName);
+				}
+			}
+			$md5_print=md5_file(WEBROOT_AT_DISK . $sName);
+			$aFiles[]=WEBROOT_AT_HOST. $sName.'?'.substr($md5_print, 0,6);
+		}
 	}
 	elseif($sParPath===''){
 		$aPkgs=$aFiles;
-		$aFiles=array();
+		$aFiles=[];
 		return $aPkgs;
 	}
 	return ;
@@ -223,7 +224,7 @@ function parseContent($txtCnt,$aData){
 		}else{
 			$piRepeat=eval("return $sRepeats;");
 			$piLength=count($aVariable);
-			$aContents=array();
+			$aContents=[];
 			if($piRepeat===-1) $maxRepeat=$piLength;
 			else $maxRepeat=min($piRepeat,$piLength);
 			for ($cntRepeat=0; $cntRepeat < $maxRepeat; $cntRepeat++) { 
@@ -275,6 +276,7 @@ function locateMedias(&$txtCnt,$urlAbs){
 		if($md5_print===false) echo "File doesn't exist!!! <s>{$urlResRel}</s> in <em>{$urlAbs}</em>";
 		else $txtCnt=str_replace($urlResRel, WEBROOT_AT_HOST.$urlResAbs.'?'.substr($md5_print, 0,6),$txtCnt);
 	}
+	$txtCnt=preg_replace('/(href|src)="\/src/i', '$1="'. WEBROOT_AT_HOST .'/src', $txtCnt);
 	return ;
 }
 
@@ -326,7 +328,7 @@ function loadPlugin($sName){
 
 function referenceResources($reg,&$txtCnt,$urlBase,$sType){
 	preg_match_all($reg, $txtCnt, $aSrcs);
-	$aCnts=array();
+	$aCnts=[];
 	for ($cntSrcs=0; $cntSrcs < count($aSrcs[0]); $cntSrcs++) { 
 		$sResource=$aSrcs[0][$cntSrcs];
 		$urlRel=$aSrcs[1][$cntSrcs];
@@ -370,15 +372,11 @@ function jsRacing($url1,$url2){
 
 function calJsRace($url){
 	$dirs=array(
-		"srcs"=>array(
-			"libs","datas","effects","plugins"
-		),
-		"incs"=>array(
-			"header","footer","aside"
-		)
+		"srcs"=>["libs","datas","effects","plugins"],
+		"incs"=>["header","footer","aside"]
 	);
 
-	$bits=array();
+	$bits=[];
 	$n=0;
 	foreach ($dirs as $dir => $kids) {
 		if(strpos($url, $dir)!==false){

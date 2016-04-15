@@ -1,5 +1,4 @@
 <?php
-define("ON", false);
 header('Content-Type: text/html; charset=utf-8');
 include "process.php";
 
@@ -26,7 +25,7 @@ $data = array(
 			"other"=>""
 		),
 		array(
-			"href"=>"#3",
+			"href"=>"",
 			"blank"=>"",
 			"name"=>"退出登陆",
 			"other"=>"ng-click=\"logout();\""
