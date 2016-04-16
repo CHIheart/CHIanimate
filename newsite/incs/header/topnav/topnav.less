@@ -1,0 +1,97 @@
+//顶导航样式
+
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+@import (reference) "../../../srcs/css/_icons";
+
+.TOPNAV{
+	.h(90px);
+	&:hover{
+		.relative();
+		.z(55555);
+	}
+}
+.LOGO{
+	.fl();
+	.pt(12px);
+	.w(64px);
+}
+//分类列表
+.CATEGORIES{
+	.fl();
+	.relative();
+	.w(170px);
+	dt{
+		.t-c();
+		.size(18px);
+		.line(90px);
+		.c(@middleblack);
+	}
+	&:hover{
+		dt{
+			.c(@red);
+		}
+		.MainCates{
+			.h(520px);
+		}
+	}
+}
+//主分类列表
+.MainCates{
+	.absolute();
+	.w(234px);
+	.h(0);
+	.o();
+	.t(90px);
+	.l(-64px);
+	.bg-c-a(black,.5);
+	h3{
+		.hline(46px);
+		a{
+			.block();
+			.c(white);
+			.p(0,20px);
+			.size(16px);
+			&:before:extend(.lcz,.lcz-angle-right:before){
+				.size(18px);
+				.fr();
+				.hline(inherit);
+			}
+		}
+		&:hover{
+			a{
+				.bg-c(@red);
+				.c(white);
+			}
+		}
+		&:first-child{
+			.mt(30px);
+		}
+	}
+}
+//子分类列表
+.SubCates{
+	.absolute();
+	.l(170px);
+	.t(90px);
+	.p(20px);
+	.h(480px);
+	.bg-c(white);
+	.display(table);
+	.sublist{
+		.display(table-cell);
+	}
+	&.hide{
+		.none();
+	}
+	h4:extend(.ellipsis){
+		.w(190px);
+		.hline(80px);
+		.size(14px);
+	}
+	img{
+		.wh(60px);
+		.m(10px,10px,0,0);
+		.valign(middle);
+	}
+}

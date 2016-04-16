@@ -1,4 +1,4 @@
-<!--Written by PROCESS.PHP at the time of 2016-04-14 18:56:39-->
+<!--Written by PROCESS.PHP at the time of 2016-04-16 17:59:36-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +10,8 @@
 <title>{$title}</title>
 <meta name="description" content="{$description}">
 <meta name="keywords" content="{$keywords}">
-
-<link href="/srcs/images/favicon.ico" rel="icon" type="image/x-icon" />
+<link rel="stylesheet" href="http://www.new.com/srcs/css/css.css">
+<link href="http://www.new.com/srcs/images/favicon.ico" rel="icon" type="image/x-icon" />
 <!--[if lte IE 7]>
 <div class="TOOLOW">
 您使用的浏览器版本过低，请升级IE，或者换用其它浏览器
@@ -20,13 +20,10 @@
 document.execCommand("stop");
 </script>
 <![endif]-->
-
-
-
+<script src="http://www.new.com/srcs/js/libs/jq1.10.2_sea2.3.0_angular1.2.16.js"></script>
 <!-- include ending src="/incs/always.html" -->
-<link rel="stylesheet" href="http://www.new.com/cache/srcs/css/css.css?31dcf81cc46c9fb42f943180197d879f">
-<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart.css?2abc9001a159a4f0b6ec6fdf84d56be1">
-<link rel="stylesheet" href="http://www.new.com/cache/index/ppt/ppt.css?3028dc8b3cde1208fd22ec4f1ebcb7ef"></head>
+<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topnav.css?d45623">
+<link rel="stylesheet" href="http://www.new.com/cache/index/ppt/ppt.css?263a84"></head>
 <body>
 <!-- include beginning src="/incs/header/index/index.html" --><!-- 首页使用头文件碎片 -->
 
@@ -83,17 +80,49 @@ document.execCommand("stop");
 <!-- include ending src="/incs/header/topcart/topcart.html" -->
 	</div>
 </div>
+<div class="TOPNAV common clearfix">
+	<!-- include beginning src="/incs/header/topnav/topnav.html" -->
+<div class="LOGO"><img src="http://www.new.com/srcs/images/logo.png?0b2084" alt=""></div>
+<dl class="CATEGORIES">
+	<dt>全部产品分类</dt>
+	<dd>
+		<div class="MainCates transSlow anchors">
+			<!-- include beginning src="/incs/header/topnav/navMain.html" variable="$aData['categories']" repeats="-1" --><h3><a href="{$url}" alt="{$alt}">{$name}</a></h3><!-- include ending src="/incs/header/topnav/navMain.html" -->
+		</div>
+		<!-- include beginning src="/incs/header/topnav/navSub.html" variable="$aData['categories']" repeats="-1" --><div class="SubCates anchors hide">
+	<!-- include beginning src="/incs/header/topnav/navSubCat.html" variable="$aData['subcates']" repeats="-1" --><!-- include beginning src="/incs/header/topnav/navSubListPrefix.html" condition="$aData['index']%6===0" --><div class="sublist"><!-- include ending src="/incs/header/topnav/navSubListPrefix.html" -->
+<h4><a href="{$url}" alt="{$alt}">
+	<img src="{$img}" alt="{$alt}">
+	{$name}
+</a></h4>
+<!-- include beginning src="/incs/header/topnav/navSubListSuffix.html" condition="$aData['index']%6===5 || $aData['index']===$aData['of']-1" --></div><!-- include ending src="/incs/header/topnav/navSubListSuffix.html" --><!-- include ending src="/incs/header/topnav/navSubCat.html" -->
+</div><!-- include ending src="/incs/header/topnav/navSub.html" -->
+	</dd>
+</dl>
+<!-- include ending src="/incs/header/topnav/topnav.html" -->
+</div>
 
 <!-- include ending src="/incs/header/index/index.html" -->
 <!-- include beginning src="/index/ppt/ppt.html" -->
-<div class="clearfix PPT common">
-	这个就是幻灯片啦
-	<img src="http://www.new.com/srcs/images/pro.png?b0a4b5" height="260" width="260" alt="">
+<div class="clearfix PPT">
+	<ul>
+		<!-- include beginning src="/index/ppt/pptPic.html" variable="$aData['ppt']" repeats="-1" --><li style="background-image:url({$img})"><a href="{$url}" title="{$title}"></a></li>
+<!-- include ending src="/index/ppt/pptPic.html" -->
+	</ul>
+	<div class="common">
+		<div class="ctrl">
+			<sub class="transSlow"><i class="lcz lcz-angle-left"></i></sub>
+			<sup class="transSlow"><i class="lcz lcz-angle-right"></i></sup>
+			<ol>
+				<!-- include beginning src="/index/ppt/pptDot.html" variable="$aData['ppt']" repeats="-1" --><li title="{$title}" class="cur"></li>
+<!-- include ending src="/index/ppt/pptDot.html" -->
+			</ol>
+		</div>
+	</div>
 </div>
 <!-- include ending src="/index/ppt/ppt.html" -->
-<img src="http://www.new.com/srcs/images/elephant.png?813b46" height="281" width="281" alt="">
 
-<script src="http://www.new.com/cache/srcs/js/libs/jquery_seajs_angular.js?646e0beab4fb621da22345c456cd314e"></script>
-<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart.js?0e8e224bdaa97a868848c0371f75b730"></script>
-<script src="http://www.new.com/cache/index/index_ppt.js?6d3450ab9bc605af13310189fd1cb15c"></script></body>
+
+<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topnav.js?d90e0b"></script>
+<script src="http://www.new.com/cache/index/index_ppt.js?c399c5"></script></body>
 </html>

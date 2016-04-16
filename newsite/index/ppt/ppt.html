@@ -1,6 +1,16 @@
 <link rel="stylesheet" href="ppt.css">
-<div class="clearfix PPT common">
-	这个就是幻灯片啦
-	<img src="../../srcs/images/pro.png" height="260" width="260" alt="">
+<div class="clearfix PPT">
+	<ul>
+		<!-- include src="pptPic.html" variable="$aData['ppt']" repeats="-1" -->
+	</ul>
+	<div class="common">
+		<div class="ctrl">
+			<sub class="transSlow"><i class="lcz lcz-angle-left"></i></sub>
+			<sup class="transSlow"><i class="lcz lcz-angle-right"></i></sup>
+			<ol>
+				<!-- include src="pptDot.html" variable="$aData['ppt']" repeats="-1" -->
+			</ol>
+		</div>
+	</div>
 </div>
 <script src="ppt.js"></script>

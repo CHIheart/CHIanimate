@@ -1,7 +1,5 @@
 /** 首页头文件碎片使用的js
  */
-
-define('index',[],function(require,exports,module){
+define('header/index',[],function(require,exports,module){
 })
-
-seajs.use('index');
+seajs.use('header/index');

@@ -16,8 +16,8 @@
 	}
 }
 .USERMENU,.TOPCART{
-	.relative();
 	.w(120px);
+	.relative();
 	> dt{
 		.c-p();
 	}
@@ -29,9 +29,13 @@
 	//这块是要处理两个菜单重叠时，被指向的那个菜单始终位于高z轴上
 		.z(44444);
 	}
-	&:hover > dd{
-		.z(44445);
+	&:hover{
+		> dd{
+			.z(44445);
+		}
 	}
 }
-
-
+.MainCates{
+	.h(520px) !important;
+	.z(44444);
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>CSS HACK</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+</head>
+<style>
+	div{
+		width:100px;
+		height:100px;
+		background-color:red;		/*standard*/
+		background-color:blue\9;	/*ie8*/
+		background-color:green\9\0;	/*ie9*/
+		*background-color:purple;	/*ie7-*/
+		_background-color:yellow;	/*ie6 only*/
+	}
+	@-moz-document url-prefix(){/*firefox*/
+		div{
+			border:1px solid #000;
+		}
+	}
+	@media screen and (-webkit-min-device-pixel-ratio:0) {/*webkit*/
+		div{
+			outline:10px solid silver;
+		}
+	} 
+	@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /*ie10+*/
+		div{
+			transform:rotate(45deg);
+		}
+	}
+
+</style>
+<body>
+		<div></div>
+</body>
+</html>

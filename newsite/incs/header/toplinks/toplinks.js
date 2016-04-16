@@ -1,13 +1,12 @@
 /**
  * 顶用户菜单
  */
-
 define('toplinks',[],function(require,exports,module){
 	//鼠标指向用户菜单时，菜单下滑
 	var oJQ=$(".TOPLINKS").on('mouseenter', '.USERMENU', function(event) {
-		$(this).addClass('on').find('dd ul').slideDown();
+		$(this).addClass('on').find('dd ul').stop(true).slideDown();
 	}).on('mouseleave', '.USERMENU', function(event) {
-		$(this).find('dd ul').slideUp(function(){
+		$(this).find('dd ul').stop(true).slideUp(function(){
 			$(".USERMENU").removeClass('on');
 		});
 	});
@@ -49,5 +48,4 @@ define('toplinks',[],function(require,exports,module){
 	show();
 	return ;
 });
-
 seajs.use('toplinks');

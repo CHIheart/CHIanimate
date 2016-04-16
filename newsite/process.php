@@ -116,7 +116,7 @@ function collectResources($reg,&$txtCnt,$urlBase,&$aContainer){
 }
 
 function packageResources($aResources){
-	array_unique($aResources);
+	$aResources=array_unique($aResources);
 	$aPaths=[];
 	foreach ($aResources as $sResource) {
 		$aNodes=explode('/', $sResource);
@@ -230,6 +230,7 @@ function parseContent($txtCnt,$aData){
 			for ($cntRepeat=0; $cntRepeat < $maxRepeat; $cntRepeat++) { 
 				$aVar=&$aVariable[$cntRepeat];
 				$aVar['index']=$cntRepeat;
+				$aVar['of']=$piLength;
 				$aContents[]=parseContent($sContent,$aVar);
 			}
 			$sContent=implode('', $aContents);
@@ -270,7 +271,8 @@ function locateMedias(&$txtCnt,$urlAbs){
 			return false;
 	}
 	preg_match_all($reg, $txtCnt, $aSrcs);
-	foreach ($aSrcs[1] as $urlResRel) {
+	$aSrcs=array_unique($aSrcs[1]);
+	foreach ($aSrcs as $urlResRel) {
 		$urlResAbs=calAbsUrl(preg_replace($regSuffix,'',$urlResRel),$urlAbs);
 		$md5_print=@md5_file(WEBROOT_AT_DISK.$urlResAbs);
 		if($md5_print===false) echo "File doesn't exist!!! <s>{$urlResRel}</s> in <em>{$urlAbs}</em>";

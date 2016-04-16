@@ -1,3 +1,60 @@
+//Written by PROCESS.PHP at the time of 2016-04-16 17:59:36
+/** 首页头文件碎片使用的js
+ */
+define('header/index',[],function(require,exports,module){
+})
+seajs.use('header/index');
+/**
+ * 顶用户菜单
+ */
+define('toplinks',[],function(require,exports,module){
+	//鼠标指向用户菜单时，菜单下滑
+	var oJQ=$(".TOPLINKS").on('mouseenter', '.USERMENU', function(event) {
+		$(this).addClass('on').find('dd ul').stop(true).slideDown();
+	}).on('mouseleave', '.USERMENU', function(event) {
+		$(this).find('dd ul').stop(true).slideUp(function(){
+			$(".USERMENU").removeClass('on');
+		});
+	});
+
+	//根据用户登陆状态来判断显示菜单的哪一部分
+	angular.module("TOPLINKS",[])
+		.controller("CtrlTopLinks",['$scope','$timeout',function($scope,$timeout){
+			function loginOpen(){
+				angular.element(".LOGIN").scope().open();
+			}
+			$scope.login=function(){
+				if(!$(".LOGIN").length)
+					$.ajax({
+						url: '/ajax/loadPlugin.php',
+						type: 'POST',
+						dataType: 'html',
+						data: {plugin: 'login'},
+					})
+					.success(function(data) {
+						$("body").append(data);
+						loginOpen();
+					});
+				else loginOpen();
+			}
+			$scope.logout=function(){
+				$timeout(function(){
+					$scope.online=false;
+					$timeout(show,100);
+				},100);
+			}
+		}]);
+	angular.bootstrap(oJQ,['TOPLINKS']);
+	
+	function show(){
+		oJQ.children().css({
+			visibility: 'visible'
+		})
+	}
+	show();
+	return ;
+});
+seajs.use('toplinks');
 /**
  * 顶购物车的单独应用
  */
@@ -140,3 +197,20 @@ define('topcart',[],function(require,exports,module){
 	angular.bootstrap($('.TOPCART'), ['TOPCART']);
 });
 seajs.use('topcart');
+/**
+ * 顶导航
+ * @authors Your Name (you@example.org)
+ * @date    2016-04-16 15:12:00
+ * @version $Id$
+ */
+define('topnav',[],function(require,exports,module){
+	$(".MainCates h3").mouseenter(function() {
+		$(".SubCates").eq($(this).index()).removeClass('hide')
+			.siblings('.SubCates').addClass('hide');
+	});
+	$(".CATEGORIES").mouseleave(function(event) {
+		$(".SubCates:not(.hide)").addClass('hide');
+	});
+	return ;
+});
+seajs.use('topnav');
