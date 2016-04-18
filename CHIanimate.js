@@ -160,11 +160,11 @@
 						//是否有两个参数，只有一个参数时被视为b
 						a = two ? ns[0] * 1 : 0,
 						b = ns[two ? 1 : 0] * 1,
-						y = niCounter;
-					if (!a && b == y || a && y + b >= 0 && (y - b / a) >= 0) {
+						y = niCounter,
+						n = a ? (y - b)/a : NaN;
+					if (!a && b == y || n >= 0 && n.toFixed(0)*1 == n*1) {
 						for (var x = 0; x < events[nums].length; x++)
-							for (var x = 0; x < events[nums].length; x++)
-								events[nums][x] instanceof Function && events[nums][x].call(object, niCounter)
+							events[nums][x] instanceof Function && events[nums][x].call(object, y);
 						//删除固定序号及负系数到达上限的元素，以节省资源
 						if (!a && b == y || a < 0 && y >= b) delete(events[nums]);
 					}
@@ -370,6 +370,7 @@
 			}
 			//要添加，且没有找到参数，则入栈
 			!bOut && arr.push(oCHI);
+			console.info(events);
 			return oResult;
 		}
 		//删除所有事件中的指定行为
