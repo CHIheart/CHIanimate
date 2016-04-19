@@ -85,8 +85,19 @@ define(function(require,exports,module){
 	over，样式变化终止位置，默认为滚动到文档底，也就是文档高减去窗口高
 	easing，样式变化缓冲函数，默认为linear，如果包含了jQuery.easing插件，也可以使用里边的其它函数
 	step，样式每一次变化都执行的函数，默认为空，函数的this语境是元素的jq对象
-	strict，严格执行，也就是当滚动到最终位置时，是否设置元素属性为goal，默认为false，会使用补足的goal（也就是内部的terminal对象）
 	*/
+	function startOver(n){
+		switch(N.type(n)){
+			case '': return n;
+			case '%':
+				return N.per2float(n) * $(window).height();
+			case 'em':
+				return n * $("body").css("fontSize").replace('px','');
+			case 'rem':
+				return n * $("html").css("fontSize").replace('px','');
+			default: return false;
+		}
+	}
 	$.fn.scrollbar=function(settings){
 		if(!settings)
 		{
@@ -94,10 +105,14 @@ define(function(require,exports,module){
 			return this;
 		}
 		//滚动位置验证
-		var start=settings.start,
-			over=settings.over;
-		if(isNaN(start)) start=0;
-		if(isNaN(over)) over=$(document).height() - $(window).height();
+		var start=startOver(settings.start || 0),
+			over=startOver(settings.over || $(document).height() - $(window).height());
+		// console.log(settings.start,start)
+		// console.info(settings.over,over);
+		if(start===false || over===false){
+			console.error("起止位参数错误！");
+			return false;
+		}
 		var duration=over-start;
 		if(duration<=0){
 			console.error("动画区间是非正数！");
@@ -106,8 +121,7 @@ define(function(require,exports,module){
 		//其它验证
 		var easing=settings.easing,
 			step=settings.step,
-			goal=settings.goal,
-			strict=!!settings.strict;
+			goal=settings.goal;
 		if(!IS.o(goal)){
 			console.error("最终样式参数错误！");
 			return this;
@@ -158,21 +172,28 @@ define(function(require,exports,module){
 			}
 				BAR[n].unify(THIS,original,terminal);
 		}
-		//console.group("统一后的值");
+		// console.group("统一后的值");
 		// console.warn("统一之后初始值");
 		// CONSOLE(original)
 		// console.warn("统一之后终止值");
 		// CONSOLE(terminal)
-		//console.groupEnd();
+		// console.groupEnd();
 
 		$(window).on('scroll load', update);
 		return this;
 		function update()
 		{
 			var scrollTop=$(window).scrollTop();
-			if(scrollTop>over || scrollTop<start) return;
-			if(scrollTop==over && strict) THIS.css(goal);
-			else if(scrollTop==start) THIS.css(init);
+			if(scrollTop>over || scrollTop<start){
+				//滚动的时候，由于滚轮速度不一定，所以有可能跳过极限值，所以先在此纠正一次，然后做标记
+				var state=THIS.data("state");
+				if(state=='finish') return;
+				if(scrollTop>over) scrollTop=over;
+				else if(scrollTop<start) scrollTop=start;
+				THIS.data("state","finish");
+			}
+			if(scrollTop==over) THIS.data("state","finish").css(goal);
+			else if(scrollTop==start) THIS.css(init).data("state","finish");
 			else
 			{
 				var current={},
@@ -194,7 +215,14 @@ define(function(require,exports,module){
 						{
 							val1=val1[0]*1;
 							val2*=1;
-							var v=$.easing[easing](0,curStep,val1,val2,duration) + val1,
+							/*easing的参数分别是
+							1.无意义的？x=0
+							2.当前时间点/滚动轴当前位置
+							3.初始值
+							4.差值（终止值-初始值）
+							5.总耗时/总滚动高度（over-start）
+							*/
+							var v=$.easing[easing](0,curStep,val1,val2-val1,duration),
 								before=RegExp['$`'],
 								after=RegExp["$'"],
 								maxcnt=before.match(/rgb/ig) ? 3 : before.match(/hsl/ig) ? 1 : 0,
@@ -209,8 +237,7 @@ define(function(require,exports,module){
 					current[attr]=newValue;
 				}
 				//console.groupEnd();
-				THIS.css(current);
-				// console.log(current)
+				THIS.css(current).removeData("state");
 			}
 		}
 	}
