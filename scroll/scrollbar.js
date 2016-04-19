@@ -81,6 +81,8 @@ define(function(require,exports,module){
 	/*
 	配置参数可以使用的属性有
 	goal，必选，最终样式，使用JSON对象，类似于$.css方法，不接受inherit跟auto
+	init，初始化样式，如果这个元素上只绑定一个动作时则可省略，如果绑定了两个的话，则最开始的那个动作可以没有init，后边的必须有
+			当没有init时就记录当前存在于goal中的所有属性的目前值，放在init里边
 	start，样式变化起始位置，默认为0
 	over，样式变化终止位置，默认为滚动到文档底，也就是文档高减去窗口高
 	easing，样式变化缓冲函数，默认为linear，如果包含了jQuery.easing插件，也可以使用里边的其它函数
@@ -98,6 +100,19 @@ define(function(require,exports,module){
 			default: return false;
 		}
 	}
+	/*
+	将对象内所有的属性都换成驼峰形式
+	*/
+	function cammelAll(obj){
+		if(IS.o(obj)){
+			for(var n in obj){
+				var v=obj[n],
+					attr=S.cammel(n);
+				delete(obj[n]);
+				obj[attr]=v;
+			}
+		}
+	}
 	$.fn.scrollbar=function(settings){
 		if(!settings)
 		{
@@ -107,138 +122,139 @@ define(function(require,exports,module){
 		//滚动位置验证
 		var start=startOver(settings.start || 0),
 			over=startOver(settings.over || $(document).height() - $(window).height());
-		// console.log(settings.start,start)
-		// console.info(settings.over,over);
 		if(start===false || over===false){
-			console.error("起止位参数错误！");
+			console.error("起止位参数错误！start or over");
 			return false;
 		}
 		var duration=over-start;
 		if(duration<=0){
-			console.error("动画区间是非正数！");
+			console.error("动画区间是非正数over<=start！");
 			return this;	
 		}
 		//其它验证
 		var easing=settings.easing,
 			step=settings.step,
-			goal=settings.goal;
+			goal=settings.goal,
+			init=settings.init;
+		if(!init) settings.init=init={};
 		if(!IS.o(goal)){
-			console.error("最终样式参数错误！");
+			console.error("最终样式goal参数错误！");
 			return this;
 		}
+		if(!IS.o(init)){
+			console.error("起始样式init参数错误！");
+		}
 		if(!easing || !(easing in $.easing)) easing='linear';
-		if(!IS.f(step)) step='';
+		if(!IS.f(step)) step=$.noop;
+		settings.step=step;
+		settings.easing=easing;
+		settings.start=start;
+		settings.over=over;
 
-		var init={},original={},terminal={},
-			BAR=$.scrollbar,
+
+		cammelAll(init);
+		cammelAll(goal);
+		var BAR=$.scrollbar,
 			THIS=this;
-		for(var n in goal)
+		for(var attr in goal)
 		{
-			var attr=S.cammel(n);
 			if(!(attr in BAR))
 			{
 				console.warn(attr,"不在可运算的属性中……");
 				continue;
 			}
-			if(isNaN(goal[n]) && !IS.s(goal[n]))
+			if(isNaN(goal[attr]) && !IS.s(goal[attr]))
 			{
-				console.error("属性只能使用数字或字符串作为值！",goal[n]);
+				console.error("属性只能使用数字或字符串作为值！",goal[attr]);
 				continue;
 			}
-			if(/inherit|auto/i.test(goal[n]))
+			if(/inherit|auto/i.test(goal[attr]))
 			{
 				console.error("终止值不接受inherit或auto！");
 				continue;
 			}
-			init[n]=$(this).css(n);
-			original[attr]=S.clear(init[n]);
-			terminal[attr]=S.clear(goal[n]);
-			BAR[attr].parse(original,this,init);
-			BAR[attr].parse(terminal,this,goal);
+			if(!(attr in init)) init[attr]=$(this).css(attr);
+			init[attr]=S.clear(init[attr]);
+			goal[attr]=S.clear(goal[attr]);
+			BAR[attr].parse(init,this,init);
+			BAR[attr].parse(goal,this,goal);
 		}
-		//console.group("初始读值");
-		// console.warn("统一之前初始值");
-		// CONSOLE(original)
-		// console.warn("统一之前终止值");
-		// CONSOLE(terminal)
-		//console.groupEnd();
 
-		for(var n in original)
+		for(var n in init)
 		{
-			if(!(n in terminal))
+			if(!(n in goal))
 			{
 				console.warn("属性"+n+"不存在于终止值对象之中！已删除！");
-				delete(terminal[n]);
+				delete(goal[n]);
 			}
-				BAR[n].unify(THIS,original,terminal);
+				BAR[n].unify(this,init,goal);
 		}
-		// console.group("统一后的值");
-		// console.warn("统一之后初始值");
-		// CONSOLE(original)
-		// console.warn("统一之后终止值");
-		// CONSOLE(terminal)
-		// console.groupEnd();
 
-		$(window).on('scroll load', update);
+		$(window).on('scroll load', function(){
+			update.call(THIS,settings);
+		});
 		return this;
-		function update()
+	}
+	function update(settings)
+	{
+		var scrollTop=$(window).scrollTop(),
+			start=settings.start,
+			over=settings.over,
+			original=settings.init,
+			terminal=settings.goal,
+			easing=settings.easing,
+			step=settings.step,
+			duration=over-start;
+		//滚动的时候，由于滚轮速度不一定，所以有可能跳过极限值，所以先在此纠正一次，然后做标记
+		if(scrollTop>=over || scrollTop<=start){
+			var state=this.data("state");
+			if(state=='finish') return;
+			this.css(scrollTop<=start ? original : terminal).data("state","finish");
+		}
+		else
 		{
-			var scrollTop=$(window).scrollTop();
-			if(scrollTop>over || scrollTop<start){
-				//滚动的时候，由于滚轮速度不一定，所以有可能跳过极限值，所以先在此纠正一次，然后做标记
-				var state=THIS.data("state");
-				if(state=='finish') return;
-				if(scrollTop>over) scrollTop=over;
-				else if(scrollTop<start) scrollTop=start;
-				THIS.data("state","finish");
-			}
-			if(scrollTop==over) THIS.data("state","finish").css(goal);
-			else if(scrollTop==start) THIS.css(init).data("state","finish");
-			else
+			var current={},
+				curStep=scrollTop-start;
+			//console.group('分组');
+			for(var attr in original)
 			{
-				var current={},
-					curStep=scrollTop-start;
-				//console.group('分组');
-				for(var attr in original)
-				{
-					//如果是对象，则分别计算tween值
-					var startValue=original[attr],
-						overValue=terminal[attr],
-						regFloat=N.reg[''].source.replace('^','').replace('$',''),
-						regStart=new RegExp(regFloat,"ig"),
-						regOver=new RegExp(regFloat,"ig"),
-						val1,newValue=overValue.toString(),
-						cnt=0;
-					newValue=newValue.replace(regOver,function(val2){
-						val1=regStart.exec(startValue);
-						if(val1!==null)
-						{
-							val1=val1[0]*1;
-							val2*=1;
-							/*easing的参数分别是
-							1.无意义的？x=0
-							2.当前时间点/滚动轴当前位置
-							3.初始值
-							4.差值（终止值-初始值）
-							5.总耗时/总滚动高度（over-start）
-							*/
-							var v=$.easing[easing](0,curStep,val1,val2-val1,duration),
-								before=RegExp['$`'],
-								after=RegExp["$'"],
-								maxcnt=before.match(/rgb/ig) ? 3 : before.match(/hsl/ig) ? 1 : 0,
-								needInt=false;
-							//颜色值不能使用小数，所以要把前三位rgb或hsl转成整数
-							before.match(/(rgb|hsl)[a]?\(/) && before.indexOf(')')<0 && after.indexOf(')')>=0 && cnt!=maxcnt && (cnt++,needInt=true);
-							return needInt ? parseInt(v) : v.toFixed(2);
-						}
-						return val2;
-					});
-					val1=val2=regStart=regOver=null;
-					current[attr]=newValue;
-				}
-				//console.groupEnd();
-				THIS.css(current).removeData("state");
+				//如果是对象，则分别计算tween值
+				var startValue=original[attr],
+					overValue=terminal[attr],
+					regFloat=N.reg[''].source.replace('^','').replace('$',''),
+					regStart=new RegExp(regFloat,"ig"),
+					regOver=new RegExp(regFloat,"ig"),
+					val1,newValue=overValue.toString(),
+					cnt=0;
+				newValue=newValue.replace(regOver,function(val2){
+					val1=regStart.exec(startValue);
+					if(val1!==null)
+					{
+						val1=val1[0]*1;
+						val2*=1;
+						/*easing的参数分别是
+						1.无意义的？x=0
+						2.当前时间点/滚动轴当前位置
+						3.初始值
+						4.差值（终止值-初始值）
+						5.总耗时/总滚动高度（over-start）
+						*/
+						var v=$.easing[easing](0,curStep,val1,val2-val1,duration),
+							before=RegExp['$`'],
+							after=RegExp["$'"],
+							maxcnt=before.match(/rgb/ig) ? 3 : before.match(/hsl/ig) ? 1 : 0,
+							needInt=false;
+						//颜色值不能使用小数，所以要把前三位rgb或hsl转成整数
+						before.match(/(rgb|hsl)[a]?\(/) && before.indexOf(')')<0 && after.indexOf(')')>=0 && cnt!=maxcnt && (cnt++,needInt=true);
+						return needInt ? parseInt(v) : v.toFixed(2);
+					}
+					return val2;
+				});
+				val1=val2=regStart=regOver=null;
+				current[attr]=newValue;
 			}
+			//console.groupEnd();
+			this.css(current).removeData("state");
 		}
 	}
 	$.easing.linear=function(x, t, b, c, d){
