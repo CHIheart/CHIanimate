@@ -48,6 +48,12 @@
 .bg-a(@d) when(@d = false), (@d = no){
 	background-attachment: scroll;
 }
+.bg-s(@k : cover){
+	background-size: @k;
+}
+.bg-s(@h : auto, @v : auto){
+	background-size: @h @v;
+}
 //边框部分
 .bd(...){
 	border: @arguments;
