@@ -54,6 +54,12 @@
 .bg-s(@h : auto, @v : auto){
 	background-size: @h @v;
 }
+.bg-f(@b : true) when(@b = true), (@b = yes){
+	background-attachment: fixed;
+}
+.bg-f(@b : true) when(@b = false), (@b = no){
+	background-attachment: scroll;
+}
 //边框部分
 .bd(...){
 	border: @arguments;
