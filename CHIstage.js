@@ -146,6 +146,7 @@
 					bLock = false;
 					if(aScenes[0].startOnce) aScenes[0].startAfterIn=false;
 					if ($.isFunction(fFun)) fFun();
+					if(oJQindices.length) oJQindices.eq(0).addClass('cur');
 				});
 			});
 			return this;
