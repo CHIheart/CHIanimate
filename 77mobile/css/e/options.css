@@ -1,0 +1,13 @@
+/* 独立操作列表 */
+#CHIoption{ display:none; position:fixed; z-index:11111; width:240px; background:rgba(0,0,0,0.5); line-height:30px; bottom:30px;}
+#CHIoption ul{ display:none; clear:both;}
+#CHIoption ul:only-of-type{ display:block;}
+#CHIoption li{ width:60px; height:30px; float:left;}
+#CHIoption li a{ display:block;}
+#CHIoption li a:hover{ background:rgba(255,255,255,0.1);}
+#CHIoption h2,#CHIoption h3{ text-align:center; font-weight:normal;}
+#CHIoption h2{ font-size:16px; background:rgba(0,0,0,0.5);}
+#CHIoption h3{ clear:both; font-size:14px; background:rgba(0,0,0,0.3); margin-top:1px; cursor:pointer;}
+#CHIoption h3 img{ vertical-align:middle; margin-right:5px;}
+#CHIoption h3 i.fa,#CHIoption h3 i.fa:before{ display:inline; float:none; margin-right:2px;}
+#CHIoption h3:not(:last-of-type):after{ content:"\f103"; font-family:"FontAwesome"; padding-left:5px;}

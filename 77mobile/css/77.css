@@ -1,0 +1,86 @@
+/* CSS Document */
+@import url(fontawesome.css);
+@font-face{font-family:'04b08';src:url('font/DBFNTO.eot');src:url('font/04b08.eot') format('embedded-opentype'),url('font/04b08.ttf') format('truetype');font-weight:normal;font-style:normal}
+
+*{ margin:0px; padding:0px; -webkit-text-size-adjust:none;}
+ul,li,ol{ list-style:none;}
+body{ background:url(../images/bg.png); color:#fff; font-size:12px; padding:30px 0px;}
+body,input,select,samp,textarea{ font-family:"微软雅黑";}
+a{ text-decoration:none; cursor:pointer;}
+a img{ border:0px;}
+q{ quotes:none;}
+/*Fontawesome字体*/
+.fa:not(.fa-spin){ display:block; float:left; width:30px; height:30px; text-align:center; overflow:hidden;}
+.fa img{ width:16px; height:11px; margin-top:9px;}
+.fa:not(.fa-spin):before{ display:block; line-height:32px; font-size:18px; text-align:center;}
+/*页眉页脚*/
+header,footer{ position:fixed; background:rgba(0,0,0,0.5); height:30px; line-height:30px; width:100%; z-index:555; min-width:320px; overflow:hidden;}
+header a,footer a{ display:block; color:#fff; line-height:30px; padding-right:0.5em; cursor:pointer;}
+header a:hover,footer a:hover{ background:#000;}
+header{ top:0px;}
+header div{ padding:0px 5.5em;}
+header a:first-child{ float:left; margin-left:-5.5em;}
+header a:last-child{ float:right; margin-right:-5.5em;}
+header h1{ float:left; width:100%; text-align:center; font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+footer{ bottom:0px; text-align:center;}
+footer a{ display:inline-block;}
+#HNFdown{ display:none; position:fixed; bottom:5px; right:5px; background:rgba(0,0,0,0.8); border-radius:5px;}
+#HNFdown:hover{ background:#fff;}
+/*左导航，右工具*/
+nav,menu{ position:fixed; background:rgba(0,0,0,0.8); width:320px; z-index:999; top:0px; height:100%; overflow-y:auto; overflow-x:hidden;}
+nav{ left:-320px;}
+menu{ right:-320px;}
+nav li,menu li{ clear:both; line-height:30px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+nav h2,menu h2{ font-size:16px; line-height:30px; padding:0px 1em; background:rgba(0,0,0,0.5);}
+nav li a,menu li a{ display:block; clear:both; color:#fff; cursor:pointer; font-size:12px; height:30px; padding:0 10px; margin-bottom:1px;}
+nav a:hover,menu a:hover,nav li:hover > a,menu li:hover > a{ font-size:14px; background:rgba(255,255,255,0.1);}
+nav q,menu q{ position:absolute; right:0px; top:0px; display:block; padding-right:0.5em; line-height:30px; cursor:pointer;}
+nav q:hover,menu q:hover{ background:rgba(255,255,255,0.1);}
+nav li.kids > a:after,menu li.kids > a:after{ content:"\f103"; font-family:"FontAwesome"; padding-left:10px;}
+nav li ul,menu li ul{ display:none;}
+nav li li a,menu li li a{ padding-left:30px;}
+nav li li li a,menu li li li a{ padding-left:50px;}
+nav li li li li a,menu li li li li a{ padding-left:70px;}
+nav li li li li li a,menu li li li li li a{ padding-left:90px;}
+nav li li li li li li a,menu li li li li li li a{ padding-left:110px;}
+/*半透明全屏背景*/
+#CHIbackgroundDiv{ display:none; position:fixed; left:0px; top:0px; background:url(../images/bg.png); z-index:11111; width:100%;}
+/*字母索引表*/
+.CHIalphabet{ clear:both;}
+.CHIalphabet a{ display:inline-block; width:24px; height:24px; line-height:24px; font-size:12px; border:1px solid #fff; color:#fff; text-align:center; text-transform:capitalize; overflow:hidden; margin:2px;}
+.CHIalphabet a:hover,.CHIalphabet a.cur{ background:#1b58b8; font-size:24px; width:24px; height:24px; line-height:22px; text-shadow:1px 1px 0px #252525;}
+/*分页标签样式*/
+.CHIpages{ clear:both; font-size:12px; padding-top:10px;}
+.CHIpages > *{ display:inline-block; padding:5px; border-radius:3px; line-height:20px; margin-bottom:5px; min-width:20px; text-align:center;}
+.CHIpages span{ background:rgba(0,0,0,0.3); color:#696969;}/*无链接的样式*/
+.CHIpages a,.CHIpages form{ background:rgba(0,0,0,0.5); color:#fff;}/*有链接的样式*/
+.CHIpages a:hover{ background:rgba(255,255,255,0.5); color:#000;}/*当前页码样式*/
+.CHIpages b{ background:rgba(255,255,255,0.8); color:#b81b1b; font-size:14px;}/*链接指向样式*/
+.CHIpages em{ font-style:normal; background:rgba(255,255,255,0.3); color:#252525;}
+.CHIpages form input{ color:#fff; font-family:"微软雅黑";}
+.CHIpages form input[type=text]{ background:none; border:0px; border-bottom:1px solid #fff;}
+.CHIpages form input[type=submit]{ background:rgba(0,0,0,0.5); border:0px; border-radius:5px;}
+/*列表通用样式*/
+.CHIul{ min-width:320px; line-height:20px;}
+.CHIul li{ margin:1px; background:rgba(0,0,0,0.5); overflow:hidden; position:relative;}
+.CHIul li:hover{ filter:alpha(opacity=100); opacity:1; background:rgba(0,0,0,0.8);}
+.CHIul q{ display:block; position:absolute; width:30px; height:30px; right:0px; top:0px; background:rgba(0,0,0,0.5); cursor:pointer;}
+.CHIul q:hover{ background:#b81b1b;}
+.CHIul h3{ font-size:16px; font-weight:normal; line-height:30px; height:30px; padding-right:30px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.CHIul p{ line-height:20px; font-size:12px; color:#aaa; overflow:hidden;}
+.CHIul p + p{ margin-top:2px;}
+/*推荐及隐藏样式*/
+.CHIul *{ text-decoration:none;}
+.CHIul del,.CHIul ins{ margin-right:2px; display:inline; text-align:center; font-size:14px; color:#fff;}
+.CHIul del:before,.CHIul ins:before{ font-family:"FontAwesome"; display:inline-block; width:20px;}
+.CHIul del:before{ content:"\f070"; background:#696969;}
+.CHIul ins:before{ content:"\f087"; background:#ae1130;}
+/*em搜索关键字，b子级统计数，tt链接地址*/
+.CHIul em,.CHIul b,.CHIul tt{ display:inline-block; color:#fff; padding:0px 3px; margin:0px 2px; font-style:normal; font-weight:normal; font-family:"微软雅黑";}
+.CHIul em{ background:#199900;}
+.CHIul b{ background:#2673ec;}
+.CHIul tt{ background:#7200ac;}
+.CHIul em:before,.CHIul b:before,.CHIul tt:before{ font-family:"FontAwesome"; margin-right:2px;}
+.CHIul em:before{ content:"\f002";}
+.CHIul b:before{ content:"\f0e8";}
+.CHIul tt:before{ content:"\f0c1";}

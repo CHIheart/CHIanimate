@@ -1,0 +1,24 @@
+/* 登陆框样式 */
+#CHIlogin{ position:absolute; background:rgba(0,0,0,0.5); display:none; width:280px; height:210px;}
+#CHIlogin h2{ background:rgba(0,0,0,0.5); text-align:center; line-height:35px; height:35px; font-size:16px;}
+#CHIlogin img{ cursor:pointer; margin:5px 5px 0px 0px;}
+/*通用行*/
+#CHIlogin li{ clear:both; font-size:12px;}
+/*文本域*/
+#CHIlogin ol{ width:195px; float:left; padding-top:2px;}
+#CHIlogin ol li{ height:35px; line-height:35px;}
+#CHIlogin label{ display:block; width:35px; overflow:hidden; float:left; cursor:pointer;}
+#CHIlogin label i.fa{ margin:2px 5px 0px 5px;}
+#CHIlogin input{ background:none; border:0px; border-bottom:1px solid #fff; color:#fff; width:151px; margin-top:7px; height:17px;}
+#CHIlogin input:focus{ background:#b81b1b; outline:0px;}
+#CHIlogin select,#CHIlogin input{ float:left; font-size:12px; padding:2px;}
+#CHIlogin select{ width:155px; margin-top:6px; height:25px;}
+#CHIlogin select:focus{ outline:0px;}
+/*按钮*/
+#CHIlogin ul{ width:85px; height:145px; float:right;}
+#CHIlogin ul li{ text-align:center; overflow:hidden; height:35px;}
+#CHIlogin ul li a{ display:block; color:#fff; overflow:hidden; margin:5px 5px 0px 0px; line-height:30px; background:rgba(0,0,0,0.3);}
+#CHIlogin ul li a i.fa{ display:inline-block; float:none; vertical-align:middle; margin:-4px 0px 0px -4px;}
+#CHIlogin ul li:hover a{ background:rgba(255,255,255,0.3); background:#b81b1b;}
+/*结尾*/
+#CHIlogin div{ clear:both; display:block; font-style:normal; text-align:center; line-height:30px; height:30px; background:rgba(0,0,0,0.8);}

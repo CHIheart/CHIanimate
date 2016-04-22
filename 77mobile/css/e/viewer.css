@@ -1,0 +1,23 @@
+/*本页浏览图插件*/
+.CHIviewer{ display:none; position:fixed; background:rgba(255,255,255,0.8); z-index:55555; border:10px solid transparent; border-radius:0px 0px 10px 10px; width:200px; height:200px;}
+.CHIviewer img{ cursor:pointer;}
+/*左、右、关的图标*/
+.CHIviewer > q,.CHIviewer > sub,.CHIviewer > sup,.CHIviewer > b{ display:block; width:30px; height:30px; cursor:pointer; position:absolute; z-index:100; overflow:hidden;}
+.CHIviewer > q:before,.CHIviewer > sub:before,.CHIviewer > sup:before,.CHIviewer > b:before{ display:block; width:30px; height:30px; font-size:28px; background:rgba(255,255,255,0.8); color:#252525; font-family:"FontAwesome"; text-align:center; overflow:hidden;}
+.CHIviewer > q{ top:-33px; right:-8px;}
+.CHIviewer > q:before{ content:"\f057"; line-height:30px; background:none;}
+.CHIviewer > b{ top:-33px; left:-8px;}
+.CHIviewer > b:before{ content:"\f002"; line-height:30px; background:none;}
+.CHIviewer > sub{ top:45%; left:0px;}
+.CHIviewer > sub:before{ content:"\f190"; line-height:32px;}
+.CHIviewer > sup{ top:45%; right:0px;}
+.CHIviewer > sup:before{ content:"\f18e"; line-height:32px;}
+/*新窗口打开原始图片*/
+.CHIviewer > i{ position:absolute; display:block; top:-35px; left:-10px; height:15px; line-height:15px; font-size:14px; font-style:normal; width:100%; background:rgba(255,255,255,0.8); border:10px solid transparent; border-radius:10px 10px 0px 0px; border-bottom:0px; color:#252525; text-align:center; font-weight:bold;}
+/*图片的文字描述*/
+.CHIviewer div{ background:rgba(0,0,0,0.8); position:absolute; width:100%; bottom:0px; left:0px; font-size:12px; color:#fff; line-height:20px; overflow:hidden; z-index:50;}
+.CHIviewer div var,.CHIviewer div dfn{ display:block; clear:both; margin:5px; font-style:normal;}
+.CHIviewer div var{ font-size:14px; font-family:"微软雅黑"; line-height:30px;}
+.CHIviewer div dfn{ font-size:12px; line-height:20px; color:#ccc;}
+/*本页浏览图插件*/
+

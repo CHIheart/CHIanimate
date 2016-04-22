@@ -1,0 +1,27 @@
+/* 提示窗样式 */
+#CHIalarm{ display:none; position:fixed; z-index:11111; width:280px; height:210px; background:rgba(0,0,0,0.5); overflow:hidden;}
+#CHIalarm .fa{ display:inline-block; float:none; vertical-align:middle;}
+/*提示部分*/
+#CHIalarm dl{ clear:both; height:180px;}
+#CHIalarm dl dt{ text-align:center;}
+#CHIalarm dl dt:first-child{ height:40px; line-height:40px; font-size:24px; background:rgba(0,0,0,0.8);}
+#CHIalarm dl dt:first-child i{ font-size:24px; font-style:normal;}
+#CHIalarm dl dt:first-child i:before{ font-family:"FontAwesome"; width:30px; height:30px; display:inline-block; vertical-align:middle; line-height:30px;}
+#CHIalarm dt i.warn:before{ content:"\f071";}
+#CHIalarm dt i.tip:before{ content:"\f05a";}
+#CHIalarm dt i.ok:before{ content:"\f058";}
+#CHIalarm dt i.fail:before{ content:"\f119";}
+#CHIalarm dt i.error:before{ content:"\f057";}
+#CHIalarm dt i.ask:before{ content:"\f128";}
+#CHIalarm dt + dt{ line-height:210px; font-size:36px;}
+#CHIalarm dt + dt .fa{ font-size:48px; margin-right:10px;}
+#CHIalarm dd{ height:120px; overflow:hidden; margin:10px; line-height:20px;}
+/*按钮部分*/
+#CHIalarm ul,#CHIalarm ol{ clear:both; height:30px;}
+#CHIalarm li{ line-height:30px; height:30px; text-align:center; font-size:12px; overflow:hidden;}
+#CHIalarm ul li{ width:140px; float:left;}
+#CHIalarm ol li{ background:rgba(0,0,0,0.8);}
+#CHIalarm ul li:first-child{ background:rgba(0,0,0,0.5);}
+#CHIalarm ul li:last-child{ background:rgba(0,0,0,0.8);}
+#CHIalarm li:hover{ font-size:14px; background:#b81b1b !important;}
+#CHIalarm li .fa{ margin-top:-2px;}

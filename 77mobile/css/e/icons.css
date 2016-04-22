@@ -1,0 +1,50 @@
+/*图标选择插件*/
+#CHIiconsDiv{ display:none; position:fixed; overflow:auto; z-index:55555; background:rgba(0,0,0,0.5);}
+#CHIiconsDiv q,#CHIiconsDiv del{ display:block; position:absolute; top:5px; cursor:pointer;}
+#CHIiconsDiv q{ right:5px;}
+#CHIiconsDiv del{ left:5px; text-decoration:none;}
+#CHIiconsDiv q:hover,#CHIiconsDiv del:hover{ background:#fff; color:#252525;}
+#CHIiconsDiv h4{ display:block; clear:both; color:#fff; font-size:18px; text-align:center; height:40px; line-height:40px; background:rgba(0,0,0,0.5);}
+#CHIiconsDiv a{ display:block !important; float:left; text-align:center; position:relative; width:8.33%; color:#fff;}
+#CHIiconsDiv a i{ display:block; font-family:"FontAwesome"; clear:both; font-size:24px; width:30px; height:30px; margin:10px auto 0px; line-height:30px; font-style:normal;}
+#CHIiconsDiv a:last-of-type{ margin-bottom:35px;}
+#CHIiconsDiv a:after{ content:attr(title); display:none; width:100%; background:#fff; z-index:2; position:absolute; line-height:15px; font-size:12px; margin:0 auto; text-align:center; font-family:Arial, Helvetica, sans-serif; padding-bottom:5px; font-weight:normal; word-break:break-all; overflow:hidden; color:#252525;}
+#CHIiconsDiv a:hover{ background:#fff; color:#252525; z-index:100;}
+#CHIiconsDiv a:hover:after{ display:block;}
+#CHIiconsDiv a.cur:after{ color:#1faeff; font-weight:bold;}
+#CHIiconsDiv a.cur i{ background:#1faeff; color:#fff; border-radius:5px;}
+#CHIiconsDiv a.cur:hover:before{ font-size:24px;}
+@media screen and (max-width:280px){
+	#CHIiconsDiv a i{ margin:10px auto;}
+	#CHIiconsDiv a:hover:after{ display:none;}
+	#CHIiconsDiv a:last-of-type{ margin-bottom:5px;}
+}
+@media screen and (max-width:320px){#CHIiconsDiv a{ width:25%;}}
+@media screen and (min-width:321px) and (max-width:480px){#CHIiconsDiv a{ width:20%;}}
+@media screen and (min-width:481px) and (max-width:540px){#CHIiconsDiv a{ width:16.66%;}}
+@media screen and (min-width:541px) and (max-width:640px){#CHIiconsDiv a{ width:14.28%;}}
+@media screen and (min-width:641px) and (max-width:768px){#CHIiconsDiv a{ width:12.5%;}}
+@media screen and (min-width:769px) and (max-width:960px){#CHIiconsDiv a{ width:11.11%;}}
+@media screen and (min-width:961px) and (max-width:1024px){#CHIiconsDiv a{ width:10%;}}
+@media screen and (min-width:1025px) and (max-width:1200px){#CHIiconsDiv a{ width:9.09%;}}
+@media screen and (min-width:1201px){#CHIiconsDiv a{ width:8.33%;}}
+/*图标选择插件*/
+/*预选图标，必须在一个hidden的后边直接跟i.fa*/
+.CHIicon{ display:none;}
+.CHIicon + i{ display:inline-block; color:#fff; cursor:pointer; vertical-align:top; border:1px solid #fff;}
+.CHIicon + i:hover:before{ background:#fff; color:#252525;}
+.CHIicon + i + span *{ display:inline-block; vertical-align:top; line-height:30px;}
+.CHIicon + i + span *:before{ display:inline-block; color:#fff; margin:0px 5px; padding:0px 5px;}
+.CHIicon + i + span b{ font-weight:normal;}
+.CHIicon + i + span b:before{ content:"class="; background:#1b58b8;}
+.CHIicon + i + span q{}
+.CHIicon + i + span q:before{ content:"value="; background:#004a00;}
+.CHIicon + i + span i{ font-family:"FontAwesome"; font-style:normal;}
+.CHIicon + i + span i:before{ font-family:"微软雅黑"; content:"character="; background:#1f0068;}
+/*带文字名称的图标，280宽及以下时不带名称，最后一元素不加下外边距*/
+@media screen and (max-width:639px){
+	.CHIicon + i{ display:block; clear:both;}
+	.CHIicon + i + span{ display:block; clear:both; overflow:hidden;}
+	.CHIicon + i + span *{ display:block; margin-top:2px;}
+	.CHIicon + i + span *:before{ width:60px; text-align:right; margin-left:0px;}
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+<title>基本框架</title>
+<link rel="stylesheet" type="text/css" href="css/77.css"/>
+</head>
+
+<body>
+<header><div>
+	<a onclick="Menu.hide();Nav.show();"><i class="fa fa-list"></i>目录</a>
+    <h1>本页的大标题</h1>
+    <a onclick="Nav.hide();Menu.show();"><i class="fa fa-cogs"></i>功能</a>
+</div></header>
+<nav id="Navs">
+	<h2>后台控制导航</h2>
+    <q onclick="Nav.hide();"><i class="fa fa-angle-double-left"></i>收回</q>
+	<ul>
+    	<li><a href="#"><i class="fa fa-home"></i>首页</a></li>
+    	<li><a href="#"><i class="fa fa-user"></i>关于我们</a></li>
+    	<li><a href="#"><i class="fa fa-picture-o"></i>产品中心</a>
+        	<ul>
+            	<li><a href="#"><i class="fa fa-picture-o"></i>分类1</a>
+                	<ul>
+                        <li><a href="#"><i class="fa fa-picture-o"></i>分类1-2</a>
+                            <ul>
+                                <li><a href="#"><i class="fa fa-picture-o"></i>分类1-2-1</a>
+                                
+                                </li>
+                                <li><a href="#"><i class="fa fa-picture-o"></i>分类1-2-3</a></li>
+                                <li><a href="#"><i class="fa fa-picture-o"></i>分类1-2-4</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="fa fa-picture-o"></i>分类1-3</a></li>
+                        <li><a href="#"><i class="fa fa-picture-o"></i>分类1-4</a></li>
+                    </ul>
+                </li>
+            	<li><a href="#"><i class="fa fa-picture-o"></i>分类2</a></li>
+            	<li><a href="#"><i class="fa fa-picture-o"></i>分类3</a></li>
+            	<li><a href="#"><i class="fa fa-picture-o"></i>分类4</a></li>
+            </ul>
+        </li>
+    	<li><a href="#"><i class="fa fa-list-ul"></i>新闻动态</a></li>
+    	<li><a href="#"><i class="fa fa-phone"></i>联系方式</a></li>
+    </ul>
+</nav>
+<menu id="Options">
+	<h2>信息常用操作</h2>
+    <q onclick="Menu.hide();"><i class="fa fa-angle-double-right"></i>收回</q>
+    <ul>
+    	<li><a href="#"><i class="fa fa-wrench"></i>行为</a>
+        	<ul>
+            	<li><a><i class="fa fa-arrow-left"></i>返回</a></li>
+            	<li><a><i class="fa fa-arrow-right"></i>前进</a></li>
+            	<li><a><i class="fa fa-arrow-up"></i>回到顶部</a></li>
+            	<li><a><i class="fa fa-arrow-down"></i>回到底部</a></li>
+            	<li><a><i class="fa fa-refresh"></i>刷新</a></li>
+            	<li><a><i class="fa fa-expand"></i>缩回页眉页脚</a></li>
+            </ul>
+        </li>
+    	<li><a href="#"><i class="fa fa-check"></i>选择</a>
+        	<ul>
+            	<li><a><i class="fa fa-check-circle"></i>全选</a></li>
+            	<li><a><i class="fa fa-check-square-o"></i>反选</a></li>
+            	<li><a><i class="fa fa-times-circle"></i>全取消</a></li>
+            </ul>
+        </li>
+    	<li><a href="#"><i class="fa fa-cogs"></i>批量操作</a></li>
+    	<li><a href="#"><i class="fa fa-globe"></i>语种过滤</a></li>
+    	<li><a href="#"><i class="fa fa-search"></i>搜索</a></li>
+    	<li><a href="#"><i class="fa fa-th-large"></i>信息列表</a></li>
+    </ul>
+</menu>
+<footer>
+	<a href="#"><i class="fa fa-list"></i>目录</a>
+	<a href="#"><i class="fa"><img src="images/flags/1.png" /></i>中文</a>
+</footer>
+<a id="HNFdown"><i class="fa fa-compress"></i>展开页眉页脚</a>
+</body>
+</html>
+<script src="js/jq/jquery.js"></script>
+<script src="js/effect/menu.js"></script>
+<script>
+var Nav,Menu;
+$(function(){
+	Nav=$("nav:first-of-type");
+	Nav.show=function(){Nav.animate({"left":"0px"})}
+	Nav.hide=function(){Nav.animate({"left":"-320px"})}
+	Menu=$("menu:first-of-type");
+	Menu.show=function(){Menu.animate({"right":"0px"})}
+	Menu.hide=function(){Menu.animate({"right":"-320px"})}
+	CHImenu("Navs");
+	CHImenu("Options");
+});
+</script>

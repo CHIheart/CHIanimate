@@ -1,0 +1,8 @@
+/* 主表附加表列表样式 */
+.CHIgroup{}
+.CHIgroup li{ padding:5px;}
+.CHIgroup input[type=checkbox]{ display:none;}
+.CHIgroup label{ display:block; line-height:30px; height:30px; font-size:14px; cursor:pointer;}
+.CHIgroup label:before{ content:"\f096"; font-family:"FontAwesome"; display:inline-block; width:16px;}
+.CHIgroup input:checked + label{ font-size:16px; color:#ff2e12;}
+.CHIgroup input:checked + label:before{ content:"\f046";}

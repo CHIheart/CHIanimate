@@ -1,0 +1,16 @@
+/* 信息列表样式 */
+.CHIlist{}
+.CHIlist li{ height:90px; padding-left:65px;}
+.CHIlist input[type=checkbox]{ display:none;}
+/*图标*/
+.CHIlist label{ display:block; width:60px; height:100%; float:left; margin-left:-65px; cursor:pointer; text-align:center; position:relative; background:rgba(0,0,0,0.5);}
+.CHIlist label *{ display:block; clear:both;}
+.CHIlist input:checked + label:before{ content:"\f046"; font-family:"FontAwesome"; position:absolute; width:60px; height:60px; line-height:60px; font-size:36px; background:rgba(0,0,0,0.8); z-index:111; left:0px; top:15px; color:#ff2e12;}
+.CHIlist input:checked ~ h3{ color:#ff2e12;}
+.CHIlist sup,.CHIlist sub{ width:100%; text-align:center; font-size:12px; line-height:15px; background:rgba(0,0,0,0.5);}
+.CHIlist label i.fa,.CHIlist label i.fa:before{ width:60px; height:60px; line-height:60px; font-size:48px; top:0px;}
+.CHIlist label i.fa{ position:relative;}
+.CHIlist label i.fa:before{ position:absolute;}
+/*文字*/
+.CHIlist h3,.CHIlist p{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.CHIlist h3{ padding:5px 30px 5px 0px;}

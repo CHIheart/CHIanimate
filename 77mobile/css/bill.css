@@ -1,0 +1,15 @@
+/* 简要列表样式 */
+.CHIbill{}
+.CHIbill li{ padding:5px;}
+.CHIbill input[type=checkbox]{ display:none;}
+.CHIbill label{ font-size:14px; cursor:pointer;}
+.CHIbill label:before{ content:"\f096"; font-family:"FontAwesome"; display:inline-block; width:16px;}
+.CHIbill input:checked + label{ font-size:16px; color:#ff2e12;}
+.CHIbill input:checked + label:before{ content:"\f046";}
+@media screen and (min-width:960px){
+	.CHIbill li{ height:20px;}
+	.CHIbill p{ display:inline;}
+}
+@media screen and (max-width:959px){
+	.CHIbill label{ display:block; line-height:30px; height:30px;}
+}

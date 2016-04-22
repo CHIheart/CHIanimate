@@ -1,0 +1,134 @@
+@base-color: #2673ec;
+@white80: rgba(255,255,255,0.8);
+.radius(@r:5px){
+	border-radius:@r;
+}
+.overflow(){
+	overflow:hidden;
+}
+.transparent(){
+    background-color:transparent;
+}
+.noborder(){
+    border:0;
+}
+.borderbox(){
+    box-sizing:border-box;
+}
+.textcenter(){
+    text-align:center;
+}
+.pointer(){
+    cursor:pointer;
+}
+
+*{ margin:0; padding:0; list-style:none; text-decoration:none; font-style:normal; quotes:none; border-collapse:collapse; font-family:"微软雅黑";}
+html,body,table.FullScreen{ width:100%; height:100%;}
+body{ background:@base-color;}
+
+.CHIcenter{ margin-left:auto; margin-right:auto;}
+
+@height:40px;
+@width:240px;
+@borderwidth:1px;
+.lineheight(){
+    height:@height;
+	line-height:@height;
+}
+.CHIlogin{
+	border:@borderwidth solid #fff;
+	width:@width;
+	margin:10px auto;
+	.overflow();
+	.radius();
+	li{
+		.lineheight();
+		border-bottom:@borderwidth dotted #fff;
+		&:last-child{
+			.noborder();
+		}
+	}
+	label.fa{
+		float:left;
+		width:@height;
+		.lineheight();
+		text-align:center;
+		color:#fff;
+		font-size:1.2em;
+	}
+	.CHItext{
+		border:0;
+		.transparent();
+		color:#fff;
+		padding:0 5px;
+		width:(@width - @height);
+		.borderbox();
+		height:@height;
+		line-height:@height;
+		float:right;
+		.placeholder(){
+		    color:@white80;
+		}
+		&::-webkit-input-placeholder{
+			.placeholder();
+		}
+		&::-moz-placeholder{
+			.placeholder();
+		}
+		&:focus{
+			outline:0;
+			background-color:@white80;
+			color:@base-color;
+			.placeholder(){
+			    color:darken(@base-color,20%);
+			}
+			&::-webkit-input-placeholder{
+				.placeholder();
+			}
+			&::-moz-placeholder{
+				.placeholder();
+			}
+			+ label{
+				background-color:@white80;
+				color:@base-color;
+			}
+		}
+	}
+}
+
+.CHIbtns{
+	width:@width + @borderwidth;
+	.lineheight();
+	.textcenter();
+	.CHIbtn{
+	    .pointer();
+		.lineheight();
+		float:left;
+		.noborder();
+		.transparent();
+		color:#fff;
+		.radius();
+		&:hover{
+		    border:1px solid #fff;
+		}
+		&:last-child{ float:right;}
+	}
+}
+.btns(@n:5) when(@n >= 0){
+    .btns(@n - 1);
+	.CHIbtns
+}
+
+.CHIbtns{ width:242px; text-align:center; height:40px;}
+.CHIbtns .CHIbtn{ cursor:pointer; height:40px; float:left; border:0; background-color:transparent; color:#fff; border-radius:5px;}
+.CHIbtns .CHIbtn:hover{ border:1px solid #fff;}
+.CHIbtns .CHIbtn:first-child{}
+.CHIbtns .CHIbtn:last-child{ float:right !important;}
+.CHIbtn{ width:100%;}
+.CHIbtns2 .CHIbtn{ width:50%;}
+.CHIbtns3 .CHIbtn{ width:33.33%;}
+.CHIbtns4 .CHIbtn{ width:25%;}
+.CHIbtns5 .CHIbtn{ width:20%;}
+
+h1{ width:200px; font-size:32px; font-weight:normal; text-align:center; line-height:40px; margin-bottom:20px; color:#fff;}
+.CHIloginDiv{ background-color:rgba(255,255,255,0.2); width:240px; padding:20px; border-radius:5px;}

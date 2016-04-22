@@ -1,0 +1,55 @@
+/* 表单样式 */
+.CHIform{ margin:1px; background:rgba(0,0,0,0.5); min-width:318px;}
+.CHIform h3{ background:rgba(0,0,0,0.5); text-align:center; line-height:40px; font-size:18px; font-weight:normal;}
+.CHIform var,.CHIform dfn{ line-height:25px; min-height:25px; padding:5px; font-style:normal;}
+.CHIform var{ font-size:14px;}
+.CHIform var:after{ content:" : ";}
+.CHIform dfn{ font-size:12px;}
+@media screen and (min-width:640px){
+	.CHIform var,.CHIform dfn{ display:inline-block; vertical-align:top;}
+	.CHIform var{ width:25%; text-align:right;}
+	.CHIform dfn{ width:70%;}
+}
+@media screen and (max-width:639px){
+	.CHIform var,.CHIform dfn{ display:block;}
+	.CHIform var:nth-of-type(even),.CHIform dfn:nth-of-type(even){ background:rgba(0,0,0,0.5);}
+	.CHIform dfn{ padding:0px 5px 10px 5px;}
+}
+/*文本组件*/
+.CHIform label{ cursor:pointer; font-size:14px;}
+.CHIform input,.CHIform textarea{ background:transparent; color:#fff;}
+.CHIform input[type=text]{ border:0px; border-bottom:1px solid #fff;}
+.CHIform input[type=number]{ border:1px solid #fff; width:60px;}
+.CHIform input:focus,.CHIform textarea:focus{ background:#fff; color:#252525;}
+.CHIform input.s{ width:100px;}
+.CHIform input.m{ min-width:200px; width:50%;}
+.CHIform input.l{ width:100%;}
+.CHIform textarea{ border:1px solid #fff; font-size:12px; line-height:20px; width:99%; min-height:100px;}
+.CHIform input:required,.CHIform textarea:required{ border-color:#ff2e12;}
+/*单、复选*/
+.CHIform input[type=radio],.CHIform input[type=checkbox]{ display:none;}
+.CHIform input[type=radio] + label,.CHIform input[type=checkbox] + label{ margin-right:10px; display:inline-block;}
+.CHIform input[type=radio] + label:hover,.CHIform input[type=checkbox] + label:hover{ text-decoration:underline;}
+.CHIform input[type=radio] + label:before,.CHIform input[type=checkbox] + label:before{ font-family:"FontAwesome"; font-size:16px; display:inline-block; width:18px; vertical-align:middle;}
+.CHIform input:checked + label{ color:#ff2e12;}
+.CHIform input[type=radio] + label:before{ content:"\f10c";}
+.CHIform input[type=radio]:checked + label:before{ content:"\f05d";}
+.CHIform input[type=checkbox] + label:before{ content:"\f096";}
+.CHIform input[type=checkbox]:checked + label:before{ content:"\f046";}
+@media screen and (max-width:639px){
+	.CHIform input[type=radio] + label,.CHIform input[type=checkbox] + label{ display:block; clear:both; margin-right:0px; line-height:20px;}
+	.CHIform label ~ label{ margin-top:10px;}
+}
+/*开关样式，双元素radio组*/
+.CHIform .switch + label{ margin:0px !important;}
+.CHIform .switch:not(:checked) + label{ display:none !important;}
+/*ON/OFF开关*/
+.CHIform .on + label{ color:#78ba00 !important;}
+.CHIform .on + label:before{ content:"\f06e" !important;}
+.CHIform .off + label{ color:#696969 !important;}
+.CHIform .off + label:before{ content:"\f070" !important;}
+/*性别开关*/
+.CHIform .male + label{ color:#1faeff !important;}
+.CHIform .male + label:before{ content:"\f183" !important;}
+.CHIform .female + label{ color:#e064b7 !important;}
+.CHIform .female + label:before{ content:"\f182" !important;}

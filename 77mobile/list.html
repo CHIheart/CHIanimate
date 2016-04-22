@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+<title>摘要信息、多语信息、简要信息、批量排序列表</title>
+<link rel="stylesheet" type="text/css" href="css/77.css"/>
+<link rel="stylesheet" type="text/css" href="css/list.css"/>
+<link rel="stylesheet" type="text/css" href="css/group.css"/>
+<link rel="stylesheet" type="text/css" href="css/bill.css"/>
+<link rel="stylesheet" type="text/css" href="css/sort.css"/>
+<link rel="stylesheet" type="text/css" href="css/e/options.css"/>
+</head>
+
+<body>
+<ul class="CHIul CHIlist">
+	<li>
+        <input type="checkbox" name="ids[]" id="ids1" value="1" />
+        <label for="ids1">
+            <sub>MEN:1</sub>
+            <i class="fa fa-user"></i>
+            <sup>MNP:2</sup>
+        </label>
+        <h3>单独信息的标题单独信息的标题单独信息的标题</h3>
+        <p><ins></ins><del></del>这是描述类的文字，这是<em>搜索关键字</em>的样式123</p>
+        <p>子级<b>12</b>数量，链接地址<tt>?id=12</tt></p>
+        <q class="fa fa-cog"></q>
+    </li>
+	<li>
+        <input type="checkbox" name="ids[]" id="ids2" value="2" />
+        <label for="ids2">
+            <sub>INF:10</sub>
+            <i class="fa fa-user"></i>
+            <sup>IFP:20</sup>
+        </label>
+        <h3>单独信息的标题</h3>
+        <p><ins></ins>这是描述类的文字，这是<em>搜索关键字</em>的样式</p>
+        <p>子级<b>5</b>数量，链接地址<tt>?id=12</tt></p>
+        <q class="fa fa-cog"></q>
+    </li>
+	<li>
+        <input type="checkbox" name="ids[]" id="ids3" value="3" />
+        <label for="ids3">
+            <sub>INF:33</sub>
+            <i class="fa fa-user"></i>
+            <sup>IFP:333</sup>
+        </label>
+        <h3>单独信息的标题</h3>
+        <p>这是描述类的文字，这是<em>搜索关键字</em>的样式</p>
+        <p>子级<b>2</b>数量，链接地址<tt>?id=5</tt></p>
+        <q class="fa fa-cog"></q>
+    </li>
+</ul>
+
+<ul class="CHIul CHIgroup">
+	<li>
+        <input type="checkbox" name="ids[]" id="ids11" value="11" />
+        <label for="ids11">MAIN ID</label>
+        <p>
+        	<img src="images/flags/1.png" />
+            <ins></ins>中文简体的标题，这是<em>搜索关键字</em>的样式，链接地址<tt>?id=5</tt>
+        </p>
+        <p>
+        	<img src="images/flags/3.png" />
+            English title, this is the <em>keyword</em> pattern
+        </p>
+        <q class="fa fa-cog"></q>
+	</li>
+	<li>
+        <input type="checkbox" name="ids[]" id="ids22" value="22" />
+        <label for="ids22">MAIN ID</label>
+        <p>
+        	<img src="images/flags/1.png" />
+            中文简体的标题，这是<em>搜索关键字</em>的样式
+        </p>
+        <p>
+        	<img src="images/flags/3.png" />
+            English title, this is the <em>keyword</em> pattern
+        </p>
+        <p>
+        	<img src="images/flags/2.png" />
+            <del></del>繁體字的內容，被隱藏的信息樣式
+        </p>
+        <q class="fa fa-cog"></q>
+	</li>
+</ul>
+<ul class="CHIul CHIbill">
+	<li>
+        <input type="checkbox" name="ids[]" id="ids111" value="111" />
+        <label for="ids111">ID 记录的名称或标题</label>
+        <p><ins></ins>这是描述类的文字，这是<em>搜索关键字</em>的样式，链接地址<tt>?id=5</tt></p>
+        <q class="fa fa-cog" onclick="CHIoption.focus(111)"></q>
+    </li>
+	<li>
+        <input type="checkbox" name="ids[]" id="ids222" value="222" />
+        <label for="ids222">ID 记录的名称或标题</label>
+        <p>这是描述类的文字，这是<em>搜索关键字</em>的样式</p>
+        <q class="fa fa-cog" onclick="CHIoption.focus(222)"></q>
+    </li>
+</ul>
+<ul class="CHIul CHIsort">
+    <li>
+        <input type="number" name="orders[]" id="orders111" value="0" min="0" maxlength="3" />
+    	<label for="orders111">ID 记录的名称或标题</label>
+        <p><ins></ins>简要的说明，简要的说明，简要的说明，简要的说明</p>
+    </li>
+    <li>
+        <input type="number" name="orders[]" id="orders211" value="0" min="0" maxlength="3" />
+    	<label for="orders211">ID 记录的名称或标题</label>
+        <p><del></del>简要的说明，简要的说明，简要的说明，简要的说明</p>
+    </li>
+</ul>
+
+</body>
+</html>
+<script src="js/1.js"></script>
+<script src="js/jq/jquery.js"></script>
+<script src="js/basic.js"></script>
+<script src="js/plugin/bg.js"></script>
+<script src="js/plugin/options.js"></script>

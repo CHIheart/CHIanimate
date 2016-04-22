@@ -1,0 +1,7 @@
+/* 批量排序列表样式 */
+.CHIsort{}
+.CHIsort li{ padding:5px 55px 5px 5px; height:20px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.CHIsort label{ font-size:14px; cursor:pointer;}
+.CHIsort p{ display:inline;}
+.CHIsort input[type=number]{ float:right; width:35px; height:20px; padding-left:5px; margin-right:-50px; border:0px; background:transparent; color:#fff; border-bottom:1px solid #fff; position:relative;}
+.CHIsort input:focus{ background:#fff; color:#000;}

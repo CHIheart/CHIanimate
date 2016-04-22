@@ -1,0 +1,47 @@
+/*新版颜色选择器*/
+.CHIcolorPicker{ display:none; width:300px; margin:0 auto; border:1px solid #fff; border-radius:5px; color:#fff; overflow:hidden; color:#fff;}
+.CHIcolorPicker *{ margin:0; padding:0;}
+.CHIcolorPicker *:not(.fa){ font-family:"Microsoft Yahei"}
+.CHIcolorPicker input:focus{ outline:none;}
+/*标签栏*/
+.CHIcolorPicker .tabs{ clear:both; line-height:35px; height:35px; border-bottom:1px dotted #fff;}
+.CHIcolorPicker .tabs h5{ font-weight:normal; float:left; font-size:0.8rem; padding:0 10px; color:rgba(355,255,255,.5); cursor:pointer;}
+.CHIcolorPicker .tabs h5.cur{ color:#fff; font-size:0.9rem; cursor:default;}
+.CHIcolorPicker .tabs q{ quotes:none; float:right; font-size:1rem; line-height:35px; width:30px; text-align:center; cursor:pointer; font-size:1rem;}
+/*内容栏*/
+.CHIcolorPicker .contents{ padding:10px; border-bottom:1px dotted #fff;}
+/*METRO风格色彩*/
+.CHIcolorPicker .metros{ height:210px;}
+.CHIcolorPicker .metros b{ display:block; float:left; width:35px; height:35px;}
+.CHIcolorPicker .metros b:hover,.CHIcolorPicker .metros b.cur{ outline:5px solid rgba(255,255,255,.8); position:relative;}
+.CHIcolorPicker .metros b.cur{ z-index:1;}
+.CHIcolorPicker .metros b:hover{ z-index:2;}
+/*RGBA调节*/
+.CHIcolorPicker .rgba{}
+.CHIcolorPicker .rgba div:not(.tip){ line-height:30px; height:30px;}
+.CHIcolorPicker .rgba span{ display:block; float:left; width:60px; font-size:0.8rem;}
+.CHIcolorPicker .rgba input{ height:20px; box-sizing:border-box;}
+.CHIcolorPicker .rgba input[type=range]{ width:150px; float:left; margin:5px 5px 0;}
+.CHIcolorPicker .rgba input[type=number]{ width:50px; float:right; border:1px solid #fff; margin-top:5px;}
+.CHIcolorPicker .rgba u{ padding:0 3px;}
+.CHIcolorPicker .rgba input[type=text]{ border:0; font-size:0.8rem; height:30px; padding:5px 10px; width:80px;}
+.CHIcolorPicker .rgba input:disabled{ opacity:.5;}
+.CHIcolorPicker .rgba samp{ float:right; font-size:0.7rem;}
+.CHIcolorPicker .rgba .tip{ background-color:rgba(255,255,255,.2); font-size:0.7rem; padding:5px 10px; line-height:20px; margin:5px 0;}
+/*当前颜色值*/
+.CHIcolorPicker .current{ margin:10px; border-collapse:collapse; table-layout:fixed;}
+.CHIcolorPicker .current td{ font-size:0.7rem; line-height:20px;}
+.CHIcolorPicker .current td samp{ display:block; width:35px; height:35px; border:1px solid #fff;}
+/*四个按钮*/
+.CHIcolorPicker .btns{ border-top:1px solid #fff;}
+.CHIcolorPicker .btns input{ box-sizing:border-box; width:25%; float:left; border:0; background-color:transparent; font-size:0.7rem; color:#fff; cursor:pointer; height:30px; border-right:1px solid #fff; -webkit-appearance:none; border-radius:0;}
+.CHIcolorPicker .btns input:hover{ background-color:rgba(255,255,255,.2);}
+.CHIcolorPicker .btns input:last-child{ border:0;}
+/*表单中的颜色选项*/
+.CHIcolors{ font-size:0; padding:5px 0px; display:inline-block; vertical-align:middle;}
+.CHIcolors *{ display:inline-block; vertical-align:middle;}
+.CHIcolors i{ width:35px; height:35px; border:1px solid #fff; cursor:pointer; font-size:1rem; color:#fff; line-height:35px; text-align:center;}
+.CHIcolors span{ font-size:0.7rem; padding:0 10px; color:#fff;}
+@media screen and (max-width:480px){
+	.CHIcolors{ padding-left:5px;}
+}

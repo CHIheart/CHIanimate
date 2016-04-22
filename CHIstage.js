@@ -52,6 +52,7 @@
 			bLock = false, //播放状态的状态锁
 			oJQstage = $(selector);
 		if(!oJQstage.length) return false;
+		oResult.at = niCurrent;
 		oResult.play = function(index) {
 			if (bLock) return;
 			var piLength = aScenes.length;
@@ -70,7 +71,7 @@
 				piLock--;
 				//完全解锁后（入场帧完成入场，出场帧完成出场）再开始
 				if (!piLock) { //如果入场帧需要执行开始，则先开始，再解除播放锁
-					niCurrent = index;
+					oResult.at = niCurrent = index;
 					if (sceneNext.startAfterIn) sceneNext.start(function() {
 						//如果入场帧只需执行一次，则将自动start变量置否
 						if (sceneNext.startOnce) sceneNext.startAfterIn = false;
@@ -130,8 +131,8 @@
 			if (inited) return;
 			for (var n = 0; n < aScenes.length; n++) {
 				aScenes[n].init();
-				var behavior = aScenes[n].saveAfterOut ? 'off' : 'hide';
-				aScenes[n][behavior]();
+				n && aScenes[n][aScenes[n].saveAfterOut ? 'off' : 'hide']()
+				|| aScenes[n].show();
 			}
 			inited = true;
 			return this;
@@ -217,7 +218,7 @@
 			if(!$(selector).length) return false;
 			oJQindices = $(selector).click(function(event) {
 				if($(this).hasClass('cur') || bLock) return true;
-				var index=$(this).index();
+				var index=$(selector).index(this);
 				oResult.play(index);
 				$(this).addClass('cur').siblings().removeClass('cur');
 			});

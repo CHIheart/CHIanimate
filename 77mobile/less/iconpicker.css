@@ -1,0 +1,49 @@
+/* 新版图标选择器 */
+.CHIiconPicker{ margin:10px auto; width:300px; height:350px; box-sizing:border-box; color:#fff;}
+.CHIiconPicker *:not(.fa){ margin:0; padding:0; font-family:"Microsoft Yahei";}
+.CHIiconPicker input:focus{ outline:0;}
+/*标题栏*/
+.CHIiconPicker .topic{ clear:both; border:1px solid #fff; border-radius:5px 5px 0 0; border-bottom-style:dotted; height:35px; line-height:35px; overflow:hidden; box-sizing:border-box;}
+.CHIiconPicker .topic h5{ font-weight:normal; font-size:0.8rem; float:left;}
+.CHIiconPicker .topic i{ width:30px; text-align:center; cursor:help;}
+.CHIiconPicker .topic q{ float:right; width:30px; height:35px; line-height:35px; text-align:center; cursor:pointer; quotes:none; font-size:1rem;}
+.CHIiconPicker .topic span:last-of-type{ display:none;}
+.CHIiconPicker .topic input{ float:left; width:210px; font-size:0.8rem; height:23px; padding:0px 10px; margin:5px 0 0 5px; border:0; -webkit-appearance:none; border-radius:3px 0 0 3px;}
+.CHIiconPicker .topic input + i{ float:left; background-color:#fff; color:#252525; border-radius:0 3px 3px 0; height:23px; line-height:23px; cursor:pointer; margin-top:5px;}
+/*容器*/
+.CHIiconPicker .contents{ clear:both; border:1px solid #fff; border-width:0 1px; padding:10px; height:280px; box-sizing:border-box; overflow:hidden;}
+/*图标列表*/
+.CHIiconPicker .icons{}
+.CHIiconPicker .icons div{ float:left; padding-bottom:20px; width:278px;}
+.CHIiconPicker .icons i.fa{ width:14.2857%; height:39px; float:left; display:block; line-height:39px; text-align:center; font-size:1.2rem; cursor:pointer;}
+.CHIiconPicker .icons i.fa:hover,.CHIiconPicker .icons i.cur{ background-color:#fff; color:#252525;}
+/*处理面板*/
+.CHIiconPicker .option{ font-size:0.7rem; line-height:20px;}
+.CHIiconPicker .option var{ display:block; width:100px; height:100px; border:1px solid #fff; font-size:80px; line-height:100px; text-align:center; margin-bottom:10px; float:left;}
+.CHIiconPicker .option p{ clear:both; margin-bottom:5px;}
+.CHIiconPicker .option input[type=radio]{ display:none;}
+.CHIiconPicker .option label{ display:block; height:15px; line-height:15px; padding:5px 0 5px 25px; cursor:pointer;}
+.CHIiconPicker .option label:before{ content:"\f10c"; font-family:"FontAwesome"; display:block; float:left; margin-left:-20px; text-align:center; line-height:18px; height:18px; overflow:hidden;}
+.CHIiconPicker .option :checked + label{ background-color:rgba(255,255,255,.2);}
+.CHIiconPicker .option :checked + label:before{ content:"\f192";}
+.CHIiconPicker .option :disabled + label{ opacity:.2; cursor:default;}
+.CHIiconPicker .option .trans{ width:170px; float:right;}
+.CHIiconPicker .option .trans p{ text-indent:5px;}
+.CHIiconPicker .option .trans label{ width:50%; float:left; box-sizing:border-box; height:25px;}
+.CHIiconPicker .option .unicode{ padding:0 10px; background-color:rgba(255,255,255,.2); margin-left:5px;}
+/*四个按钮*/
+.CHIiconPicker .btns{ border:1px solid #fff; border-radius:0 0 5px 5px; border-top:0; height:30px;}
+.CHIiconPicker .btns input{ box-sizing:border-box; width:25%; float:left; border:0; background-color:transparent; font-size:0.7rem; color:#fff; cursor:pointer; height:30px; border-right:1px solid #fff; -webkit-appearance:none; border-radius:0; border-top:1px dotted #fff;}
+.CHIiconPicker .btns input:hover{ background-color:rgba(255,255,255,.2);}
+.CHIiconPicker .btns input:last-child{ border-right:0;}
+.CHIiconPicker .btns input.cur{ border-top-color:transparent;}
+.CHIiconPicker .btns input:disabled{ opacity:.5; cursor:default;}
+.CHIiconPicker .btns input:disabled:hover{ background:none;}
+/*表单中的图标选项*/
+.CHIicons{ font-size:0; padding:5px 0px; display:inline-block; vertical-align:middle;}
+.CHIicons *{ display:inline-block; vertical-align:middle;}
+.CHIicons i{ width:35px; height:35px; border:1px solid #fff; cursor:pointer; font-size:1rem; color:#fff; line-height:35px; text-align:center;}
+.CHIicons span{ font-size:0.7rem; padding:0 10px; color:#fff;}
+@media screen and (max-width:480px){
+	.CHIicons{ padding-left:5px;}
+}

@@ -1,0 +1,172 @@
+﻿/*
+sJQcontainer，要使用本特效的容器的JQ选择器字符串
+sJQkid，在$(sJQcontainer)基础上，使用find查找需要被滚动的整体部分的选择器字符串，默认为使用第一子元素
+oControllers，Controllers控制器对象，可以使用的属性有
+	.prev，向前播放的控制器的选择器字符串
+	.next，向后播放的控制器的选择器字符串
+	.indices，索引的选择器字符串（1/2/3/4/5...），索引的当前页码会被附加class="cur"
+	.stop，停止的控制器的选择器字符串
+	.start，开始的控制器的选择器字符串
+oOptions，附加参数列表对象，可以使用的属性有
+	.dir，为滚动方向，只可以为u/d/l/r
+	.delay，为滚动时间间隔，默认为30，不为0，越大滚动越慢
+	.mstop，鼠标指向时停止开关，默认为true
+	.minLi，为最少的显示数量，如果少于这个数量就不执行特效，默认为1
+	.auto，是否自动播放，默认为true
+oCallbacks，回调函数列表对象，可以使用的属性有
+	.init(oJQcontainer)，完成初始化时执行的函数，参数为容器的JQ对象
+	.move(oJQaimKid)，每一次滚动时执行的函数，参数当前指示的子元素的JQ对象
+如果生成有名对象的话，可以调用的方法有
+	.on()，开始滚动，使用后，auto被设置为true
+	.off()，停止滚动
+	.run(ind)，播放到指定索引的位置
+	.prev()，向前滚动一个
+	.next()，向后滚动一个
+	.size()，返回子元素个数
+	.cur()，返回当前作为标志的子元素索引
+*/
+function CHImovie(sJQcontainer, sJQkid, oControllers, oOptions, oCallbacks) {
+	function FIND(sJQ) {
+		return sJQ && $(sJQ).size();
+	}
+	if (!FIND(sJQcontainer)) return;
+	if (!oOptions) oOptions = {};
+	if (!oControllers) oControllers = {};
+	if (!oCallbacks) oCallbacks = {};
+
+	function isPos(n) {
+		return n && /^[\+]?[0]*[1-9][\d]*$/.test(n);
+	}
+
+	var oResult = {},
+		oJQcontainer = $(sJQcontainer).eq(0),
+		oJQkid = sJQkid ? oJQcontainer.find(sJQkid).eq(0) : oJQcontainer.children().eq(0),
+		timer = 0;
+
+	var oJQkids = oJQkid.children(),
+		piTotal = piMaxLi = oJQkids.size();
+	if (piTotal < 2) return; //如果子元素不到2个则不滚动
+
+	var piMinLi = isPos(oOptions.minLi) ? oOptions.minLi : 1;
+	if (piTotal < piMinLi) return;
+	else piTotal -= piMinLi - 1;
+
+	var cDir = oOptions.dir && $.inArray(oOptions.dir.toLowerCase(), ["u", "d", "l", "r"]) >= 0 ? oOptions.dir.toLowerCase() : "l",
+		piDelay = isPos(oOptions.delay) ? oOptions.delay : 3000,
+		bMouseStop = "mstop" in oOptions ? Boolean(oOptions.mstop) : true,
+		bAuto = "auto" in oOptions ? oOptions.auto : true,
+		niCurrent = niAimIndex = 0;
+
+	var sMarginName, sSizeName, sOutSizeName;
+	if (cDir == 'l' || cDir == 'r') {
+		sMarginName = "marginLeft";
+		sSizeName = "width";
+		sOutSizeName = "outerWidth";
+	} else {
+		sMarginName = "marginTop";
+		sSizeName = "height";
+		sOutSizeName = "outerHeight";
+	}
+	//计算元素的外围总尺寸
+
+	function totalSize(jqObj, attr) {
+		return eval(jqObj.map(function() {
+			return $(this)[attr](true);
+		}).get().join("+"));
+	}
+	var piAllSize = totalSize(oJQkids, sOutSizeName),
+		piEachSize = oJQkids[sOutSizeName](true);
+
+	oJQkid[sSizeName](piAllSize).css(sMarginName, 0);
+	var bLock = false;
+
+	oResult.show = function(index) {
+		niCurrent = index === undefined ? niCurrent + 1 : index;
+		niCurrent += piMaxLi;
+		niCurrent %= piMaxLi;
+		oJQkids.eq(niCurrent).addClass('cur').siblings().removeClass('cur');
+		run(niCurrent);
+		if (oCallbacks.move) oCallbacks.move(oJQkids.eq(niCurrent));
+	}
+
+	function run(index) {
+		if (bLock) return;
+		bLock = true;
+		stop();
+		var iMarginLength = parseInt(oJQkid.css(sMarginName)) * -1;
+		var bNeedScroll = false;
+		//如果要显示的元素，不在可视区域内，才滚动
+		if (niAimIndex > index) {
+			bNeedScroll = true;
+			niAimIndex = index;
+		} else if (niAimIndex + piMinLi < index + 1) {
+			bNeedScroll = true;
+			niAimIndex = index - piMinLi + 1;
+		}
+		//保证每次只把目标元素滚动到边界位置
+		var niFocusIndex = piTotal - 1 > niAimIndex ? niAimIndex : piTotal - 1;
+		if (bNeedScroll) {
+			var oAnimate = {};
+			oAnimate[sMarginName] = -niFocusIndex * piEachSize;
+			oJQkid.stop().animate(oAnimate, function() {
+				bLock = false;
+				if (bAuto) start();
+			});
+		} else {
+			bLock = false;
+			if (bAuto) start();
+		}
+		if (typeof oJQindices !== 'undefined') {
+			oJQindices.eq(niCurrent).addClass('cur').siblings().removeClass("cur");
+		}
+	}
+
+	function start() {
+		if (!timer) timer = setInterval(oResult.next, piDelay);
+	}
+	oResult.on = function() {
+		bAuto = true;
+		start();
+	}
+
+	function stop() {
+		clearInterval(timer);
+		timer = 0;
+	}
+	oResult.off = function() {
+		stop();
+		bAuto = false;
+	}
+	if (bMouseStop) oJQcontainer.mouseover(stop).mouseleave(function() {
+		if (bAuto) start();
+	});
+	oResult.size = function() {
+		return oJQkids.size();
+	}
+	oResult.prev = function() {
+		if (bLock) return;
+		stop();
+		oResult.show(--niCurrent);
+	}
+	oResult.next = function() {
+		if (bLock) return;
+		stop();
+		oResult.show(++niCurrent);
+	}
+	if (FIND(oControllers.indices)) {
+		var oJQindices = $(oControllers.indices);
+		oJQindices.eq(0).addClass('cur');
+		oJQindices.click(function() {
+			oResult.show($(this).index(oControllers.indices));
+		});
+	}
+	if (FIND(oControllers.prev)) $(oControllers.prev).click(oResult.prev);
+	if (FIND(oControllers.next)) $(oControllers.next).click(oResult.next);
+	if (FIND(oControllers.stop)) $(oControllers.stop).click(oResult.off);
+	if (FIND(oControllers.start)) $(oControllers.start).click(oResult.on);
+
+	if (bAuto) oResult.on();
+	oResult.show(0);
+	if (oCallbacks.init) oCallbacks.init(oJQcontainer);
+	return oResult;
+}

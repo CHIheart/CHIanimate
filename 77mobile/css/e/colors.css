@@ -1,0 +1,24 @@
+/*Metro风格配色方案选择插件*/
+#CHIcolorsDiv{ display:none; position:fixed; z-index:55555; width:280px; height:400px;}
+#CHIcolorsDiv q,#CHIcolorsDiv del{ display:block; position:absolute; top:5px; cursor:pointer;}
+#CHIcolorsDiv q:hover,#CHIcolorsDiv del:hover{ background:#fff; color:#252525;}
+#CHIcolorsDiv q{ right:5px;}
+#CHIcolorsDiv del{ left:5px; text-decoration:none;}
+#CHIcolorsDiv h4{ color:#fff; font-size:18px; text-align:center; height:40px; line-height:40px; background:rgba(0,0,0,0.8);}
+#CHIcolorsDiv i{ display:block; float:left; position:relative; z-index:1; color:#fff; font-size:10px; font-style:normal; overflow:hidden; text-align:center; cursor:pointer; text-shadow:1px 1px 0px #000; height:30px; line-height:30px; width:25%;}
+#CHIcolorsDiv i:hover,#CHIcolorsDiv i.cur{ outline:10px solid rgba(255,255,255,0.8); z-index:100; font-size:14px; text-decoration:underline;}
+@media screen and (orientation:landscape){
+	#CHIcolorsDiv{ height:220px; width:440px;}
+	#CHIcolorsDiv i{ width:12.5%;}
+}
+/*颜色预选框的样式，必须在一个hidden的后边直接跟i*/
+.CHIcolor{ display:none;}
+.CHIcolor + i{ display:inline-block; width:23px; height:23px; cursor:pointer; border:1px solid #fff; vertical-align:top;}
+.CHIcolor + i + span{ display:inline-block; height:25px; line-height:25px; vertical-align:top;}
+.CHIcolor + i + span b{ font-weight:normal;}
+.CHIcolor + i + span b:before{ content:"HEX="; background:#1b58b8;}
+.CHIcolor + i + span q{}
+.CHIcolor + i + span q:before{ content:"RGB="; background:#004a00;}
+.CHIcolor + i + span b:before,.CHIcolor + i + span q:before{ display:inline-block; padding:0px 5px; color:#fff; margin:0px 5px;}
+/*Metro风格配色方案选择插件*/
+

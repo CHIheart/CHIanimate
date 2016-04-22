@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+<title>登陆窗口</title>
+<link rel="stylesheet" type="text/css" href="css/77.css"/>
+<link rel="stylesheet" type="text/css" href="css/e/login.css"/>
+<link rel="stylesheet" type="text/css" href="css/e/alarm.css"/>
+</head>
+
+<body>
+<form id="CHIlogin" action="#" method="post">
+	<h2>七巧心全球化V2.0登陆页面</h2>
+    <ol>
+    	<li><label for="lan"><i class="fa fa-globe"></i></label><select name="lan" id="lan">
+            <option value="1" style="padding-left:20px; background:url(images/flags/1.png) left center no-repeat;">简体中文</option>
+            <option value="2" style="padding-left:20px; background:url(images/flags/2.png) left center no-repeat;">English</option>
+        </select></li>
+    	<li><label for="name"><i class="fa fa-user"></i></label><input placeholder="用户名" required="required" type="text" maxlength="20" name="name" id="name" /></li>
+    	<li><label for="code"><i class="fa fa-key"></i></label><input placeholder="密码" required="required" type="password" maxlength="20" name="code" id="code" /></li>
+    	<li><label for="VCodes"><i class="fa fa-lock"></i></label><input placeholder="验证码" required="required" type="text" maxlength="10" name="VCodes" id="VCodes" /></li>
+    </ol>
+    <ul>
+    	<li><a onclick="CHIlogin.submit();"><i class="fa fa-sign-in"></i>登陆</a></li>
+    	<li><a onclick="CHIlogin.reset();"><i class="fa fa-eraser"></i>清空</a></li>
+    	<li><a href="#"><i class="fa fa-home"></i>前台</a></li>
+        <li><img src="code_math.php" onclick="this.src='code_math.php?x='+Math.random()" /></li>
+    </ul>
+    <div>本管理系统版权归"七巧心-紫刃"所有</div>
+</form>
+</body>
+</html>
+<script src="js/jq/jquery.js"></script>
+<script src="js/basic.js"></script>
+<script src="js/1.js"></script>
+<script src="js/plugin/bg.js"></script>
+<script src="js/plugin/alarm.js"></script>
+<script>
+var CHIlogin;
+function CHIloginDiv()
+{
+	var o=new Object();
+	var t/*target*/=$("#CHIlogin");
+	o.submit=function(){
+		CHIalarm.ask("123123");
+		return false;
+	}
+	o.reset=function(){t.get(0).reset();}
+	function r()/*resize*/
+	{
+		var wh=$(window).height();
+		var th=t.outerHeight(true);
+		var mt=(wh-th)*0.5;
+		var ww=$(window).width();
+		var tw=t.outerWidth(true);
+		var ml=(ww-tw)*0.5;
+		t.css({
+			"top":Math.max(0,mt)+"px"
+			,"left":Math.max(0,ml)+"px"
+		});
+	}
+	r();
+	t.fadeIn();
+	window.onresize=r;
+	return o;
+}
+$(function(){
+	CHIlogin=new CHIloginDiv();
+});
+</script>

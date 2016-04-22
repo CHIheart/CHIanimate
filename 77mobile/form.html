@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+<title>表单</title>
+<link rel="stylesheet" type="text/css" href="css/77.css"/>
+<link rel="stylesheet" type="text/css" href="css/form.css"/>
+<link rel="stylesheet" type="text/css" href="css/e/colors.css"/>
+<link rel="stylesheet" type="text/css" href="css/e/icons.css"/>
+<link rel="stylesheet" type="text/css" href="css/e/calendar.css"/>
+<link rel="stylesheet" type="text/css" href="css/e/alarm.css"/>
+</head>
+
+<body>
+<script src="js/jq/jquery.js"></script>
+<form class="CHIform" method="post" action="#">
+	<h3>小标题</h3>
+	<var><label for="ShortText">短文本框</label></var><dfn><input type="text" name="ShortText" id="ShortText" class="s" placeholder="短文本框" /></dfn>
+	<var><label for="MidText">中文本框</label></var><dfn><input type="text" name="MidText" id="MidText" class="m" placeholder="中文本框" /></dfn>
+	<var><label for="LongText">长文本框</label></var><dfn><input type="text" name="LongText" id="LongText" class="l" placeholder="长文本框" /></dfn>
+	<var><label for="Required">必填组件</label></var><dfn><input type="text" required="required" name="Required" id="Required" placeholder="必填组件" /></dfn>
+	<var><label for="Number">数字框</label></var><dfn><input type="number" name="Number" id="Number" placeholder="数字框" /></dfn>
+	<var><label for="Area">文本域</label></var><dfn><textarea name="Area" id="Area" placeholder="文本域" required="required"></textarea></dfn>
+	<var><label for="Select">下拉列表</label></var><dfn><select name="Select" id="Select">
+    	<option value="0">--请选择--</option><option value="0">--请选择--</option><option value="0">--请选择--</option><option value="0">--请选择--</option>
+    </select></dfn>
+	<var><label for="File">文件域</label></var><dfn><input type="file" name="File" id="File" placeholder="文件域" /></dfn>
+	<var>单选按钮</var><dfn>
+    	<input type="radio" name="Radios" id="r1" value="1" checked="checked" /> <label for="r1">第一个选项第一个选项第一个选项第一个选项第一个选项第一个选项第一个选项第一个选项</label>
+    	<input type="radio" name="Radios" id="r2" value="2" /> <label for="r2">第二个选项第二个选项第二个选项第二个选项第二个选项第二个选项第二个选项</label>
+    	<input type="radio" name="Radios" id="r3" value="3" /> <label for="r3">第三个选项</label>
+    </dfn>
+	<var>复选框</var><dfn>
+    	<input type="checkbox" name="Boxes" id="b1" value="1" checked="checked" /> <label for="b1">第一个选项</label>
+    	<input type="checkbox" name="Boxes" id="b2" value="2" /> <label for="b2">第二个选项第二个选项第二个选项第二个选项第二个选项第二个选项第二个选项</label>
+    	<input type="checkbox" name="Boxes" id="b3" value="3" /> <label for="b3">第三个选项</label>
+    </dfn>
+	<var>状态开关</var><dfn>
+    	<input type="radio" class="switch on" name="OnOff" id="ON" value="1" checked="checked" /> <label for="OFF">显示，点击后隐藏</label>
+    	<input type="radio" class="switch off" name="OnOff" id="OFF" value="0" /> <label for="ON">隐藏，点击后显示</label>
+    </dfn>
+	<var>性别开关</var><dfn>
+    	<input type="radio" class="switch male" name="Sex" id="Male" value="1" checked="checked" /> <label for="Female">男，点击后女</label>
+    	<input type="radio" class="switch female" name="Sex" id="Female" value="0" /> <label for="Male">女，点击后男</label>
+    </dfn>
+    <var>颜色选择器</var>
+    <dfn>
+        <input class="CHIcolor" type="text" id="color" name="color" value="1b58b8" />
+        <i onclick="CHIcolor.focus('color')"></i>
+        <span></span>
+        <script>
+		$(function(){
+			CHIcolor.get("color");
+		});
+        </script>
+    </dfn>
+    <var>图标选择器</var>
+    <dfn>
+        <input class="CHIicon" type="text" id="icon" name="icon" value="fa-arrow-left" />
+        <i class="fa" onclick="CHIicon.focus('icon');"></i>
+        <span></span>
+        <script>
+		$(function(){
+			CHIicon.get("icon");
+		});
+        </script>
+    </dfn>
+    <var>时间选择器</var>
+    <dfn>
+        <input class="CHIcal" type="text" id="date" name="date" onclick="CHIcal.focus(this.id)" value="2014-04-01" />
+        <label for="date">2014-04-01</label>
+    </dfn>
+	<var>警告框</var><dfn><a onclick="CHIalarm.ask('提示框示例',function(){alert('doing');CHIalarm.ok('done')});"><i class="fa fa-align-center"></i>一个按钮</a></dfn>
+	<var>选择框</var><dfn></dfn>
+</form>
+</body>
+</html>
+<script src="js/1.js"></script>
+<script src="js/pattern.js"></script>
+<script src="js/f/date.js"></script>
+<script src="js/basic.js"></script>
+<script src="js/effect/correct.js"></script>
+<script src="js/plugin/bg.js"></script>
+<script src="js/plugin/colorpicker.js"></script>
+<script src="js/plugin/iconpicker.js"></script>
+<script src="js/plugin/calendar.js"></script>
+<script src="js/plugin/alarm.js"></script>

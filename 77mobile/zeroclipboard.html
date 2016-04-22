@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+　　<title>Web开发者 - www.Admin10000.com </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<script src="zeroclipboard/jquery.js"></script>
+<script src="zeroclipboard/ZeroClipboard.js"></script>
+
+<div style="width:20px; height:20px; background-color:#ccc;">123123123</div>
+</body>
+</html>
+<script>
+	//点击复制ID
+	ZeroClipboard.config({ swfPath: "../zeroclipboard/ZeroClipboard.swf" });
+	var client = new ZeroClipboard($("div")),
+		id;
+	client.on('copy', function (event) {
+		id=$(event.target).innerHTML()
+		event.clipboardData.setData('text/plain', id);
+	});
+	client.on('aftercopy', function (event) {
+		alert("成功复制【"+id+"】");
+	});
+</script>

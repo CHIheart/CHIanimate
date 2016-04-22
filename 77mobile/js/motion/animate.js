@@ -1,4 +1,4 @@
-(function(){
+(function() {
 	//必须包含jQuery或Raphael之一
 	var hasJQuery = typeof $ != 'undefined',
 		hasRaphael = typeof Raphael != 'undefined';
@@ -134,7 +134,7 @@
 			oNewOptions instanceof Object && (
 			bMerge && merge(oFinalOptions, oBasicOptions, oNewOptions, true, true) || merge(oFinalOptions, oNewOptions, true, true)) || merge(oFinalOptions, oBasicOptions, true, true);
 
-			var bObjAttrs = oAttrs_sAction instanceof Object,
+			var b = oAttrs_sAction instanceof Object,
 				delay = oFinalOptions.delay || 0;
 			delay instanceof Function && (delay = delay(object.length));
 
@@ -160,11 +160,9 @@
 						//是否有两个参数，只有一个参数时被视为b
 						a = two ? ns[0] * 1 : 0,
 						b = ns[two ? 1 : 0] * 1,
-						y = niCounter,
-						n = a ? (y - b)/a : NaN;
-					if (!a && b == y || n >= 0 && n.toFixed(0)*1 == n*1) {
-						for (var x = 0; x < events[nums].length; x++)
-							events[nums][x] instanceof Function && events[nums][x].call(object, y);
+						y = niCounter;
+					if (!a && b == y || a && y + b >= 0 && (y - b / a) >= 0) {
+						for (var x = 0; x < events[nums].length; x++) for (var x = 0; x < events[nums].length; x++) events[nums][x].call(object, niCounter);
 						//删除固定序号及负系数到达上限的元素，以节省资源
 						if (!a && b == y || a < 0 && y >= b) delete(events[nums]);
 					}
@@ -186,7 +184,7 @@
 				var delta = oThisOption.delta || 0;
 				if (delta instanceof Function) delta = delta.call(oMe, indexMe);
 				else delta *= delta > 0 ? indexMe : (indexMe - niBasicInsideLock + 1);
-				if (bObjAttrs) {
+				if (b) {
 					var oThisAttrs = {};
 					for (var n in oAttrs_sAction) { //计算独立属性集合
 						var x = oAttrs_sAction[n];
@@ -201,7 +199,7 @@
 						});
 						oMe.animate(Animation.delay(delta + delay));
 					}
-				} else $(oMe).delay(delta + delay)[oAttrs_sAction](oThisOption);
+				} else $(oMe)[oAttrs_sAction](oThisOption);
 			});
 			return oResult;
 		}
@@ -210,23 +208,10 @@
 		bReset默认为false，将此时的设置合并到基础设置当中
 		bReset为true时，用此时的设置，替换基础设置
 		*/
-		oResult.setOption = function(oNewOptions, bReset) {
+		oResult.set = function(oNewOptions, bReset) {
 			if (oNewOptions instanceof Object) {
 				if (bReset) oBasicOptions = {};
-				merge(oBasicOptions, oNewOptions, true, true);
-			}
-			return oResult;
-		}
-		/*
-		允许另行更改行为，方法说明同setOption，参数说明同oAttrs_sAction
-		*/
-		oResult.setAction = function(oNewActions, bReset) {
-			if (oNewActions instanceof Object) {
-				if (bReset) oAttrs_sAction = {};
-				$.merge(oAttrs_sAction, oNewActions, true, true);
-			}
-			else if(typeof oNewActions == 'string') {
-				oAttrs_sAction = oNewActions;
+				merge(oBasicOptions, oNewOptions);
 			}
 			return oResult;
 		}
@@ -245,7 +230,9 @@
 			}
 			return oResult;
 		}
-		oResult.setActor = oResult.change;
+		oResult.destroy = function() {
+			oResult = null;
+		}
 /*
 		前置后续共用的事件进出方法
 		array，为nexts或follows数组指针
@@ -264,13 +251,13 @@
 					if (bInput && x < 0) {
 						array.push(o);
 						if (bNext) o.follow(oResult);
-						else o.lead(oResult),niBasicPreLock++,niPrevLock=niBasicPreLock;
+						else o.lead(oResult);
 					}
 					//移除行为，且行为未被移除时
 					else if (!bInput && x >= 0) {
 						array.splice(x, 1);
 						if (bNext) o.nofollow(oResult);
-						else o.nolead(oResult),niBasicPreLock--,niPrevLock=niBasicPreLock;
+						else o.nolead(oResult);
 					}
 					break;
 				}
@@ -278,7 +265,8 @@
 			return oResult;
 		}
 /*
-		行为堆入，目前只可堆入CHIanimate对象
+		行为堆入，可堆入animate对象，或一般的function对象
+		堆入的对象可以是使用set方法返回的修改过后的animate对象
 		不可重复堆入同一行为
 		*/
 		oResult.lead = function() {
@@ -309,7 +297,7 @@
 		oResult.next = function(bForce) {
 			if (bForce || niInsideLock <= 0) {
 				for (var n = 0; n < nexts.length; n++)
-				nexts[n].constructor == CHIanimate && nexts[n]();
+				nexts[n]();
 			}
 		}
 		//动画终止，参数的含义与$.stop的相同
@@ -339,7 +327,7 @@
 		}
 /*
 		符合an+b公式的次数时执行，n=1,2,3...，当公式值为正整数时有效，与CSS3的nth-of-type中使用的表达式意义相同
-		只处理CHIanimate，或一般的Function对象，当bOut=true时，删除指定的行为
+		只处理CHIanimate或CHIqueue对象，或一般的Function对象，当bOut=true时，删除指定的行为
 		*/
 		oResult.when = function(a, b, oCHI, bOut) {
 			var con;
@@ -380,10 +368,7 @@
 			for (var x in events) {
 				var arr = events[x];
 				for (var n = arr.length - 1; n >= 0; n--)
-				if (arr[n] == oCHI) {
-					arr.splice(n, 1);
-					break;
-				}
+				if (arr[n] == oCHI) arr.splice(n, 1);
 			}
 			return oResult;
 		}
@@ -394,7 +379,7 @@
 			events,nexts,follows，为true则复制指定的数据
 		*/
 		oResult.clone = function(bDeep) {
-			var newObj = CHIanimate(actor, oAttrs_sAction, oBasicOptions);
+			var newObj = CHIanimate(sJQorObj, oAttrs_sAction, oBasicOptions);
 			if (bDeep) {
 				function copy(array) {
 					var fun;
@@ -437,12 +422,11 @@
 		oResult.constructor = CHIanimate;
 		return oResult;
 	}
-	window.CHIanimate=CHIanimate;
+	window.CHIanimate = CHIanimate;
 })();
 
-
 /*
-actor，要执行效果的选择器，至少要符合一个元素；或直接放入JQ对象或Raphael对象/集合
+sJQorObj，要执行效果的选择器，至少要符合一个元素；或直接放入JQ对象或Raphael对象/集合
 oAttrs_sAction，可以是css键值对对象，也可以是slideUp/slideDown/fadeIn/fadeOut等JQ效果名称
 	如果是JQ动画的话，这个键值对对象，可以是attr:[value,easing]的形式
 	如果是Raphael动画的话，如果想用每个属性不同缓冲的话，请分成多个动画实例，然后连接在动画链的同一位置
@@ -471,7 +455,7 @@ oOptions，是额外用于设置动画效果的参数集合对象
 ----如果使用Raphael对象或集合，则options的特殊性为
 	duration，不可为空
 	easing，默认为linear（源码中的pipe）
-----如果actor符合若干个元素的话，oOptions等各个位置的options对象，可以增加delta属性delay属性each属性
+----如果sJQorObj符合若干个元素的话，oOptions等各个位置的options对象，可以增加delta属性delay属性each属性
 	此delta属性用于本JQ集合中，各个元素之间的动画时间延迟，所有元素都完成动画之后，内部解锁，然后才会执行next堆入的动画对象
 	此delay属性用于本JQ集合动画之前的整体延迟，前置锁完成之后，延迟本段时间后再执行本对象中的行为
 	此each属性用于本JQ集合中，各个元素动画完成之后，执行的一次回调函数，区别于done属性（所有元素完成之后才执行）

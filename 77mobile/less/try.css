@@ -1,0 +1,349 @@
+/*480及以下就是小屏*/
+*{ margin: 0; padding: 0; text-decoration: none; font-style: normal; font-family: "微软雅黑";}
+input,select,textarea{ -webkit-apperance:none; border-radius:0;}
+q{ quotes: none;}
+ul,ol,li{ list-style: none;}
+table{ border-collapse: collapse; table-layout:fixed;}
+:focus{ outline:none;}
+body { background: #2673ec /*url(../images/bg2.gif)*/; padding:50px 0 0 0;}
+html{ font-size:20px;}
+.clear{ clear:both;}
+.FullScreen { width: 100%; height: 100%; position:fixed; top:0; left:0; background-color:rgba(38,115,236,0.95); display:none;}
+textarea{ resize:none;}
+
+/*背景遮罩*/
+.CHIbg{ display:none; position:fixed; width:100%; height:100%; background-color:#2673ec; z-index:22222; left:0; top:0; opacity:.95;}
+
+
+/*登录容器*/
+.CHIloginDiv { background-color: rgba(255,255,255,.2); padding: 20px; border-radius: 5px; margin:0 auto;}
+.CHIloginDiv h1 { font-size: 1.5rem; font-weight: normal; text-align: center; color: #fff; letter-spacing:4px;}
+.CHIloginDiv .CHIbtns { width: 240px; border:1px solid #fff; border-radius:5px; height: 40px; text-align: center;}
+.CHIloginDiv .CHIbtn{ border-left:1px solid #fff;}
+.CHIloginDiv .CHIbtn:first-child{ border-left:0;}
+
+/*登录表单*/
+.CHIlogin { border: 1px solid #ffffff; width: 240px; overflow: hidden; border-radius: 5px;}
+.CHIlogin li { height: 40px; line-height: 40px; border-bottom: 1px dotted #ffffff;}
+.CHIlogin li:last-child { border: 0;}
+.CHIlogin label.fa { float: left; width: 40px; height: 40px; line-height: 40px; text-align: center; color: #fff; font-size: 1.25rem;}
+.CHIlogin .text { border: 0; background-color: transparent; color: #fff; padding: 10px 5px; width: 200px; box-sizing: border-box; height: 40px; line-height:20px; float: right; font-size:.8rem;}
+.CHIlogin .text::-webkit-input-placeholder { color: rgba(255, 255, 255, .8);}
+.CHIlogin .text::-moz-placeholder { color: rgba(255, 255, 255, .8);}
+.CHIlogin .text:focus { background-color: rgba(255, 255, 255, .8); color: #252525;}
+.CHIlogin .text:focus::-webkit-input-placeholder { color: #696969;}
+.CHIlogin .text:focus::-moz-placeholder { color: #696969;}
+.CHIlogin .text:focus + label { background-color: rgba(255, 255, 255, .8); color: #252525;}
+/*登录界面分横竖版*/
+@media screen and (orientation:portrait){
+	.CHIloginDiv h1 { line-height: 40px; margin-bottom: 20px;}
+	.CHIloginDiv { width: 240px;}
+	.CHIlogin { margin: 10px auto;}
+}
+@media screen and (orientation:landscape){
+	.CHIloginDiv { width: 340px;}
+	.CHIloginDiv h1{ width:75px; float:left; margin-right:10px; line-height:50px; padding-top:10px;}
+	.CHIlogin { margin-bottom:10px; float:right;}
+	.CHIloginDiv .CHIbtns { float:right;}
+}
+
+/*通用小按钮组*/
+.CHIbtns { line-height: 40px;}
+.CHIbtns .CHIbtn { width: 100%; cursor: pointer; height: 40px; line-height: 36px; float: left; border: 0; background-color: transparent; color: #fff; font-size:.8rem; overflow:hidden;}
+.CHIbtns .CHIbtn:hover { background-color:rgba(255,255,255,.8);	color:#252525;}
+.CHIbtns .CHIbtn:first-child {}
+.CHIbtns .CHIbtn:last-child { float: right !important;}
+.CHIbtns2 .CHIbtn{ width: 50%;}
+.CHIbtns3 .CHIbtn{ width: 33.33%;}
+.CHIbtns4 .CHIbtn{ width: 25%;}
+.CHIbtns5 .CHIbtn{ width: 20%;}
+
+/*通用大按钮组*/
+.CHIbuttons{}
+.CHIbuttons:not(dfn){ clear:both; margin:10px;}
+.CHIbutton{ display:inline-block; cursor:pointer; font-size:.8rem; color:#fff; height:42px; line-height:40px; padding:0 15px; border-radius:5px; border:1px solid #fff; vertical-align:middle; background-color:transparent; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; box-sizing:border-box;}
+.CHIbutton:not(input){ padding-right:20px;}
+.CHIbutton i.fa{ display:inline-block; width:30px; font-size:1rem; vertical-align:middle;}
+.CHIbutton:hover{ background-color:rgba(255,255,255,.2);}
+@media screen and (max-width:480px){
+	.CHIbuttons{ height:40px; overflow:hidden;}
+	.CHIbuttons:not(dfn){ border:1px solid #fff; border-radius:5px;}
+	.CHIbuttons .CHIbutton{ float:left; box-sizing:border-box; border-width:0 0 0 1px; border-radius:0; text-align:center;}
+	.CHIbuttons .CHIbutton:first-of-type{ border:0;}
+	.CHIbtns2 .CHIbutton { width: 50%;}
+	.CHIbtns3 .CHIbutton { width: 33.33%;}
+	.CHIbtns4 .CHIbutton { width: 25%;}
+	.CHIbtns5 .CHIbutton { width: 20%;}
+}
+@media screen and (max-width:480px){
+	.CHIbtns4 .CHIbtn,.CHIbtns5 .CHIbtn,
+	.CHIbtns4 .CHIbutton,.CHIbtns5 .CHIbutton{ padding:0; text-align:center;}
+	.CHIbtns4 i.fa,.CHIbtns5 i.fa{ display:block; clear:both; text-align:center; line-height:40px; margin:0 auto;}
+}
+
+/*页眉及页眉背景托衬*/
+/*.CHIheaderBG{ position:fixed; top:0; left:0; width:100%; height:50px; z-index:11110; background-color:#2673ec; opacity:.95;}*/
+header{ position:fixed; height:50px; padding:5px 95px; top:0; left:0; width:100%; box-sizing:border-box; z-index:11111; background-color:rgba(38,115,236,0.9); color:#fff;}
+header a{ display:block; width:80px; color:#fff; font-size:.8rem; border-radius:5px; box-sizing:border-box; border:1px solid transparent; line-height:38px;}
+header a i.fa{ display:block; float:left; width:40px; height:38px; text-align:center; font-size:1.25em; overflow:hidden;}
+header a i.fa:before{ display:block; line-height:40px;}
+header a:first-child{ float:left; margin-left:-90px;}
+header a:last-child{ float:right; margin-right:-90px;}
+header a:hover{ background-color:rgba(255,255,255,.2); border-color:#fff;}
+header h1{ float:left; width:100%; text-align:center; line-height:40px; font-size:1rem; font-weight:normal; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+@media screen and (max-width:480px){
+	header{ padding:5px 55px;}
+	header h1{ font-size:.9rem;}
+	header a{ width:40px; height:40px; overflow:hidden;}
+	header a:first-child{ margin-left:-50px;}
+	header a:last-child{ margin-right:-50px;}
+}
+
+/*左右侧边栏*/
+aside{ position:fixed; width:100%; height:100%; background-color:rgba(38,115,236,0.9); z-index:33333; top:0;}
+aside h2{ text-align:left; margin:20px 15px 0; font-size:1.5rem; font-weight:normal; color:#fff; border-bottom:1px solid #fff; padding-bottom:20px; line-height:2rem;}
+aside h2 q{ float:right; line-height:1.5em; font-weight:normal; cursor:pointer;}
+aside div{ overflow:hidden; width:320px; min-height:100%; background-color:rgba(255,255,255,.2);}
+
+/*左侧后台导航*/
+#LeftMenu{ left:-100%;}
+#LeftMenu div{ float:left;}
+.CHImenus{ margin:10px 10px 20px; min-height:100%; display:table;}
+.CHImenus li{ width:100px; height:100px; float:left; box-sizing:border-box; padding:5px;}
+.CHImenus li a{ display:block; width:100%; height:100%; box-sizing:border-box; border:1px solid transparent; border-radius:5px; font-size:.8rem; text-align:center; color:#fff;}
+.CHImenus li a:hover{ border-color:#fff;}
+.CHImenus li i.fa{ display:block; font-size:1.5rem; margin:15px auto 5px;}
+
+/*右侧操作功能*/
+#RightMenu{ right:-100%;}
+#RightMenu div{ float:right;}
+.CHIfuns{ margin:10px 13px; border:1px solid #fff; border-radius:5px; font-size:.8rem;}
+.CHIfuns dt{ padding:0 10px; color:#fff; line-height:40px; cursor:pointer;}
+.CHIfuns dd{ padding:10px 0; line-height:36px; border-top:1px dashed #fff;}
+.CHIfuns dd a{ display:block; padding:0 10px; color:#fff;}
+.CHIfuns dd a:hover{ background-color:rgba(255,255,255,.2);}
+.CHIfuns dd i.fa{ display:block; font-size:1rem; float:left; width:30px; height:30px; line-height:36px; text-align:center;}
+
+/*信息列表*/
+.CHIinfors{ margin:10px; border:1px solid #fff; border-radius:5px; overflow:hidden;}
+.CHIinfors > li{ border-bottom:1px solid #fff;}
+.CHIinfors > li:last-child{ border:0;}
+/*标题栏*/
+.CHIinfors .topic{ padding:0px 40px; height:40px;}
+/*主标题（有可能被截断）*/
+.CHIinfors h3{ line-height:30px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#fff; font-weight:normal; width:100%; float:left; padding:5px 10px; box-sizing:border-box; font-size:.8rem; cursor:ns-resize;}
+/*选中区域*/
+.CHIinfors input[type=checkbox]{ display:none;}
+.CHIinfors label,.CHIinfors .topic a{ color:#fff; display:inline-block; width:40px; text-align:center; box-sizing:border-box;}
+.CHIinfors label{ float:left; margin-left:-40px; line-height:40px; border-right:1px dotted rgba(255,255,255,.5); cursor:pointer;}
+.CHIinfors label:before{ content:"\f096";}
+.CHIinfors input:checked + label:before{ content:"\f046";}
+/*下一级列表链接（有时没有）*/
+.CHIinfors .topic a{ float:right; margin-right:-40px; width:40px; height:40px; line-height:40px; color:#fff; border-left:1px dotted #fff;}
+.CHIinfors .topic a:hover{ background-color:rgba(255,255,255,.5);}
+.CHIinfors input:checked ~ *{ background-color:rgba(255,255,255,.8); color:#252525; border-color:#fff;}
+.CHIinfors input:checked ~ a{ color:#252525;}
+.CHIinfors input:checked ~ a:hover{ background-color:rgba(0,0,0,.2); color:#fff;}
+/*内容*/
+.CHIinfors .content{ display:none; border-top:1px dotted rgba(255,255,255,.5);}
+/*图片列表*/
+.CHIinfors .album{ border-bottom:1px dotted rgba(255,255,255,.5); font-size:0; overflow:hidden;}
+.CHIinfors .album table{ height:100px; margin:10px 0; overflow:hidden;}
+.CHIinfors .album td a{ display:inline-block; width:100px; margin:0 5px; overflow:hidden; text-align:center; border:1px solid rgba(255,255,255,.2);}
+.CHIinfors .album td:first-child a{ margin-left:10px;}
+.CHIinfors .album td:last-child a{ margin-right:10px;}
+.CHIinfors .album img{ max-height:100px; max-width:100px;}
+/*摘要*/
+.CHIinfors .summary{ font-size:.7rem; line-height:1.5em; color:#fff; padding:10px;}
+/*完整标题*/
+.CHIinfors .summary h4{ font-size:.8rem; margin-bottom:5px; font-weight:normal; background-color:rgba(255,255,255,.2); padding:10px 15px;}
+/*单项操作工具栏*/
+.CHIinfors .tools{ height:40px; line-height:40px; font-size:.8rem; border-top:1px dotted rgba(255,255,255,.5); background-color:rgba(255,255,255,.2);}
+.CHIinfors .tools li{ float:left;}
+.CHIinfors .tools li:first-child i.fa{ width:40px; color:#fff; border-right:1px dotted rgba(255,255,255,.5); box-sizing:border-box;}
+.CHIinfors .tools a{ color:#fff; display:block; padding-right:10px;}
+.CHIinfors .tools a:hover{ background-color:rgba(255,255,255,.8); color:#252525;}
+.CHIinfors .tools i.fa{ width:30px; line-height:40px; text-align:center; font-size:1rem; float:left;}
+@media screen and (max-width:480px){
+	.CHIinfors .tools a{ width:40px; height:40px; padding:0; overflow:hidden;}
+	.CHIinfors .tools i.fa{ width:40px;}
+}
+
+/*大表单*/
+.CHIform{ margin:10px; border-radius:5px; border:1px solid #fff; overflow:hidden;}
+.CHIform var{ line-height:40px; color:#fff; font-size:.8rem; padding:0 5px;}
+.CHIform var:after{ content:"：";}
+.CHIform var:empty{ border-right:0;}
+.CHIform var:empty:after{ display:none;}
+.CHIform var,.CHIform dfn{ box-sizing:border-box; font-size:.8rem; font-style:normal;}
+@media screen and (max-width:480px){
+	.CHIform var,.CHIform dfn{ clear:both; display:block;}
+	.CHIform var{ border-bottom:1px dotted rgba(255,255,255,.5);}
+	.CHIform var:empty{ border-bottom:0;}
+	.CHIform dfn{ border-bottom:1px solid #fff;}
+	.CHIform > ul > li:last-of-type dfn{ border:0;}
+}
+@media screen and (min-width:481px){
+	.CHIform > ul{ display:table; width:100%; table-layout:fixed;}
+	.CHIform > ul > li{ display:table-row; width:100%;}
+	.CHIform var,.CHIform dfn{ display:table-cell; border-bottom:1px solid #fff; vertical-align:top;}
+	.CHIform var{ width:10em; padding:5px; border-right:1px dotted #fff;}
+	.CHIform dfn{ padding:5px;}
+	.CHIform > ul > li:last-of-type var,.CHIform > ul > li:last-of-type dfn{ border-bottom:0;}
+}
+.CHIform dfn.font0{ font-size:0;}/*这个类只是让容器没有多余的空白*/
+/*文本框/域*/
+.CHItext,.CHItextarea{ box-sizing:border-box; padding:10px; font-size:.7rem; border:0; background-color:rgba(255,255,255,.2); color:#fff;}
+.CHItext{ height:40px; vertical-align:middle;}
+.CHItextarea{ line-height:1.5em; vertical-align:text-top;}
+.CHItext:focus,.CHItextarea:focus{ background-color:rgba(255,255,255,.8); color:#252525;}
+.CHItextarea.small{ height:6em;}
+.CHItextarea.large{ height:12em;}
+@media screen and (max-width:480px){
+	.CHItext,.CHItextarea{ width:100%;}
+}
+@media screen and (min-width:481px){
+	.CHItext.short{ width:200px;}
+	.CHItext.middle{ width:50%;}
+	.CHItext.long{ width:100%;}
+	.CHItextarea.small{ width:50%;}
+	.CHItextarea.large{ width:100%;}
+}
+/*单选按钮*/
+.CHIradio{ display:none;}
+.CHIradio + label{ color:#fff; padding:0 5px 0 30px; font-size:.8rem; cursor:pointer;}
+.CHIradio + label:before{ font-family:"FontAwesome"; content:"\f10c"; display:block; width:30px; text-align:center; float:left; margin-left:-30px;}
+.CHIradio:checked + label{ background-color:rgba(255,255,255,.2);}
+.CHIradio:checked + label:before{ content:"\f192";}
+@media screen and (max-width:480px){
+	.CHIradio + label{ clear:both; display:block; line-height:25px; padding:10px 5px 10px 30px; border-bottom:1px dotted rgba(255,255,255,.2);}
+	.CHIradio + label:before{ line-height:26px; height:25px; overflow:hidden;}
+}
+@media screen and (min-width:481px){
+	.CHIradio + label{ display:inline-block; line-height:25px; padding:5px 15px 5px 30px;}
+	.CHIradio + label:before{ line-height:25px;}
+}
+/*复选框*/
+.CHIcheckbox{ display:none;}
+.CHIcheckbox + label{ color:#fff; padding:0 5px 0 30px; font-size:.8rem; cursor:pointer; margin-bottom:5px;}
+.CHIcheckbox + label:before{ font-family:"FontAwesome"; content:"\f096"; display:block; width:30px; text-align:center; float:left; margin-left:-30px;}
+.CHIcheckbox:checked + label{ background-color:rgba(255,255,255,.2);}
+.CHIcheckbox:checked + label:before{ content:"\f046";}
+@media screen and (max-width:480px){
+	.CHIcheckbox + label{ clear:both; display:block; line-height:25px; padding:10px 5px 10px 30px; border-bottom:1px dotted rgba(255,255,255,.2); margin-bottom:0;}
+	.CHIcheckbox + label:before{ line-height:26px; height:25px; overflow:hidden;}
+}
+@media screen and (min-width:481px){
+	.CHIform dfn.boxes{ padding-bottom:0;}/*这个类只是让容器没有下填充*/
+	.CHIcheckbox + label{ display:inline-block; line-height:25px; padding:5px 15px 5px 30px;}
+	.CHIcheckbox + label:before{ line-height:25px;}
+}
+/*特殊开关（单选按钮的特例）*/
+.CHIswitch{ display:none;}
+.CHIswitch + label{ display:none; color:#fff; padding:5px 5px 5px 35px; font-size:.8rem; cursor:pointer; line-height:30px; vertical-align:middle;}
+.CHIswitch + label:before{ font-family:"FontAwesome"; display:block; width:25px; padding-left:5px; float:left; margin-left:-30px; line-height:30px; font-size:1rem;}
+.CHIswitch:checked + label{ display:inline-block;}
+/*放大/缩小*/
+.magnifyPlus + label:before{ content:"\f00e";}
+.magnifyMinus + label:before{ content:"\f010";}
+/*播放/暂停*/
+.playPlay + label:before{ content:"\f04b";}
+.playPause + label:before{ content:"\f04c";}
+/*可见/隐藏*/
+.eyeShow + label:before{ content:"\f06e";}
+.eyeHide + label:before{ content:"\f070";}
+/*打开/关闭*/
+.folderOpen + label:before{ content:"\f07c";}
+.folderClose + label:before{ content:"\f07b";}
+/*收藏/解除*/
+.favorYes + label:before{ content:"\f004";}
+.favorNo + label:before{ content:"\f08a";}
+/*书签/解除*/
+.bookmarkYes + label:before{ content:"\f02e";}
+.bookmarkNo + label:before{ content:"\f097";}
+/*加锁/解锁*/
+.lockYes + label:before{ content:"\f023";}
+.lockNo + label:before{ content:"\f13e";}
+/*提醒/不提醒*/
+.alarmYes + label:before,.alarmNo + label:before,.bellYes + label:before,.bellNo + label:before{ text-align:center; width:30px; padding-left:0;}
+.alarmYes + label:before{ content:"\f0f3";}
+.alarmNo + label:before{ content:"\f1f6";}
+.bellYes + label:before{ content:"\f0a2";}
+.bellNo + label:before{ content:"\f1f7";}
+/*男/女*/
+.male + label:before,.female + label:before{ text-align:center; width:30px; padding-left:0;}
+.male + label:before{ content:"\f183";}
+.female + label:before{ content:"\f182";}
+/*男2/女2*/
+.man + label:before,.woman + label:before{ text-align:center; width:30px; padding-left:0;}
+.man + label:before{ content:"\f222";}
+.woman + label:before{ content:"\f221";}
+/*开/关*/
+.switchOn + label:before,.switchOff + label:before{}
+.switchOn + label:before{ content:"\f205";}
+.switchOff + label:before{ content:"\f204";}
+/*静音/低音/高音*/
+.volumnOff + label:before{ content:"\f026";}
+.volumnLow + label:before{ content:"\f027";}
+.volumnHigh + label:before{ content:"\f028";}
+/*空星/半星/满星*/
+.starEmpty + label:before{ content:"\f006";}
+.starHalf + label:before{ content:"\f123";}
+.starFull + label:before{ content:"\f005";}
+/*左/中/右/分散对齐*/
+.alignLeft + label:before{ content:"\f036";}
+.alignCenter + label:before{ content:"\f037";}
+.alignRight + label:before{ content:"\f038";}
+.alignJustify + label:before{ content:"\f039";}
+
+/*提示信息*/
+.CHItip{ display:inline-block; vertical-align:middle; color:#fff; font-size:.8rem; padding:3px 10px 3px 30px; border-radius:2px; line-height:25px; margin:5px 0;}
+.CHItext + .CHItip{ margin-left:5px;}
+.CHItip:before{ font-family:"FontAwesome"; width:20px; display:block; float:left; margin-left:-25px; text-align:center; line-height:27px; height:25px; overflow:hidden; font-size:1rem;}
+.CHItip.warn{ background-color:#e1b700;}
+.CHItip.warn:before{ content:"\f06a";}
+.CHItip.ok{ background-color:#78ba00;}
+.CHItip.ok:before{ content:"\f058";}
+.CHItip.error{ background-color:#ff2e12;}
+.CHItip.error:before{ content:"\f057";}
+.CHItip.tip{ background-color:#1faeff;}
+.CHItip.tip:before{ content:"\f05a";}
+.CHItip.fail{ background-color:#696969;}
+.CHItip.fail:before{ content:"\f059";}
+@media screen and (max-width:480px){
+	.CHItip{ display:block; clear:both; margin:5px;}
+}
+
+/*上传域，不可以设置成display:none，在某些手机浏览器上会无法打开文件访问功能*/
+.CHIfile{ width:0; height:0; float:left;}
+@media screen and (max-width:480px){
+	.CHIfile + label{ margin:5px 5px 0;}
+	.CHIfile + label:last-child{ margin-bottom:5px;}
+}
+
+/*上传/预览图片集*/
+.CHIalbum{ color:#fff; overflow:hidden; clear:both; display:none;}
+.CHIalbum table{ margin-right:10px;}
+.CHIalbum td{ height:100px; overflow:hidden; text-align:center; position:relative; border:1px dotted #fff; font-size:0;}
+.CHIalbum a,.CHIalbum p,.CHIalbum label{ display:inline-block; width:100px; color:#fff;}
+.CHIalbum s{ position:absolute; font-size:2rem; width:100px; left:0; top:0; line-height:100px;}
+.CHIalbum img{ max-width:100px; max-height:100px;}
+.CHIalbum td:after{ position:absolute; content:attr(title); font-size:.6rem; width:100%; max-height:100%; overflow:hidden; padding:5px; box-sizing:border-box; line-height:15px; bottom:0; left:0; background-color:rgba(255,255,255,.8); text-align:center; text-transform:uppercase; color:#000; word-break:break-all;}
+.CHIalbum i.fa{ font-size:2rem; width:100px;}
+/*图片集的管理按钮*/
+.CHIalbum + .CHIbutton{ display:none;}
+@media screen and (min-width:481px){
+	.CHIalbum{ margin-bottom:5px;}
+}
+@media screen and (max-width:480px){
+	.CHIalbum{ margin:5px 5px 0;}
+	.CHIalbum + .CHIbutton{ margin:5px;}
+}
+/*图片集在管理状态时*/
+.CHIalbum input{ display:none;}
+.CHIalbum :checked + label:before{ content:'\f00d'; font-family:"FontAwesome"; font-size:2rem; position:absolute; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.2); line-height:100px; cursor:pointer;}
+.CHIalbum ~ .CHIbuttons{ display:none; margin:5px;}
+@media screen and (min-width:481px){
+	.CHIalbum ~ .CHIbuttons{ margin:5px 0 0 0;}
+}
