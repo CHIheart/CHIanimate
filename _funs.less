@@ -1,22 +1,26 @@
 //背景部分
+@charset "UTF-8";
 .bg(...){
 	background: @arguments;
 }
-.bg-c(@color : transparent){
+.bg-c(@color){
 	background-color: @color;
 }
-.bg-c-a(@rgbacolor : rgba(0,0,0,.5)){
+.bg-c-a(@rgbacolor){
 	background-color: @rgbacolor;
-	@argbcolor : argb(@rgbacolor);
-	background-color: transparent\9;
-	filter:~"progid:DXImageTransform.Microsoft.gradient(startColorstr=@{argbcolor},endColorstr=@{argbcolor})\9";
 }
-.bg-c-a(@color : black, @alpha : .5){
+.bg-c-a(@color, @alpha){
 	@rchannel : red(@color);
 	@gchannel : green(@color);
 	@bchannel : blue(@color);
 	@rgbacolor : rgba(@rchannel, @gchannel, @bchannel, @alpha);
 	background-color: @rgbacolor;
+}
+.bg-c-ie(@color, @alpha){
+	@rchannel : red(@color);
+	@gchannel : green(@color);
+	@bchannel : blue(@color);
+	@rgbacolor : rgba(@rchannel, @gchannel, @bchannel, @alpha);
 	@argbcolor : argb(@rgbacolor);
 	background-color: transparent\9;
 	filter:~"progid:DXImageTransform.Microsoft.gradient(startColorstr=@{argbcolor},endColorstr=@{argbcolor})\9";
@@ -42,23 +46,25 @@
 .bg-r(@d) when(@d = yes), (@d = true){
 	background-repeat: repeat;
 }
+//背景定位
+.bg-f(@b : true) when(@b = true), (@b = yes){
+	background-attachment: fixed;
+}
+.bg-f(@b : true) when(@b = false), (@b = no){
+	background-attachment: scroll;
+}
 .bg-a(@d) when(@d = true), (@d = yes){
 	background-attachment: fixed;
 }
 .bg-a(@d) when(@d = false), (@d = no){
 	background-attachment: scroll;
 }
-.bg-s(@k : cover){
+//背景模式
+.bg-s(@k){
 	background-size: @k;
 }
-.bg-s(@h : auto, @v : auto){
+.bg-s(@h, @v){
 	background-size: @h @v;
-}
-.bg-f(@b : true) when(@b = true), (@b = yes){
-	background-attachment: fixed;
-}
-.bg-f(@b : true) when(@b = false), (@b = no){
-	background-attachment: scroll;
 }
 //边框部分
 .bd(...){
@@ -76,7 +82,7 @@
 .bd-l(...){
 	border-left: @arguments;
 }
-.bd-l-c(@color : transparent){
+.bd-l-c(@color){
 	border-left-color: @color;
 }
 .bd-l-w(@width){
@@ -88,7 +94,7 @@
 .bd-r(...){
 	border-right: @arguments;
 }
-.bd-r-c(@color : transparent){
+.bd-r-c(@color){
 	border-right-color: @color;
 }
 .bd-r-w(@width){
@@ -100,7 +106,7 @@
 .bd-b(...){
 	border-bottom: @arguments;
 }
-.bd-b-c(@color : transparent){
+.bd-b-c(@color){
 	border-bottom-color: @color;
 }
 .bd-b-w(@width){
@@ -112,7 +118,7 @@
 .bd-t(...){
 	border-top: @arguments;
 }
-.bd-t-c(@color : transparent){
+.bd-t-c(@color){
 	border-top-color: @color;
 }
 .bd-t-w(@width){
@@ -133,14 +139,14 @@
 
 
 //效果，一些杂七杂八的效果
-//透明
-.alpha(@float){
-	opacity : @float;
-	@intnum : @float * 100;
-	filter: ~"alpha(opacity=@{intnum})";
+//低端IE8-也用的透明
+.alpha(@num){
+	.opacity(@num / 100);
+	filter: ~"alpha(opacity=@{num})\9";
 }
+//IE9+及四大浏览器的透明
 .opacity(@float){
-	.alpha(@float);
+	opacity : @float;
 }
 //盒阴影
 .shadow(...){
@@ -181,7 +187,7 @@
 .h(@height : auto){
 	height: @height;
 }
-.line(@n : 200%){
+.line(@n : normal){
 	line-height: @n;
 }
 .hline(@h){
@@ -231,6 +237,11 @@
 .ma(){
 	margin-left: auto;
 	margin-right: auto;
+}
+.ma(@top, @bottom){
+	.ma();
+	margin-top: @top;
+	margin-bottom: @bottom;
 }
 //填充
 .p(...){
@@ -321,23 +332,23 @@
 .b(@p : 0){
 	bottom: @p;
 }
-.lt(){
-	left: 0;
+.lt(@l : 0, @t : 0){
+	left: @l;
+	top: @t;
+}
+.lb(@l : 0, @b : 0){
+	left: @l;
+	bottom: @b;
+}
+.rt(@r : 0, @t : 0){
+	right: @t;
 	top: 0;
 }
-.lb(){
-	left: 0;
-	bottom: 0;
+.rb(@r : 0, @b : 0){
+	right: @r;
+	bottom: @b;
 }
-.rt(){
-	right: 0;
-	top: 0;
-}
-.rb(){
-	right: 0;
-	bottom: 0;
-}
-.z(@z : 1){
+.z(@z){
 	z-index: @z;
 }
 .fl(){
@@ -353,7 +364,7 @@
 .c(@c){
 	color: @c;
 }
-.family(@n : Microsoft Yahei){
+.family(@n){
 	font-family: @n;
 }
 .yahei(){
@@ -390,6 +401,9 @@
 .nowrap(){
 	white-space: nowrap;
 }
+.wrap(){
+	white-space: normal;
+}
 .valign(@d : middle){
 	vertical-align: @d;
 }
@@ -398,6 +412,9 @@
 }
 .indent(@n : 2em){
 	text-indent: @n;
+}
+.noline(){
+	text-decoration: none;
 }
 .decorate(@w : none){
 	text-decoration: @w;
@@ -425,6 +442,7 @@
 .trans(@speed : normal) when (@speed = no){
 	.transition(none);
 }
+
 //满尺寸，通常用于图片
 .full(){
 	width: 100%;
