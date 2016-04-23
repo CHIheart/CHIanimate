@@ -1,4 +1,4 @@
-<!--Written by PROCESS.PHP at the time of 2016-04-16 17:59:36-->
+<!--Written by PROCESS.PHP at the time of 2016-04-23 18:04:25-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,8 +22,10 @@ document.execCommand("stop");
 <![endif]-->
 <script src="http://www.new.com/srcs/js/libs/jq1.10.2_sea2.3.0_angular1.2.16.js"></script>
 <!-- include ending src="/incs/always.html" -->
-<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topnav.css?d45623">
-<link rel="stylesheet" href="http://www.new.com/cache/index/ppt/ppt.css?263a84"></head>
+<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates.css?1e8e86">
+<link rel="stylesheet" href="http://www.new.com/cache/index/ppt/ppt.css?978c48"></head>
+<!--[if IE 9]><body class="IE9"><![endif]-->
+<!--[if IE 8]><body class="IE8"><![endif]-->
 <body>
 <!-- include beginning src="/incs/header/index/index.html" --><!-- 首页使用头文件碎片 -->
 
@@ -81,25 +83,25 @@ document.execCommand("stop");
 	</div>
 </div>
 <div class="TOPNAV common clearfix">
-	<!-- include beginning src="/incs/header/topnav/topnav.html" -->
+	<!-- include beginning src="/incs/header/topcates/topcates.html" -->
 <div class="LOGO"><img src="http://www.new.com/srcs/images/logo.png?0b2084" alt=""></div>
 <dl class="CATEGORIES">
 	<dt>全部产品分类</dt>
 	<dd>
 		<div class="MainCates transSlow anchors">
-			<!-- include beginning src="/incs/header/topnav/navMain.html" variable="$aData['categories']" repeats="-1" --><h3><a href="{$url}" alt="{$alt}">{$name}</a></h3><!-- include ending src="/incs/header/topnav/navMain.html" -->
+			<!-- include beginning src="/incs/header/topcates/cateMain.html" variable="$aData['categories']" repeats="-1" --><h3><a href="{$url}" alt="{$alt}">{$name}</a></h3><!-- include ending src="/incs/header/topcates/cateMain.html" -->
 		</div>
-		<!-- include beginning src="/incs/header/topnav/navSub.html" variable="$aData['categories']" repeats="-1" --><div class="SubCates anchors hide">
-	<!-- include beginning src="/incs/header/topnav/navSubCat.html" variable="$aData['subcates']" repeats="-1" --><!-- include beginning src="/incs/header/topnav/navSubListPrefix.html" condition="$aData['index']%6===0" --><div class="sublist"><!-- include ending src="/incs/header/topnav/navSubListPrefix.html" -->
+		<!-- include beginning src="/incs/header/topcates/catesSub.html" variable="$aData['categories']" repeats="-1" --><div class="SubCates anchors hide">
+	<!-- include beginning src="/incs/header/topcates/cateSubCat.html" variable="$aData['subcates']" repeats="-1" --><!-- include beginning src="/incs/header/topcates/catesSubListPrefix.html" condition="$aData['index']%6===0" --><div class="sublist"><!-- include ending src="/incs/header/topcates/catesSubListPrefix.html" -->
 <h4><a href="{$url}" alt="{$alt}">
 	<img src="{$img}" alt="{$alt}">
 	{$name}
 </a></h4>
-<!-- include beginning src="/incs/header/topnav/navSubListSuffix.html" condition="$aData['index']%6===5 || $aData['index']===$aData['of']-1" --></div><!-- include ending src="/incs/header/topnav/navSubListSuffix.html" --><!-- include ending src="/incs/header/topnav/navSubCat.html" -->
-</div><!-- include ending src="/incs/header/topnav/navSub.html" -->
+<!-- include beginning src="/incs/header/topcates/catesSubListSuffix.html" condition="$aData['index']%6===5 || $aData['index']===$aData['of']-1" --></div><!-- include ending src="/incs/header/topcates/catesSubListSuffix.html" --><!-- include ending src="/incs/header/topcates/cateSubCat.html" -->
+</div><!-- include ending src="/incs/header/topcates/catesSub.html" -->
 	</dd>
 </dl>
-<!-- include ending src="/incs/header/topnav/topnav.html" -->
+<!-- include ending src="/incs/header/topcates/topcates.html" -->
 </div>
 
 <!-- include ending src="/incs/header/index/index.html" -->
@@ -111,10 +113,10 @@ document.execCommand("stop");
 	</ul>
 	<div class="common">
 		<div class="ctrl">
-			<sub class="transSlow"><i class="lcz lcz-angle-left"></i></sub>
+			<sub class="transSlow cur"><i class="lcz lcz-angle-left"></i></sub>
 			<sup class="transSlow"><i class="lcz lcz-angle-right"></i></sup>
 			<ol>
-				<!-- include beginning src="/index/ppt/pptDot.html" variable="$aData['ppt']" repeats="-1" --><li title="{$title}" class="cur"></li>
+				<!-- include beginning src="/index/ppt/pptDot.html" variable="$aData['ppt']" repeats="-1" --><li title="{$title}" class="cur transSlow"></li>
 <!-- include ending src="/index/ppt/pptDot.html" -->
 			</ol>
 		</div>
@@ -123,6 +125,6 @@ document.execCommand("stop");
 <!-- include ending src="/index/ppt/ppt.html" -->
 
 
-<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topnav.js?d90e0b"></script>
-<script src="http://www.new.com/cache/index/index_ppt.js?c399c5"></script></body>
+<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates.js?b8777a"></script>
+<script src="http://www.new.com/cache/index/index_ppt.js?131ac7"></script></body>
 </html>

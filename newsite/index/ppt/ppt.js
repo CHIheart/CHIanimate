@@ -8,7 +8,7 @@
 
 
 define('PPT',[],function(require,exports,module){
-	console.log("PPT is setup...");
+	
 	return ;
 });
 

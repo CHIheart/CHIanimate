@@ -1,4 +1,4 @@
-//Written by PROCESS.PHP at the time of 2016-04-16 17:59:36
+//Written by PROCESS.PHP at the time of 2016-04-23 18:04:25
 /**
  * 首页独立JS
  */
@@ -18,7 +18,7 @@ seajs.use('index');
 
 
 define('PPT',[],function(require,exports,module){
-	console.log("PPT is setup...");
+	
 	return ;
 });
 

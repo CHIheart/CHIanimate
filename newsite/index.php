@@ -31,6 +31,50 @@ $data = array(
 			"other"=>"ng-click=\"logout();\""
 		),
 	),
+	"nav"=>array(
+		array(
+			"href"=>"http://www.baidu.com",
+			"blank"=>"_self",
+			"name"=>"百度",
+			"title"=>"链接到百度",
+			"cateid"=>"1"
+		),
+		array(
+			"href"=>"http://www.126.com",
+			"blank"=>"_blank",
+			"name"=>"网易邮箱",
+			"title"=>"网易邮箱",
+			"cateid"=>"2"
+		),
+		array(
+			"href"=>"http://www.lj2015.com",
+			"blank"=>"_self",
+			"name"=>"连奖2015",
+			"title"=>"连奖新域名",
+			"cateid"=>"3"
+		),
+		array(
+			"href"=>"http://www.sina.com",
+			"blank"=>"_blank",
+			"name"=>"新浪",
+			"title"=>"新浪首页",
+			"cateid"=>"4"
+		),
+		array(
+			"href"=>"http://www.163.com",
+			"blank"=>"_self",
+			"name"=>"网易",
+			"title"=>"网易首页",
+			"cateid"=>"5"
+		),
+		array(
+			"href"=>"http://www.github.com",
+			"blank"=>"_blank",
+			"name"=>"GITHUB",
+			"title"=>"GITHUB首页",
+			"cateid"=>"6"
+		),
+	),
 	"categories"=>array(
 		array(
 			"url"=>"#脚垫的地址",
@@ -39,7 +83,7 @@ $data = array(
 			"subcates"=>array(
 				array(
 					"url"=>"#丝圈脚垫地址",
-					"name"=>"丝圈脚垫",
+					"name"=>"丝圈脚垫丝圈脚垫丝圈脚垫",
 					"alt"=>"alt of 丝圈脚垫",
 					"img"=>"/srcs/images/pro.png"
 				),

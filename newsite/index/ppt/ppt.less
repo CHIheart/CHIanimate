@@ -1,6 +1,7 @@
 //首页幻灯片
 @import (reference) "../../srcs/css/_funs";
 @import (reference) "../../srcs/css/_theme";
+
 .PPT{
 	.h(520px);
 	.z(444);
@@ -23,7 +24,6 @@
 	.ctrl{
 		.t();
 		.w(100%);
-		.bd(10px,solid,red);
 	}
 	sub,sup{
 		.hline(80px);
@@ -32,10 +32,10 @@
 		.t(220px);
 		.c(white);
 		.c-p();
-		.alpha(.5);
+		.opacity(.5);
 		&:hover{
 			.bg-c-a(black,.3);
-			.alpha(1);
+			.opacity(1);
 		}
 	}
 	sub{
@@ -60,7 +60,7 @@
 			.inblock();
 			.mr(4px);
 			.c-p();
-			.alpha(.5);
+			.opacity(.5);
 			.t-c();
 			.relative();
 			&:before,&:after{
@@ -80,20 +80,20 @@
 				.c(black);
 			}
 			&:hover{
-				.alpha(1);
+				.opacity(1);
 				&:after{
 					.c(@lightblack);
 				}
 			}
-			//IE8兼容
-			&:after{
-				.indent(~"3px\9");
-			}
-			//IE9兼容
-			&:after{
-				.line(~"25px\9\0");
-				.indent(~"0\9\0");
-			}
+		}
+	}
+}
+
+.PPT ol li{
+	.IE8 &{
+		&:after{
+			.indent(3px);
+			.line(26px);
 		}
 	}
 }
