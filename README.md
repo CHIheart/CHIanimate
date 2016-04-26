@@ -37,3 +37,7 @@
 
 1. `jQuery`库扩展
 2. `Raphael`库扩展
+
+### 我翻译的英文文档（偶尔会更新）
+1. [Stage.js](https://github.com/shakiba/stage.js/wiki/%E4%B8%AD%E6%96%87%E6%89%8B%E5%86%8C%EF%BC%88%E6%96%B0%EF%BC%89)：封装的Canvas，跟JQ不太像，但是管理布局及使用序列帧作动画很有特色  
+2. [jCanvas.js](https://github.com/caleb531/jcanvas-docs/wiki)：也是封装的Canvas，跟JQ很像，处理层及/鼠标事件等很有能力  
