@@ -248,19 +248,21 @@ Raphael.fn.bubble = function(angle, width, height, corner, popup) {
 使用本命令之后，可以拥有自定义属性 percentage:[from,to]
 指的是本路径的百分量子路径，from及to都是0-1之间的数字
 setOptions，配置参数集合对象，可以使用的键名有
-duration,easing,done,reversed,erased
+from,to,duration,easing,done,reversed,erased,
 erased，默认为false，如果为true则为路径消失效果
 */
 Raphael.el.draw=function(setOptions){
-	if(this.data('__drawing')) return false;
+	if(this.data("__drawing")) return this;
 	if(!setOptions) setOptions={};
-	var duration=isPosInt(setOptions.duration) ? setOptions.duration : 1000,
+	var from=!isNaN(setOptions.from) ? setOptions.from : 0,
+		to=!isNaN(setOptions.to) ? setOptions.to : 1,
+		duration=!isNaN(setOptions.duration) ? setOptions.duration *1 : 1000,
 		easing=setOptions.easing ? setOptions.easing : 'swing',
 		done=$.isFunction(setOptions.done) ? setOptions.done : $.noop,
 		reversed=setOptions.reversed ? true : false,
 		erased=setOptions.erased ? true : false
 		;
-	var paper=this.paper,primary,terminal;
+	var paper=this.data("__drawing",true).paper,primary,terminal;
 	if(!('percentage' in paper.ca)) 
 	{
 		paper.ca.percentage=function(from,to){
@@ -271,11 +273,10 @@ Raphael.el.draw=function(setOptions){
 			if(!this.data('__pathstring')) this.data('__pathstring',this.attr('path'));
 			var path=this.data('__pathstring'),
 				length=Raphael.getTotalLength(path),
-				subpath=from==to ? 'M0,0Z' : Raphael.getSubpath(path,length*min(from,to),length*max(from,to));
+				subpath=from==to ? 'M0,0C0,0,0,0,0,0Z' : Raphael.getSubpath(path,length*Math.min(from,to),length*Math.max(from,to));
 			return {path:subpath};
 		}
 	}
-	this.data('__drawing',true);
 	erased && (
 		reversed && (primary=[0,1],terminal=[0,0],true)
 		|| (primary=[0,1],terminal=[1,1])
@@ -286,15 +287,17 @@ Raphael.el.draw=function(setOptions){
 	);
 	return this.attr('percentage',primary)
 		.animate({'percentage':terminal},duration,easing,function(){
-			this.data('__drawing',false);
-			if(done) done.call(this);
+			done.call(this);
+			this.removeData('__drawing');
 		});
 }
 Raphael.st.draw=function(setOptions){
 	this.forEach(function(ele){
 		ele.draw(setOptions);
 	});
+	return this;
 }
+
 /*
 使元素的盒中心沿路径动作
 setOptions，参数配置集合对象，可以使用的键名有
@@ -305,46 +308,64 @@ setOptions，参数配置集合对象，可以使用的键名有
 	easing，舒缓函数，默认为swing（由于Raphael的我还没研究明白，所以这里先只能用JQ的easing）
 	done，回调函数，默认为空
 	rotate，元素是否沿路径转角，默认为false
+	offsetX，元素的横向偏移，默认为0，元素的矩形盒中心与路径对齐
+	offsetY，元素的纵向偏移，同上
+	angle，元素的起始转角，默认为0，可以与路径起始点对齐
+	show，是否显示路径，默认为false，如果为true的话会边走边显示路径
 */
 Raphael.el.tour=function(setOptions){
-	if(!setOptions.path || this.data('__touring'))return false;
-	var path=setOptions.path,
-		isPath=path.type=='path',
-		length=isPath ? path.getTotalLength() : Raphael.getTotalLength(path);
-	if(!length)return false;
-	this.data('__touring',true);
-	var from=setOptions.from ? setOptions.from : 0,
-		to=setOptions.to ? setOptions.to : 1,
-		duration=isPosInt(setOptions.duration) ? setOptions.duration : 1000,
+	if(!setOptions.path)return false;
+	if(this.data("__touring"))return this;
+	var path=setOptions.path;
+	path.type!='path' && (path=this.paper.path(path));
+	var length=path.attr({
+		percentage:[0,1]
+	}).getTotalLength();
+	if(!length) return false;
+	var from=!isNaN(setOptions.from) ? setOptions.from : 0,
+		to=!isNaN(setOptions.to) ? setOptions.to : 1,
+		duration=!isNaN(setOptions.duration) ? setOptions.duration*1 : 1000,
+		offsetX=!isNaN(setOptions.offsetX) ? setOptions.offsetX*1 : 0,
+		offsetY=!isNaN(setOptions.offsetY) ? setOptions.offsetY*1 : 0,
+		angle=!isNaN(setOptions.angle) ? setOptions.angle*1 : 0,
 		easing=setOptions.easing ? setOptions.easing : 'swing',
-		done=setOptions.done ? setOptions.done : $.noop,
+		done=$.isFunction(setOptions.done) ? setOptions.done : $.noop,
 		rotate=setOptions.rotate ? true : false,
-		speed=20,
-		count=floor(duration/speed),
-		THIS=this,
-		PATH=isPath ? path : Raphael,
-		timer=setInterval(function(){
-			var percentage=jQuery.easing[easing](0,duration - (count-- * speed), from, to-from, duration),
-				point=PATH.getPointAtLength(length*percentage),
-				x=point.x,y=point.y,angle=point.alpha,
-				bbox=THIS.getBBox(true),
-				cx=bbox.cx,cy=bbox.cy,
-				transStr='T'+(x-cx)+','+(y-cy)+(rotate?('R'+angle):'');
-			THIS.attr({
-				transform:transStr,
-			});
-			if(!count){
-				clearInterval(timer);
-				done.call(THIS);
-				THIS.data('__touring',true);
-			}
-		},speed);
+		showPath=setOptions.show ? true : false,
+		THIS=this.data("__touring",true),
+		bbox=this.getBBox(true),
+		reversed=from>to;
+	this.attr({
+		transform:""
+	});
+	path.draw({
+		duration:duration,
+		easing:easing,
+		from:from,
+		to:to,
+		reversed:reversed,
+		done:function(){
+			done.call(THIS);
+			THIS.removeData('__touring');
+		}
+	}).onAnimation(function(){
+		var pers=this.attr("percentage"),
+			index=reversed ? pers[0] : pers[1],
+			point=this.getPointAtLength(index * length);
+		THIS.attr({
+			transform:"T" + (-bbox.cx + offsetX + point.x) + ',' + (-bbox.cy + offsetY + point.y) + (rotate ? "R"+(point.alpha + angle):"")
+		});
+	});
+	showPath && path.show();
+	return this;
 }
 Raphael.st.tour=function(setOptions){
 	this.forEach(function(ele){
 		ele.tour(setOptions);
 	});
+	return this;
 }
+
 //辅助用函数
 Raphael.fn.aux2D = {
 	//2D圆角角形，使用三个点，及圆角半径生成形状，返回对象，对象的属性分别是两个计算圆角用的起止点
