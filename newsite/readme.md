@@ -1,5 +1,10 @@
 # 文件部署方案 2016-04-19
 
++ 整站使用覆盖式发布，全站强制浏览器缓存资源文件，适合中小型网站。
++ 使用PHP+Apache+Mysql，需要安装**Node.js**及**npm**安装**uglifyjs**
++ 页面编写区分需要SEO及非SEO文件，由于angular生成的页面对优化不友好
++ 全局调用jQuery/seajs/angular，某些位置会使用raphael
+
 ## 目录部署
 
 ### 基本原则
