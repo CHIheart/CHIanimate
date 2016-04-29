@@ -89,10 +89,10 @@ class JSUglify2
         $safeOutputFilename = escapeshellarg($outputFilename);
         $optionsString = $this->validateOptions($options);
         $fileNames = implode(' ', array_map('escapeshellarg', $files));
-        $commandString = self::$location . " {$fileNames} --output {$safeOutputFilename} {$optionsString} --mangle  2>&1";
+        $commandString = self::$location . " {$fileNames} --output {$safeOutputFilename} {$optionsString} -m -r '$,require,exports'  2>&1";
         exec($commandString, $output, $returnCode);
         if($returnCode !== 0) {
-            throw new UglifyJs2Exception("Failed to run uglifyjs, something went wrong... command: " . $commandString);
+            throw new UglifyJs2Exception("Failed to run uglifyjs, something went wrong... command: <pre>" . $commandString." </pre>");
         }
         return $output;
     }

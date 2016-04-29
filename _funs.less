@@ -6,21 +6,27 @@
 .bg-c(@color){
 	background-color: @color;
 }
+.bg-c(@rchannel,@gchannel,@bchannel){
+	background-color: rgb(@rchannel, @gchannel, @bchannel);
+}
 .bg-c-a(@rgbacolor){
 	background-color: @rgbacolor;
 }
-.bg-c-a(@color, @alpha){
+.parseRGB(@color){
 	@rchannel : red(@color);
 	@gchannel : green(@color);
 	@bchannel : blue(@color);
 	@rgbacolor : rgba(@rchannel, @gchannel, @bchannel, @alpha);
+}
+.bg-c-a(@color, @alpha){
+	.parseRGB(@color);
 	background-color: @rgbacolor;
 }
+.bg-c-a(@rchannel, @gchannel, @bchannel, @alpha){
+	background-color: rgba(@rchannel, @gchannel, @bchannel, @alpha);
+}
 .bg-c-ie(@color, @alpha){
-	@rchannel : red(@color);
-	@gchannel : green(@color);
-	@bchannel : blue(@color);
-	@rgbacolor : rgba(@rchannel, @gchannel, @bchannel, @alpha);
+	.parseRGB(@color);
 	@argbcolor : argb(@rgbacolor);
 	background-color: transparent\9;
 	filter:~"progid:DXImageTransform.Microsoft.gradient(startColorstr=@{argbcolor},endColorstr=@{argbcolor})\9";
@@ -200,6 +206,10 @@
 .wh(@size){
 	width: @size;
 	height: @size;
+}
+.wh(@w, @h){
+	width: @w;
+	height: @h;
 }
 .whline(@size){
 	width: @size;

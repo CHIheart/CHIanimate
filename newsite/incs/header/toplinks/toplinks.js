@@ -12,7 +12,7 @@ define('toplinks',[],function(require,exports,module){
 	});
 
 	//根据用户登陆状态来判断显示菜单的哪一部分
-	angular.module("TOPLINKS",[])
+	angular.module("TopLinks",[])
 		.controller("CtrlTopLinks",['$scope','$timeout',function($scope,$timeout){
 			function loginOpen(){
 				angular.element(".LOGIN").scope().open();
@@ -38,7 +38,7 @@ define('toplinks',[],function(require,exports,module){
 				},100);
 			}
 		}]);
-	angular.bootstrap(oJQ,['TOPLINKS']);
+	angular.bootstrap(oJQ,['TopLinks']);
 	
 	function show(){
 		oJQ.children().css({

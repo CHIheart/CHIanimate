@@ -1,0 +1,97 @@
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+@import (reference) "../../../srcs/css/_style";
+
+.TOPSEARCH{
+	.w(302px);
+	.fl();
+	.TEXTCONTAINER{
+		.w(100%);
+		.ma();
+		input{
+			.fl();
+			.w(260px);
+			&:focus{
+				~ button{
+					.bd-c(@middleblack);
+					.c(@middleblack);
+				}
+				~ .TOPSEARCHLIST{
+					.block();
+				}
+			}
+		}
+	}
+	button{
+		.fl();
+		.w(42px);
+		.h(40px);
+		.size(20px);
+		.c(white);
+		.bg-c(@pale);
+		.bd(1px,solid,@deepgray);
+		.bd-l(0);
+		.bg-c(white);
+		.c(@lightblack);
+		.c-p();
+		&:hover{
+			.bg-c(@red);
+			.c(white) !important;
+			.bd-c(@red) !important;
+		}
+	}
+}
+.TOPSEARCHLIST{
+	.none();
+	.absolute();
+	.w(260px);
+	.bbox();
+	.bd(1px,solid,@middleblack);
+	.line(40px);
+	.lt(0,39px);
+	.bg-c(white);
+	li:extend(.transSlow){
+		.size(0);
+		.h(40px);
+		.p(0,10px);
+		&:hover{
+			.bg-c(@pale);
+		}
+		samp,span{
+			.inblock();
+			.valign(bottom);
+		}
+		span{
+			.size(14px);
+			.c(@middleblack);
+			.w(70%);
+		}
+		samp{
+			.size();
+			.c(@deepgray);
+			.w(30%);
+			.t-r();
+		}
+		b{
+			.c(@red);
+		}
+	}
+}
+.TOPSEARCHKEYS:extend(.ellipsis){
+	.absolute();
+	.t-r();
+	.p(12px,0);
+	.h(16px);
+	.maxw(200px);
+	.rt(44px,0);
+	a{
+		.inblock();
+		.valign(top);
+		.hline(16px);
+		.p(0,4px);
+		.size();
+		.c(white);
+		.bg-c(@red);
+		.mr(4px);
+	}
+}

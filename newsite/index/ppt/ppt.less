@@ -12,10 +12,13 @@
 		.absolute();
 	}
 	ul{
-		&, & li, & li a{
+		&, li, li a{
 			.full();
 			.l();
 			.block();
+		}
+		li{
+			.bg-p(center);
 		}
 	}
 	.common{
@@ -79,7 +82,7 @@
 				.line(24px);
 				.c(black);
 			}
-			&:hover{
+			&:hover,&.cur{
 				.opacity(1);
 				&:after{
 					.c(@lightblack);

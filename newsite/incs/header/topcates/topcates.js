@@ -4,7 +4,7 @@
  * @date    2016-04-16 15:12:00
  * @version $Id$
  */
-define('topnav',[],function(require,exports,module){
+define('topcates',[],function(require,exports,module){
 	$(".MainCates h3").mouseenter(function() {
 		$(".SubCates").eq($(this).index()).removeClass('hide')
 			.siblings('.SubCates').addClass('hide');
@@ -14,4 +14,4 @@ define('topnav',[],function(require,exports,module){
 	});
 	return ;
 });
-seajs.use('topnav');
+seajs.use('topcates');

@@ -4,7 +4,7 @@ include "uglify.php";
 
 define("WEBROOT_AT_DISK",$_SERVER["DOCUMENT_ROOT"]);
 define("WEBROOT_AT_HOST",'http://'.$_SERVER["HTTP_HOST"]);
-define("DEVELOPING",true);
+define("DEVELOPING",false);
 define("PACKAGE_AT_HOST", "/cache");
 define("TEMPORARY_JS", "/tmp.js");
 
@@ -252,12 +252,15 @@ function locateMedias(&$txtCnt,$urlAbs){
 	$regMedias='/<(?:img|video|audio|embed|source)[^\>]*src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)"/i';
 	$regUrls='/url\([\'\"]?((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+(?:[\?\#][\w\d]+)*)[\'\"]?\)/';
 	$regSuffix='/[\?\#][\w\d]+/i';
+	$regRequire='/require\([\'\"]([\w\d]+(?:\/[\w\d]+)*(?:\.js)?)[\'\"]\)/i';
 	$extName=getExtName($urlAbs);
 	switch ($extName) {
 		case 'js':
-			// $txtCnt=minify($txtCnt);
-			return ;
-		
+			if(DEVELOPING) return ;
+			$reg=$regRequire;
+			$ug=new JSUglify2();
+			break;
+
 		case 'css':
 			$reg=$regUrls;
 			break;
@@ -273,10 +276,20 @@ function locateMedias(&$txtCnt,$urlAbs){
 	preg_match_all($reg, $txtCnt, $aSrcs);
 	$aSrcs=array_unique($aSrcs[1]);
 	foreach ($aSrcs as $urlResRel) {
-		$urlResAbs=calAbsUrl(preg_replace($regSuffix,'',$urlResRel),$urlAbs);
+		if($extName=='js'){
+			$urlResource="/srcs/js/".$urlResRel;
+			$urlResAbs=PACKAGE_AT_HOST.$urlResource;
+			writeFile($urlResAbs, getContent($urlResource));
+			$ug->uglify([WEBROOT_AT_DISK.$urlResource],WEBROOT_AT_DISK.$urlResAbs);
+		}else{
+			$urlResAbs=calAbsUrl(preg_replace($regSuffix,'',$urlResRel),$urlAbs);
+		}
 		$md5_print=@md5_file(WEBROOT_AT_DISK.$urlResAbs);
 		if($md5_print===false) echo "File doesn't exist!!! <s>{$urlResRel}</s> in <em>{$urlAbs}</em>";
-		else $txtCnt=str_replace($urlResRel, WEBROOT_AT_HOST.$urlResAbs.'?'.substr($md5_print, 0,6),$txtCnt);
+		else{
+			$urlResAbs=WEBROOT_AT_HOST.$urlResAbs.'?'.substr($md5_print,0,6);
+			$txtCnt=str_replace($urlResRel, $urlResAbs, $txtCnt);
+		}
 	}
 	$txtCnt=preg_replace('/(href|src)="\/src/i', '$1="'. WEBROOT_AT_HOST .'/src', $txtCnt);
 	return ;

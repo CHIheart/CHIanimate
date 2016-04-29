@@ -31,7 +31,7 @@ $data = array(
 			"other"=>"ng-click=\"logout();\""
 		),
 	),
-	"nav"=>array(
+	"topnav"=>array(
 		array(
 			"href"=>"http://www.baidu.com",
 			"blank"=>"_self",
@@ -170,6 +170,23 @@ $data = array(
 			"alt"=>"用于SEO的img的alt属性",
 			"title"=>"图片2"
 		),
+	),
+	"searchKeys"=>array(
+		array(
+			"name"=>"空调格",
+			"title"=>"馨车仔空调过滤器",
+			"href"=>"#"
+		),
+		array(
+			"name"=>"云镜",
+			"title"=>"畅车仔多功能云镜",
+			"href"=>"#"
+		),
+		array(
+			"name"=>"高级机油",
+			"title"=>"劲车仔高级汽车润滑油",
+			"href"=>"#"
+		)
 	)
 );
 

@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="topsearch.css">
+<form action="" class="TOPSEARCH" ng-controller="CtrlTopSearch">
+	<div class="TEXTCONTAINER">
+		<input ng-model="searchkey" name="searchkey" id="searchkey" class="ng-untouched TEXTS" ng-class="judge('searchkey');">
+		<label for="searchkey" class="LABELS">关键字</label>
+		<button class="transSlow"><i class="lcz lcz-magnifier"></i></button>
+		<ul class="TOPSEARCHLIST">
+			<li><a href="#"><span>搜索关键字</span><samp>统计数量</samp></a></li>
+			<li><a href="#"><span>搜索关键字</span><samp>统计数量</samp></a></li>
+			<li><a href="#"><span>搜索关键字</span><samp>统计数量</samp></a></li>
+			<li><a href="#"><span>搜索关键字</span><samp>统计数量</samp></a></li>
+			<li><a href="#"><span>搜索关键字</span><samp>统计数量</samp></a></li>
+		</ul>
+		<div class="TOPSEARCHKEYS">
+			<!-- include src="topsearchKey.html" variable="$aData['searchKeys']" repeats="-1" -->
+		</div>
+	</div>
+</form>
+<script src="topsearch.js"></script>
