@@ -145,10 +145,10 @@
 
 
 //效果，一些杂七杂八的效果
-//低端IE8-也用的透明
+//低端IE8-用的透明
 .alpha(@num){
-	.opacity(@num / 100);
-	filter: ~"alpha(opacity=@{num})\9";
+	@n : @num * 100;
+	filter: ~"alpha(opacity=@{n})";
 }
 //IE9+及四大浏览器的透明
 .opacity(@float){
