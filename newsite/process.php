@@ -4,7 +4,7 @@ include "uglify.php";
 
 define("WEBROOT_AT_DISK",$_SERVER["DOCUMENT_ROOT"]);
 define("WEBROOT_AT_HOST",'http://'.$_SERVER["HTTP_HOST"]);
-define("DEVELOPING",false);
+define("DEVELOPING",true);
 define("PACKAGE_AT_HOST", "/cache");
 define("TEMPORARY_JS", "/tmp.js");
 

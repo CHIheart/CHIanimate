@@ -58,6 +58,7 @@
 			.bg-c(@pale);
 		}
 		samp,span{
+			&:extend(.ellipsis);
 			.inblock();
 			.valign(bottom);
 		}
@@ -84,7 +85,7 @@
 	.h(16px);
 	.maxw(200px);
 	.rt(44px,0);
-	a{
+	a:extend(.transSlow){
 		.inblock();
 		.valign(top);
 		.hline(16px);
@@ -93,5 +94,14 @@
 		.c(white);
 		.bg-c(@red);
 		.mr(4px);
+		&:hover{
+			.bg-c(darken(@red,20%));
+		}
+		b{
+			.c(@red);
+		}
+	}
+	.ng-filled ~ &{
+		.none();
 	}
 }
