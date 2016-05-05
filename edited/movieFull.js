@@ -200,7 +200,7 @@ define(function(require,exports,module){
 			var oJQindices = $(oControllers.indices);
 			oJQindices.eq(0).addClass('cur');
 			oJQindices.click(function() {
-				oResult.show($(this).index(oControllers.indices));
+				oResult.show($(oControllers.indices).index(this));
 			});
 		}
 		if (FIND(oControllers.prev)) $(oControllers.prev).click(oResult.prev);
