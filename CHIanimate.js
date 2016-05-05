@@ -186,6 +186,7 @@
 				var delta = oThisOption.delta || 0;
 				if (delta instanceof Function) delta = delta.call(oMe, indexMe);
 				else delta *= delta > 0 ? indexMe : (indexMe - niBasicInsideLock + 1);
+				//使用对象作为次参的执行方法
 				if (bObjAttrs) {
 					var oThisAttrs = {};
 					for (var n in oAttrs_sAction) { //计算独立属性集合
@@ -201,7 +202,13 @@
 						});
 						oMe.animate(Animation.delay(delta + delay));
 					}
-				} else $(oMe).delay(delta + delay)[oAttrs_sAction](oThisOption);
+				}
+				//使用字符串方法名作为次参，JQ可以直接执行
+				else if(isJQ) $(oMe).delay(delta + delay)[oAttrs_sAction](oThisOption);
+				else{
+					oThisOption.delay = delta + delay;
+					oMe[oAttrs_sAction](oThisOption);
+				}
 			});
 			return oResult;
 		}
