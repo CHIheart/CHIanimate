@@ -248,7 +248,7 @@ Raphael.fn.bubble = function(angle, width, height, corner, popup) {
 使用本命令之后，可以拥有自定义属性 percentage:[from,to]
 指的是本路径的百分量子路径，from及to都是0-1之间的数字
 setOptions，配置参数集合对象，可以使用的键名有
-from,to,duration,easing,done,reversed,erased,
+from,to,duration,easing,done,reversed,erased,delay
 erased，默认为false，如果为true则为路径消失效果
 */
 Raphael.el.draw=function(setOptions){
@@ -260,7 +260,8 @@ Raphael.el.draw=function(setOptions){
 		easing=setOptions.easing ? setOptions.easing : 'swing',
 		done=$.isFunction(setOptions.done) ? setOptions.done : $.noop,
 		reversed=setOptions.reversed ? true : false,
-		erased=setOptions.erased ? true : false
+		erased=setOptions.erased ? true : false,
+		delay=!isNaN(setOptions.delay) ? setOptions.delay *1 : 0
 		;
 	var paper=this.data("__drawing",true).paper,primary,terminal;
 	if(!('percentage' in paper.ca)) 
@@ -285,11 +286,12 @@ Raphael.el.draw=function(setOptions){
 		reversed && (primary=[1,1],terminal=[1,0],true)
 		|| (primary=[0,0],terminal=[0,1])
 	);
-	return this.attr('percentage',primary)
-		.animate({'percentage':terminal},duration,easing,function(){
+	var animation=Raphael.animation({'percentage':terminal},duration,easing,function(){
 			done.call(this);
 			this.removeData('__drawing');
 		});
+	return this.attr('percentage',primary)
+		.animate(animation.delay(delay));
 }
 Raphael.st.draw=function(setOptions){
 	this.forEach(function(ele){
@@ -312,6 +314,7 @@ setOptions，参数配置集合对象，可以使用的键名有
 	offsetY，元素的纵向偏移，同上
 	angle，元素的起始转角，默认为0，可以与路径起始点对齐
 	show，是否显示路径，默认为false，如果为true的话会边走边显示路径
+	delay，延迟时间，默认为0
 */
 Raphael.el.tour=function(setOptions){
 	if(!setOptions.path)return false;
@@ -330,6 +333,7 @@ Raphael.el.tour=function(setOptions){
 		angle=!isNaN(setOptions.angle) ? setOptions.angle*1 : 0,
 		easing=setOptions.easing ? setOptions.easing : 'swing',
 		done=$.isFunction(setOptions.done) ? setOptions.done : $.noop,
+		delay=!isNaN(setOptions.delay) ? setOptions.delay*1 : 0,
 		rotate=setOptions.rotate ? true : false,
 		showPath=setOptions.show ? true : false,
 		THIS=this.data("__touring",true),
@@ -344,6 +348,7 @@ Raphael.el.tour=function(setOptions){
 		from:from,
 		to:to,
 		reversed:reversed,
+		delay:delay,
 		done:function(){
 			done.call(THIS);
 			THIS.removeData('__touring');
@@ -365,6 +370,7 @@ Raphael.st.tour=function(setOptions){
 	});
 	return this;
 }
+
 
 //辅助用函数
 Raphael.fn.aux2D = {
@@ -474,6 +480,7 @@ oOptions，配置参数集合对象，可以使用的属性有
 	easing，默认为linear
 	offsetX,offsetY，闪现内容的偏移，默认都为0
 	done，闪现完成时的回调函数
+	delay，延时毫秒数，默认为0
 */
 Raphael.el.twinkle = function(oOptions) {
 	if (this.type != 'path') return false;
@@ -483,7 +490,8 @@ Raphael.el.twinkle = function(oOptions) {
 		duration = isPosInt(oOptions.duration) ? oOptions.duration : 300,
 		easing = oOptions.easing ? oOptions.easing : 'linear',
 		offsetX = isNaN(oOptions.offsetX) ? 0 : oOptions.offsetX,
-		offsetY = isNaN(oOptions.offsetY) ? 0 : oOptions.offsetY;
+		offsetY = isNaN(oOptions.offsetY) ? 0 : oOptions.offsetY,
+		delay = isNaN(oOptions.delay) ? 0 : oOptions.delay;
 	var oCopy = this.clone(),
 		attrOut = {
 			opacity: 0,
@@ -492,12 +500,13 @@ Raphael.el.twinkle = function(oOptions) {
 		attrIn = {
 			opacity: 1,
 			transform: 'T0,0S1'
-		};
-	oCopy.attr(fadeOut ? attrIn : attrOut).animate((fadeOut ? attrOut : attrIn), duration, easing, function() {
-		if (isFun(oOptions.done)) oOptions.done();
-		oCopy.remove();
-		oCopy = null;
-	});
+		},
+		animation=Raphael.animation((fadeOut ? attrOut : attrIn), duration, easing, function() {
+			if (isFun(oOptions.done)) oOptions.done();
+			oCopy.remove();
+			oCopy = null;
+		});
+	oCopy.attr(fadeOut ? attrIn : attrOut).animate(animation.delay(delay));
 	return this;
 }
 Raphael.st.twinkle = function(oOptions) {
