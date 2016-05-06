@@ -1,4 +1,37 @@
-/**
+<!--Written by PROCESS.PHP at the time of 2016-05-04 14:10:42-->
+<style>.LOGIN{background-color:#fff;width:600px;height:350px;margin-left:auto;margin-right:auto;overflow:hidden}.LOGIN button i.lcz{font-size:20px;position:relative;left:-2px}.LOGIN button i.lcz-heart{top:3px}.LOGIN button i.lcz-home2{top:2px}.LOGIN>*{float:left}.LOGIN .pic{margin:30px 20px 30px 10px}.LOGIN form,.LOGIN h6{width:280px}.LOGIN h6{font-size:24px;text-align:center;margin:50px 0 20px}.LOGIN .TEXTCONTAINER{margin:20px 16px}.LOGIN .TEXTS{width:100%}.LOGIN .BTNCONTAINER{margin-top:30px;font-size:0}.LOGIN .button-red{margin-right:8px}</style><!-- 即时登陆插件 -->
+
+<table class="FullScreenPlugin">
+	<tbody>
+		<tr>
+			<td>
+				<div class="LOGIN" ng-controller="CtrlLogin">
+					<div class="pic"><img src="http://www.new.com/srcs/images/elephant.png?813b46" alt=""></div>
+					<h6>登陆乐车仔</h6>
+					<form novalidate name="LoginForm" id="LoginForm">
+						<div class="TEXTCONTAINER">
+							<input ng-model="passport" name="passport" id="passport" ng-required="true" ng-pattern="/^[\w\d][\w\d\_\-]*(\@([\w\d][\w\d\-\_]+\.)+\w{2,})?$/i" class="ng-untouched TEXTS EMAILS" ng-class="judge('passport');" ng-focus="reference=true;" ng-value="123123">
+							<label for="passport" class="LABELS">账号/手机/邮箱</label>
+							<ul class="EMAILS" ng-show="hasAt() && reference;">
+								<!-- <li ng-repeat="host in hosts | filter : afterAt()" ng-click="setEmail($index);">{{beforeAt()}}@{{host}}</li> -->
+								<li ng-repeat="host in hosts" ng-mouseenter="setEmail2($index);" ng-click="drop2();">{{beforeAt()}}@{{host}}</li>
+							</ul>
+						</div>
+						<div class="TEXTCONTAINER">
+							<input ng-model="password" name="password" id="password" ng-required="true" ng-pattern="/^[\w\W]{6,}$/i" class="ng-untouched TEXTS" ng-class="judge('password');">
+							<label for="password" class="LABELS">密码</label>
+						</div>
+						<div class="BTNCONTAINER">
+							<button class="button button-large button-red" ng-click="login();" ng-disabled="LoginForm.passport.$invalid || LoginForm.password.$invalid || LoginForm.$invalid"><i class="lcz lcz-heart"></i>登陆</button>
+							<button class="button button-large button-gray" ng-click="close();"><i class="lcz lcz-home2"></i>取消</button>
+						</div>
+					</form>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<script>/**
  * 登陆插件，登陆成功后会局部刷新页面
  */
 
@@ -6,8 +39,9 @@ define('LOGIN',function(require,exports,module){
 	var LOGIN=$(".LOGIN"),
 		container=LOGIN.closest('.FullScreenPlugin'),
 		ALERT,ALERTCLOSE;
-	angular.module('Login',[])
-	.controller('CtrlLogin',['$scope','$timeout',function($scope,$timeout){
+	angular.module('Login',['Winlit'])
+	.controller('CtrlLogin',['$scope','$timeout','Winlit',function($scope,$timeout,Winlit){
+		console.log(Winlit)
         $scope.judge=function(name){
             return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
         }
@@ -116,4 +150,4 @@ define('LOGIN',function(require,exports,module){
 	return ;
 });
 
-seajs.use('LOGIN');
+seajs.use('LOGIN');</script>

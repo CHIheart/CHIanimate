@@ -1,9 +1,9 @@
-//Written by PROCESS.PHP at the time of 2016-05-03 17:54:53
+//Written by PROCESS.PHP at the time of 2016-05-06 17:45:15
 /**
  * 首页独立JS
  */
 
-define('index',[],function(require,exports,module){
+define('index',function(require,exports,module){
 	return ;
 });
 

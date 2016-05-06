@@ -1,13 +1,13 @@
-//Written by PROCESS.PHP at the time of 2016-05-03 17:54:53
+//Written by PROCESS.PHP at the time of 2016-05-06 17:45:15
 /** 首页头文件碎片使用的js
  */
-define('header/index',[],function(require,exports,module){
+define('header/index',function(require,exports,module){
 })
 seajs.use('header/index');
 /**
  * 顶用户菜单
  */
-define('toplinks',[],function(require,exports,module){
+define('toplinks',function(require,exports,module){
 	//鼠标指向用户菜单时，菜单下滑
 	var oJQ=$(".TOPLINKS").on('mouseenter', '.USERMENU', function(event) {
 		$(this).addClass('on').find('dd ul').stop(true).slideDown();
@@ -58,8 +58,7 @@ seajs.use('toplinks');
 /**
  * 顶购物车的单独应用
  */
-define('topcart',[],function(require,exports,module){
-	var CONFIRM,ALERT;
+define('topcart',function(require,exports,module){
 	angular.module("TopCart",[])
 	.controller('Ctrl_TOPCART',['$scope','$timeout',function($scope,$timeout){
 		//购物车列表
@@ -145,9 +144,9 @@ define('topcart',[],function(require,exports,module){
 			event.preventDefault();
 			var THIS=this,
 			getAlert=function(){
-				var scopeWinlit=angular.element(".WINLIT").scope();
-				CONFIRM=scopeWinlit.confirm;
-				ALERT=scopeWinlit.alert;
+				// var scopeWinlit=angular.element(".WINLIT").scope();
+				// CONFIRM=scopeWinlit.confirm;
+				// ALERT=scopeWinlit.alert;
 			},
 			delAsk=function(){
 				CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
@@ -185,18 +184,19 @@ define('topcart',[],function(require,exports,module){
 					li=cart=delids=null;
 				});
 			};
-			!$(".WINLIT").length ? $.ajax({
-				url: '/ajax/loadPlugin.php',
-				type: 'POST',
-				dataType: 'html',
-				data: {plugin: 'winlit'}
-			})
-			.success(function(data) {
-				$("body").append(data);
-				getAlert();
-				delAsk();
-			})
-			: (!ALERT && getAlert() , delAsk());
+			// !$(".WINLIT").length ? $.ajax({
+			// 	url: '/ajax/loadPlugin.php',
+			// 	type: 'POST',
+			// 	dataType: 'html',
+			// 	data: {plugin: 'winlit'}
+			// })
+			// .success(function(data) {
+			// 	$("body").append(data);
+			// 	getAlert();
+			// 	delAsk();
+			// })
+			// : (!ALERT && getAlert() , delAsk());
+			delAsk()
 			
 			$scope.close();
 		});
@@ -210,7 +210,7 @@ seajs.use('topcart');
  * @date    2016-04-16 15:12:00
  * @version $Id$
  */
-define('topcates',[],function(require,exports,module){
+define('topcates',function(require,exports,module){
 	$(".MainCates h3").mouseenter(function() {
 		$(".SubCates").eq($(this).index()).removeClass('hide')
 			.siblings('.SubCates').addClass('hide');
@@ -222,14 +222,15 @@ define('topcates',[],function(require,exports,module){
 });
 seajs.use('topcates');
 /**
- * 顶搜索
+ * 顶搜索，需要注入angular-sanitize
  * @authors Your Name (you@example.org)
  * @date    2016-04-25 10:23:27
  * @version $Id$
  */
 
-define('topsearch',[],function(require,exports,module){
-	angular.module('TopSearch',[])
+define('topsearch',function(require,exports,module){
+    var sLastKey='';
+	angular.module('TopSearch',['ngSanitize'])
 	.controller('CtrlTopSearch',['$scope','$timeout',function($scope,$timeout){
         $scope.judge=function(name){
             return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
@@ -240,19 +241,48 @@ define('topsearch',[],function(require,exports,module){
             dataType: 'json',
             data: {param1: 'value1'},
         })
-        .success(function(datas) {
-            $scope.keywords=datas;
-            $scope.$apply();
+        .success(function(data) {
+            if(data.result){
+                $scope.keywords=data.keys;
+                $scope.$apply();
+            }else{
+
+            }
         });
 	}])
     .filter('fltTopSearch',function(){
         return function(aKeys,sKey,bRemain){
-            if(!sKey) return aKeys;
-            var output=[];
+            if(sKey) var output=[];
             angular.forEach(aKeys, function(val,key){
-                if(val.name.indexOf(sKey) > 0) output.push(val);
+                val.name=val.name.replace(/\<\/?b\>/ig,'');
+                if(sKey) if(val.name.indexOf(sKey) >= 0){
+                    val.name=val.name.replace(sKey,'<b>'+sKey+'</b>');
+                    output.push(val);
+                }
             });
-            if(output.length==0){}
+            if(!sKey) return aKeys;
+            if(output.length==0 && sKey!=sLastKey){
+                sLastKey=sKey;
+                $.ajax({
+                    url: '/ajax/header/getTopKeys',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {key: sKey},
+                })
+                .success(function(data) {
+                    if(data.result){
+                        var scope=angular.element(".TOPSEARCH").scope(),
+                            newkeys=data.keys;
+                        outer:for(var i=0;i<newkeys.length;i++){
+                            for(var j=0;j<aKeys.length;j++){
+                                if(aKeys[j].name==newkeys[i].name) break outer;
+                            }
+                            aKeys.push(newkeys[i]);
+                        }
+                        scope.$apply();
+                    }
+                });
+            }
             return output;
         }
     });

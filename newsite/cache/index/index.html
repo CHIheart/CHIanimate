@@ -1,10 +1,9 @@
-<!--Written by PROCESS.PHP at the time of 2016-05-03 17:54:53-->
+<!--Written by PROCESS.PHP at the time of 2016-05-06 17:45:15-->
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
 <!-- include beginning src="/incs/always.html" --><!-- 通用包含内容 -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<head>
+<meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>{$title}</title>
@@ -21,11 +20,42 @@ document.execCommand("stop");
 </script>
 <![endif]-->
 <script src="http://www.new.com/srcs/js/jq1.10.2_sea2.3.0_angular1.2.16.js"></script>
-<!-- include ending src="/incs/always.html" -->
-<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates_topnav_topsearch.css?5cf776">
-<link rel="stylesheet" href="http://www.new.com/cache/index/ppt/ppt.css?b23524"></head>
+<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates_topnav_topsearch.css?9ca4f9">
+<link rel="stylesheet" href="http://www.new.com/cache/incs/winlit/winlit.css?7f0d34">
+<link rel="stylesheet" href="http://www.new.com/cache/index/ppt/ppt.css?1995c6"></head>
+<!-- include beginning src="/incs/winlit/winlit.html" --><!-- 警告窗或询问窗 -->
+
+<table class="FullScreenPlugin">
+	<tbody>
+		<tr>
+			<td>
+				<dl class="WINLIT" ng-controller="CtrlWinlit">
+					<dt>
+						<strong ng-bind="title"></strong>
+						<q ng-click="close();">&times;</q>
+					</dt>
+					<dd>
+						<i class="lcz emotion lcz-{{emotion}}"></i>
+						<div class="tips" ng-bind="content"></div>
+						<div class="btns" ng-if="mode=='ALERT'">
+							<button class="button button-gray button-middle" ng-click="close();">关闭</button>
+						</div>
+						<div class="btns" ng-if="mode=='CONFIRM'">
+							<button class="button button-red button-middle" ng-click="confirm();">确定</button>
+							<button class="button button-white button-middle" ng-click="cancel();">取消</button>
+						</div>
+						<!-- <div class="clearfix"><img src="http://www.new.com/srcs/images/logo.png?0b2084" height="62" width="62" alt=""></div> -->
+					</dd>
+				</dl>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- include ending src="/incs/winlit/winlit.html" -->
+
 <!--[if IE 9]><body class="IE9"><![endif]-->
 <!--[if IE 8]><body class="IE8"><![endif]-->
+<!-- include ending src="/incs/always.html" -->
 <body>
 <!-- include beginning src="/incs/header/index/index.html" --><!-- 首页使用头文件碎片 -->
 
@@ -114,7 +144,7 @@ document.execCommand("stop");
 		<button class="transSlow"><i class="lcz lcz-magnifier"></i></button>
 		<ul class="TOPSEARCHLIST">
 			<li ng-repeat="key in keywords | fltTopSearch:searchkey track by $index">
-				<a href="{{key.href}}" title="{{key.title}}" ><span>{{key.name}}</span><samp>共{{key.count}}件</samp></a>
+				<a href="{{key.href}}" title="{{key.title}}" ><span ng-bind-html="key.name"></span><samp>共{{key.count}}件</samp></a>
 			</li>
 		</ul>
 		<div class="TOPSEARCHKEYS">
@@ -122,6 +152,7 @@ document.execCommand("stop");
 		</div>
 	</div>
 </form>
+<script src="http://www.new.com/srcs/js/angular-sanitize.js"></script>
 <!-- include ending src="/incs/header/topsearch/topsearch.html" -->
 </div>
 
@@ -146,6 +177,7 @@ document.execCommand("stop");
 <!-- include ending src="/index/ppt/ppt.html" -->
 
 
-<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates_topsearch.js?c2f0f7"></script>
-<script src="http://www.new.com/cache/index/index_ppt.js?33f62a"></script></body>
+<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates_topsearch.js?9aee22"></script>
+<script src="http://www.new.com/cache/incs/winlit/winlit.js?cb0ffd"></script>
+<script src="http://www.new.com/cache/index/index_ppt.js?276481"></script></body>
 </html>

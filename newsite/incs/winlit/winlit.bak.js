@@ -1,6 +1,5 @@
 /**
  * 小提示窗
- * 全局应用，使用ALERT与CONFIRM分别调用
  */
 
 define('WINLIT',function(require,exports,module){
@@ -22,35 +21,37 @@ define('WINLIT',function(require,exports,module){
 		}
 		function setFuns(onclose,onconfirm,oncancel){
 			$timeout(function(){
-				$scope.confirm=angular.isFunction(onconfirm) ? onconfirm : close;
-				$scope.cancel=angular.isFunction(oncancel) ? oncancel : close;
-				$scope.close=angular.isFunction(onclose) ? onclose : close;
+				$scope.confirm=$.isFunction(onconfirm) ? onconfirm : close;
+				$scope.cancel=$.isFunction(oncancel) ? oncancel : close;
+				$scope.close=$.isFunction(onclose) ? onclose : close;
 			});
 		}
-		function open(delay){
+		$scope.open=function(delay){
 			(!delay || isNaN(delay)) && (delay=0);
 			others=$(".FullScreenPlugin").not(container).fadeOut();
 			container.delay(delay).fadeIn();
+		}
+		$scope.close=close;
+		$scope.confirm=close;
+		$scope.cancel=close;
+
+		$scope.alert=function(title,content,emotion,onclose){
+			$scope.mode='ALERT';
+			setWords(title,content,emotion);
+			setFuns(onclose);
+			$scope.open(100);
+		}
+		$scope.confirm=function(title,content,emotion,onconfirm,oncancel,onclose){
+			$scope.mode='CONFIRM';
+			setWords(title,content,emotion);
+			setFuns(onclose,onconfirm,oncancel);
+			$scope.open(100);
 		}
 		//goLast，如果当前小窗是最终操作，则关闭它时，不打开前导窗口（即在打开它之前，显示的那些窗口）
 		function close(delay,goLast){
 			(!delay || isNaN(delay)) && (delay=0);
 			container.delay(delay).fadeOut();
 			if(goLast && others) others.fadeIn(),others=null;
-		}
-		$scope.close=$scope.confirm=$scope.cancel=close;
-
-		window.ALERT=function(title,content,emotion,onclose){
-			$scope.mode='ALERT';
-			setWords(title,content,emotion);
-			setFuns(onclose);
-			open(100);
-		}
-		window.CONFIRM=function(title,content,emotion,onconfirm,oncancel,onclose){
-			$scope.mode='CONFIRM';
-			setWords(title,content,emotion);
-			setFuns(onclose,onconfirm,oncancel);
-			open(100);
 		}
 	}]);
 	angular.bootstrap(WINLIT, ['Winlit']);

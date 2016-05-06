@@ -6,7 +6,7 @@
 		<button class="transSlow"><i class="lcz lcz-magnifier"></i></button>
 		<ul class="TOPSEARCHLIST">
 			<li ng-repeat="key in keywords | fltTopSearch:searchkey track by $index">
-				<a href="{{key.href}}" title="{{key.title}}" ><span>{{key.name}}</span><samp>共{{key.count}}件</samp></a>
+				<a href="{{key.href}}" title="{{key.title}}" ><span ng-bind-html="key.name"></span><samp>共{{key.count}}件</samp></a>
 			</li>
 		</ul>
 		<div class="TOPSEARCHKEYS">
@@ -14,4 +14,5 @@
 		</div>
 	</div>
 </form>
+<script src="/srcs/js/angular-sanitize.js"></script>
 <script src="topsearch.js"></script>

@@ -1,7 +1,7 @@
 /**
  * 顶用户菜单
  */
-define('toplinks',[],function(require,exports,module){
+define('toplinks',function(require,exports,module){
 	//鼠标指向用户菜单时，菜单下滑
 	var oJQ=$(".TOPLINKS").on('mouseenter', '.USERMENU', function(event) {
 		$(this).addClass('on').find('dd ul').stop(true).slideDown();

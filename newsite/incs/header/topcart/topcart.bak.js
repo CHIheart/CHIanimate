@@ -2,6 +2,7 @@
  * 顶购物车的单独应用
  */
 define('topcart',function(require,exports,module){
+	var CONFIRM,ALERT;
 	angular.module("TopCart",[])
 	.controller('Ctrl_TOPCART',['$scope','$timeout',function($scope,$timeout){
 		//购物车列表
@@ -87,9 +88,9 @@ define('topcart',function(require,exports,module){
 			event.preventDefault();
 			var THIS=this,
 			getAlert=function(){
-				// var scopeWinlit=angular.element(".WINLIT").scope();
-				// CONFIRM=scopeWinlit.confirm;
-				// ALERT=scopeWinlit.alert;
+				var scopeWinlit=angular.element(".WINLIT").scope();
+				CONFIRM=scopeWinlit.confirm;
+				ALERT=scopeWinlit.alert;
 			},
 			delAsk=function(){
 				CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
@@ -127,19 +128,18 @@ define('topcart',function(require,exports,module){
 					li=cart=delids=null;
 				});
 			};
-			// !$(".WINLIT").length ? $.ajax({
-			// 	url: '/ajax/loadPlugin.php',
-			// 	type: 'POST',
-			// 	dataType: 'html',
-			// 	data: {plugin: 'winlit'}
-			// })
-			// .success(function(data) {
-			// 	$("body").append(data);
-			// 	getAlert();
-			// 	delAsk();
-			// })
-			// : (!ALERT && getAlert() , delAsk());
-			delAsk()
+			!$(".WINLIT").length ? $.ajax({
+				url: '/ajax/loadPlugin.php',
+				type: 'POST',
+				dataType: 'html',
+				data: {plugin: 'winlit'}
+			})
+			.success(function(data) {
+				$("body").append(data);
+				getAlert();
+				delAsk();
+			})
+			: (!ALERT && getAlert() , delAsk());
 			
 			$scope.close();
 		});
