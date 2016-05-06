@@ -87,10 +87,11 @@
 				//入场帧可能不在舞台上，先判断节省模式，再判断ready然后入场
 				if (sceneNext.saveAfterOut) sceneNext.on();
 				sceneNext.show();
-				if (sceneNext.readyBeforeIn) sceneNext.ready();
 				//执行入场前事件
 				trigger("before",index);
-				sceneNext.runin(bRewind, nextStart);
+				if (sceneNext.readyBeforeIn) sceneNext.ready(function(){
+					sceneNext.runin(bRewind, nextStart);
+				});
 				//出场帧出场，然后触发入场帧的开始动作，再判断出场帧的节省模式
 				sceneThis.runout(bRewind, function() {
 					nextStart();
