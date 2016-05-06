@@ -4,8 +4,7 @@
 
 define('LOGIN',function(require,exports,module){
 	var LOGIN=$(".LOGIN"),
-		container=LOGIN.closest('.FullScreenPlugin'),
-		ALERT,ALERTCLOSE;
+		container=LOGIN.closest('.FullScreenPlugin');
 	angular.module('Login',[])
 	.controller('CtrlLogin',['$scope','$timeout',function($scope,$timeout){
         $scope.judge=function(name){
@@ -39,29 +38,9 @@ define('LOGIN',function(require,exports,module){
 					});
 					$scope.close();
 				}else{
-					var fail=function(){
-						ALERT("登陆失败",data.message,"frown",function(){
-							console.log(ALERTCLOSE);
-							ALERTCLOSE(0,1);
-						});
-					},
-					getAlert=function(){
-						var scopeWinlit=angular.element('.WINLIT').scope();
-						ALERT=scopeWinlit.alert;
-						ALERTCLOSE=scopeWinlit.close;
-					};
-					!$(".WINLIT").length ? $.ajax({
-						url: '/ajax/loadPlugin.php',
-						type: 'POST',
-						dataType: 'html',
-						data: {plugin: 'winlit'},
-					})
-					.done(function(html) {
-						$("body").append(html);
-						getAlert();
-						fail();
-					})
-					: (!ALERT && getAlert() , fail());
+					ALERT("登陆失败",data.message,"frown",function(){
+						ALERT.close(0,1);
+					});
 				}
 			});
 		}

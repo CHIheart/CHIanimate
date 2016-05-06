@@ -1,4 +1,4 @@
-//Written by PROCESS.PHP at the time of 2016-05-06 17:45:15
+//Written by PROCESS.PHP at the time of 2016-05-06 18:06:45
 /**
  * 小提示窗
  * 全局应用，使用ALERT与CONFIRM分别调用
@@ -47,12 +47,14 @@ define('WINLIT',function(require,exports,module){
 			setFuns(onclose);
 			open(100);
 		}
+		window.ALERT.close=close;
 		window.CONFIRM=function(title,content,emotion,onconfirm,oncancel,onclose){
 			$scope.mode='CONFIRM';
 			setWords(title,content,emotion);
 			setFuns(onclose,onconfirm,oncancel);
 			open(100);
 		}
+		window.CONFIRM.close=close;
 	}]);
 	angular.bootstrap(WINLIT, ['Winlit']);
 });

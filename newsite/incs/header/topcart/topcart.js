@@ -86,11 +86,6 @@ define('topcart',function(require,exports,module){
 		$(".TOPCARTINFO").on('click', 'i.lcz-times', function(event) {
 			event.preventDefault();
 			var THIS=this,
-			getAlert=function(){
-				// var scopeWinlit=angular.element(".WINLIT").scope();
-				// CONFIRM=scopeWinlit.confirm;
-				// ALERT=scopeWinlit.alert;
-			},
 			delAsk=function(){
 				CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
 					var li=$(THIS).closest('li'),
@@ -127,18 +122,6 @@ define('topcart',function(require,exports,module){
 					li=cart=delids=null;
 				});
 			};
-			// !$(".WINLIT").length ? $.ajax({
-			// 	url: '/ajax/loadPlugin.php',
-			// 	type: 'POST',
-			// 	dataType: 'html',
-			// 	data: {plugin: 'winlit'}
-			// })
-			// .success(function(data) {
-			// 	$("body").append(data);
-			// 	getAlert();
-			// 	delAsk();
-			// })
-			// : (!ALERT && getAlert() , delAsk());
 			delAsk()
 			
 			$scope.close();

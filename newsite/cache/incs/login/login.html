@@ -1,4 +1,4 @@
-<!--Written by PROCESS.PHP at the time of 2016-05-04 14:10:42-->
+<!--Written by PROCESS.PHP at the time of 2016-05-06 18:06:50-->
 <style>.LOGIN{background-color:#fff;width:600px;height:350px;margin-left:auto;margin-right:auto;overflow:hidden}.LOGIN button i.lcz{font-size:20px;position:relative;left:-2px}.LOGIN button i.lcz-heart{top:3px}.LOGIN button i.lcz-home2{top:2px}.LOGIN>*{float:left}.LOGIN .pic{margin:30px 20px 30px 10px}.LOGIN form,.LOGIN h6{width:280px}.LOGIN h6{font-size:24px;text-align:center;margin:50px 0 20px}.LOGIN .TEXTCONTAINER{margin:20px 16px}.LOGIN .TEXTS{width:100%}.LOGIN .BTNCONTAINER{margin-top:30px;font-size:0}.LOGIN .button-red{margin-right:8px}</style><!-- 即时登陆插件 -->
 
 <table class="FullScreenPlugin">
@@ -37,11 +37,9 @@
 
 define('LOGIN',function(require,exports,module){
 	var LOGIN=$(".LOGIN"),
-		container=LOGIN.closest('.FullScreenPlugin'),
-		ALERT,ALERTCLOSE;
-	angular.module('Login',['Winlit'])
-	.controller('CtrlLogin',['$scope','$timeout','Winlit',function($scope,$timeout,Winlit){
-		console.log(Winlit)
+		container=LOGIN.closest('.FullScreenPlugin');
+	angular.module('Login',[])
+	.controller('CtrlLogin',['$scope','$timeout',function($scope,$timeout){
         $scope.judge=function(name){
             return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
         }
@@ -73,29 +71,9 @@ define('LOGIN',function(require,exports,module){
 					});
 					$scope.close();
 				}else{
-					var fail=function(){
-						ALERT("登陆失败",data.message,"frown",function(){
-							console.log(ALERTCLOSE);
-							ALERTCLOSE(0,1);
-						});
-					},
-					getAlert=function(){
-						var scopeWinlit=angular.element('.WINLIT').scope();
-						ALERT=scopeWinlit.alert;
-						ALERTCLOSE=scopeWinlit.close;
-					};
-					!$(".WINLIT").length ? $.ajax({
-						url: '/ajax/loadPlugin.php',
-						type: 'POST',
-						dataType: 'html',
-						data: {plugin: 'winlit'},
-					})
-					.done(function(html) {
-						$("body").append(html);
-						getAlert();
-						fail();
-					})
-					: (!ALERT && getAlert() , fail());
+					ALERT("登陆失败",data.message,"frown",function(){
+						ALERT.close(0,1);
+					});
 				}
 			});
 		}

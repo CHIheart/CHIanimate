@@ -1,4 +1,4 @@
-//Written by PROCESS.PHP at the time of 2016-05-06 17:45:15
+//Written by PROCESS.PHP at the time of 2016-05-06 18:06:45
 /** 首页头文件碎片使用的js
  */
 define('header/index',function(require,exports,module){
@@ -143,11 +143,6 @@ define('topcart',function(require,exports,module){
 		$(".TOPCARTINFO").on('click', 'i.lcz-times', function(event) {
 			event.preventDefault();
 			var THIS=this,
-			getAlert=function(){
-				// var scopeWinlit=angular.element(".WINLIT").scope();
-				// CONFIRM=scopeWinlit.confirm;
-				// ALERT=scopeWinlit.alert;
-			},
 			delAsk=function(){
 				CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
 					var li=$(THIS).closest('li'),
@@ -184,18 +179,6 @@ define('topcart',function(require,exports,module){
 					li=cart=delids=null;
 				});
 			};
-			// !$(".WINLIT").length ? $.ajax({
-			// 	url: '/ajax/loadPlugin.php',
-			// 	type: 'POST',
-			// 	dataType: 'html',
-			// 	data: {plugin: 'winlit'}
-			// })
-			// .success(function(data) {
-			// 	$("body").append(data);
-			// 	getAlert();
-			// 	delAsk();
-			// })
-			// : (!ALERT && getAlert() , delAsk());
 			delAsk()
 			
 			$scope.close();

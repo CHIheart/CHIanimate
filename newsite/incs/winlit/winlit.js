@@ -46,12 +46,14 @@ define('WINLIT',function(require,exports,module){
 			setFuns(onclose);
 			open(100);
 		}
+		window.ALERT.close=close;
 		window.CONFIRM=function(title,content,emotion,onconfirm,oncancel,onclose){
 			$scope.mode='CONFIRM';
 			setWords(title,content,emotion);
 			setFuns(onclose,onconfirm,oncancel);
 			open(100);
 		}
+		window.CONFIRM.close=close;
 	}]);
 	angular.bootstrap(WINLIT, ['Winlit']);
 });
