@@ -209,7 +209,10 @@ function parseContent($txtCnt,$aData){
 		$sContent=$aIncs[5][$cntIncs];
 		if($sCondition!==''){
 			$bool=eval("return $sCondition;");
-			if(!$bool) $txtCnt=str_replace($sInclude, '', $txtCnt);
+			if(!$bool){
+				$txtCnt=str_replace($sInclude, '', $txtCnt);
+				continue;
+			}
 		}
 		if($sVariable==='') $aVariable=$aData;
 		else{
