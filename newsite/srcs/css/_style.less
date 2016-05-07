@@ -15,14 +15,6 @@ a{
 a img{
 	.bd(0);
 }
-.common{
-	.w(1226px);
-	.ma();
-	.clear();
-}
-.container{
-	.minw(1226px);
-}
 body{
 	&.cover:before{
 		.cnt();
@@ -41,6 +33,13 @@ body{
 input::-ms-clear{
 	.none();
 }
+textarea{
+	.noresize();
+}
+table{
+	border-collapse:collapse;
+	table-layout:fixed;
+}
 /*下边三个占位符一定不能写在一起，不然会失效*/
 :-moz-placeholder{
 	.c(@placeholder);
@@ -54,9 +53,6 @@ input::-ms-clear{
 :focus,:invalid{
 	.out(none);
 }
-textarea{
-	.noresize();
-}
 .clearfix{
 	.clear() !important;
 	.fn() !important;
@@ -68,9 +64,13 @@ textarea{
 	.clear();
 	.fn();
 }
-table{
-	border-collapse:collapse;
-	table-layout:fixed;
+.common:extend(.clearfix all){
+	.w(1226px);
+	.ma();
+	.clear();
+}
+.container:extend(.clearfix all){
+	.minw(1226px);
 }
 ///*IE6 用absolute模拟fixed*/
 //body{

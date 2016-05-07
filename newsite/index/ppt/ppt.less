@@ -92,11 +92,23 @@
 	}
 }
 
-.PPT ol li{
-	.IE8 &{
-		&:after{
-			.indent(3px);
-			.line(26px);
+//IE89兼容
+.PPT{
+	sub,sup{
+		.IE8 &:hover{
+			.bg-c-ie(black,.5);
+		}
+	}
+	ol li{
+		.IE9 &{
+			&:after{
+				.line(26px);
+			}
+		}
+		.IE8 &{
+			&:after:extend(.IE9 .PPT ol li:after){
+				.indent(3px);
+			}
 		}
 	}
 }

@@ -1,0 +1,71 @@
+//明星产品
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
+
+.Hots{
+	.t-c();
+	dd > *:extend(.transSlow){
+		.relative();
+		.fl();
+	}
+	img{
+		.opacity(0);
+		.IE8 &{
+			.alpha(0);
+		}
+	}
+	.large{
+		.bg-c(white);
+		.wh(608px,622px);
+		.mr(2px);
+		.o();
+		ins{
+			.size(14px);
+		}
+		var{
+			.bg-i("/srcs/images/none.jpg");
+		}
+		a > var{
+			.wh(550px);
+			.m(20px,auto,0);
+			.block();
+		}
+		p:extend(.transSlow){
+			.absolute();
+			.full();
+			.l();
+			.t(100%);
+			var{
+				.full();
+			}
+		}
+		&:hover:extend(.shadowLarge){
+			p{
+				.t();
+			}
+		}
+		ins{
+			.decorate();
+			.c(@red);
+		}
+	}
+	.PROLIST{
+		.fr();
+		.w((294px + 14px) * 2);
+		li{
+			.wh(294px,304px);
+			.p(20px);
+			.bbox();
+			.m(0,0,14px,14px);
+			var{
+				.wh(180px);
+				.m(20px,auto,10px);
+			}
+			h3{
+				.hline(30px);
+			}
+		}
+	}
+}

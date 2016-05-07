@@ -1,0 +1,96 @@
+//首页幻灯片
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+
+//四大功能块
+.Funcs{
+	.m(15px,auto);
+	.t-c();
+	> *{
+		.h(195px);
+		.relative();
+		.fl();
+		.o();
+		> *{
+			.absolute();
+			.full();
+			.lt();
+		}
+	}
+	.block{
+		.w(318px);
+		.ml(12px);
+	}
+	h3,h4{
+		.c(white);
+	}
+	h3{
+		.size(16px);
+		.hline(30px);
+		.mt(10px);
+	}
+	h4{
+		.size();
+		.hline(20px);
+	}
+}
+//第一块红
+.First{
+	.w(234px);
+	.mr(2px);
+	.bg-i("new1.jpg");
+	a:extend(.transSlow){
+		.block();
+		.w(50%);
+		.fl();
+		.c(white);
+		&.a11{
+			.pt(35px);
+		}
+		&.a12{
+			.pt(105px);
+		}
+		&:hover{
+			.c(@yellow);
+		}
+	}
+	i.lcz{
+		.block();
+		.size(30px);
+		.mb(4px);
+	}
+}
+//第二块蓝
+.Second{
+	.bg-i("new2.jpg");
+	var{
+		.block();
+		.m(10px,auto,0);
+		.wh(200px,120px);
+	}
+	img{
+		.full();
+	}
+}
+//第三块黄
+.Third{
+	.bg-c(@yellow);
+	ul{
+		.size(0);
+		.mt(15px);
+	}
+	li{
+		.inblock();
+		.wh(100px);
+		.bd(3px,solid,white);
+		.m(0,4px);
+	}
+	img{
+		.full();
+	}
+}
+//第四块车
+.Fourth{
+	.bg-i("new4.jpg");
+}

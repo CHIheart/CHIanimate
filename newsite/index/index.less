@@ -1,0 +1,49 @@
+//首页
+@import (reference) "../srcs/css/_funs";
+@import (reference) "../srcs/css/_theme";
+@import (reference) "../srcs/css/_style";
+@import (reference) "../srcs/css/css.less";
+
+.Main{
+	.mt(20px);
+	> *:extend(.clearfix all){}
+	> dt:extend(.anchors all){
+		.hline(46px);
+		.bd-b(1px,solid,@lightgray);
+		.mb(20px);
+		//标题
+		em{
+			.fl();
+			.c(@deepblack);
+			.size(24px);
+		}
+		//更多及子分类列表
+		.MORE,ul{
+			.fr();
+		}
+		.MORE{
+			.size(14px);
+			> *{
+				.inblock();
+				.valign();
+			}
+			i.lcz{
+				.size(16px);
+			}
+		}
+		//子分类列表项
+		li{
+			.fl();
+			.size(16px);
+			.hline(45px);
+			.mr(1em);
+		}
+		//子分类下划线
+		s{
+			.block();
+			.w(100px);
+			.h(3px);
+			.bg-c(@red);
+		}
+	}
+}

@@ -1,4 +1,4 @@
-<!--Written by PROCESS.PHP at the time of 2016-05-06 18:06:45-->
+<!--Written by PROCESS.PHP at the time of 2016-05-07 18:03:31-->
 <!DOCTYPE html>
 <html>
 <!-- include beginning src="/incs/always.html" --><!-- 通用包含内容 -->
@@ -20,9 +20,9 @@ document.execCommand("stop");
 </script>
 <![endif]-->
 <script src="http://www.new.com/srcs/js/jq1.10.2_sea2.3.0_angular1.2.16.js"></script>
-<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates_topnav_topsearch.css?121840">
-<link rel="stylesheet" href="http://www.new.com/cache/incs/winlit/winlit.css?ea3964">
-<link rel="stylesheet" href="http://www.new.com/cache/index/ppt/ppt.css?277154"></head>
+<link rel="stylesheet" href="http://www.new.com/cache/index/index_ppt_funcs_hots_pushes.css?c074c2">
+<link rel="stylesheet" href="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates_topnav_topsearch.css?7f1801">
+<link rel="stylesheet" href="http://www.new.com/cache/incs/winlit/winlit_prolist.css?0f5059"></head>
 <!-- include beginning src="/incs/winlit/winlit.html" --><!-- 警告窗或询问窗 -->
 
 <table class="FullScreenPlugin">
@@ -57,10 +57,11 @@ document.execCommand("stop");
 <!--[if IE 8]><body class="IE8"><![endif]-->
 <!-- include ending src="/incs/always.html" -->
 <body>
+
 <!-- include beginning src="/incs/header/index/index.html" --><!-- 首页使用头文件碎片 -->
 
 <div class="HEADER container">
-	<div class="common clearfix">
+	<div class="common">
 		<!-- include beginning src="/incs/header/toplinks/toplinks.html" -->
 <div class="anchors TOPLINKS" ng-controller="CtrlTopLinks" ng-init="online={$login};user='{$user}';">
 	<div class="offline links" ng-if="!online;">
@@ -112,7 +113,7 @@ document.execCommand("stop");
 <!-- include ending src="/incs/header/topcart/topcart.html" -->
 	</div>
 </div>
-<div class="TOP common clearfix">
+<div class="TOP common">
 	<!-- include beginning src="/incs/header/topcates/topcates.html" -->
 <div class="LOGO"><img src="http://www.new.com/srcs/images/logo.png?0b2084" alt=""></div>
 <dl class="CATEGORIES">
@@ -158,7 +159,7 @@ document.execCommand("stop");
 
 <!-- include ending src="/incs/header/index/index.html" -->
 <!-- include beginning src="/index/ppt/ppt.html" -->
-<div class="clearfix PPT">
+<div class="PPT container">
 	<ul>
 		<!-- include beginning src="/index/ppt/pptPic.html" variable="$aData['ppt']" repeats="-1" --><li style="background-image:url({$img})"><a href="{$url}" title="{$title}"></a></li>
 <!-- include ending src="/index/ppt/pptPic.html" -->
@@ -175,9 +176,185 @@ document.execCommand("stop");
 	</div>
 </div>
 <!-- include ending src="/index/ppt/ppt.html" -->
+<!-- include beginning src="/index/funcs/funcs.html" variable="$aData['funcs'];" --><!-- 主页大Ban下四个功能块 -->
+
+<div class="Funcs common">
+	<div class="First">
+		<div class="canvas"></div>
+		<div class="content">
+			<a href="{$url_locate}" class="a11"><i class="lcz lcz-map-marker"></i>定位</a>
+			<a href="{$url_package}" class="a12"><i class="lcz lcz-gift"></i>套餐</a>
+		</div>
+	</div>
+	<div class="Second block">
+		<div class="canvas"></div>
+		<a href="{$url_new}" class="content">
+			<h3>新车必备</h3>
+			<h4>足不出户即搞定所有装备</h4>
+			<var><img src="http://www.new.com/index/funcs/new2.png?90b18e" alt=""></var>
+		</a>
+	</div>
+	<div class="Third block">
+		<div class="canvas"></div>
+		<a href="{$url_down}" class="content">
+			<h3>连奖商城</h3>
+			<h4>下载APP，有机会赢保养套餐</h4>
+			<ul>
+				<li><img src="http://www.new.com/srcs/images/code.png?d5bb44" alt=""></li>
+				<li><img src="http://www.new.com/srcs/images/code.png?d5bb44" alt=""></li>
+			</ul>
+		</a>
+	</div>
+	<a href="{$url_video}" class="Fourth block"></a>
+</div>
+<script src="http://www.new.com/srcs/js/raphael2.2.0.js"></script>
+<!-- include ending src="/index/funcs/funcs.html" -->
+<!-- include beginning src="/index/hots/hots.html" variable="$aData['hots'];" --><!-- 明星单品一大块 -->
+
+<dl class="Hots common Main">
+	<dt>
+		<em>明星单品</em>
+		<a href="#" class="MORE">
+			<span>查看全部</span>
+			<i class="lcz lcz-angle-right"></i>
+		</a>
+	</dt>
+	<dd>
+		<!-- include beginning src="/index/hots/large.html" variable="$aData['large'];" --><div class="large"><a href="{$href}" title="{$title}">
+	<var><img data-src="{$image}" alt="{$title}"></var>
+	<ins>{$price}元</ins>
+	<p><var><img data-src="{$photo}" alt="{$title}"></var></p>
+</a></div>
+<!-- include ending src="/index/hots/large.html" -->
+		<!-- include beginning src="/incs/prolist/prolist.html" variable="$aData['list'];" --><!-- 产品列表，在调用的位置放进variable -->
+
+<ul class="PROLIST">
+	<!-- include beginning src="/incs/prolist/pro.html" repeats="-1" --><li>
+	<!-- include beginning src="/incs/prolist/signs.html" condition="isset($aData['signs']);" --><blockquote>
+	<!-- include beginning src="/incs/prolist/sign.html" variable="$aData['signs'];" repeats="-1" --><abbr class="{$type}">{$text}</abbr>
+<!-- include ending src="/incs/prolist/sign.html" -->
+</blockquote><!-- include ending src="/incs/prolist/signs.html" -->
+	<var><a href="{$href}" title="{$title}"><img data-src="{$image}" alt="{$title}"></a></var>
+	<h3><a href="{$href}" title="{$title}">{$name}</a></h3>
+	<div class="prices">
+		<ins>{$price}元</ins>
+		<!-- include beginning src="/incs/prolist/price0.html" condition="isset($aData['price0']);" --><del>{$price0}元</del><!-- include ending src="/incs/prolist/price0.html" -->
+	</div>
+	<!-- include beginning src="/incs/prolist/summary.html" condition="isset($aData['summary']);" --><div class="summary">{$summary}</div>
+<!-- include ending src="/incs/prolist/summary.html" -->
+</li><!-- include ending src="/incs/prolist/pro.html" -->
+</ul>
+<!-- include ending src="/incs/prolist/prolist.html" -->
+	</dd>
+</dl><!-- include ending src="/index/hots/hots.html" -->
+<!-- include beginning src="/index/pushes/pushes.html" --><!-- 推荐产品三大块共用 -->
 
 
-<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates_topsearch.js?167d84"></script>
-<script src="http://www.new.com/cache/incs/winlit/winlit.js?d62ed3"></script>
-<script src="http://www.new.com/cache/index/index_ppt.js?6d2faa"></script></body>
+<dl class="Main Pushes common">
+	<dt>
+		<em>主要分类名</em>
+		<ul>
+			<!-- include beginning src="/index/pushes/subcate.html" variable="$aData['subcates'];" repeats="-1" --><li><a href="{$href}" title="{$title}">{$name}</a></li><!-- include ending src="/index/pushes/subcate.html" -->
+			<s class="clearfix"><!-- 移动下划线 --></s>
+		</ul>
+	</dt>
+	<dd>
+		<div class="left">
+			<!-- include beginning src="/index/pushes/left.html" variable="$aData['left'];" --><a href="{$href}" title="{$title}"><img src="{$image}" alt="{$title}"></a><!-- include ending src="/index/pushes/left.html" -->
+		</div>
+		<div class="mid">
+			<ul class="PROLIST">
+				<!-- include beginning src="/incs/prolist/pro.html" condition="$aData['pros'].length>1;" variable="$aData['pros'];" repeats="2" --><li>
+	<!-- include beginning src="/incs/prolist/signs.html" condition="isset($aData['signs']);" --><blockquote>
+	<!-- include beginning src="/incs/prolist/sign.html" variable="$aData['signs'];" repeats="-1" --><abbr class="{$type}">{$text}</abbr>
+<!-- include ending src="/incs/prolist/sign.html" -->
+</blockquote><!-- include ending src="/incs/prolist/signs.html" -->
+	<var><a href="{$href}" title="{$title}"><img data-src="{$image}" alt="{$title}"></a></var>
+	<h3><a href="{$href}" title="{$title}">{$name}</a></h3>
+	<div class="prices">
+		<ins>{$price}元</ins>
+		<!-- include beginning src="/incs/prolist/price0.html" condition="isset($aData['price0']);" --><del>{$price0}元</del><!-- include ending src="/incs/prolist/price0.html" -->
+	</div>
+	<!-- include beginning src="/incs/prolist/summary.html" condition="isset($aData['summary']);" --><div class="summary">{$summary}</div>
+<!-- include ending src="/incs/prolist/summary.html" -->
+</li><!-- include ending src="/incs/prolist/pro.html" -->
+			</ul>
+		</div>
+		<div class="right">
+			<ul class="PROLIST">
+				<!-- include beginning src="/incs/prolist/pro.html" condition="$aData['pros'].length>2;" variable="$aData['pros'];" repeats="3" --><li>
+	<!-- include beginning src="/incs/prolist/signs.html" condition="isset($aData['signs']);" --><blockquote>
+	<!-- include beginning src="/incs/prolist/sign.html" variable="$aData['signs'];" repeats="-1" --><abbr class="{$type}">{$text}</abbr>
+<!-- include ending src="/incs/prolist/sign.html" -->
+</blockquote><!-- include ending src="/incs/prolist/signs.html" -->
+	<var><a href="{$href}" title="{$title}"><img data-src="{$image}" alt="{$title}"></a></var>
+	<h3><a href="{$href}" title="{$title}">{$name}</a></h3>
+	<div class="prices">
+		<ins>{$price}元</ins>
+		<!-- include beginning src="/incs/prolist/price0.html" condition="isset($aData['price0']);" --><del>{$price0}元</del><!-- include ending src="/incs/prolist/price0.html" -->
+	</div>
+	<!-- include beginning src="/incs/prolist/summary.html" condition="isset($aData['summary']);" --><div class="summary">{$summary}</div>
+<!-- include ending src="/incs/prolist/summary.html" -->
+</li><!-- include ending src="/incs/prolist/pro.html" -->
+				<li>
+					<blockquote>
+						<abbr class="cutoff">打8折</abbr>
+						<abbr class="free">免邮费</abbr>
+					</blockquote>
+					<var><a href="#"><img src="http://www.new.com/srcs/images/pro.png?a0e2fc" alt=""></a></var>
+					<h3><a href="#">产品名称产品名称产品名称产品名称</a></h3>
+					<div class="prices">
+						<ins>1000元</ins>
+						<del>1500元</del>
+					</div>
+				</li>
+				<li>
+					<blockquote>
+						<abbr class="cutoff">打8折</abbr>
+						<abbr class="free">免邮费</abbr>
+					</blockquote>
+					<var><a href="#"><img src="http://www.new.com/srcs/images/pro.png?a0e2fc" alt=""></a></var>
+					<h3><a href="#">产品名称产品名称产品名称产品名称</a></h3>
+					<div class="prices">
+						<ins>1000元</ins>
+						<del>1500元</del>
+					</div>
+				</li>
+				<li>
+					<blockquote>
+						<abbr class="cutoff">打8折</abbr>
+						<abbr class="free">免邮费</abbr>
+					</blockquote>
+					<var><a href="#"><img src="http://www.new.com/srcs/images/pro.png?a0e2fc" alt=""></a></var>
+					<h3><a href="#">产品名称产品名称产品名称产品名称</a></h3>
+					<div class="prices">
+						<ins>1000元</ins>
+						<del>1500元</del>
+					</div>
+				</li>
+				<li class="small">
+					<blockquote>
+						<abbr class="cutoff">打8折</abbr>
+						<abbr class="free">免邮费</abbr>
+					</blockquote>
+					<var><a href="#"><img src="http://www.new.com/srcs/images/pro.png?a0e2fc" alt=""></a></var>
+					<h3><a href="#">产品名称产品名称产品名称产品名称</a></h3>
+					<ins>1000元</ins>
+				</li>
+				<li class="small more"><a href="#">
+					<i class="lcz lcz-arrow-circle-right"></i>
+					<small>查看更多</small>
+					<strong>分类名称</strong>
+				</a></li>
+			</ul>
+		</div>
+	</dd>
+</dl>
+
+<!-- include ending src="/index/pushes/pushes.html" -->
+
+
+<script src="http://www.new.com/cache/incs/header/index/index_toplinks_topcart_topcates_topsearch.js?893a95"></script>
+<script src="http://www.new.com/cache/incs/winlit/winlit_prolist.js?137e89"></script>
+<script src="http://www.new.com/cache/index/index_ppt_funcs_pushes.js?3c0a3f"></script></body>
 </html>
