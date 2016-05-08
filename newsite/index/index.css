@@ -1,7 +1,1 @@
-@charset "UTF-8";
-/**
- * 
- * @authors Your Name (you@example.org)
- * @date    2016-03-12 10:28:43
- * @version $Id$
- */
+.TEXTS.EMAILS~ul.EMAILS li,.TEXTS.EMAILS~ul.EMAILS li:hover{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.Main>*,.common,.container{clear:both!important;float:none!important;zoom:1\9}.Main>:after,.common:after,.container:after{content:'';display:block;clear:both;float:none}.Main>dt a,.Main>dt a:hover,.TEXTS.EMAILS~ul.EMAILS li,.TEXTS.EMAILS~ul.EMAILS li:hover,.anchors a,.anchors a:hover,.button{transition:all linear .2s;-webkit-transition:all linear .2s;-ms-transition:all linear .2s;-moz-transition:all linear .2s;-o-transition:all linear .2s}.TEXTS.ng-empty.ng-untouched:focus+.LABELS,.TEXTS.ng-empty.ng-valid:focus+.LABELS,.TEXTS.ng-filled+.LABELS,.TEXTS.ng-touched.ng-invalid+.LABELS{padding:2px 5px;top:-10px}.Main>dt a{color:#333}.Main>dt a:hover{color:#f03226}.Main{margin-top:20px}.Main>dt{height:46px;line-height:46px;border-bottom:1px solid #e0e0e0;margin-bottom:20px}.Main>dt em{float:left;color:#333;font-size:24px}.Main>dt .MORE,.Main>dt ul{float:right}.Main>dt .MORE{font-size:14px}.Main>dt .MORE>*{display:inline-block;vertical-align:middle}.Main>dt .MORE i.lcz{font-size:16px}.Main>dt li{float:left;font-size:16px;height:45px;line-height:45px;margin-right:1em}.Main>dt s{display:block;width:100px;height:3px;background-color:#f03226}

@@ -1,4 +1,4 @@
-//Written by PROCESS.PHP at the time of 2016-05-06 22:43:37
+//Written by PROCESS.PHP at the time of 2016-05-07 18:03:31
 /**
  * 小提示窗
  * 全局应用，使用ALERT与CONFIRM分别调用
@@ -60,3 +60,25 @@ define('WINLIT',function(require,exports,module){
 });
 
 seajs.use('WINLIT');
+/**
+ * 产品列表，把默认图片换成产品图片
+ * @authors Your Name (you@example.org)
+ * @date    2016-05-07 15:38:51
+ * @version $Id$
+ */
+
+
+
+define('PROLIST',function(require,exports,module){
+	$("[data-src]").css({
+		opacity:0
+	}).each(function(index, el) {
+		$(this).attr("src",$(this).data("src"));
+	}).load(function() {
+		$(this).animate({
+			opacity:1
+		})
+	});
+	return ;
+});
+seajs.use('PROLIST')

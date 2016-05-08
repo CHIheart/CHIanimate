@@ -6,7 +6,10 @@
 @import "_form";
 
 body{
-	overflow: scroll\9;
+	.bg-c(@globalbg);
+	.IE8{
+		.o-s();
+	}
 }
 
 //全屏插件容器
@@ -84,10 +87,12 @@ body{
 }
 
 //普通链接颜色
-.anchors a:extend(.transSlow){
-	.c(@deepblack);
-	&:hover{
-		.c(@red);
+.anchors{
+	a:extend(.transSlow){
+		.c(@deepblack);
+		&:hover{
+			.c(@red);
+		}
 	}
 }
 
@@ -95,3 +100,4 @@ body{
 .shadowLarge{
 	.shadow(3px,3px,3px,rgba(127,127,127,.3));
 }
+
