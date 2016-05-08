@@ -1,4 +1,4 @@
-//Written by PROCESS.PHP at the time of 2016-05-07 18:03:31
+//Written by PROCESS.PHP at the time of 2016-05-08 09:41:25
 /**
  * 小提示窗
  * 全局应用，使用ALERT与CONFIRM分别调用
