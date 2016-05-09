@@ -198,7 +198,7 @@ function packaging($aPaths,$sParPath=''){
 }
 
 function parseContent($txtCnt,$aData){
-	$regIncBlock='/<!-- include beginning src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.html)" *(?:condition="([^\"]+)")? *(?:variable="([^\"]+)")? *(?:repeats="([^\"]+)")? *-->([\s\S]*)<!-- include ending src="\1" -->/i';
+	$regIncBlock='/<!-- include beginning src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.html)" *(?:condition="([^\"]+)")? *(?:variable="([^\"]+)")? *(?:repeats="([^\"]+)")? *-->([\s\S]*?)<!-- include ending src="\1" -->/i';
 	preg_match_all($regIncBlock, $txtCnt, $aIncs);
 	for ($cntIncs=0; $cntIncs < count($aIncs[0]); $cntIncs++) { 
 		$sInclude=$aIncs[0][$cntIncs];
