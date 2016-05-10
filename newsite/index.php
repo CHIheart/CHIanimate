@@ -554,6 +554,16 @@ $data = array(
 			),
 			"url_more"=>"#查看更多"
 		)
+	),
+	"ninesys"=>array(
+		array(
+			"icon"=>"change",
+			"name"=>"变速转向系统",
+			"image"=>"/srcs/images/pro1.png",
+			"href"=>"#链接",
+			"title"=>"优化用关键字"
+
+		)
 	)
 );
 

@@ -7,7 +7,7 @@
 
 //这三种写法都有效
 define('PPT',function(require,exports,module){
-	var CHIppt=require("effects/ppt.js?qeuris");
+	var CHIppt=require("effects/ppt.js");
 	CHIppt(".PPT","ul li",{
 		indices:".PPT ol li",
 		prev:".PPT sub",

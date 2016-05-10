@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/incs/prolist/prolist.css">
 <dl class="Main Pushes common">
 	<dt>
-		<em>主要分类名</em>
+		<em>{$mainname}</em>
 		<ul>
 			<!-- include src="subcate.html" variable="$aData['subcates'];" repeats="-1" -->
 			<s class="clearfix"><!-- 移动下划线 --></s>
@@ -15,62 +15,14 @@
 		</div>
 		<div class="mid">
 			<ul class="PROLIST">
-				<!-- include src="/incs/prolist/pro.html" condition="$aData['pros'].length>1;" variable="$aData['pros'];" repeats="2" -->
+				<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=1;" variable="$aData['pros'];" repeats="2" -->
 			</ul>
 		</div>
 		<div class="right">
 			<ul class="PROLIST">
-				<!-- include src="/incs/prolist/pro.html" condition="$aData['pros'].length>2;" variable="$aData['pros'];" repeats="3" -->
-				<li>
-					<blockquote>
-						<abbr class="cutoff">打8折</abbr>
-						<abbr class="free">免邮费</abbr>
-					</blockquote>
-					<var><a href="#"><img src="/srcs/images/pro.png" alt=""></a></var>
-					<h3><a href="#">产品名称产品名称产品名称产品名称</a></h3>
-					<div class="prices">
-						<ins>1000元</ins>
-						<del>1500元</del>
-					</div>
-				</li>
-				<li>
-					<blockquote>
-						<abbr class="cutoff">打8折</abbr>
-						<abbr class="free">免邮费</abbr>
-					</blockquote>
-					<var><a href="#"><img src="/srcs/images/pro.png" alt=""></a></var>
-					<h3><a href="#">产品名称产品名称产品名称产品名称</a></h3>
-					<div class="prices">
-						<ins>1000元</ins>
-						<del>1500元</del>
-					</div>
-				</li>
-				<li>
-					<blockquote>
-						<abbr class="cutoff">打8折</abbr>
-						<abbr class="free">免邮费</abbr>
-					</blockquote>
-					<var><a href="#"><img src="/srcs/images/pro.png" alt=""></a></var>
-					<h3><a href="#">产品名称产品名称产品名称产品名称</a></h3>
-					<div class="prices">
-						<ins>1000元</ins>
-						<del>1500元</del>
-					</div>
-				</li>
-				<li class="small">
-					<blockquote>
-						<abbr class="cutoff">打8折</abbr>
-						<abbr class="free">免邮费</abbr>
-					</blockquote>
-					<var><a href="#"><img src="/srcs/images/pro.png" alt=""></a></var>
-					<h3><a href="#">产品名称产品名称产品名称产品名称</a></h3>
-					<ins>1000元</ins>
-				</li>
-				<li class="small more"><a href="#">
-					<i class="lcz lcz-arrow-circle-right"></i>
-					<small>查看更多</small>
-					<strong>分类名称</strong>
-				</a></li>
+				<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=2;" variable="array_slice($aData['pros'],2,3);" repeats="3" -->
+				<!-- include src="prosmall.html" condition="count($aData['pros'])>=6" variable="$aData['pros'][5]" -->
+				<!-- include src="more.html" -->
 			</ul>
 		</div>
 	</dd>

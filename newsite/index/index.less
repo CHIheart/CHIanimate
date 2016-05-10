@@ -31,6 +31,9 @@
 				.size(16px);
 			}
 		}
+		ul{
+			.relative();
+		}
 		//子分类列表项
 		li{
 			.fl();
@@ -41,9 +44,40 @@
 		//子分类下划线
 		s{
 			.block();
+			.relative();
+			.l();
 			.w(100px);
 			.h(3px);
 			.bg-c(@red);
+		}
+		sub,sup{
+			&:extend(.transSlow);
+			.fr();
+			.block();
+			.wh(36px,24px);
+			.line(24px);
+			.bd(1px,solid,@middlegray);
+			.size(16px);
+			.c-p();
+			.c(@lightblack);
+			.t-c();
+			&.disabled{
+				.c-n();
+				.c(@pale);
+				.bd-c(@pale);
+				.relative();
+				.z(-1);
+				&:hover{
+					.c(@pale);
+				}
+			}
+			&:hover{
+				.c(@deepblack);
+				.bd-c(@deepgray);
+			}
+		}
+		sub{
+			.mr(-1px);
 		}
 	}
 }
