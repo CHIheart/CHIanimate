@@ -6,8 +6,9 @@
  */
 
 define('packages',function(require,exports,module){
-	$(".Packages label img").click(function(event) {
-		var box=$(this).parent().prev(":checkbox").get(0);
+	if(navigator.userAgent.indexOf('MSIE 8')>0)
+	$(".Packages label").click(function(event) {
+		var box=$(this).prev(":checkbox").get(0);
 		box.checked=!box.checked;
 		$(box).change();
 	});
