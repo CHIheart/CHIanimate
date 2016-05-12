@@ -22,4 +22,14 @@
 		.inblock();
 		.valign();
 	}
+	@colors: green,blue,yellow,red,cyan,orange;
+	@len: length(@colors);
+	.loop(@i : 1) when(@i < @len) {
+		@color : extract(@colors , @i);
+		.@{color}{
+			.bd-t(1px,solid,@@color);
+		}
+		.loop(@i + 1);
+	}
+	.loop();
 }

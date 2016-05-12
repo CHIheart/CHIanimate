@@ -5,15 +5,7 @@
  * @version $Id$
  */
 
-
-
 define('pushes',function(require,exports,module){
-	$(".Pushes dt li").mouseenter(function(event) {
-		$(this).siblings('s').animate({
-			left: $(this).position().left,
-			width: $(this).width()
-		})
-	}).filter(":first-child").mouseenter();
 	return ;
 });
 seajs.use('pushes');

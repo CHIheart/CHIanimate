@@ -1,0 +1,100 @@
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_icons";
+
+//优惠套餐
+.Packages{
+	> dd{
+		.bg-c(white);
+	}
+	img{
+		.full();
+	}
+	.Photo{
+		.wh(740px,400px);
+		.fl();
+		.o();
+	}
+	.Intro{
+		.wh(480px,400px);
+		.fr();
+		.bbox();
+		.p(50px,90px);
+		> *{
+			.block();
+		}
+	}
+	strong{
+		.size(32px);
+		.mb(10px);
+		.c(@middleblack);
+	}
+	p{
+		.size(14px);
+		.c(@lightblack);
+		.line(24px);
+		.h(168px);
+		.o();
+	}
+	ins{
+		.c(@red);
+		.size(14px);
+		.decorate();
+		.mb(20px);
+	}
+	b{
+		.size(2em);
+	}
+	del{
+		.c(@deepgray);
+	}
+	a.button{
+		.fl();
+		.mr(20px);
+	}
+	.Items{
+		.p(20px,20px,20px,0);
+	}
+	input{
+		.none();
+		.bd(@green,1px,solid);
+		&:checked,[checked="checked"]{
+			.bd-c(@red);
+			+ label{
+				.bd-c(@lightblack);
+				i{
+					.bd-c(@lightblack);
+					&:before:extend(.lcz-check:before){}
+				}
+			}
+		}
+		&:first-child + label:before{
+			.none();
+		}
+	}
+	label{
+		.relative();
+		.fl();
+		.mr(20px);
+		.wh(80px);
+		.bd(1px,solid,@lightgray);
+		.c-p();
+		&:before{
+			.cnt('+');
+			.wh(20px,80px);
+			.absolute();
+			.lt(-20px,0);
+			.c(@lightblack);
+			.t-c();
+			.line(80px);
+		}
+		i:extend(.lcz){
+			.cnt(" ");
+			.block();
+			.whline(14px);
+			.bd(1px,solid,@lightgray);
+			.absolute();
+			.rt(-1px,-1px);
+		}
+	}
+}

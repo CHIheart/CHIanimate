@@ -558,12 +558,52 @@ $data = array(
 	"ninesys"=>array(
 		array(
 			"icon"=>"change",
+			"color"=>"green",
 			"name"=>"变速转向系统",
 			"image"=>"/srcs/images/pro1.png",
 			"href"=>"#链接",
 			"title"=>"优化用关键字"
-
-		)
+		),
+		array(
+			"icon"=>"stop",
+			"color"=>"red",
+			"name"=>"刹车系统",
+			"image"=>"/srcs/images/pro2.png",
+			"href"=>"#链接",
+			"title"=>"优化用关键字"
+		),
+		array(
+			"icon"=>"car",
+			"color"=>"cyan",
+			"name"=>"车身保养",
+			"image"=>"/srcs/images/pro.png",
+			"href"=>"#链接",
+			"title"=>"优化用关键字"
+		),
+		array(
+			"icon"=>"recycle",
+			"color"=>"yellow",
+			"name"=>"环境治理系统",
+			"image"=>"/srcs/images/pro3.png",
+			"href"=>"#链接",
+			"title"=>"优化用关键字"
+		),
+		array(
+			"icon"=>"ac",
+			"color"=>"blue",
+			"name"=>"空调系统",
+			"image"=>"/srcs/images/pro4.png",
+			"href"=>"#链接",
+			"title"=>"优化用关键字"
+		),
+		array(
+			"icon"=>"cool",
+			"color"=>"orange",
+			"name"=>"冷却系统",
+			"image"=>"/srcs/images/pro.png",
+			"href"=>"#链接",
+			"title"=>"优化用关键字"
+		),
 	)
 );
 
