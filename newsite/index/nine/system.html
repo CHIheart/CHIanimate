@@ -1,10 +1,10 @@
-<!-- include src="beginning.html" condition="$aData['index']%5===0" -->
+<!-- include src="/incs/quint/beginning.html" condition="$aData['index']%5===0" -->
 <li class="{$color}">
 	<h3>
 		<i class="lcz lcz-sys-{$icon}"></i>
 		{$name}
 	</h3>
-	<var><img src="{$image}" alt="{$title}"></var>
+	<var><img data-src="{$image}" alt="{$title}"></var>
 	<a href="{$href}" target="_blank">进入专区</a>
 </li>
-<!-- include src="ending.html" condition="$aData['index']%5===4" -->
+<!-- include src="/incs/quint/ending.html" condition="$aData['index']%5===4" -->
