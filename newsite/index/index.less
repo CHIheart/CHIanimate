@@ -11,6 +11,10 @@
 		.hline(46px);
 		.bd-b(1px,solid,@lightgray);
 		.mb(20px);
+		&.nobd{
+			.bd-b(0);
+			.mb(10px);
+		}
 		//标题
 		em{
 			.fl();
@@ -55,6 +59,7 @@
 			.fr();
 			.block();
 			.wh(36px,24px);
+			.mt(10px);
 			.line(24px);
 			.bd(1px,solid,@middlegray);
 			.size(16px);
@@ -83,4 +88,17 @@
 			.mr(-1px);
 		}
 	}
+}
+
+.NineSystem,.Recommend{
+	@colors: green,blue,yellow,red,cyan,orange;
+	@len: length(@colors);
+	.loop(@i : 1) when(@i <= @len) {
+		@color : extract(@colors , @i);
+		.@{color}{
+			.bd-t(1px,solid,@@color);
+		}
+		.loop(@i + 1);
+	}
+	.loop();
 }
