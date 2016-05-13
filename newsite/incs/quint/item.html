@@ -1,0 +1,10 @@
+<!-- include src="beginning.html" condition="$aData['index']%5===0" -->
+<li class="{$color}">
+	<var><a href="{$href}" title="{$title}"><img data-src="{$image}" alt="{$title}"></a></var>
+	<h3><a href="{$href}" title="{$title}">{$name}</a></h3>
+	<div class="prices">
+		<ins>{$price}元</ins>
+		<!-- include src="../prolist/price0.html" condition="isset($aData['price0']);" -->
+	</div>
+</li>
+<!-- include src="ending.html" condition="$aData['index']%5===4" -->

@@ -3,10 +3,16 @@
 @import (reference) "../../srcs/css/_style";
 
 .QUINT{
-	.container,ol{
+	&FRAME{
 		.o();
 	}
+	.container,ol{
+		.h(280px);
+		.o();
+	}
+	@w : (234px + 14px) *5;
 	ol{
+		.w(@w);
 		.fl();
 	}
 	li{
