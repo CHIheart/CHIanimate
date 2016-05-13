@@ -5,14 +5,12 @@
 @import "../../incs/quint/quint";
 
 .NineSystem{
-	.o();
-	@w : (234px + 14px) *5;
+	ol{
+		.h(275px);
+	}
 	.container{
 		.h(280px);
 		.o();
-	}
-	ol{
-		.wh(@w,275px);
 	}
 	h3{
 		.size(18px);
@@ -22,14 +20,4 @@
 		.inblock();
 		.valign();
 	}
-	@colors: green,blue,yellow,red,cyan,orange;
-	@len: length(@colors);
-	.loop(@i : 1) when(@i < @len) {
-		@color : extract(@colors , @i);
-		.@{color}{
-			.bd-t(1px,solid,@@color);
-		}
-		.loop(@i + 1);
-	}
-	.loop();
 }
