@@ -1,0 +1,46 @@
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+
+/**
+ * 视频播放插件
+ * @authors Your Name (you@example.org)
+ * @date    2016-05-13 13:31:07
+ * @version $Id$
+ */
+
+.PLAYER{
+	.bg-c(white);
+	.ma();
+	.wh(800px,600px);
+	> dt{
+		.hline(40px);
+		.size(18px);
+		.bg-c(@pale);
+		i.lcz{
+			.size(24px);
+			.fl();
+			.hline(40px);
+			.mr(4px);
+		}
+		em{
+			.fl();
+			.pl(1em);
+			.c(@deepblack);
+		}
+		q:extend(.transSlow){
+			.fr();
+			.c-p();
+			.c(@lightblack);
+			&:hover{
+				.c(@middleblack);
+			}
+		}
+	}
+	> dd{
+		.line(560px);
+		embed,video{
+			.wh(100%,560px);
+		}
+	}
+}
