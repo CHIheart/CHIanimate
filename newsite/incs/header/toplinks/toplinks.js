@@ -14,22 +14,10 @@ define('toplinks',function(require,exports,module){
 	//根据用户登陆状态来判断显示菜单的哪一部分
 	angular.module("TopLinks",[])
 		.controller("CtrlTopLinks",['$scope','$timeout',function($scope,$timeout){
-			function loginOpen(){
-				angular.element(".LOGIN").scope().open();
-			}
 			$scope.login=function(){
-				if(!$(".LOGIN").length)
-					$.ajax({
-						url: '/ajax/loadPlugin.php',
-						type: 'POST',
-						dataType: 'html',
-						data: {plugin: 'login'},
-					})
-					.success(function(data) {
-						$("body").append(data);
-						loginOpen();
-					});
-				else loginOpen();
+				loadPlugin("login",function(){
+					angular.element(".LOGIN").scope().open();
+				});
 			}
 			$scope.logout=function(){
 				$timeout(function(){
