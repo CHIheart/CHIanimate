@@ -169,6 +169,6 @@ define(function(require,exports,module){
 		})
 		.animate({path: reversed ? path_0 : black_terminal},duration,easing,callback);
 	}
-	return 123;
+	return ;
 });
 
