@@ -13,18 +13,19 @@
 		<div class="left">
 			<!-- include src="left.html" variable="$aData['left'];" -->
 		</div>
-		<div class="mid">
-			<ul class="PROLIST">
-				<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=1;" variable="$aData['pros'];" repeats="2" -->
-			</ul>
-		</div>
-		<div class="right">
-			<ul class="PROLIST">
-				<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=2;" variable="array_slice($aData['pros'],2,3);" repeats="3" -->
-				<!-- include src="prosmall.html" condition="count($aData['pros'])>=6" variable="$aData['pros'][5]" -->
-				<!-- include src="more.html" -->
-			</ul>
-		</div>
+		<ul class="PROLIST mid">
+			<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=1;" variable="$aData['pros'];" repeats="2" -->
+		</ul>
+		<ul class="PROLIST right">
+			<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=2;" variable="array_slice($aData['pros'],2,2);" repeats="2" -->
+		</ul>
+		<ul class="PROLIST rest">
+			<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=5;" variable="array_slice($aData['pros'],4,1);" repeats="1" -->
+		</ul>
+		<ul class="PROLIST small">
+			<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=6;" variable="$aData['pros'][5]" -->
+			<!-- include src="more.html" -->
+		</ul>
 	</dd>
 </dl>
 <script src="pushes.js"></script>
