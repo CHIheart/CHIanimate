@@ -96,7 +96,11 @@ function writeCache($urlAbs){
 		array_walk($aJs, function(&$value,$key){
 			$value="<script src=\"{$value}\"></script>";
 		});
-		$txtCnt=str_replace(['</head>','</body>'], [implode(PHP_EOL, $aCss).'</head>',implode(PHP_EOL, $aJs).'</body>'], $txtCnt);
+		$regScriptOthers='/<script src="[^"]+?\.js"><\/script>/i';
+		preg_match_all($regScriptOthers,$txtCnt,$aOthers);
+		$aOthers=$aOthers[0];
+		$txtCnt=str_replace($aOthers, '', $txtCnt);
+  		$txtCnt=str_replace(['</head>','</body>'], [implode(PHP_EOL, $aCss).'</head>',implode(PHP_EOL, $aOthers).implode(PHP_EOL, $aJs).'</body>'], $txtCnt);
 		writeFile(PACKAGE_AT_HOST.$urlAbs, $txtCnt);
 		$urlRootPage='';
 		$aCss=$aJs=[];
