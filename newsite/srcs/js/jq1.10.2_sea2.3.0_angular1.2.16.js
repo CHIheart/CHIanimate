@@ -232,7 +232,3 @@ DOMAssistant:"*.$",Prototype:"$$",YAHOO:"*.util.Selector.query",Sizzle:"*",jQuer
 P=/(:not\()?:(hover|enabled|disabled|focus|checked|target|active|visited|first-line|first-letter)\)?/g,R=/[^\w-]/g,M=/^(INPUT|SELECT|TEXTAREA|BUTTON)$/,L=/^(checkbox|radio)$/,w=6<n?/[\$\^*]=(['"])\1/:null,H=/([(\[+~])\s+/g,I=/\s+([)\]+~])/g,S=/\s+/g,A=/^\s*((?:[\S\s]*\S)?)\s*$/,q=h.getElementsByTagName("BASE"),T=0<q.length?q[0].href:h.location.href;X();Z(m,function(){for(var a in C){var b,d,c=m;if(m[a]){for(b=C[a].replace("*",a).split(".");(d=b.shift())&&(c=c[d]););if("function"==typeof c){y=c;Y();
 break}}}})}})(this);
 
-//'自己编写的lazyload，只对img[data-src]有效
-(function(){var b=$("img[data-src]");$(window).on("scroll load resize",function(g){var c=$(this).scrollTop();b=$.grep(b,function(a,b){var d=$(a).offset().top,e=$(a).outerHeight(),f=$(window).height();return d<=c+f&&d+e>=c?($(a).css("opacity",0).attr("src",$(a).data("src")).load(function(){$(a).animate({opacity:1})}),a.complete&&$(a).animate({opacity:1}),!1):!0})})})();
-//自己编写的调用插件过程
-function loadPlugin(a,b,c){!$.isFunction(b)&&(b=$.noop);!$.isFunction(c)&&(c=$.noop);$("."+a.toUpperCase()).length?b():$.ajax({url:"/ajax/loadPlugin.php",type:"POST",dataType:"html",data:{plugin:a}}).success(function(a){$("body").append(a);b();c()}).fail(function(){console.group("\u8c03\u7528\u63d2\u4ef6"+a+"\u5931\u8d25");console.error(arguments);console.groupEnd()})};
