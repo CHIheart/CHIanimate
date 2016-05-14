@@ -15,16 +15,5 @@ define('PPT',function(require,exports,module){
 	});
 	return ;
 });
-// define('PPT',["effects/ppt.js"],function(require,exports,module){
-// 	var CHIppt=seajs.require("effects/ppt.js");
-// 	console.log(CHIppt);
-// 	return ;
-// });
-// define('PPT',function(require,exports,module){
-// 	seajs.use("effects/ppt.js",function(CHIppt){
-// 		console.log(CHIppt);
-// 	})
-// 	return ;
-// });
 
 seajs.use('PPT');

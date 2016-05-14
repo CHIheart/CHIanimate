@@ -28,7 +28,7 @@ oCallbacks，回调函数列表对象，可以使用的属性有
 	.cur()，返回当前作为标志的子元素索引
 */
 define(function(require,exports,module){
-	return function CHImovie(sJQcontainer, sJQkid, oControllers, oOptions, oCallbacks) {
+	return function (sJQcontainer, sJQkid, oControllers, oOptions, oCallbacks) {
 		function FIND(sJQ) {
 			return sJQ && $(sJQ).size();
 		}
