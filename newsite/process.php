@@ -4,10 +4,13 @@ include "uglify.php";
 
 define("WEBROOT_AT_DISK",$_SERVER["DOCUMENT_ROOT"]);
 define("WEBROOT_AT_HOST",'http://'.$_SERVER["HTTP_HOST"]);
-define("DEVELOPING",true);
+define("DEVELOPING",false);
 define("PACKAGE_AT_HOST", "/cache");
 define("TEMPORARY_JS", "/tmp.js");
 
+function scream($words){
+	echo "<h1>{$words}</h1>";
+}
 function say($words,$color='black'){
 	echo '<blockquote style="color:'.$color.'; background-color:#eee; border:1px solid gray; margin:10px; padding:20px;">'.htmlspecialchars($words).'</blockquote>'.PHP_EOL;
 }
@@ -70,6 +73,7 @@ function writeCache($urlAbs){
 	static $regScript='/<script src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.js)"><\/script>/i';
 	static $regLink='/<link rel="stylesheet" href="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.css)" *\/?>/i';
 	static $regIncInline='/<!-- include src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.html)"[\s\S]*? -->/i';
+	static $regSrc='/(?<=script src=")(\/src[^"]+?)(?=")/i';
 	if($urlRootPage==='') $urlRootPage=$urlAbs;
 	$txtCnt=getContent($urlAbs);
 	if($txtCnt!==false){
@@ -101,6 +105,7 @@ function writeCache($urlAbs){
 		$aOthers=$aOthers[0];
 		$txtCnt=str_replace($aOthers, '', $txtCnt);
   		$txtCnt=str_replace(['</head>','</body>'], [implode(PHP_EOL, $aCss).'</head>',implode(PHP_EOL, $aOthers).implode(PHP_EOL, $aJs).'</body>'], $txtCnt);
+  		$txtCnt=preg_replace($regSrc, WEBROOT_AT_HOST."$1", $txtCnt);
 		writeFile(PACKAGE_AT_HOST.$urlAbs, $txtCnt);
 		$urlRootPage='';
 		$aCss=$aJs=[];
@@ -256,16 +261,17 @@ function parseContent($txtCnt,$aData){
 }
 
 function locateMedias(&$txtCnt,$urlAbs){
-	$regMedias='/<(?:img|video|audio|embed|source)[^\>]*src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)"/i';
-	$regUrls='/url\([\'\"]?((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+(?:[\?\#][\w\d]+)*)[\'\"]?\)/';
-	$regSuffix='/[\?\#][\w\d]+/i';
-	$regRequire='/require\([\'\"]([\w\d]+(?:\/[\w\d]+)*(?:\.js)?)[\'\"]\)/i';
+	static $regMedias='/<(?:img|video|audio|embed|source)[^\>]*src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)"/i';
+	static $regUrls='/url\([\'\"]?((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+(?:[\?\#][\w\d]+)*)[\'\"]?\)/';
+	static $regSuffix='/[\?\#][\w\d]+/i';
+	static $regRequire='/require\([\'\"]([\w\d]+(?:\/[\w\d]+)*(?:\.js)?)[\'\"]\)/i';
+	static $regIcon='/link href="(\/src[^"]+)"/i';
 	$extName=getExtName($urlAbs);
+	$ug=new JSUglify2();
 	switch ($extName) {
 		case 'js':
 			if(DEVELOPING) return ;
 			$reg=$regRequire;
-			$ug=new JSUglify2();
 			break;
 
 		case 'css':
@@ -284,6 +290,7 @@ function locateMedias(&$txtCnt,$urlAbs){
 	$aSrcs=array_unique($aSrcs[1]);
 	foreach ($aSrcs as $urlResRel) {
 		if($extName=='js'){
+			if(!preg_match('/\.js$/i', $urlResRel)) $urlResRel.=".js";
 			$urlResource="/srcs/js/".$urlResRel;
 			$urlResAbs=PACKAGE_AT_HOST.$urlResource;
 			writeFile($urlResAbs, getContent($urlResource));
@@ -298,7 +305,13 @@ function locateMedias(&$txtCnt,$urlAbs){
 			$txtCnt=str_replace($urlResRel, $urlResAbs, $txtCnt);
 		}
 	}
-	$txtCnt=preg_replace('/(href|src)="\/src/i', '$1="'. WEBROOT_AT_HOST .'/src', $txtCnt);
+	preg_match_all($regIcon, $txtCnt, $aIcons);
+	$aIcons=$aIcons[1];
+	foreach ($aIcons as $urlIcon) {
+		$md5_print=@md5_file(WEBROOT_AT_DISK.$urlIcon);
+		$urlIconAbs=WEBROOT_AT_HOST.$urlIcon.'?'.substr($md5_print,0,6);
+		$txtCnt=str_replace($urlIcon, $urlIconAbs, $txtCnt);
+	}
 	return ;
 }
 
