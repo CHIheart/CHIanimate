@@ -682,6 +682,36 @@ $data = array(
 			"image"=>"/index/videos/videos.png",
 			"title"=>"劲车仔高级汽车润滑油"
 		),
+		array(
+			"name"=>"机油瓶",
+			"src"=>"http://www.tudou.com/a/qJtXzLi3iaY/&iid=132813572&resourceId=0_04_05_99/v.swf",
+			"image"=>"/index/videos/videos.png",
+			"title"=>"劲车仔高级汽车润滑油"
+		),
+		array(
+			"name"=>"机油瓶",
+			"src"=>"http://www.tudou.com/a/qJtXzLi3iaY/&iid=132813572&resourceId=0_04_05_99/v.swf",
+			"image"=>"/index/videos/videos.png",
+			"title"=>"劲车仔高级汽车润滑油"
+		),
+		array(
+			"name"=>"机油瓶",
+			"src"=>"http://www.tudou.com/a/qJtXzLi3iaY/&iid=132813572&resourceId=0_04_05_99/v.swf",
+			"image"=>"/index/videos/videos.png",
+			"title"=>"劲车仔高级汽车润滑油"
+		),
+		array(
+			"name"=>"机油瓶",
+			"src"=>"http://www.tudou.com/a/qJtXzLi3iaY/&iid=132813572&resourceId=0_04_05_99/v.swf",
+			"image"=>"/index/videos/videos.png",
+			"title"=>"劲车仔高级汽车润滑油"
+		),
+		array(
+			"name"=>"机油瓶",
+			"src"=>"http://www.tudou.com/a/qJtXzLi3iaY/&iid=132813572&resourceId=0_04_05_99/v.swf",
+			"image"=>"/index/videos/videos.png",
+			"title"=>"劲车仔高级汽车润滑油"
+		),
 	)
 );
 
