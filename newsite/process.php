@@ -52,10 +52,10 @@ function getContent($urlAbs){
 }
 
 function calAbsUrl($urlRel,$urlBase='/'){
-	$regLocalSrc='/((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)/i';
-	$regDS='/(?<=\/)\.\//i';
-	$regDDS='/\/[\w\d]+\/\.\.\//i';
-	$regFileName='/[\w\d]+\.\w+$/i';
+	static $regLocalSrc='/((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)/i';
+	static $regDS='/(?<=\/)\.\//i';
+	static $regDDS='/\/[\w\d]+\/\.\.\//i';
+	static $regFileName='/[\w\d]+\.\w+$/i';
 	if(!preg_match($regLocalSrc, $urlRel) || $urlRel[0]==='/') return $urlRel;
 	if($urlBase[0]!=='/') $urlBase=calAbsUrl($urlBase);
 	$urlBasePath=preg_replace($regFileName, '', $urlBase);
@@ -166,8 +166,8 @@ function getExtName($sFilename){
 function packaging($aPaths,$sParPath=''){
 	static $aFiles=[];
 	$aNames=$aURLs=[];
-	$regNameZip='/_([\w\d]+)\/\1/i';
-	$regExtName='/\.\w+_/i';
+	static $regNameZip='/_([\w\d]+)\/\1/i';
+	static $regExtName='/\.\w+_/i';
 	foreach ($aPaths as $sDir => $sKid) {
 		if(is_array($sKid)) packaging($sKid,$sParPath.'/'.$sDir);
 		else{
@@ -264,13 +264,12 @@ function locateMedias(&$txtCnt,$urlAbs){
 	static $regMedias='/<(?:img|video|audio|embed|source)[^\>]*src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)"/i';
 	static $regUrls='/url\([\'\"]?((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+(?:[\?\#][\w\d]+)*)[\'\"]?\)/';
 	static $regSuffix='/[\?\#][\w\d]+/i';
-	static $regRequire='/require\([\'\"]([\w\d]+(?:\/[\w\d]+)*(?:\.js)?)[\'\"]\)/i';
+	static $regRequire='/require\([\'\"]((?:\.{0,2}\/)*[\w\d]+(?:\/[\w\d]+)*(?:\.js)?)[\'\"]\)/i';
 	static $regIcon='/link href="(\/src[^"]+)"/i';
+	static $regDDS='/^\.{0,2}\//i';
 	$extName=getExtName($urlAbs);
-	$ug=new JSUglify2();
 	switch ($extName) {
 		case 'js':
-			if(DEVELOPING) return ;
 			$reg=$regRequire;
 			break;
 
@@ -288,21 +287,26 @@ function locateMedias(&$txtCnt,$urlAbs){
 	}
 	preg_match_all($reg, $txtCnt, $aSrcs);
 	$aSrcs=array_unique($aSrcs[1]);
-	foreach ($aSrcs as $urlResRel) {
+	foreach ($aSrcs as $urlRes) {
 		if($extName=='js'){
-			if(!preg_match('/\.js$/i', $urlResRel)) $urlResRel.=".js";
-			$urlResource="/srcs/js/".$urlResRel;
+			$urlResRel=$urlRes . (preg_match('/\.js$/i', $urlRes) ? "" : ".js");
+			$urlResource=preg_match($regDDS, $urlResRel) ? calAbsUrl($urlResRel,$urlAbs) : "/srcs/js/".$urlResRel;
 			$urlResAbs=PACKAGE_AT_HOST.$urlResource;
-			writeFile($urlResAbs, getContent($urlResource));
-			$ug->uglify([WEBROOT_AT_DISK.$urlResource],WEBROOT_AT_DISK.$urlResAbs);
+			$txtSubCnt=getContent($urlResource);
+			locateMedias($txtSubCnt, $urlResAbs);
+			writeFile($urlResAbs, $txtSubCnt);
+			if(!DEVELOPING){
+				$ug=new JSUglify2();
+				$ug->uglify([WEBROOT_AT_DISK.$urlResAbs],WEBROOT_AT_DISK.$urlResAbs);
+			}
 		}else{
-			$urlResAbs=calAbsUrl(preg_replace($regSuffix,'',$urlResRel),$urlAbs);
+			$urlResAbs=calAbsUrl(preg_replace($regSuffix,'',$urlRes),$urlAbs);
 		}
 		$md5_print=@md5_file(WEBROOT_AT_DISK.$urlResAbs);
 		if($md5_print===false) echo "File doesn't exist!!! <s>{$urlResRel}</s> in <em>{$urlAbs}</em>";
 		else{
 			$urlResAbs=WEBROOT_AT_HOST.$urlResAbs.'?'.substr($md5_print,0,6);
-			$txtCnt=str_replace($urlResRel, $urlResAbs, $txtCnt);
+			$txtCnt=str_replace($urlRes, $urlResAbs, $txtCnt);
 		}
 	}
 	preg_match_all($regIcon, $txtCnt, $aIcons);

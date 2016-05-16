@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="../select/select.css">
+<div class="ADDRESSES" ng-controller="CtrlAddresses">
+	<dl class="SELECT PROVINCE">
+		<input type="hidden" name="province" id="province">
+		<dt></dt>
+		<dd>
+			<a ng-repeat="province in provinces" data-id="{{province.id}}">{{province.areaname}}</a>
+		</dd>
+	</dl>
+	<dl class="SELECT CITY">
+		<input type="hidden" name="city" id="city">
+		<dt></dt>
+		<dd></dd>
+	</dl>
+	<dl class="SELECT DISTRICT">
+		<input type="hidden" name="district" id="district">
+		<dt></dt>
+		<dd></dd>
+	</dl>
+</div>
+<script src="addresses.js"></script>

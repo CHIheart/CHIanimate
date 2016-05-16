@@ -27,12 +27,20 @@
 		.line(90px);
 		.c(@middleblack);
 	}
+	dd{
+		.none();
+	}
 	&:hover{
 		dt{
 			.c(@red);
 		}
 		.MainCates{
 			.h(520px);
+		}
+	}
+	&:hover,&.on{
+		dd{
+			.block();
 		}
 	}
 }
@@ -97,5 +105,24 @@
 		.wh(60px);
 		.m(10px,10px,0,0);
 		.valign(middle);
+	}
+}
+//在内页中的变化
+.inner{
+	.MainCates{
+		.bg-c(white);
+		.bd(1px,solid,@red);
+		.IE8 &{
+			.bg-c-ie(white,1);
+		}
+		h3 a{
+			.c(@middleblack);
+			&:hover{
+				.c(white);
+			}
+		}
+	}
+	.SubCates{
+		.bd(1px,solid,@red);
 	}
 }

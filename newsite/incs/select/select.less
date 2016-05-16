@@ -1,0 +1,63 @@
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
+
+//自定义下拉列表
+.SELECT{
+	.hline(36px);
+	.size(14px);
+	&.on{
+		.relative();
+		> dd{
+			.block();
+		}
+	}
+	> dt{
+		.bbox();
+		.p(0,30px,0,10px);
+		.c(@middleblack);
+		.bg-c(white);
+		.bd(1px,solid,@lightgray);
+		&:before,&:after{
+			.hline(36px);
+		}
+		.IE8 &:empty{
+			.bd-c(@lightgray);
+		}
+		&:empty:before{
+			.cnt("请选择");
+			.c(@placeholder);
+		}
+		&:after:extend(.lcz,.lcz-angle-down:before){
+			.c(@lightblack);
+			.size(16px);
+			.fr();
+			.mr(-20px);
+			.t-c();
+		}
+	}
+	> dd{
+		.absolute();
+		.none();
+		.lt(0,36px);
+		.bd(1px,solid,@lightgray);
+		.bbox();
+		.bg-c(white);
+		.o-a();
+		.maxh(300px);
+		a:extend(.ellipsis,.transSlow){
+			.block();
+			.hline(30px);
+			.p(0,10px);
+			.size(14px);
+			&:hover{
+				.bg-c(@lightgray);
+			}
+			&.checked,&.cur{
+				.bg-c(@red);
+				.c(white);
+			}
+		}
+	}
+}

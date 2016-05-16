@@ -16,6 +16,8 @@
 //五个大版
 .FORUMS{
 	.t-c();
+	.pt(20px);
+	.bd-t(1px,solid,@lightgray);
 	.bd-b(1px,solid,@lightgray);
 	li{
 		.w(20%);
@@ -46,8 +48,10 @@
 	}
 }
 //底导航
-.NAVIGATE:extend(.FORUMS){
+.NAVIGATE{
 	.p(40px,0);
+	.t-c();
+	.bd-b(1px,solid,@lightgray);
 	li:extend(.FORUMS li){}
 	h3{
 		.size(16px);
