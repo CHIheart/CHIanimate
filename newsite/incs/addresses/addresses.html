@@ -1,21 +1,25 @@
 <link rel="stylesheet" href="../select/select.css">
 <div class="ADDRESSES" ng-controller="CtrlAddresses">
 	<dl class="SELECT PROVINCE">
-		<input type="hidden" name="province" id="province">
-		<dt></dt>
+		<input type="hidden" name="{{prefix}}province" id="{{prefix}}province" ng-value="province.id" ng-model="ids.province">
+		<dt ng-bind="province.areaname" ng-click="open('.PROVINCE')"></dt>
 		<dd>
-			<a ng-repeat="province in provinces" data-id="{{province.id}}">{{province.areaname}}</a>
+			<a ng-repeat="item in provinceArray" data-id="{{item.id}}" ng-class="{selected:province.id==item.id}" ng-click="set('province');">{{item.areaname}}</a>
 		</dd>
 	</dl>
 	<dl class="SELECT CITY">
-		<input type="hidden" name="city" id="city">
-		<dt></dt>
-		<dd></dd>
+		<input type="hidden" name="{{prefix}}city" id="{{prefix}}city" ng-value="city.id" ng-model="ids.city">
+		<dt ng-bind="city.areaname" ng-click="open('.CITY')"></dt>
+		<dd>
+			<a ng-repeat="item in cityArray" data-id="{{item.id}}" ng-class="{selected:city.id==item.id}" ng-click="set('city');">{{item.areaname}}</a>
+		</dd>
 	</dl>
 	<dl class="SELECT DISTRICT">
-		<input type="hidden" name="district" id="district">
-		<dt></dt>
-		<dd></dd>
+		<input type="hidden" name="{{prefix}}district" id="{{prefix}}district" ng-value="district.id" ng-model="ids.district">
+		<dt ng-bind="district.areaname" ng-click="open('.DISTRICT')"></dt>
+		<dd>
+			<a ng-repeat="item in districtArray" data-id="{{item.id}}" ng-class="{selected:district.id==item.id}" ng-click="set('district');">{{item.areaname}}</a>
+		</dd>
 	</dl>
 </div>
 <script src="addresses.js"></script>

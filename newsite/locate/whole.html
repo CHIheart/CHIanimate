@@ -65,5 +65,18 @@
 			</li>
 		</ul>
 	</div>
-	<div class="Right"></div>
+	<div class="Right">
+		<form class="SearchMap" novalidate>
+			<dl class="SELECT SearchWhat">
+				<input type="hidden" id="SearchWhat" ng-value="what.value" ng-model="filters.what">
+				<dt ng-bind="what.name" ng-click="open('.SearchWhat')"></dt>
+				<dd>
+					<a ng-repeat="item in whats" data-id="item.value">{{item.name}}</a>
+				</dd>
+			</dl>
+			<div class="TEXTCONTAINER">
+				<input type="text" name="">
+			</div>
+		</form>
+	</div>
 </div>

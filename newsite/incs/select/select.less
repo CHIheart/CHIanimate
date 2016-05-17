@@ -9,11 +9,12 @@
 	.size(14px);
 	&.on{
 		.relative();
+		> dt:before:extend(.lcz-angle-up:before){}
 		> dd{
 			.block();
 		}
 	}
-	> dt{
+	> dt:extend(.ellipsis){
 		.bbox();
 		.p(0,30px,0,10px);
 		.c(@middleblack);
@@ -25,11 +26,12 @@
 		.IE8 &:empty{
 			.bd-c(@lightgray);
 		}
-		&:empty:before{
+		&:empty:after{
 			.cnt("请选择");
+			.yahei();
 			.c(@placeholder);
 		}
-		&:after:extend(.lcz,.lcz-angle-down:before){
+		&:before:extend(.lcz,.lcz-angle-down:before){
 			.c(@lightblack);
 			.size(16px);
 			.fr();
@@ -40,12 +42,13 @@
 	> dd{
 		.absolute();
 		.none();
-		.lt(0,36px);
+		.lt(0,37px);
 		.bd(1px,solid,@lightgray);
 		.bbox();
 		.bg-c(white);
 		.o-a();
 		.maxh(300px);
+		.w(100%);
 		a:extend(.ellipsis,.transSlow){
 			.block();
 			.hline(30px);
@@ -54,7 +57,7 @@
 			&:hover{
 				.bg-c(@lightgray);
 			}
-			&.checked,&.cur{
+			&.selected{
 				.bg-c(@red);
 				.c(white);
 			}
