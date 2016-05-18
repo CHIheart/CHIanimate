@@ -8,10 +8,11 @@
 define(function(require,exports,module){
 	require("../select/select");
 	var CHINA=require("datas/china");
-	angular.module('Addresses', [])
-		.controller('CtrlAddresses', ['$scope',function ($scope) {
+	// angular.module('Addresses', [])
+	// angular.bootstrap($(".ADDRESSES"), ["Addresses"])
+	return function(module){
+		module.controller('CtrlAddresses', ['$scope','$timeout', function ($scope,$timeout) {
 			$scope.CHINA=CHINA;
-			//默认让省市区都指过来，因为如果过滤条件为空的话，选项会全显示出来
 			var old={id:"000000"};
 			$scope.province=$scope.city=$scope.district=old;
 			$scope.set=function(item){
@@ -24,4 +25,6 @@ define(function(require,exports,module){
 				}
 			}
 		}]);
+	};
 });
+

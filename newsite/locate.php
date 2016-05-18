@@ -189,7 +189,7 @@ $data = array(
 	"services"=>array(
 		array(
 			"type"=>"普通服务",
-			"image"=>"/locate/filters/1.png",
+			"image"=>"/incs/shops/filters/1.png",
 			"items"=>array(
 				array(
 					"title"=>"进行汽车外壳的简单清洗",
@@ -215,7 +215,7 @@ $data = array(
 		),
 		array(
 			"type"=>"高级服务",
-			"image"=>"/locate/filters/2.png",
+			"image"=>"/incs/shops/filters/2.png",
 			"items"=>array(
 				array(
 					"title"=>"改变汽车的原有配置",
