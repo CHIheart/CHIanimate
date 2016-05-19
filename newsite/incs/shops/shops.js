@@ -10,6 +10,7 @@ define('shops',function(require,exports,module){
 	require("./services/services");
 	var SHOPS=require("datas/stores");
 	angular.module('Shops',['Addresses','Services','ngSanitize'])
+		//店铺信息过滤器，根据页面所选条件过滤
 		.filter("fltShops",function(){
 	        return function(SHOPS,filters){
 	        	filters.province*=1;
@@ -51,24 +52,83 @@ define('shops',function(require,exports,module){
 	        	return shops;
 	        }
 		})
+		//分页控制器
+		.controller('CtrlPagination', ['$scope', function ($scope) {
+			$scope.pages=[/*{
+				num:Number,
+				text:String
+			}*/];
+			$scope.curpage=0;
+			$scope.curblock=0;
+			var eachpage=5,    //每一块的页码数
+				eachinfo=10,   //每一页的信息数
+				allpages=0;
+			//分页改变时，向上级发送事件，刷新列表
+			function change(){
+				$scope.$emit("pageChange",$scope.curpage,eachinfo);
+			}
+			//当上级发送过来数量改变时，重新计算页码
+			$scope.$on("amountChange",function(event,allnums){
+				allpages=Math.ceil(allnums/eachinfo);
+				$scope.curpage=allpages ? 1: 0;
+				$scope.curblock=allpages ? 1: 0;
+				freshBlock();
+				change();
+			});
+			//刷新页码块
+			function freshBlock(){
+				$scope.pages=[];
+				if(!$scope.curblock) return;
+				var begin=($scope.curblock-1) * eachpage+1,
+					over=begin + eachpage -1;
+				//如果不是从第一块开始
+				if(begin!=1) $scope.pages.push({
+					num: begin - 5,
+					text: '上'+ eachpage +'页'
+				});
+				for(var n=begin;n<=Math.min(allpages,over);n++){
+					$scope.pages.push({
+						num: n,
+						text: n
+					});
+				}
+				//如果不是处于最后一块
+				if(allpages-over>0) $scope.pages.push({
+					num: begin + 5,
+					text: '下'+ eachpage +'页'
+				});
+			}
+			//设置当前页码，不知道为什么不能写在ng-click上
+			$scope.setPage=function(n){
+				$scope.curpage=n;
+				var over=$scope.curblock * eachpage,
+					begin=over- eachpage +1;
+				if(n > over || n < begin){
+					if(n>over) $scope.curblock++;
+					else $scope.curblock--;
+					freshBlock();
+				}
+			}
+			//当变更当前页码时，向上发送事件，以更新列表
+			$scope.$watch('curpage', function(newValue, oldValue){
+				if(newValue!=oldValue) change();
+			})
+		}])
+		//店面信息列表控制器
 		.controller('CtrlShops', ['$scope', '$filter',function ($scope, $filter) {
 			//前缀，用来区别三级地址栏的用途（个人收货地址也会使用三级）
 			$scope.prefix="SHOP";
 			$scope.shops='';
+			$scope.curShops='';
 			//根据分数返回星数
 			$scope.getStars=function(n){
-				return (function(){
-					var str=[];
-					for(var i=0;i<n;i++) str.push('★');
-					return str.join('');
-				})();
+				var str=[];
+				for(var i=0;i<n;i++) str.push('★');
+				return str.join('');
 			}
 			//当前页码
 			$scope.page=1;
-			//根据总数及当前页码返回分页样式
-			$scope.getPages=function(){
-				return 3;
-			}
+			var eachpage=5;
 			//根据店类型返回span类名
 			$scope.getClass=function(type){
 				switch(type){
@@ -104,6 +164,7 @@ define('shops',function(require,exports,module){
 			//使用过滤器过滤新数组
 			function filter(){
 				$scope.shops=$filter('fltShops')(SHOPS ,$scope.filters);
+				$scope.$broadcast('amountChange', $scope.shops.length);
 			}
 			$scope.filter=filter;
 			//当三级地址改变时
@@ -117,6 +178,16 @@ define('shops',function(require,exports,module){
 			$scope.$on('servicesChange',function(event,services){
 				$scope.filters.services=services;
 				filter();
+			});
+			//当页码变更时，更新列表
+			$scope.$on('pageChange', function(event,curpage,eachinfo){
+				$scope.curShops=[];
+				if(!curpage)return;
+				var start=(curpage-1)*eachinfo,
+					over=Math.min(start + eachinfo, $scope.shops.length);
+				for(var n=start;n<over;n++){
+					$scope.curShops.push($scope.shops[n]);
+				}
 			});
 		}])
 	//自举要写在所有的控制器都初始化之后

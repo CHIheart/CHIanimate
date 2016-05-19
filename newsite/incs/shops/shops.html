@@ -7,16 +7,19 @@
 		</div>
 		<dl class="totals">
 			<dt>共<b ng-bind="shops.length"></b>家店</dt>
-			<dd class="pages" ng-bind="getPages();"></dd>
+			<dd class="pages" ng-controller="CtrlPagination">
+				<a ng-repeat="page in pages" ng-click="setPage(page.num);" ng-bind="page.text" ng-class="{cur: curpage==page.num}"></a>
+			</dd>
 		</dl>
 		<ul class="list">
-			<li ng-repeat="shop in shops">
+			<li ng-repeat="shop in curShops track by $index">
 				<var><img ng-src="{{shop.image}}" alt="{{shop.name}}"></var>
 				<h4 title="{{shop.name}}"><small class="{{getClass(shop.type)}}" ng-bind="shop.type"></small><span ng-bind-html="shop.nameWithKey"></span></h4>
 				<samp><span ng-bind="getStars(shop.score);"></span><span ng-bind="shop.score"></span>分</samp>
 				<p title="{{shop.address}}">地址：<span ng-bind-html="shop.addressWithKey"></span></p>
 				<p>电话：<span ng-bind="shop.tel"></span></p>
 			</li>
+			<li ng-if="!curShops.length">查无信息</li>
 		</ul>
 	</div>
 	<div class="Right">

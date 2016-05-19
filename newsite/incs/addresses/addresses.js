@@ -15,7 +15,7 @@ define(function(require,exports,module){
 			var old={id:"000000"};
 			$scope.province=$scope.city=$scope.district=old;
 			$scope.set=function(item){
-				$scope[item]=this.item;
+				$scope[item]=this.item || old;
 				switch(item){
 					case 'province':
 						$scope.city=old;
