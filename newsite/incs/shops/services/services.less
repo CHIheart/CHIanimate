@@ -1,0 +1,75 @@
+/**
+ * 过滤器
+ * @authors Your Name (you@example.org)
+ * @date    2016-05-16 10:29:09
+ * @version $Id$
+ */
+
+
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+@import (reference) "../../../srcs/css/_style";
+@import (reference) "../../../srcs/css/css.less";
+
+.Services{
+	.bd(1px,solid,@lightgray);
+	.p(20px,30px);
+	.bbox();
+	.m(20px,auto);
+	table{
+		.w(100%);
+	}
+	th{
+		.w(86px);
+		.size(16px);
+		.p(5px,0);
+		.t-l();
+		.c(@deepblack);
+		.valign(top);
+	}
+	td{
+		.w(720px);
+		.size(0);
+	}
+	img{
+		.wh(30px);
+	}
+	img,em{
+		.valign();
+	}
+	span{
+		.size(14px);
+		.inblock();
+		.c-p();
+		.valign(top);
+		.p(3px,10px);
+		.c(@middleblack);
+		.bd(1px,solid,@lightgray);
+		.m(2px,1em,2px,0);
+		&.checked{
+			.bd-c(@red);
+			.relative();
+			.c(@red);
+			&:before,&:after{
+				.absolute();
+			}
+			&:before:extend(.lcz,.lcz-check:before){
+				.wh(12px);
+				.c(white);
+				.size();
+				.z(2);
+				.rt(-4px,-4px);
+			}
+			&:after{
+				.cnt();
+				.wh(0);
+				.bd-w(6px);
+				.bd-c(@red,@red,transparent,transparent);
+				.bd-s(solid);
+				.t-c();
+				.z(1);
+				.rt();
+			}
+		}
+	}
+}

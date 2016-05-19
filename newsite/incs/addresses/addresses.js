@@ -22,6 +22,7 @@ define(function(require,exports,module){
 					case 'city':
 						$scope.district=old;
 				}
+				$scope.$emit('addressesChange', $scope.province.id,$scope.city.id,$scope.district.id);
 			}
 		}]);
 });

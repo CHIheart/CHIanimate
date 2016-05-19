@@ -188,49 +188,38 @@ $data = array(
 	),
 	"services"=>array(
 		array(
-			"type"=>"普通服务",
-			"image"=>"/incs/shops/filters/1.png",
+			"type"=>"服务类型",
+			"image"=>"/incs/shops/services/1.png",
 			"items"=>array(
 				array(
 					"title"=>"进行汽车外壳的简单清洗",
-					"name"=>"表面清洗",
-					"id"=>11
+					"name"=>"美容洗车",
+					"id"=>2
 				),
 				array(
 					"title"=>"汽车里里外外都清洗一次",
-					"name"=>"车里外清洗",
-					"id"=>12
+					"name"=>"钣金喷漆",
+					"id"=>3
 				),
 				array(
 					"title"=>"我也不知道这是干什么的，好像是抹油",
-					"name"=>"抛光打蜡",
-					"id"=>13
+					"name"=>"保险服务",
+					"id"=>4
 				),
 				array(
 					"title"=>"给车外壳刮花的地方补漆",
-					"name"=>"修补喷漆",
-					"id"=>14
+					"name"=>"保养维修",
+					"id"=>5
 				),
-			)
-		),
-		array(
-			"type"=>"高级服务",
-			"image"=>"/incs/shops/filters/2.png",
-			"items"=>array(
 				array(
 					"title"=>"改变汽车的原有配置",
-					"name"=>"汽车改装",
-					"id"=>21
+					"name"=>"配件安装",
+					"id"=>6
 				),
 				array(
 					"title"=>"安装导航，音响，视频播放器",
-					"name"=>"内置设备更换",
-					"id"=>22
-				),
-				array(
-					"title"=>"有20多种主题供您选择",
-					"name"=>"汽车装修",
-					"id"=>23
+					"name"=>"救援服务",
+					"id"=>17
 				),
 			)
 		)

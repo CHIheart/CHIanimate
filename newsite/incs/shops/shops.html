@@ -1,23 +1,21 @@
 <link rel="stylesheet" href="shops.css">
 <div class="common SHOPS" ng-controller="CtrlShops">
-	<!-- include src="filters/filters.html" -->
+	<!-- include src="services/services.html" -->
 	<div class="Left">
 		<div class="selects">
 			<!-- include src="../addresses/addresses.html" -->
 		</div>
 		<dl class="totals">
 			<dt>共<b ng-bind="shops.length"></b>家店</dt>
-			<dd class="pages">
-				<a>234</a>
-			</dd>
+			<dd class="pages" ng-bind="getPages();"></dd>
 		</dl>
 		<ul class="list">
-			<li ng-repeat="shop in shops | fltShops:filters">
+			<li ng-repeat="shop in shops">
 				<var><img ng-src="{{shop.image}}" alt="{{shop.name}}"></var>
-				<h4 title="{{shop.name}}"><small class="{{getClass(shop.type)}}">{{shop.type}}</small>{{shop.name}}</h4>
-				<samp>{{getStars(shop.score)}}{{shop.score}}分</samp>
-				<p title="{{shop.address}}">地址：{{shop.address}}</p>
-				<p>电话：{{shop.tel}}</p>
+				<h4 title="{{shop.name}}"><small class="{{getClass(shop.type)}}" ng-bind="shop.type"></small><span ng-bind-html="shop.nameWithKey"></span></h4>
+				<samp><span ng-bind="getStars(shop.score);"></span><span ng-bind="shop.score"></span>分</samp>
+				<p title="{{shop.address}}">地址：<span ng-bind-html="shop.addressWithKey"></span></p>
+				<p>电话：<span ng-bind="shop.tel"></span></p>
 			</li>
 		</ul>
 	</div>
@@ -27,13 +25,13 @@
 				<input type="text" id="SearchWhat" ng-model="filters.what">
 				<dt ng-bind="what.name"></dt>
 				<dd>
-					<a ng-repeat="item in whats" data-id="item.value">{{item.name}}</a>
+					<a ng-repeat="item in whats" data-id="{{item.value}}">{{item.name}}</a>
 				</dd>
 			</dl>
 			<div class="TEXTCONTAINER">
-				<input type="text" name="" id="" placeholder="关键字">
+				<input type="text" ng-model="filters.key" placeholder="关键字">
 			</div>
-			<input type="submit" class="submit" value="定位">
+			<input type="submit" class="submit" value="定位" ng-click="filter();">
 		</form>
 		<div id="BaiduMap"></div>
 	</div>
