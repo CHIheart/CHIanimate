@@ -1,0 +1,22 @@
+[
+	{
+        "keys": ["ctrl+alt+shift+h"], "command": "sublime_tmpl",
+        "args": {"type": "html"}, "context": [{"key": "sublime_tmpl.html"}]
+    }
+    ,{
+        "keys": ["ctrl+alt+shift+j"], "command": "sublime_tmpl",
+        "args": {"type": "js"}, "context": [{"key": "sublime_tmpl.js"}]
+    }
+    ,{
+        "keys": ["ctrl+alt+shift+c"], "command": "sublime_tmpl",
+        "args": {"type": "css"}, "context": [{"key": "sublime_tmpl.css"}]
+    }
+    ,{
+        "keys": ["ctrl+alt+shift+p"], "command": "sublime_tmpl",
+        "args": {"type": "php"}, "context": [{"key": "sublime_tmpl.php"}]
+    }
+    ,{
+        "keys": ["ctrl+alt+shift+l"], "command": "sublime_tmpl",
+        "args": {"type": "less"}, "context": [{"key": "sublime_tmpl.less"}]
+    }
+]
