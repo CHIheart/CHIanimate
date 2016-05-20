@@ -12,7 +12,7 @@
 			</dd>
 		</dl>
 		<ul class="list">
-			<li ng-repeat="shop in curShops track by $index">
+			<li ng-repeat="shop in curShops track by $index" ng-click="findShopInMap(shop);">
 				<var><img ng-src="{{shop.image}}" alt="{{shop.name}}"></var>
 				<h4 title="{{shop.name}}"><small class="{{getClass(shop.type)}}" ng-bind="shop.type"></small><span ng-bind-html="shop.nameWithKey"></span></h4>
 				<samp><span ng-bind="getStars(shop.score);"></span><span ng-bind="shop.score"></span>分</samp>
@@ -25,18 +25,17 @@
 	<div class="Right">
 		<form class="SearchMap clearfix" novalidate>
 			<dl class="SELECT SearchWhat">
-				<input type="text" id="SearchWhat" ng-model="filters.what">
-				<dt ng-bind="what.name"></dt>
+				<dt ng-bind="filters.what.name"></dt>
 				<dd>
-					<a ng-repeat="item in whats" data-id="{{item.value}}">{{item.name}}</a>
+					<a ng-repeat="item in whats" data-id="{{item.value}}" ng-click="filters.what=item;">{{item.name}}</a>
 				</dd>
 			</dl>
 			<div class="TEXTCONTAINER">
 				<input type="text" ng-model="filters.key" placeholder="关键字">
 			</div>
-			<input type="submit" class="submit" value="定位" ng-click="filter();">
+			<input type="button" class="submit" value="定位" ng-click="filter();">
 		</form>
-		<div id="BaiduMap"></div>
+		<div id="BaiduMap" ng-controller="CtrlBaiduMap"></div>
 		<!-- include src="inforWin/inforWin.html" -->
 	</div>
 </div>

@@ -22,7 +22,8 @@ define(function(require,exports,module){
 					case 'city':
 						$scope.district=old;
 				}
-				$scope.$emit('addressesChange', $scope.province.id,$scope.city.id,$scope.district.id);
+				//向上发送地址更改事件
+				$scope.$emit('addressesChange', $scope.province,$scope.city,$scope.district);
 			}
 		}]);
 });

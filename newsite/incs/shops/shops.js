@@ -8,8 +8,10 @@
 define('shops',function(require,exports,module){
 	require("../addresses/addresses");
 	require("./services/services");
-	var SHOPS=require("datas/stores");
-	angular.module('Shops',['Addresses','Services','ngSanitize'])
+	var SHOPS=require("datas/stores"),
+		initSet=require("./bdmap/bdmap.js");
+	initSet("BaiduMap");
+	angular.module('Shops',['Addresses','Services','ngSanitize','BaiduMap'])
 		//店铺信息过滤器，根据页面所选条件过滤
 		.filter("fltShops",function(){
 	        return function(SHOPS,filters){
@@ -152,7 +154,7 @@ define('shops',function(require,exports,module){
 			];
 			//总过滤对象
 			$scope.filters={
-				what:$scope.whats[0].value,
+				what:$scope.whats[0],
 				province:'',
 				city:'',
 				district:'',
@@ -163,16 +165,32 @@ define('shops',function(require,exports,module){
 			}
 			//使用过滤器过滤新数组
 			function filter(){
-				$scope.shops=$filter('fltShops')(SHOPS ,$scope.filters);
-				$scope.$broadcast('amountChange', $scope.shops.length);
+				if($scope.filters.what)
+				switch($scope.filters.what.value){
+					//当过滤的关键字是我的位置时
+					case 'me':
+						if($scope.filters.key) $scope.$broadcast('localSearch', $scope.filters.key);
+						break;
+					//当过滤的关键字是店名或地址时
+					case 'name':
+					case 'address':
+						$scope.shops=$filter('fltShops')(SHOPS ,$scope.filters);
+						$scope.$broadcast('amountChange', $scope.shops.length);
+						break;
+				}
 			}
 			$scope.filter=filter;
 			//当三级地址改变时
 			$scope.$on('addressesChange',function(event,province,city,district){
-				$scope.filters.province=province;
-				$scope.filters.city=city;
-				$scope.filters.district=district;
+				$scope.filters.province=province.id;
+				$scope.filters.city=city.id;
+				$scope.filters.district=district.id;
+				$scope.filters.what=$scope.whats[0];
+				$scope.filters.key='';
+				$(".SearchWhat dd a").removeClass('selected');
 				filter();
+				//下发到百度地图
+				$scope.$broadcast('addressChange', province,city,district);
 			});
 			//当服务项目改变时
 			$scope.$on('servicesChange',function(event,services){
@@ -189,9 +207,14 @@ define('shops',function(require,exports,module){
 					$scope.curShops.push($scope.shops[n]);
 				}
 			});
+			//点击左列表一个店铺，在地图上显示这个店铺的信息
+			$scope.findShopInMap=function(shop){
+				$scope.$broadcast('findShop', shop);
+			}
 		}])
 	//自举要写在所有的控制器都初始化之后
 	angular.bootstrap($(".SHOPS"), ['Shops']);
+
 	return ;
 });
 seajs.use('shops');
