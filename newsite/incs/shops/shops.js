@@ -246,6 +246,7 @@ define('shops',function(require,exports,module){
 				for(var n=start;n<over;n++){
 					$scope.curShops.push($scope.shops[n]);
 				}
+				$(".Left .list").scrollTop(0);
 			});
 			//点击左列表一个店铺，在地图上显示这个店铺的信息
 			$scope.showShop=function(shop){
