@@ -6,22 +6,34 @@
  */
 
 define('shops',function(require,exports,module){
+	window.init=function(){
+		var BDMAP=require("./baiduMap");
+		mymap=new BDMAP('BaiduMap',{
+			multiple:true
+		});
+	}
+	$(window).load(function() {
+		var script=$("<script/>");
+		script.prop("src","http://api.map.baidu.com/api?v=2.0&ak=QaqY5bsrblkjzUMC22LVGOYZ&callback=init");
+		$("body").append(script);
+	});
 	require("../addresses/addresses");
 	require("./services/services");
-	var SHOPS=require("datas/stores"),
-		initSet=require("./bdmap/bdmap.js");
-	initSet("BaiduMap");
-	angular.module('Shops',['Addresses','Services','ngSanitize','BaiduMap'])
+	var mymap,
+		SHOPS=require("datas/stores");
+	angular.module('Shops',['Addresses','Services','ngSanitize'])
 		//店铺信息过滤器，根据页面所选条件过滤
 		.filter("fltShops",function(){
 	        return function(SHOPS,filters){
 	        	filters.province*=1;
 	        	filters.city*=1;
 	        	filters.district*=1;
-	        	if(!filters.province && !filters.city && !filters.district) return '';
 	        	var shops=[],shop,regTag=/\<\/?b\>/ig;
 	        	for(var n=0;n<SHOPS.length;n++){
 	        		shop=SHOPS[n];
+	        		//有可能需要被关键字过滤的名字及地址，先清除上一次过滤的关键字标记
+	        		shop.nameWithKey=shop.name;
+	        		shop.addressWithKey=shop.address;
 	        		//先省市区过滤
 	        		if(filters.province && filters.province!=shop.province) continue;
 	        		if(filters.city && filters.city!=shop.city) continue;
@@ -40,15 +52,15 @@ define('shops',function(require,exports,module){
 	        			//所有服务都不存在的话就下一个
 	        			if(!match) continue;
 	        		}
-	        		//接下来过滤关键字，先清除上一次过滤的关键字标记
-	        		shop.nameWithKey=shop.name;
-	        		shop.addressWithKey=shop.address;
-	        		if(~$.inArray(filters.what, ['name','address']) && filters.key){
-	        			if(!~shop[filters.what].indexOf(filters.key)) continue;
-	        			shop[filters.what+'WithKey']=shop[filters.what].replace(filters.key,'<b>'+ filters.key +'</b>');
+	        		//接下来过滤关键字
+	        		if(~$.inArray(filters.what.value, ['name','address']) && filters.key){
+	        			if(!~shop[filters.what.value].indexOf(filters.key)) continue;
+	        			shop[filters.what.value+'WithKey']=shop[filters.what.value].replace(filters.key,'<b>'+ filters.key +'</b>');
 	        		}
 	        		//最后过滤经纬度
-	        		if(filters.what=='me' && filters.lng && filters.lat){}
+	        		if(filters.what.value=='me' && filters.lng && filters.lat){
+	        			if(mymap.distance(shop.lng,shop.lat,filters.lng,filters.lat)>1e4) continue;
+	        		}
 	        		shops.push(shop);
 	        	}
 	        	return shops;
@@ -117,7 +129,7 @@ define('shops',function(require,exports,module){
 			})
 		}])
 		//店面信息列表控制器
-		.controller('CtrlShops', ['$scope', '$filter',function ($scope, $filter) {
+		.controller('CtrlShops', ['$scope', '$filter', '$timeout',function ($scope, $filter, $timeout) {
 			//前缀，用来区别三级地址栏的用途（个人收货地址也会使用三级）
 			$scope.prefix="SHOP";
 			$scope.shops='';
@@ -128,9 +140,6 @@ define('shops',function(require,exports,module){
 				for(var i=0;i<n;i++) str.push('★');
 				return str.join('');
 			}
-			//当前页码
-			$scope.page=1;
-			var eachpage=5;
 			//根据店类型返回span类名
 			$scope.getClass=function(type){
 				switch(type){
@@ -165,19 +174,42 @@ define('shops',function(require,exports,module){
 			}
 			//使用过滤器过滤新数组
 			function filter(){
-				if($scope.filters.what)
-				switch($scope.filters.what.value){
-					//当过滤的关键字是我的位置时
-					case 'me':
-						if($scope.filters.key) $scope.$broadcast('localSearch', $scope.filters.key);
-						break;
-					//当过滤的关键字是店名或地址时
-					case 'name':
-					case 'address':
-						$scope.shops=$filter('fltShops')(SHOPS ,$scope.filters);
-						$scope.$broadcast('amountChange', $scope.shops.length);
-						break;
+				if($scope.filters.what.value!='me' || !$scope.filters.key){
+					filterDo();
+					return;
 				}
+				mymap.clear().search($scope.filters.key,function(dots){
+					for(var n=0;n<dots.length;n++){
+						var marker=dots[n].marker;
+						marker.addEventListener("infowindowopen",function(event){
+							var win=mymap.getInfoWindow(),
+	                            point=event.target.point,
+	                            content=win.getContent(),
+	                            title=win.getTitle();
+	                        if(~content.indexOf('tfoot')) return;
+                            content=content.replace('</table>',
+                            	'<tfoot><tr><td colspan="2"><br><a class="SearchNearby" data-position="'+ point.lng +','+ point.lat +'">在此周边查找门店</a></td></tr></tfoot></table>');
+                            win.setContent(content);
+                            title=title.replace(/\<a target=["']_blank["'][\s\S]+?\<\/a\>/ig,'');
+                            win.setTitle(title);
+	                        //点击查找门店，不知道为什么不能用事件委托
+	                        $(".SearchNearby").on('click', function(event) {
+								var position=$(this).data("position").split(',');
+								$scope.filters.lng=position[0];
+								$scope.filters.lat=position[1];
+								filterDo();
+	                        });
+						});
+					}
+				});
+			}
+			//过滤数组，下发总数变更事件，地图清空
+			function filterDo(){
+				$timeout(function(){
+					$scope.shops=$filter('fltShops')(SHOPS ,$scope.filters);
+					$scope.$broadcast('amountChange', $scope.shops.length);
+					mymap.clear();
+				})
 			}
 			$scope.filter=filter;
 			//当三级地址改变时
@@ -187,10 +219,18 @@ define('shops',function(require,exports,module){
 				$scope.filters.district=district.id;
 				$scope.filters.what=$scope.whats[0];
 				$scope.filters.key='';
+				$scope.filters.lng=0;
+				$scope.filters.lat=0;
 				$(".SearchWhat dd a").removeClass('selected');
 				filter();
-				//下发到百度地图
-				$scope.$broadcast('addressChange', province,city,district);
+				var lng,lat,
+					args=[province,city,district];
+				for(var n=0; n<args.length; n++){
+					if(!(args[n].id*1)) break;
+					lng=args[n].lng;
+					lat=args[n].lat;
+				}
+				mymap.clear().focus(lng,lat,n*3+4);
 			});
 			//当服务项目改变时
 			$scope.$on('servicesChange',function(event,services){
@@ -208,8 +248,35 @@ define('shops',function(require,exports,module){
 				}
 			});
 			//点击左列表一个店铺，在地图上显示这个店铺的信息
-			$scope.findShopInMap=function(shop){
-				$scope.$broadcast('findShop', shop);
+			$scope.showShop=function(shop){
+				$scope.curshop=shop;
+				$timeout(function(){
+					mymap.clear();
+					var marker=mymap.addMarker(shop.lng,shop.lat,{
+						label:{
+							x:25,
+							y:5,
+							title:shop.name
+						},infor:{
+							title:'',
+							content:$("#BaiduMap + .InforWin").prop("outerHTML"),
+							width:520
+						}
+					});
+					//打开信息窗口时，关闭标签
+					marker.addEventListener("infowindowopen",function(event){
+						this.getLabel().hide();
+					});
+					//关闭信息窗口时，打开标签
+					marker.addEventListener("infowindowclose",function(event){
+						this.getLabel().show();
+					});
+					//单击标记点，打开信息窗口
+					marker.addEventListener("click",function(event){
+						this.openInfoWindow(this.inforWin);
+					});
+					marker.openInfoWindow(marker.inforWin);
+				},100);
 			}
 		}])
 	//自举要写在所有的控制器都初始化之后

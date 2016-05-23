@@ -15,7 +15,6 @@
 	.none();
 	.w(520px);
 	.absolute();
-	.bd(1px,solid,@lightgray);
 	.bg-c(white);
 	//上半部分，基本信息
 	.basic{
@@ -24,9 +23,12 @@
 	}
 	h3{
 		.size(16px);
-		.bold();
 		.c(@deepblack);
 		.hline(30px);
+		.mb(5px);
+		span{
+			.bold();
+		}
 	}
 	small:extend(.Left .list small all){
 		.m(0,0,0,4px);
@@ -35,6 +37,8 @@
 		.wh(160px,120px);
 		.fl();
 		.bd(1px,solid,@lightgray);
+		.bg-i("/srcs/images/none.jpg");
+		.bg-s(cover);
 	}
 	img:extend(.Left .list img all){}
 	//基本信息-信息项目
@@ -85,6 +89,7 @@
 		.hline(30px);
 		.w(120px);
 		.bd-r(1px,solid,@lightgray);
+		.t-c();
 	}
 	th,td{
 		.bd-b(1px,solid,@lightgray);
@@ -92,5 +97,8 @@
 	td{
 		.p(5px,10px);
 		.line(20px);
+	}
+	.BMap_bubble_content &{
+		.block();
 	}
 }

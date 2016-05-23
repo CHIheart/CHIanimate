@@ -136,7 +136,7 @@ define(function(require,exports,module){
 	}
 	var markerSettings={
 		icon:{
-    		image:'marker.png',
+    		image:'/srcs/images/mapmark.png',
     		width:22,
     		height:30,
     		x:0,
