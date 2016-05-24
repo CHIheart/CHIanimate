@@ -2,6 +2,7 @@
 @import (reference) "../../srcs/css/_funs";
 @import (reference) "../../srcs/css/_theme";
 @import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
 
 .Videos{
 	> div{
@@ -21,9 +22,8 @@
 		.mr(0);
 	}
 	.small,.large,.mid{
+		&:extend(.noimg);
 		.relative();
-		.bg-i("/srcs/images/none.jpg");
-		.bg-s(cover);
 		> *{
 			.absolute();
 		}

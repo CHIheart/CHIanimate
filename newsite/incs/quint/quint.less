@@ -1,29 +1,93 @@
 @import (reference) "../../srcs/css/_funs";
 @import (reference) "../../srcs/css/_theme";
 @import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
 
 .QUINT{
+	//其它位置用到的是quintframe类
 	&FRAME{
 		.o();
 	}
-	.container,ol{
+	.container,ol.PROLIST{
 		.h(280px);
 		.o();
 	}
 	@w : (234px + 14px) *5;
-	ol{
+	ol.PROLIST{
 		.w(@w);
 		.fl();
-	}
-	li{
-		.wh(234px,270px);
-		.m(0,14px,14px,0);
+		li{
+			.wh(234px,270px);
+			.m(0,14px,14px,0);
+			.fl();
+			.bg-c(white);
+			.t-c();
+		}
 	}
 	var{
 		.wh(160px);
 		.m(10px,auto);
 	}
-	a{
-		.size();
+	h3{
+		.size(14px) !important;
+	}
+	//标题头大字
+	dt{
+		.bd-b(1px,solid,@lightgray);
+		.size(30px);
+		.hline(80px);
+		.m(50px,auto,20px);
+		.t-c();
+		.c(@deepblack);
+	}
+	sub,sup{
+		.absolute();
+		.size(40px);
+		.t(100px);
+		.c(@deepgray);
+		.c-p();
+		&:extend(.transSlow);
+		&:hover{
+			.c(@middleblack);
+		}
+	}
+	sub{
+		.l(-50px);
+	}
+	sup{
+		.r(-50px);
+	}
+	//带索引及前后箭头用的是quintmovie
+	&MOVIE{
+		.relative();
+	}
+	.indices{
+		.t-c();
+		li:extend(.transSlow){
+			.inblock();
+			.m(0,4px);
+			.wh(14px);
+			.line(12px);
+			.t-c();
+			.c-p();
+			.relative();
+			.round();
+			.size(21px);
+			.bd(2px,solid,transparent);
+			&:before{
+				.cnt();
+				.block();
+				.wh(10px);
+				.m(2px);
+				.round();
+				.bg-c(@lightgray);
+			}
+			&.cur,&:hover{
+				.bd-c(@red);
+				&:before{
+					.bg-c(@red);
+				}
+			}
+		}
 	}
 }

@@ -7,25 +7,22 @@
 
 .PROLIST:extend(.anchors all){
 	ul:extend(.clearfix){}
-	li:extend(.transSlow){
+	> li:extend(.transSlow){
 		.fl();
 		.bg-c(white);
 		.t-c();
 		.p(20px);
 		.bbox();
 		.relative();
-		.o();
 		&:hover:extend(.shadowLarge){
 			.summary{
-				.b(0);
+				.h(40px);
 			}
 		}
 	}
 	//产品大图
-	var{
+	var:extend(.noimg){
 		.block();
-		.bg-i("/srcs/images/none.jpg");
-		.bg-p(center);
 		img{
 			.full();
 		}
@@ -98,13 +95,13 @@
 	}
 	.summary:extend(.ellipsis,.transSlow){
 		.absolute();
-		.w(100%);
+		.wh(100%,0);
 		.bbox();
 		.p(0,20px);
-		.hline(40px);
+		.line(40px);
 		.bg-c(@red);
 		.c(white);
 		.size(14px);
-		.lb(0,-40px);
+		.lb();
 	}
 }

@@ -91,7 +91,7 @@ body{
 .anchors{
 	a:extend(.transSlow){
 		.c(@deepblack);
-		&:hover{
+		&:hover,&.cur,&.checked,&.selected{
 			.c(@red);
 		}
 	}
@@ -102,3 +102,31 @@ body{
 	.shadow(3px,3px,3px,rgba(127,127,127,.3));
 }
 
+//分页样式
+.PAGES:extend(.common all,.anchors all){
+	.size(14px);
+	.line(24px);
+	.t-c();
+	.m(40px,auto);
+	> *{
+		.inblock();
+		.valign();
+		.m(.5em);
+	}
+	a{
+		.p(0,8px);
+		.bd(1px,solid,@lightgray);
+		.bg-c(white);
+		&:hover:extend(.shadowLarge){}
+	}
+	span{
+		.c(@lightblack);
+	}
+}
+
+//无图背景
+.noimg{
+	.bg-i("/srcs/images/none.jpg");
+	.bg-s(cover);
+	.bg-p(center);
+}
