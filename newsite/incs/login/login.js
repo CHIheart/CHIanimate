@@ -10,14 +10,17 @@ define('LOGIN',function(require,exports,module){
         $scope.judge=function(name){
             return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
         }
-		$scope.open=function(){
+		$scope.open=function(fCallback){
 			container.fadeIn();
+			fAfterLogin=fCallback;
+			return this;
 		}
 		$scope.close=function(){
 			container.fadeOut();
-			this.reset();
+			return this.reset();
 		}
 		$scope.loginOK=angular.noop;
+		var fAfterLogin=angular.noop;
 		$scope.login=function(){
 			$.ajax({
 				url: '/ajax/header/login',
@@ -36,6 +39,7 @@ define('LOGIN',function(require,exports,module){
 					$('.TOPLINKS').children().css({
 						visibility:'visible'
 					});
+					$.isFunction(fAfterLogin) && fAfterLogin();
 					$scope.close();
 				}else{
 					ALERT("登陆失败",data.message,"frown",function(){
@@ -56,6 +60,7 @@ define('LOGIN',function(require,exports,module){
 				});
 			});
 			$scope.reference=true;
+			return this;
 		}
 		$scope.hasAt=function(){
 			return passport.value.indexOf('@')>0;

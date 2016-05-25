@@ -14,15 +14,18 @@ define('toplinks',function(require,exports,module){
 	//根据用户登陆状态来判断显示菜单的哪一部分
 	angular.module("TopLinks",[])
 		.controller("CtrlTopLinks",['$scope','$timeout',function($scope,$timeout){
-			$scope.login=function(){
+			$scope.login=function(fCallback){
 				loadPlugin("login",function(){
-					angular.element(".LOGIN").scope().open();
+					angular.element(".LOGIN").scope().open(fCallback);
 				});
 			}
-			$scope.logout=function(){
+			$scope.logout=function(fCallback){
 				$timeout(function(){
 					$scope.online=false;
-					$timeout(show,100);
+					$timeout(function(){
+						show();
+						$.isFunction(fCallback) && fCallback();
+					},100);
 				},100);
 			}
 		}]);

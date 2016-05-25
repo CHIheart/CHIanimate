@@ -22,9 +22,9 @@ define('WINLIT',function(require,exports,module){
 		}
 		function setFuns(onclose,onconfirm,oncancel){
 			$timeout(function(){
-				$scope.confirm=angular.isFunction(onconfirm) ? onconfirm : close;
-				$scope.cancel=angular.isFunction(oncancel) ? oncancel : close;
-				$scope.close=angular.isFunction(onclose) ? onclose : close;
+				$scope.confirm=$.isFunction(onconfirm) ? onconfirm : close;
+				$scope.cancel=$.isFunction(oncancel) ? oncancel : close;
+				$scope.close=$.isFunction(onclose) ? onclose : close;
 			});
 		}
 		function open(delay){

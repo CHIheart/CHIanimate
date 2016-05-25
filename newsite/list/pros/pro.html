@@ -14,8 +14,11 @@
 		<!-- include src="right.html" condition="count($aData['thumbs'])>5" -->
 	</div>
 	<div class="actions">
-		<div class="star">
-			<a class="lcz lcz-star-o"></a>
+		<div class="star" ng-click="favor({$id});">
+			<a class="lcz" ng-class="{
+			'lcz-star-o':!favored({$id}),
+			'lcz-star'  : favored({$id})
+		}"></a>
 		</div>
 		<div class="share bdsharebuttonbox">
 			<a class="bds_more lcz lcz-share" data-cmd="more"></a>

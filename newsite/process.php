@@ -303,7 +303,7 @@ function locateMedias(&$txtCnt,$urlAbs){
 			$urlResAbs=calAbsUrl(preg_replace($regSuffix,'',$urlRes),$urlAbs);
 		}
 		$md5_print=@md5_file(WEBROOT_AT_DISK.$urlResAbs);
-		if($md5_print===false) echo "File doesn't exist!!! <s>{$urlResRel}</s> in <em>{$urlAbs}</em>";
+		if($md5_print===false) echo "File doesn't exist!!! <s>{$urlRes}</s> in <em>{$urlAbs}</em>";
 		else{
 			$urlResAbs=WEBROOT_AT_HOST.$urlResAbs.'?'.substr($md5_print,0,6);
 			$txtCnt=str_replace($urlRes, $urlResAbs, $txtCnt);
