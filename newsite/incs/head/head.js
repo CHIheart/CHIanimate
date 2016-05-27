@@ -23,35 +23,43 @@ define('always',function(require,exports,module){
 		})
 	});
 	//自己编写的调用插件过程
-	function loadPlugin(name,done,init){
-		!$.isFunction(done) && (done=$.noop);
-		!$.isFunction(init) && (init=$.noop);
-		if(!$("."+name.toUpperCase()).length){
-			$.ajax({
-				url: '/ajax/loadPlugin.php',
-				type: 'POST',
-				dataType: 'html',
-				data: {plugin: name},
-			})
-			.success(function(data) {
-				var style=data.match(/<style>[\s\S]*?<\/style>/gi)[0],
-					script=data.match(/<script>[\s\S]*?<\/script>/gi)[0],
-					html=data.replace(style,'').replace(script,'');
-				$('body').append(style+script);
-				var $injector = angular.injector(['ng', 'Main']);
-				$injector.invoke(function($rootScope, $compile) {
-					$('body').append($compile(html)($rootScope));
-				});
-				// $("body").append(data);
-				done();
-				init();
-			});
-		}else done();
-	}
-	window.loadPlugin=loadPlugin;
+	// function loadPlugin(name,done,init){
+	// 	!$.isFunction(done) && (done=$.noop);
+	// 	!$.isFunction(init) && (init=$.noop);
+	// 	if(!$("."+name.toUpperCase()).length){
+	// 		$.ajax({
+	// 			url: '/ajax/loadPlugin.php',
+	// 			type: 'POST',
+	// 			dataType: 'html',
+	// 			data: {plugin: name},
+	// 		})
+	// 		.success(function(data) {
+	// 			var style=data.match(/<style>[\s\S]*?<\/style>/gi)[0],
+	// 				script=data.match(/<script>[\s\S]*?<\/script>/gi)[0],
+	// 				html=data.replace(style,'').replace(script,'');
+	// 			$('body').append(style+script);
+	// 			var $injector = angular.injector(['ng', 'Main']);
+	// 			$injector.invoke(function($rootScope, $compile) {
+	// 				$('body').append($compile(html)($rootScope));
+	// 			});
+	// 			// $("body").append(data);
+	// 			done();
+	// 			init();
+	// 		});
+	// 	}else done();
+	// }
+	// window.loadPlugin=loadPlugin;
+	//生成主模块
 	angular.module('Main',['ngSanitize'])
 		.controller('CtrlMain', ['$scope', function ($scope) {
 		}]);
+	//单复选框，IE8兼容
+	if(navigator.userAgent.indexOf('MSIE 8')>0)
+	$(".BOXGROUP label").click(function(event) {
+		var box=$(this).prev(":checkbox").get(0);
+		box.checked=!box.checked;
+		$(box).change();
+	});
 	return ;
 });
 
