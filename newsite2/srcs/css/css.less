@@ -1,0 +1,132 @@
+/*新的基础样式*/
+@import "_funs";
+@import "_theme";
+@import "_icons";
+@import "_style";
+@import "_form";
+
+body{
+	.bg-c(@globalbg);
+	.IE8{
+		.o-s();
+	}
+}
+
+//全屏插件容器
+.FullScreenPlugin{
+	.none();
+	.fixed();
+	.lt();
+	.wh(100%);
+	.bg-c-a(black,.8);
+	.z(55555);
+	> tbody > tr> td{
+		.valign();
+		.t-c();
+	}
+}
+
+//按钮样式
+.button:extend(.transSlow){
+	.bd(0);
+	.c-p();
+	.valign();
+	a&{
+		.inblock();
+		.t-c();
+		.bbox();
+	}
+	&-small{
+		.w(80px);
+		.hline(20px);
+		.size(12px);
+	}
+	&-middle{
+		.w(100px);
+		.hline(24px);
+		.size(14px);
+	}
+	&-large{
+		.w(120px);
+		.hline(30px);
+		.size(16px);
+	}
+
+	//红色的确定按钮
+	&-red{
+		.bg-c(@red);
+		.c(white);
+		&:hover{
+			.bg-c(darken(@red,10%));
+		}
+	}
+	//深灰的取消按钮
+	&-gray{
+		.bg-c(@middlegray);
+		.c(black);
+		.bd(1px,solid,@middlegray);
+		&:hover{
+			.bg-c(white);
+		}
+	}
+	//苍白的无效按钮
+	&-pale{
+		.bg-c(white);
+		.bd(1px,solid,@lightgray);
+		.c(@deepgray);
+	}
+	//白色的链接按钮
+	&-white{
+		.bg-c(white);
+		.bd(1px,solid,@red);
+		.c(@red);
+		&:hover{
+			.bg-c(@red);
+			.c(white);
+		}
+	}
+}
+
+//普通链接颜色
+.anchors{
+	a:extend(.transSlow){
+		.c(@deepblack);
+		&:hover,&.cur,&.checked,&.selected{
+			.c(@red);
+		}
+	}
+}
+
+//阴影
+.shadowLarge{
+	.shadow(3px,3px,3px,rgba(127,127,127,.3));
+}
+
+//分页样式
+.PAGES:extend(.common all,.anchors all){
+	.size(14px);
+	.line(24px);
+	.t-c();
+	.m(40px,auto);
+	> *{
+		.inblock();
+		.valign();
+		.m(.5em);
+	}
+	a{
+		.p(0,8px);
+		.bd(1px,solid,@lightgray);
+		.bg-c(white);
+		&:hover:extend(.shadowLarge){}
+	}
+	span{
+		.c(@lightblack);
+	}
+}
+
+//无图背景
+.noimg{
+	.bg-i("/srcs/images/none.jpg");
+	.bg-s(cover);
+	.bg-p(center);
+}

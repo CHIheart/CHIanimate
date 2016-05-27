@@ -1,0 +1,46 @@
+//首页用头部样式
+
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+
+
+.HEADER{
+	.hline(40px);
+	.bd-b(1px,solid,@lightgray);
+	.bg-c(white);
+	.size();
+	.t-r();
+	.common > *{
+		.inblock();
+		.valign(top);
+	}
+}
+.USERMENU,.TOPCART{
+	.w(120px);
+	.relative();
+	> dt{
+		.c-p();
+	}
+	> dd{
+		.none();
+		.absolute();
+		.bg-c(white);
+		.bd(1px,solid,@lightgray);
+	//这块是要处理两个菜单重叠时，被指向的那个菜单始终位于高z轴上
+		.z(44444);
+	}
+	&:hover{
+		> dd{
+			.z(44445);
+		}
+	}
+}
+.MainCates{
+	.h(520px) !important;
+	.z(44444);
+}
+.TOP{
+	.relative();
+	.z(33333);
+	.bg-c(white);
+}

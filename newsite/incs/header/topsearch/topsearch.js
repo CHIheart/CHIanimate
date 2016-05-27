@@ -7,7 +7,7 @@
 
 define('topsearch',function(require,exports,module){
     var sLastKey='';
-	angular.module('TopSearch',['ngSanitize'])
+	angular.module('Main')
 	.controller('CtrlTopSearch',['$scope','$timeout',function($scope,$timeout){
         $scope.judge=function(name){
             return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
@@ -63,6 +63,6 @@ define('topsearch',function(require,exports,module){
             return output;
         }
     });
-	angular.bootstrap($(".TOPSEARCH"),['TopSearch']);
+	// angular.bootstrap($(".TOPSEARCH"),['TopSearch']);
 });
 seajs.use('topsearch')

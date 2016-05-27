@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="../select/select.css">
+<div class="ADDRESSES" ng-controller="CtrlAddresses">
+	<dl class="SELECT PROVINCE">
+		<input type="text" name="province" id="{{prefix}}province">
+		<dt ng-bind="province.areaname"></dt>
+		<dd>
+			<a ng-repeat="item in CHINA | filter: {parentid: '100000'}: true" data-id="{{item.id}}" ng-click="set('province');">{{item.areaname}}</a>
+		</dd>
+	</dl>
+	<dl class="SELECT CITY">
+		<input type="text" name="city" id="{{prefix}}city">
+		<dt ng-bind="city.areaname"></dt>
+		<dd>
+			<a ng-click="set('city');" data-id="000000">不限</a>
+			<a ng-repeat="item in CHINA | filter: {parentid: province.id}: true" data-id="{{item.id}}" ng-click="set('city');">{{item.areaname}}</a>
+		</dd>
+	</dl>
+	<dl class="SELECT DISTRICT">
+		<input type="text" name="district" id="{{prefix}}district">
+		<dt ng-bind="district.areaname"></dt>
+		<dd>
+			<a ng-click="set('district');" data-id="000000">不限</a>
+			<a ng-repeat="item in CHINA | filter: {parentid: city.id}: true" data-id="{{item.id}}" ng-click="set('district');">{{item.areaname}}</a>
+		</dd>
+	</dl>
+</div>
+<script src="addresses.js"></script>

@@ -1,0 +1,109 @@
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
+
+//产品列表
+.PROLIST{
+	.w((296px + 14px) *4);
+	> li{
+		.wh(296px,400px);
+		.m(0,14px,14px,0);
+		&:hover{
+			.actions{
+				.h(40px);
+				.b(-40px);
+			}
+		}
+	}
+	var{
+		.wh(210px);
+		.m(20px,auto,15px);
+	}
+	h3{
+		.hline(30px);
+		.size(14px);
+	}
+	.thumbs{
+		.mt(25px);
+		.size();
+		.relative();
+		div{
+			.o();
+		}
+		ol{
+			.h(42px);
+			.size(0);
+		}
+		li:extend(.noimg){
+			.inblock();
+			.wh(40px);
+			.bd(1px,solid,@lightgray);
+			.m(0,5px,0,4px);
+			&.cur{
+				.bd-c(@red);
+			}
+		}
+		img{
+			.full();
+		}
+		sub,sup{
+			.absolute();
+			.size(14px);
+			.c(@deepgray);
+			.hline(40px);
+			.t();
+		}
+		sub{
+			.l(-10px);
+		}
+		sup{
+			.r(-10px);
+		}
+		li,sub,sup{
+			.c-p();
+		}
+	}
+	.actions:extend(.transSlow){
+		.absolute();
+		.wh(100%,0);
+		.lb();
+		.bg-c(@red);
+		.o();
+		.c(white);
+		div:extend(.transSlow){
+			&:hover{
+				.bg-c-a(black,.3);
+				a{
+					.c(white);
+				}
+			}
+		}
+		a{
+			.whline(40px) !important;
+			.bg-i(none) !important;
+			.p(0) !important;
+			.m(0) !important;
+			.c(white);
+		}
+		a.lcz,.cart a:before{
+			.inblock();
+			.valign();
+			.line(40px);
+			.size(24px);
+		}
+		.star,.share{
+			.fl();
+			.t-c();
+			.wh(40px);
+		}
+		.cart{
+			.size(14px);
+			.fr();
+			.p(0,.5em,0,6px);
+			a:before:extend(.lcz,.lcz-cart-full:before){}
+		}
+	}
+	//强写清除百度预置样式
+	.bds_more{}
+}

@@ -1,0 +1,33 @@
+<!-- 即时登陆插件 -->
+<link rel="stylesheet" href="login.css">
+<table class="FullScreenPlugin">
+	<tbody>
+		<tr>
+			<td>
+				<div class="LOGIN" ng-controller="CtrlLogin">
+					<div class="pic"><img src="/srcs/images/elephant.png" alt=""></div>
+					<h6>登陆乐车仔</h6>
+					<form novalidate name="LoginForm" id="LoginForm">
+						<div class="TEXTCONTAINER">
+							<input ng-model="passport" name="passport" id="passport" ng-required="true" ng-pattern="/^[\w\d][\w\d\_\-]*(\@([\w\d][\w\d\-\_]+\.)+\w{2,})?$/i" class="ng-untouched TEXTS EMAILS" ng-class="judge('passport');" ng-focus="reference=true;" ng-value="123123">
+							<label for="passport" class="LABELS">账号/手机/邮箱</label>
+							<ul class="EMAILS" ng-show="hasAt() && reference;">
+								<!-- <li ng-repeat="host in hosts | filter : afterAt()" ng-click="setEmail($index);">{{beforeAt()}}@{{host}}</li> -->
+								<li ng-repeat="host in hosts" ng-mouseenter="setEmail2($index);" ng-click="drop2();">{{beforeAt()}}@{{host}}</li>
+							</ul>
+						</div>
+						<div class="TEXTCONTAINER">
+							<input ng-model="password" name="password" id="password" ng-required="true" ng-pattern="/^[\w\W]{6,}$/i" class="ng-untouched TEXTS" ng-class="judge('password');">
+							<label for="password" class="LABELS">密码</label>
+						</div>
+						<div class="BTNCONTAINER">
+							<button class="button button-large button-red" ng-click="login();" ng-disabled="LoginForm.passport.$invalid || LoginForm.password.$invalid || LoginForm.$invalid"><i class="lcz lcz-heart"></i>登陆</button>
+							<button class="button button-large button-gray" ng-click="close();"><i class="lcz lcz-home2"></i>取消</button>
+						</div>
+					</form>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<script src="login.js"></script>

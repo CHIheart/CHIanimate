@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/> 
+<meta name="renderer" content="webkit">
+<meta content="yes" name="apple-mobile-web-app-capable" /> 
+<meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
+<meta content="telephone=no,email=no" name="format-detection" />
+<meta name="apple-touch-fullscreen" content="yes">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+
+<style>
+.TEXTCONTAINER{
+    margin:20px;
+    position:relative;
+}
+.TEXTS,.LABELS{
+    line-height:16px;
+    font-size:14px;
+    transition: all linear 0.3s;
+}
+.TEXTS{
+    height:16px;
+    width:200px;
+    padding:12px;
+    border:1px solid silver;
+    outline:none !important;
+    color:black;
+}
+.LABELS{
+    position:absolute;
+    background-color:white;
+    font-size:12px;
+    left:12px;
+}
+.TEXTS:focus + .LABELS,
+.TEXTS.ng-filled + .LABELS,
+.TEXTS.ng-touched.ng-invalid + .LABELS,
+.TEXTS.ng-empty.ng-untouched:focus + .LABELS,
+.TEXTS.ng-empty.ng-valid:focus + .LABELS
+{
+    padding:2px 5px;
+    top:-10px;
+}
+.TEXTS.ng-empty.ng-untouched + .LABELS,
+.TEXTS.ng-empty.ng-valid + .LABELS
+{
+    color:silver;
+    font-size:14px;
+    top:12px;
+}
+.TEXTS:focus{
+    border-color:black;
+}
+.TEXTS.ng-empty.ng-untouched:focus + .LABELS,
+.TEXTS.ng-empty.ng-valid:focus + .LABELS
+{
+    color:black;
+    font-size:12px;
+}
+.TEXTS.ng-touched.ng-invalid{
+    border-color:red;
+}
+.TEXTS.ng-touched.ng-invalid + .LABELS{
+    color:white;
+    background-color:red;
+}
+.TEXTS.ng-touched.ng-invalid-required + .LABELS:after{
+    content:"不能为空";
+}
+.TEXTS.ng-touched.ng-invalid-pattern + .LABELS:after{
+    content:"格式错误";
+}
+/*.TEXTS.ng-empty.ng-untouched.ng-valid-required + .LABELS:before,*/
+.TEXTS.ng-empty.ng-untouched[required] + .LABELS:before
+{
+    content:"(必填项)";
+}
+
+.BOXCONTAINER{
+    position:relative;
+    margin:20px;
+}
+.BOXCONTAINER .BOXES{
+    width:10px;
+    height:10px;
+    position:absolute;
+    border:2px solid green;
+}
+.BOXCONTAINER .BOXES[checked]
+{
+    border-color:red;
+}
+.BOXCONTAINER .BOXES + label{}
+.BOXCONTAINER .BOXES + label:before{
+    content:'';
+    display:block;
+    float:left;
+    width:16px;
+    height:16px;
+    border:1px solid silver;
+    box-sizing:border-box;
+    text-align:center;
+    transition: all linear 0.3s;
+    font-size:12px;
+}
+.BOXCONTAINER .BOXES:checked + label:before,
+.BOXCONTAINER .BOXES[checked] + label:before
+{
+    content:'√';
+    border:0;
+    background-color:red;
+    color:white;
+}
+label[for="onoff"]{
+    color:purple;
+}
+</style>
+
+<div class="Outer" ng-controller="CtrlMyApp">
+<form name="LoginForm">
+    <div class="TEXTCONTAINER">
+        <input type="text" class="ng-untouched TEXTS" ng-class="judge('username');" ng-model="username" id="username" name="username" ng-pattern="/^[\w\d][\w\d\_\-]*(\@([\w\d][\w\d\-\_]+\.)+\w{2,})?$/i" ng-required="true" ng-blur="touch('username');">
+        <label for="username" class="LABELS">用户名</label>
+    </div>
+    <div class="TEXTCONTAINER">
+        <input type="text" class="ng-untouched TEXTS" ng-class="judge('hosts');" ng-model="hosts" id="hosts" name="hosts" ng-required="true" ng-blur="touch('hosts');">
+        <label for="hosts" class="LABELS">邮箱</label>
+    </div>
+    <div class="TEXTCONTAINER">
+        <input type="text" class="ng-untouched TEXTS" ng-class="judge('usernick');" ng-model="usernick" id="usernick" name="usernick" ng-blur="touch('usernick');">
+        <label for="usernick" class="LABELS">用户昵称</label>
+    </div>
+    <div class="BOXCONTAINER">
+        <input type="checkbox" class="BOXES" name="onoff" id="onoff" ng-model="onoff" ng-required="true"><label for="onoff" class="LABELS">开关选项</label>
+    </div>
+    <textarea ng-model="hosts" ng-list="&#10;" ng-trim="false"></textarea>
+    <pre>{{ hosts | json }}</pre>
+    <input ng-copy="copied=true" ng-init="copied=false; value='copy me'" ng-model="value">
+copied: {{copied}}
+</form>
+</div>
+
+
+
+
+
+<script src="/srcs/js/libs/jquery.js"></script>
+<script src="/srcs/js/libs/seajs.js"></script>
+<script src="/srcs/js/libs/angular.js"></script>
+
+<script>
+var arr=[0,1,2,'','abc',undefined,null,4,5];
+    angular.module('myapp', [])
+        .controller('CtrlMyApp', ['$scope','$timeout',function($scope,$timeout) {
+            $scope.username="";
+            $scope.judge=function(name){
+                return $scope.LoginForm[name].$isEmpty(LoginForm[name].value) ? 'ng-empty' : 'ng-filled';
+            }
+            $scope.touch=function(name){
+                var obj=angular.element('#'+name);
+                obj.removeClass('ng-untouched').addClass('ng-touched');
+            }
+            $scope.hosts=['126.com','sina.com','163.com','qq.com'];
+            // $scope.dirty=function(){
+            //     for(var n in arguments){
+            //         if(angular.isArray(arguments[n])) $scope.dirty(arguments[n]);
+            //         else $scope.LoginForm[arguments[n]].$validate();
+            //     }
+            // }
+            // $scope.judge=function(obj){
+            //     console.log($scope.LoginForm.username.$isEmpty);
+            //     return "TEXTS"+ ($scope.LoginForm.username.$isEmpty(username) ? '' : ' filled');
+            // }
+        }]);
+</script>
+
+</body>
+</html>

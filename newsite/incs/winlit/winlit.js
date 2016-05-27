@@ -8,7 +8,7 @@ define('WINLIT',function(require,exports,module){
 		container=WINLIT.closest('.FullScreenPlugin'),
 		others;
 	//自举生成独立应用
-	angular.module('Winlit',[])
+	angular.module('Main')
 	.controller('CtrlWinlit',['$scope','$timeout',function($scope,$timeout){
 		$scope.title='标题';
 		$scope.content="内容";
@@ -40,22 +40,28 @@ define('WINLIT',function(require,exports,module){
 		}
 		$scope.close=$scope.confirm=$scope.cancel=close;
 
-		window.ALERT=function(title,content,emotion,onclose){
+		// window.ALERT=function(title,content,emotion,onclose){
+		$scope.$on('alert',function(event,title,content,emotion,onclose){
 			$scope.mode='ALERT';
 			setWords(title,content,emotion);
 			setFuns(onclose);
 			open(100);
-		}
-		window.ALERT.close=close;
-		window.CONFIRM=function(title,content,emotion,onconfirm,oncancel,onclose){
+		});
+		// window.ALERT.close=close;
+		$scope.$on('alert.close',function(){
+			$scope.close();
+		});
+		// window.CONFIRM=function(title,content,emotion,onconfirm,oncancel,onclose){
+		$scope.$on('confirm',function(event,title,content,emotion,onconfirm,oncancel,onclose){
 			$scope.mode='CONFIRM';
 			setWords(title,content,emotion);
 			setFuns(onclose,onconfirm,oncancel);
 			open(100);
-		}
-		window.CONFIRM.close=close;
+		});
+		// window.CONFIRM.close=close;
+		$scope.$on('alert.close',function(){
+			$scope.close();
+		});
 	}]);
-	angular.bootstrap(WINLIT, ['Winlit']);
 });
-
 seajs.use('WINLIT');

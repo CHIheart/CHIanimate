@@ -5,11 +5,11 @@
  * @version $Id$
  */
 
-define(function(require,exports,module){
+define('services',function(require,exports,module){
 	$(".Services span").click(function(event) {
 		$(this).toggleClass('checked');
 	});
-	angular.module('Services', [])
+	angular.module('Main')
 		.controller('CtrlServices', ['$scope', function ($scope) {
 			$scope.change=function(){
 				var ids=$(".Services span.checked").map(function(){
@@ -20,3 +20,4 @@ define(function(require,exports,module){
 		}])
 	return ;
 });
+seajs.use('services');

@@ -10,26 +10,33 @@ define('toplinks',function(require,exports,module){
 			$(".USERMENU").removeClass('on');
 		});
 	});
-
 	//根据用户登陆状态来判断显示菜单的哪一部分
-	angular.module("TopLinks",[])
-		.controller("CtrlTopLinks",['$scope','$timeout',function($scope,$timeout){
-			$scope.login=function(fCallback){
-				loadPlugin("login",function(){
-					angular.element(".LOGIN").scope().open(fCallback);
-				});
+	angular.module('Main')
+		.controller("CtrlTopLinks",['$scope','$timeout','$rootScope',function($scope,$timeout,$rootScope){
+			$scope.online;
+			//登录动作，召唤登录框
+			$scope.login=function(){
+				$rootScope.$broadcast('startLogin');
 			}
-			$scope.logout=function(fCallback){
+			//登出动作，发送登出事件
+			$scope.logout=function(){
 				$timeout(function(){
-					$scope.online=false;
+					$rootScope.online=false;
+					//发送登出事件
+					$rootScope.$broadcast('logout');
 					$timeout(function(){
 						show();
-						$.isFunction(fCallback) && fCallback();
 					},100);
 				},100);
 			}
+			//接收登录成功事件
+			$scope.$on('loginOK',function(event){
+				$timeout(function(){
+					$rootScope.online=true;
+					show();
+				});
+			});
 		}]);
-	angular.bootstrap(oJQ,['TopLinks']);
 	
 	function show(){
 		oJQ.children().css({

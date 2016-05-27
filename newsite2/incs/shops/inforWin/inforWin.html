@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="inforWin.css">
+<div class="InforWin">
+	<div class="basic clearfix">
+		<h3><span ng-bind="curshop.name"></span><small class="mend" ng-class="getClass(curshop.type)" ng-bind="curshop.type"></small></h3>
+		<var><img ng-src="{{curshop.image}}" alt="{{curshop.name}}"></var>
+		<dl class="infors">
+			<dt>店铺地址：</dt>
+			<dd ng-bind="curshop.address"></dd>
+			<dt>联系电话：</dt>
+			<dd ng-bind="curshop.tel"></dd>
+			<dt>客户评价：</dt>
+			<dd><span ng-bind="getStars(curshop.score)"></span><span ng-bind="curshop.score"></span>分</dd>
+			<dt>营业时间：</dt>
+			<dd ng-bind="curshop.time"></dd>
+		</dl>
+	</div>
+	<div>
+		<h4>门店相关服务</h4>
+		<div class="services">
+			<table>
+				<thead>
+					<tr>
+						<th>服务名称</th>
+						<td>服务项目</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="serve in curshop.services">
+						<th ng-bind="serve.name"></th>
+						<td ng-bind="serve.content"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- (broadcast|on|emit)\([\"\'] -->

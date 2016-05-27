@@ -1,0 +1,97 @@
+//首页推荐三大块通用
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
+
+.Pushes dd{
+	> *{
+		.fl();
+	}
+	li{
+		.h(300px);
+		.m(0,0,14px,14px);
+	}
+	.left{
+		.w(234px);
+	}
+	//中间2大块
+	.mid{
+		.w(482px + 14px);
+		li:extend(.clearfix){
+			.fn() !important;
+			.w(482px);
+		}
+		var{
+			.fr();
+			.wh(260px);
+		}
+		h3,h4,.prices{
+			.t-l();
+			.pl(10px);
+		}
+		h3{
+			.m(30px,0,20px);
+			.size(18px);
+			.hline(30px);
+		}
+		h4{
+			.size();
+			.c(@deepgray);
+		}
+	}
+	//右侧3+2
+	.right{
+		.w((234px + 14px) * 2);
+	}
+	.right,.rest{
+		li{
+			.w(234px);
+		}
+		var{
+			.wh(180px);
+			.m(15px,auto);
+		}
+		h3{
+			.size(14px);
+		}
+	}
+	.rest,.small{
+		.w(234px + 14px);
+	}
+	//最小尺寸
+	.small li:extend(.clearfix){
+		.h(143px);
+		.t-l();
+		var{
+			.fr();
+			.wh(120px);
+			.m(-10px,-10px,0,0);
+		}
+		h3{
+			.size();
+			.m(30px,0,10px);
+		}
+	}
+	//查看更多
+	.more{
+		a > *:extend(.transSlow){
+			.block();
+		}
+		i.lcz{
+			.fr();
+			.c(@red);
+			.size(50px);
+			.hline(143px - 40px);
+		}
+		small{
+			.size(18px);
+			.c(@deepblack);
+			.m(24px,0,10px);
+		}
+		strong{
+			.size();
+			.c(@lightblack);
+		}
+	}
+}

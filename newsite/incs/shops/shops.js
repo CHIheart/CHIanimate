@@ -6,22 +6,26 @@
  */
 
 define('shops',function(require,exports,module){
+	var mymap;
+	//异步写入百度地图之后的回调
 	window.init=function(){
-		var BDMAP=require("./baiduMap");
-		mymap=new BDMAP('BaiduMap',{
-			multiple:true
+		require.async("./baiduMap",function(BDMAP){
+			mymap=new BDMAP('BaiduMap',{
+				multiple:true
+			});
 		});
 	}
+	//异步写入百度地图的方法
 	$(window).load(function() {
 		var script=$("<script/>");
 		script.prop("src","http://api.map.baidu.com/api?v=2.0&ak=QaqY5bsrblkjzUMC22LVGOYZ&callback=init");
 		$("body").append(script);
 	});
-	require("../addresses/addresses");
-	require("./services/services");
-	var mymap,
-		SHOPS=require("datas/stores");
-	angular.module('Shops',['Addresses','Services','ngSanitize'])
+	var SHOPS;
+	require.async("datas/stores",function(data){
+		SHOPS=data;
+	});
+	angular.module('Main')
 		//店铺信息过滤器，根据页面所选条件过滤
 		.filter("fltShops",function(){
 	        return function(SHOPS,filters){
@@ -280,8 +284,8 @@ define('shops',function(require,exports,module){
 				},100);
 			}
 		}])
-	//自举要写在所有的控制器都初始化之后
-	angular.bootstrap($(".SHOPS"), ['Shops']);
+	// 自举要写在所有的控制器都初始化之后
+	// angular.bootstrap($(".SHOPS"), ['Shops']);
 
 	return ;
 });

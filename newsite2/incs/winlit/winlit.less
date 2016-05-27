@@ -1,0 +1,54 @@
+//通用警告及询问窗
+
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+.WINLIT{
+	.relative();
+	// .bg(url("/srcs/images/elephant.png") left center no-repeat);
+	.bd(1px,solid,@middlegray);
+	.bg-c(white);
+	.w(360px);
+	.h(240px);
+	.ma();
+	> dt{
+		.hline(40px);
+		.p(0,10px);
+		.bg-c(@globalbg);
+		.bd-b(1px,solid,@pale);
+		strong{
+			.size(16px);
+			.fl();
+		}
+		q{
+			.fr();
+			.size(20px);
+			.c-p();
+		}
+	}
+	.emotion{
+		.block();
+		.size(36px);
+		.whline(40px);
+		.m(10px,auto);
+		.c(@red);
+	}
+	.tips{
+		.m(10px);
+		.t-c();
+		.size(14px);
+		.c(@middleblack);
+		.line(24px);
+	}
+	.btns{
+		.absolute();
+		.bg(@globalbg);
+		.bd-t(1px,solid,@pale);
+		.w(100%);
+		.p(10px,0);
+		.lb();
+		.t-c();
+	}
+	.button{
+		.valign(top);
+	}
+}

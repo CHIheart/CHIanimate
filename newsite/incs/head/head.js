@@ -34,13 +34,24 @@ define('always',function(require,exports,module){
 				data: {plugin: name},
 			})
 			.success(function(data) {
-				$("body").append(data);
+				var style=data.match(/<style>[\s\S]*?<\/style>/gi)[0],
+					script=data.match(/<script>[\s\S]*?<\/script>/gi)[0],
+					html=data.replace(style,'').replace(script,'');
+				$('body').append(style+script);
+				var $injector = angular.injector(['ng', 'Main']);
+				$injector.invoke(function($rootScope, $compile) {
+					$('body').append($compile(html)($rootScope));
+				});
+				// $("body").append(data);
 				done();
 				init();
 			});
 		}else done();
 	}
 	window.loadPlugin=loadPlugin;
+	angular.module('Main',['ngSanitize'])
+		.controller('CtrlMain', ['$scope', function ($scope) {
+		}]);
 	return ;
 });
 

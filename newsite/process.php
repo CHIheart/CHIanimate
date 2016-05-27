@@ -264,7 +264,7 @@ function locateMedias(&$txtCnt,$urlAbs){
 	static $regMedias='/<(?:img|video|audio|embed|source)[^\>]*src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)"/i';
 	static $regUrls='/url\([\'\"]?((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+(?:[\?\#][\w\d]+)*)[\'\"]?\)/';
 	static $regSuffix='/[\?\#][\w\d]+/i';
-	static $regRequire='/require\([\'\"]((?:\.{0,2}\/)*[\w\d]+(?:\/[\w\d]+)*(?:\.js)?)[\'\"]\)/i';
+	static $regRequire='/require(?:\.async)?\([\'\"]((?:\.{0,2}\/)*[\w\d]+(?:\/[\w\d]+)*(?:\.js)?)[\'\"]/i';
 	static $regIcon='/link href="(\/src[^"]+)"/i';
 	static $regDDS='/^\.{0,2}\//i';
 	$extName=getExtName($urlAbs);
@@ -412,7 +412,7 @@ function jsRacing($url1,$url2){
 function calJsRace($url){
 	$dirs=array(
 		"srcs"=>["libs","datas","effects","plugins"],
-		"incs"=>["header","footer","aside"]
+		"incs"=>["head","header","footer","aside"]
 	);
 
 	$bits=[];

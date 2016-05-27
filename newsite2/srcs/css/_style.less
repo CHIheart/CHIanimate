@@ -1,0 +1,117 @@
+/* 整站通用样式 全站兼容标准IE8+*/
+*{
+	.m(0);
+	.p(0);
+	.yahei();
+	.italic(false);
+	.bold(false);
+}
+ul,ol,li{ list-style:none;}
+q{ quotes:none;}
+a{
+	.decorate();
+	.c-p();
+}
+a img{
+	.bd(0);
+}
+body{
+	&.cover:before{
+		.cnt();
+		.full();
+		.bg-c-a(black,.5);
+		.lt();
+		.z(66666);
+	}
+	&.window:before{
+		.fixed();
+	}
+	&.html:before{
+		.absolute();
+	}
+}
+input::-ms-clear{
+	.none();
+}
+textarea{
+	.noresize();
+}
+table{
+	border-collapse:collapse;
+	table-layout:fixed;
+}
+/*下边三个占位符一定不能写在一起，不然会失效*/
+:-moz-placeholder{
+	.c(@placeholder);
+}
+::-moz-placeholder{
+	.c(@placeholder);
+}
+:-ms-input-placeholder {
+	.c(@placeholder);
+}
+:focus,:invalid{
+	.out(none);
+}
+.clearfix{
+	.clear() !important;
+	.fn() !important;
+	zoom:~"1\9";
+}
+.clearfix:after{
+	.cnt();
+	.block();
+	.clear();
+	.fn();
+}
+.common:extend(.clearfix all){
+	.w(1226px);
+	.ma();
+	.clear();
+}
+.container:extend(.clearfix all){
+	.minw(1226px);
+}
+///*IE6 用absolute模拟fixed*/
+//body{
+//	_background-image: url(about:blank);     /*用浏览器空白页面作为背景*/
+//	_background-attachment: fixed;     /* prevent screen flash in IE6 确保滚动条滚动时，元素不闪动*/
+//}
+/*半透明背景*/
+// .black5{
+// 	.bg-c-a(black,.5);
+// }
+// .black8{
+// 	.bg-c-a(black,.8);
+// }
+//.fixed{
+//	.fixed();
+// 	_position:absolute;
+//}
+// .fixed-top{
+// 	.fixed();
+// 	.t();
+// 	// _top:expression(eval(document.documentElement.scrollTop));
+// }
+// .fixed-bottom{
+// 	.fixed();
+// 	.b();
+// 	// _bottom:auto;
+// 	// _top:expression(eval(document.documentElement.scrollTop + document.documentElement.clientHeight - this.clientHeight - (parseInt(this.currentStyle.marginTop) || 0) - (parseInt(this.currentStyle.marginBottom) || 0)));
+// }
+/*全屏插件，为了方便横竖居中，使用表格*/
+// .FullScreenPlugin{
+// 	.none();
+// 	.full();
+// 	.z(55555);
+// 	// _height:expression(eval(document.documentElement.clientHeight));
+// }
+
+/*禁用*/
+.disabled,[disabled]{
+	.c-n() !important;
+}
+
+.transSlow{
+	.trans();
+}

@@ -1,0 +1,107 @@
+//通用产品列表
+
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
+
+.PROLIST:extend(.anchors all){
+	ul:extend(.clearfix){}
+	> li:extend(.transSlow){
+		.fl();
+		.bg-c(white);
+		.t-c();
+		.p(20px);
+		.bbox();
+		.relative();
+		&:hover:extend(.shadowLarge){
+			.summary{
+				.h(40px);
+			}
+		}
+	}
+	//产品大图
+	var:extend(.noimg){
+		.block();
+		img{
+			.full();
+		}
+	}
+	//产品标题，h3稍大，h4稍小
+	h3,h4,h5{
+		&:extend(.ellipsis);
+	}
+	h3{
+		.size(16px);
+	}
+	h4{
+		.size(14px);
+	}
+	//原价/现价
+	ins,del{
+		.block();
+		.size();
+	}
+	ins{
+		.c(@red);
+		.decorate();
+		+ del{
+			.ml(1em);
+		}
+	}
+	del{
+		.c(@deepgray);
+		.decorate(line-through);
+	}
+	//横向放置的原价/现价
+	.prices{
+		ins,del{
+			.inblock();
+		}
+	}
+	//放置特殊标识的容器
+	blockquote{
+		.absolute();
+		.lt();
+		.w(100%);
+		.hline(16px);
+		.size();
+		.t-c();
+	}
+	abbr{
+		.inblock();
+		.c(white);
+		.p(0,4px);
+		//打折
+		&.cutoff{
+			.bg-c(@red);
+		}
+		//赠品
+		&.gift{
+			.bg-c(@blue);
+		}
+		//需要匹配车型
+		&.match{
+			.bg-c(@cyan);
+		}
+		//免邮费
+		&.free{
+			.bg-c(@yellow);
+		}
+		//新品
+		&.new{
+			.bg-c(@green);
+		}
+	}
+	.summary:extend(.ellipsis,.transSlow){
+		.absolute();
+		.wh(100%,0);
+		.bbox();
+		.p(0,20px);
+		.line(40px);
+		.bg-c(@red);
+		.c(white);
+		.size(14px);
+		.lb();
+	}
+}

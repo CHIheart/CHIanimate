@@ -5,22 +5,20 @@
 define('LOGIN',function(require,exports,module){
 	var LOGIN=$(".LOGIN"),
 		container=LOGIN.closest('.FullScreenPlugin');
-	angular.module('Login',[])
-	.controller('CtrlLogin',['$scope','$timeout',function($scope,$timeout){
+	angular.module('Main')
+	.controller('CtrlLogin',['$scope','$timeout','$rootScope',function($scope,$timeout,$rootScope){
         $scope.judge=function(name){
             return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
         }
-		$scope.open=function(fCallback){
+		$scope.open=function(){
 			container.fadeIn();
-			fAfterLogin=fCallback;
 			return this;
 		}
 		$scope.close=function(){
 			container.fadeOut();
 			return this.reset();
 		}
-		$scope.loginOK=angular.noop;
-		var fAfterLogin=angular.noop;
+		var fAfterLogin=$.noop;
 		$scope.login=function(){
 			$.ajax({
 				url: '/ajax/header/login',
@@ -32,14 +30,9 @@ define('LOGIN',function(require,exports,module){
 				if(data.result){
 					$scope.reset();
 					$scope.$apply();
-					var scopeUsermenu=angular.element('.TOPLINKS').scope();
-					scopeUsermenu.online=true;
-					scopeUsermenu.user=data.user;
-					scopeUsermenu.$apply();
-					$('.TOPLINKS').children().css({
-						visibility:'visible'
-					});
-					$.isFunction(fAfterLogin) && fAfterLogin();
+					//发送登录成功事件
+					$rootScope.$broadcast('loginOK');
+					fAfterLogin();
 					$scope.close();
 				}else{
 					ALERT("登陆失败",data.message,"frown",function(){
@@ -91,8 +84,12 @@ define('LOGIN',function(require,exports,module){
 		}
 		$scope.hosts=['126.com','163.com','sina.com','yeah.net','qq.com','hotmail.com'];
 		$scope.reference=true;
+		//接收启动登录事件
+		$scope.$on('startLogin',function(event,fCallback){
+			$scope.open();
+			fAfterLogin=fCallback;
+		});
 	}]);
-	angular.bootstrap(LOGIN,['Login']);
 	//点过再失焦后，更换成触摸类
 	$(".ng-untouched",LOGIN).one('blur', function(event) {
 		$(this).removeClass('ng-untouched').addClass('ng-touched');

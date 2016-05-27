@@ -2,8 +2,8 @@
  * 顶购物车的单独应用
  */
 define('topcart',function(require,exports,module){
-	angular.module("TopCart",[])
-	.controller('Ctrl_TOPCART',['$scope','$timeout',function($scope,$timeout){
+	angular.module("Main")
+	.controller('Ctrl_TOPCART',['$scope','$timeout','$rootScope',function($scope,$timeout,$rootScope){
 		//购物车列表
 		$scope.carts=[
 			// {
@@ -85,48 +85,44 @@ define('topcart',function(require,exports,module){
 		//删除一条
 		$(".TOPCARTINFO").on('click', 'i.lcz-times', function(event) {
 			event.preventDefault();
-			var THIS=this,
-			delAsk=function(){
-				CONFIRM('删除货物','真的要删除这条购物信息吗？','question',function(){
-					var li=$(THIS).closest('li'),
-						cartid=li.data("cart-id"),
-						parentid=li.data('cart-parent-id'),
-						delids=[],
-						cart;
-					for(var n=carts.length-1; n>=0; n--)
-					{
-						cart=carts[n];
-						// 1.当前记录
-						// 2.当前记录的附加记录
-						(cart.id==cartid || cart.parent==cartid) && (carts.splice(n,1),delids.push(cart.id));
-					}
-					calculate();
-					$scope.$apply();
+			var THIS=this;
+			$rootScope.$broadcast('confirm','删除货物','真的要删除这条购物信息吗？','question',function(){
+				var li=$(THIS).closest('li'),
+					cartid=li.data("cart-id"),
+					parentid=li.data('cart-parent-id'),
+					delids=[],
+					cart;
+				for(var n=carts.length-1; n>=0; n--)
+				{
+					cart=carts[n];
+					// 1.当前记录
+					// 2.当前记录的附加记录
+					(cart.id==cartid || cart.parent==cartid) && (carts.splice(n,1),delids.push(cart.id));
+				}
+				calculate();
+				// $scope.$apply();
 
-					$.ajax({
-						url: '/ajax/header/cart_delete',
-						type: 'POST',
-						dataType: 'json',
-						data: {ids: delids},
-					})
-					.success(function(data) {
-						if(data.result)
-						{
-							CONFIRM.close();
-						}
-						else
-						{
-							ALERT('删除失败',data.message,'frown');
-						}
-					});
-					li=cart=delids=null;
+				$.ajax({
+					url: '/ajax/header/cart_delete',
+					type: 'POST',
+					dataType: 'json',
+					data: {ids: delids},
+				})
+				.success(function(data) {
+					if(data.result)
+					{
+						$rootScope.$broadcast('confirm.close');
+					}
+					else
+					{
+						$rootScope.$broadcast('alert','删除失败',data.message,'frown');
+					}
 				});
-			};
-			delAsk()
+				li=cart=delids=null;
+			});
 			
 			$scope.close();
 		});
 	}]);
-	angular.bootstrap($('.TOPCART'), ['TopCart']);
 });
 seajs.use('topcart');

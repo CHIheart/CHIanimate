@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="topsearch.css">
+<form action="" class="TOPSEARCH" ng-controller="CtrlTopSearch">
+	<div class="TEXTCONTAINER">
+		<input ng-model="searchkey" name="searchkey" id="searchkey" class="ng-untouched TEXTS" ng-class="judge('searchkey');">
+		<label for="searchkey" class="LABELS">关键字</label>
+		<button class="transSlow"><i class="lcz lcz-magnifier"></i></button>
+		<ul class="TOPSEARCHLIST">
+			<li ng-repeat="key in keywords | fltTopSearch:searchkey track by $index">
+				<a href="{{key.href}}" title="{{key.title}}" ><span ng-bind-html="key.name"></span><samp>共{{key.count}}件</samp></a>
+			</li>
+		</ul>
+		<div class="TOPSEARCHKEYS">
+			<!-- include src="topsearchKey.html" variable="$aData['searchKeys']" repeats="-1" -->
+		</div>
+	</div>
+</form>
+<script src="topsearch.js"></script>

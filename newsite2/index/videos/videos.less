@@ -1,0 +1,78 @@
+//视频列表
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
+
+.Videos{
+	> div{
+		.m(0,6px,6px,0);
+	}
+	img{
+		.full();
+	}
+	.left{
+		.fl();
+		div{
+			.mb(6px);
+		}
+	}
+	.right{
+		.fr();
+		.mr(0);
+	}
+	.small,.large,.mid{
+		&:extend(.noimg);
+		.relative();
+		> *{
+			.absolute();
+		}
+	}
+	.small{
+		.wh(240px);
+	}
+	.large{
+		.wh(488px,486px);
+	}
+	.mid{
+		.wh(486px,240px);
+	}
+	.nomr{
+		.mr(0);
+	}
+	h4{
+		.hline(40px);
+		.size(16px);
+		.c(white);
+		.bg-c-a(black,.5);
+		.w(100%);
+		.lb();
+		.o();
+	}
+	em:extend(.ellipsis){
+		.fl();
+		.w(80%);
+		.indent(.5em);
+	}
+	i.lcz:extend(.transSlow){
+		.fr();
+		.m(8px);
+		.whline(24px);
+		.c-p();
+		.t-c();
+		.bg-c(white);
+		.c(black);
+		.round();
+		.indent(3px);
+		&:hover{
+			.bg-c(@red);
+			.c(white);
+		}
+	}
+}
+
+.IE8{
+	h4{
+		.bg-c-ie(black,.5);
+	}
+}

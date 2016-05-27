@@ -1,0 +1,119 @@
+/**
+ * 通用脚文件
+ * @authors Your Name (you@example.org)
+ * @date    2016-05-14 10:44:52
+ * @version $Id$
+ */
+
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+
+.FOOTER{
+	.bg-c(white);
+	.p(20px,0);
+	.mt(40px);
+}
+//五个大版
+.FORUMS{
+	.t-c();
+	.pt(20px);
+	.bd-t(1px,solid,@lightgray);
+	.bd-b(1px,solid,@lightgray);
+	li{
+		.w(20%);
+		.fl();
+		&:before{
+			.cnt();
+			.fl();
+			.h(40px);
+			.mt(20px);
+			.bd-l(1px,solid,@lightgray);
+		}
+		&:first-child:before{
+			.bd-l(0);
+		}
+	}
+	i.lcz{
+		.size(40px);
+		.block();
+		.whline(50px);
+		.ma();
+		&-cap{
+			.size(50px);
+		}
+	}
+	h3{
+		.size(18px);
+		.m(5px,auto,30px);
+	}
+}
+//底导航
+.NAVIGATE{
+	.p(40px,0);
+	.t-c();
+	.bd-b(1px,solid,@lightgray);
+	li:extend(.FORUMS li){}
+	h3{
+		.size(16px);
+		.hline(20px);
+		.mb(20px);
+	}
+	h4{
+		.size();
+		.hline(24px);
+	}
+	strong{
+		.block();
+		.size(32px);
+		.c(@red);
+		.mb(10px);
+	}
+	p{
+		.line(20px);
+		.size();
+		.c(@lightblack);
+	}
+	a.SERVER{
+		.bg-c(@red);
+		.c(white);
+		.block();
+		.w(120px);
+		.hline(30px);
+		.m(20px,auto);
+		.size(16px);
+		i.lcz{
+			.size(24px);
+			.mr(4px);
+			.relative();
+			.t(4px);
+		}
+		&:hover{
+			.bg-c(darken(@red,20%));
+		}
+	}
+}
+//版权信息
+.COPYRIGHT{
+	.t-c();
+	.size();
+	.c(@lightblack);
+	.p(20px,0);
+	.line(24px);
+}
+//回顶
+.GOTOP{
+	.fixed();
+	.o();
+	.wh(50px);
+	.bg-c(@red);
+	.c(white);
+	.t-c();
+	.size(14px);
+	.line(24px);
+	.rb();
+	.c-p();
+	i.lcz{
+		.block();
+		.mt(8px);
+	}
+}

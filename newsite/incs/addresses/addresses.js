@@ -5,14 +5,18 @@
  * @version $Id$
  */
 
-define(function(require,exports,module){
-	require("../select/select");
-	var CHINA=require("datas/china");
-	angular.module('Addresses', [])
-		.controller('CtrlAddresses', ['$scope',function ($scope) {
-			$scope.CHINA=CHINA;
+define('addresses',function(require,exports,module){
+	angular.module('Main')
+		.controller('CtrlAddresses', ['$scope','$rootScope',function ($scope,$rootScope) {
+			//这块必须异步调用，不然会卡住进程，就会报错
+			require.async("/incs/select/select");
+			require.async("datas/china",function(data){
+				$scope.CHINA=data;
+				$scope.$apply();
+			});
 			//默认让省市区都指过来，因为如果过滤条件为空的话，选项会全显示出来
 			var old={id:"000000"};
+			$scope.prefix="shop"
 			$scope.province=$scope.city=$scope.district=old;
 			$scope.set=function(item){
 				$scope[item]=this.item || old;
@@ -23,7 +27,9 @@ define(function(require,exports,module){
 						$scope.district=old;
 				}
 				//向上发送地址更改事件
-				$scope.$emit('addressesChange', $scope.province,$scope.city,$scope.district);
+				$rootScope.$broadcast('addressesChange', $scope.province,$scope.city,$scope.district);
 			}
 		}]);
 });
+
+seajs.use('addresses');

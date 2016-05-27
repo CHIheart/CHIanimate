@@ -1,0 +1,32 @@
+<!-- 推荐产品三大块共用 -->
+<link rel="stylesheet" href="pushes.css">
+<link rel="stylesheet" href="/incs/prolist/prolist.css">
+<dl class="Main Pushes common">
+	<dt>
+		<em>{$mainname}</em>
+		<ul>
+			<!-- include src="subcate.html" variable="$aData['subcates'];" repeats="-1" -->
+			<s class="clearfix"><!-- 移动下划线 --></s>
+		</ul>
+	</dt>
+	<dd>
+		<div class="left">
+			<!-- include src="left.html" variable="$aData['left'];" -->
+		</div>
+		<ul class="PROLIST mid">
+			<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=1;" variable="$aData['pros'];" repeats="2" -->
+		</ul>
+		<ul class="PROLIST right">
+			<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=2;" variable="array_slice($aData['pros'],2,2);" repeats="2" -->
+		</ul>
+		<ul class="PROLIST rest">
+			<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=5;" variable="array_slice($aData['pros'],4,1);" repeats="1" -->
+		</ul>
+		<ul class="PROLIST small">
+			<!-- include src="/incs/prolist/pro.html" condition="count($aData['pros'])>=6;" variable="$aData['pros'][5]" -->
+			<!-- include src="more.html" -->
+		</ul>
+	</dd>
+</dl>
+<script src="pushes.js"></script>
+<script src="/incs/prolist/prolist.js"></script>

@@ -1,0 +1,114 @@
+//首页幻灯片
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+
+.PPT{
+	.h(520px);
+	.z(444);
+	&:hover,& ul,.common{
+		.relative();
+	}
+	ul li,sub,sup,.ctrl,ol{
+		.absolute();
+	}
+	ul{
+		&, li, li a{
+			.full();
+			.l();
+			.block();
+		}
+		li{
+			.bg-p(center);
+		}
+	}
+	.common{
+		.t(-100%);
+	}
+	.ctrl{
+		.t();
+		.w(100%);
+	}
+	sub,sup{
+		.hline(80px);
+		.size(40px);
+		.t-c();
+		.t(220px);
+		.c(white);
+		.c-p();
+		.opacity(.5);
+		&:hover{
+			.bg-c-a(black,.3);
+			.opacity(1);
+		}
+	}
+	sub{
+		.l(234px);
+	}
+	sup{
+		.r();
+	}
+	sub,sup,ol{
+		.none();
+	}
+	&:hover{
+		sub,sup,ol{
+			.block();
+		}
+	}
+	ol{
+		.r(20px);
+		.t(470px);
+		li{
+			.wh(20px);
+			.inblock();
+			.mr(4px);
+			.c-p();
+			.opacity(.5);
+			.t-c();
+			.relative();
+			&:before,&:after{
+				.cnt("●");
+				.absolute();
+				.lt();
+				.full();
+			}
+			&:before{
+				.size(30px);
+				.line(22px);
+				.c(white);
+			}
+			&:after{
+				.size(21px);
+				.line(24px);
+				.c(black);
+			}
+			&:hover,&.cur{
+				.opacity(1);
+				&:after{
+					.c(@lightblack);
+				}
+			}
+		}
+	}
+}
+
+//IE89兼容
+.PPT{
+	sub,sup{
+		.IE8 &:hover{
+			.bg-c-ie(black,.5);
+		}
+	}
+	ol li{
+		.IE9 &{
+			&:after{
+				.line(26px);
+			}
+		}
+		.IE8 &{
+			&:after:extend(.IE9 .PPT ol li:after){
+				.indent(3px);
+			}
+		}
+	}
+}

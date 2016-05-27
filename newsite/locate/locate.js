@@ -5,6 +5,7 @@
  * @version $Id$
  */
 
-define(function(require,exports,module){
+define('locate',function(require,exports,module){
 	return ;
 });
+seajs.use('locate');

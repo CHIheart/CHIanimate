@@ -1,0 +1,155 @@
+//门店大插件
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
+.Left,.Right{
+	.bd(1px,solid,@lightgray);
+}
+//左边
+.Left{
+	.w(430px);
+	.h(725px);
+	.fl();
+	.selects{
+		.hline(40px);
+		.p(12px,14px);
+		.bg-c(@pale);
+		.size(0);
+		.SELECT{
+			.fl();
+			.w(134px);
+		}
+	}
+	.totals{
+		.hline(45px);
+		.bd-b(1px,solid,@lightgray);
+		dt,dd{
+			.fl();
+		}
+		dt{
+			.size(14px);
+			.w(134px);
+			.ml(14px);
+			.c(@lightblack);
+			b{
+				.c(@red);
+			}
+		}
+	}
+	.pages{
+		.wh(268px,40px);
+		.nowrap();
+		.o();
+		.size();
+		.t-r();
+		a:extend(.transSlow){
+			.inblock();
+			.hline(16px);
+			.ml(4px);
+			.p(0,4px);
+			.bd(1px,solid,@lightgray);
+			.c(@middleblack);
+			.t-c();
+			&:hover{
+				.bd-c(@lightblack);
+				.c(black);
+			}
+			&.cur{
+				.bd-c(@red);
+				.bg-c(@red);
+				.c(white);
+			}
+		}
+	}
+	.list{
+		.o-a();
+		.maxh(615px);
+		li{
+			.h(100px);
+			.o();
+			.bd-b(1px,solid,@lightgray);
+			.p(10px,16px,10px,148px);
+			.line(25px);
+			.size(14px);
+			.c(@lightblack);
+		}
+		var:extend(.noimg){
+			.wh(120px,90px);
+			.fl();
+			.m(4px,0,0,-134px);
+		}
+		img{
+			.full();
+		}
+		h4:extend(.ellipsis){
+			.c(@middleblack);
+		}
+		small{
+			.c(white);
+			.p(0,2px);
+			.mr(4px);
+			&.fast{
+				.bg-c(@cyan);
+			}
+			&.ssss{
+				.bg-c(@blue);
+			}
+			&.mend{
+				.bg-c(@green);
+			}
+		}
+		samp,b{
+			.c(@red);
+		}
+		p:extend(.ellipsis){}
+	}
+}
+
+//右边
+.Right{
+	.w(770px);
+	.h(725px);
+	.fr();
+}
+.SearchMap{
+	.bg-c(@pale);
+	.p(12px,14px);
+	.SELECT{
+		.fl();
+		.w(120px);
+		.z(2);
+	}
+	.TEXTCONTAINER{
+		.fl();
+		.w(500px);
+		.m(0);
+		.p(0,10px);
+		.bg-c(white);
+		.bd(1px,solid,@lightgray);
+		.bd-w(1px,0);
+		input{
+			.hline(36px);
+			.bd(0);
+			.w(100%);
+		}
+	}
+	.submit:extend(.transSlow){
+		.fl();
+		.w(100px);
+		.hline(38px);
+		.bd(1px,solid,@lightgray);
+		.bg-c(@lightgray);
+		.c-p();
+		&:hover{
+			.bg-c(@lightblack);
+			.c(white);
+		}
+	}
+}
+#BaiduMap{
+	.wh(770px,663px);
+}
+.SearchNearby{
+	.c(#3d6dcc);
+}

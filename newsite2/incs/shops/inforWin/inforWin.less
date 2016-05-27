@@ -1,0 +1,102 @@
+/**
+ * 单店铺信息窗
+ * @authors Your Name (you@example.org)
+ * @date    2016-05-19 17:12:04
+ * @version $Id$
+ */
+
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+@import (reference) "../../../srcs/css/_style";
+@import (reference) "../../../srcs/css/css.less";
+@import (reference) "../shops.less";
+
+.InforWin{
+	.none();
+	.w(520px);
+	.absolute();
+	.bg-c(white);
+	//上半部分，基本信息
+	.basic{
+		.bd-b(1px,solid,@lightgray);
+		.pb(10px);
+	}
+	h3{
+		.size(16px);
+		.c(@deepblack);
+		.hline(30px);
+		.mb(5px);
+		span{
+			.bold();
+		}
+	}
+	small:extend(.Left .list small all){
+		.m(0,0,0,4px);
+	}
+	var:extend(.noimg){
+		.wh(160px,120px);
+		.fl();
+		.bd(1px,solid,@lightgray);
+	}
+	img:extend(.Left .list img all){}
+	//基本信息-信息项目
+	.infors{
+		.wh(350px,120px);
+		.size(14px);
+		.c(@middleblack);
+		.line(30px);
+		.fr();
+	}
+	dt,dd{
+		&:extend(.ellipsis);
+		.fl();
+	}
+	dt{
+		.w(100px);
+		.t-r();
+	}
+	dd{
+		.w(250px);
+	}
+	//服务项目
+	h4{
+		.size(14px);
+		.hline(40px);
+		.c(@middleblack);
+	}
+	.services{
+		.maxh(140px);
+		.o-a();
+	}
+	table{
+		.bd(1px,solid,@lightgray);
+		.w(100%);
+	}
+	thead > *{
+		.t-c();
+		.bg-c(@lightgray);
+		.size(14px);
+		.bold();
+		.c(@deepblack);
+	}
+	tbody > *{
+		.size();
+		.c(@middleblack);
+	}
+	th{
+		.hline(30px);
+		.w(120px);
+		.bd-r(1px,solid,@lightgray);
+		.t-c();
+	}
+	th,td{
+		.bd-b(1px,solid,@lightgray);
+	}
+	td{
+		.p(5px,10px);
+		.line(20px);
+	}
+	.BMap_bubble_content &{
+		.block();
+	}
+}
