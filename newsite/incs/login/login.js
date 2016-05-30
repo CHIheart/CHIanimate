@@ -7,6 +7,8 @@ define('LOGIN',function(require,exports,module){
 		container=LOGIN.closest('.FullScreenPlugin');
 	angular.module('Main')
 	.controller('CtrlLogin',['$scope','$timeout','$rootScope',function($scope,$timeout,$rootScope){
+		$scope.passport="";
+		$scope.password="";
         $scope.judge=function(name){
             return $("#"+name).val() ? 'ng-filled' : 'ng-empty';
         }
@@ -56,14 +58,15 @@ define('LOGIN',function(require,exports,module){
 			return this;
 		}
 		$scope.hasAt=function(){
-			return passport.value.indexOf('@')>0;
+			return $scope.passport.indexOf('@')>0;
 		}
 		$scope.beforeAt=function(){
-			var v=passport.value;
+			var v=$scope.passport;
+			console.info(v);
 			return v.substring(0,v.indexOf('@'));
 		}
 		$scope.afterAt=function(){
-			var v=passport.value;
+			var v=$scope.passport;
 			return v.substring(v.indexOf('@')+1);
 		}
 		$scope.setEmail=function(index){

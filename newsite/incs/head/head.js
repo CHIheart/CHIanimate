@@ -55,7 +55,7 @@ define('always',function(require,exports,module){
 		}]);
 	//单复选框，IE8兼容
 	if(navigator.userAgent.indexOf('MSIE 8')>0)
-	$(".BOXGROUP label").click(function(event) {
+	$(".BOXGROUP").on('click', 'label', function(event) {
 		var box=$(this).prev(":checkbox").get(0);
 		box.checked=!box.checked;
 		$(box).change();

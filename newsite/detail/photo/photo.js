@@ -51,7 +51,16 @@ define('photo',function(require,exports,module){
 			src: img.data("large"),
 			"data-primary": img.data("primary"),
 			alt: img.attr("alt")
-		})
+		}).data("primary", img.data("primary"));
+	});
+	//放大镜效果
+	require.async("effects/magnifier",function(CHImag){
+		CHImag(".LargePhoto img",{
+			width:544,
+			height:544,
+			x:1,
+			y:-1
+		});
 	});
 	return ;
 });

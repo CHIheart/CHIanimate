@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="infors.css">
+<div class="Infors">
+	<h1>{$title}</h1>
+	<h2>{$intro}</h2>
+	<table>
+		<thead>
+			<tr class="prices">
+				<th>价格：</th>
+				<td>
+					<ins>￥<span ng-bind="curpro.price"></span></ins>
+					<del ng-bind="'￥'+curpro.price0"></del>
+				</td>
+			</tr>
+			<tr class="acts">
+				<th>本店活动：</th>
+				<td>
+					<em>赠品</em>
+					<em>新品八折</em>
+					<em>包邮</em>
+					<em>超值换购</em>
+					<em>满2件减10元</em>
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-if="needCar && online">
+				<th>选择车型：</th>
+				<td><a class="button button-mid button-red">选择车型</a></td>
+			</tr>
+			<tr ng-if="needCar">
+				<th>我的车库：</th>
+				<td>
+					<div class="tip" ng-if="!online;">本功能需要【<a ng-click="$broadcast('startLogin')">登录</a>】后才可使用</div>
+					<ul class="cars" ng-if="online;"></ul>
+				</td>
+			</tr>
+			<tr ng-repeat="opt in options track by $index">
+				<th>{{opt.name}}：</th>
+				<td class="BOXGROUP">
+					<input type="radio" name="option{{opt.id}}" ng-repeat-start="value in opt.values track by $index" value="{{value}}" id="option{{opt.id}}_{{$index + 1}}" ng-checked="$first" ng-model="option[{{opt.id}}]">
+					<label ng-repeat-end for="option{{opt.id}}_{{$index + 1}}" ng-click="freshCurpro();">{{value}}</label>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script src="infors.js"></script>

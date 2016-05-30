@@ -1,0 +1,83 @@
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+
+
+.Infors{
+	.w(580px);
+	.fr();
+	h1{
+		.size(30px);
+		.hline(40px);
+		.mb(20px);
+	}
+	h2{
+		.size(14px);
+		.line(24px);
+		.mb(20px);
+	}
+	table{
+		.w(100%);
+		.size(14px);
+		.c(@middleblack);
+	}
+	th,td{
+		.p(10px,0);
+		.valign(top);
+	}
+	th{
+		.t-l();
+		.w(5em);
+	}
+	.prices{
+		th,td{
+			.valign(bottom);
+		}
+		ins{
+			.size(30px);
+			.decorate();
+			.c(@red);
+		}
+		del{
+			.size();
+			.c(@lightblack);
+		}
+	}
+	.acts{
+		th,td{
+			.bd-b(1px,solid,@lightgray);
+			.pb(20px);
+		}
+		em{
+			.bg-c(@red);
+			.c(white);
+			.p(0,4px);
+			.mr(4px);
+		}
+	}
+	tbody{
+		th{
+			.line(32px);
+		}
+		tr:first-child{
+			th,td{
+				.pt(20px);
+			}
+		}
+	}
+	.BOXGROUP{
+		label{
+			.fl();
+			.p(0,10px);
+			.hline(30px);
+			.mr(10px);
+			.bd(1px,solid,@lightgray);
+		}
+		input{
+			.none();
+			&:checked + label{
+				.bd-c(@red);
+			}
+		}
+	}
+}

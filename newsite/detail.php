@@ -240,7 +240,10 @@ $data = array(
 				),
 			)
 		)
-	)
+	),
+	"id"=>123,
+	"title"=>"高清1080p双镜头后视镜行车记录仪",
+	"intro"=>"带高德云狗 轨迹查询 双镜头记录仪 1080p，商品副标题，卖点，促销信息，产品介绍，内容等等一系列文案"
 );
 
 echo outputPage("detail/detail.html",$data);

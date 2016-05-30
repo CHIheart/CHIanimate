@@ -21,9 +21,12 @@
 	</div>
 	<div class="Tools anchors">
 		<div class="star">
-			<a>
-				<i class="lcz lcz-star-o"></i>
-				收藏
+			<a ng-click="favor();">
+				<i class="lcz" ng-class="{
+					'lcz-star-o':!infors.favored,
+					'lcz-star':infors.favored
+				}"></i>
+				<span ng-bind="favorText()"></span>
 			</a>
 		</div>
 		<div class="share bdsharebuttonbox">
