@@ -13,6 +13,8 @@ define(function(require,exports,module){
 		height，放大框的高，默认为100
 		position，放大框相对于源元素的位置，默认为‘right’，还可以为left/top/bottom
 		data，被放大元素放置原始图片路径的data属性，默认为primary，即data-primary
+		x，放大框的水平位置偏移，正右，负左，默认为0
+		y，放大框的垂直位置偏移，正下，负上，默认为0
 	*/
 	return function CHImagnifier(oImg,setOptions){
 		var img,//小图JQ对象
@@ -28,7 +30,7 @@ define(function(require,exports,module){
 		BLOCK=$("<div/>").css({
 			position: 'absolute',
 			backgroundColor: 'rgba(255,255,255,.3)',
-			border: '1px solid red'
+			border: '1px solid white'
 		});
 
 		MAGNIFIER.appendTo("body");
@@ -91,7 +93,9 @@ define(function(require,exports,module){
 			width: 100,
 			height: 100,
 			position: 'right',
-			data: 'primary'
+			data: 'primary',
+			x: 0,
+			y: 0
 		};
 		$.extend(true, defaultOptions, setOptions);
 		//鼠标经过图片即更换聚焦目标
@@ -118,16 +122,17 @@ define(function(require,exports,module){
 						case "left": return imgLeft - magWidth;
 						case "right": return imgLeft + imgWidth;
 					}
-				})(),
+				})() + defaultOptions.x,
 				top: (function(){
 					switch(magAt){
 						case "left": case "right": return imgTop;
 						case "top": return imgTop - magHeight;
 						case "bottom": return imgTop + imgHeight;
 					}
-				})()
+				})() + defaultOptions.y
 			});
 			var src=img.data(defaultOptions.data);
+			console.log(src,this.src);
 			if(!src){
 				console.error("There missed a data-"+ defaultOptions.data +" on <img src='"+ img.attr("src") +"'>");
 				return false;
