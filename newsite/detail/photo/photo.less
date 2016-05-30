@@ -1,0 +1,72 @@
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
+
+.Photo{
+	.w(546px);
+	.fl();
+}
+.LargePhoto:extend(.noimg){
+	.wh(544px);
+	.bd(1px,solid,@lightgray);
+	.mb(20px);
+}
+.Thumbs{
+	.relative();
+	sub,sup{
+		.absolute();
+		.hline(90px);
+		.size(20px);
+		.c(@deepgray);
+		.t();
+		.c-p();
+		&:extend(.transSlow);
+		&:hover{
+			.c(@middleblack);
+		}
+	}
+	sub{
+		.l(-20px);
+	}
+	sup{
+		.r(-20px);
+	}
+}
+.Movie{
+	.wh(546px,90px);
+	.o();
+	li:extend(.transSlow){
+		.fl();
+		.wh(88px);
+		.o();
+		.bd(1px,solid,@lightgray);
+		.mr(24px);
+		&:hover{
+			.bd-c(@middleblack);
+		}
+		&.cur{
+			.bd-c(@red);
+		}
+	}
+}
+.Tools{
+	.t-r();
+	.mt(20px);
+	div{
+		.inblock() !important;
+		.valign(top) !important;
+		.ml(10px);
+	}
+	i.lcz{
+		.size(20px);
+		.valign(text-bottom);
+	}
+	a{
+		.p(0) !important;
+		.m(0) !important;
+		.hline(30px) !important;
+		.size(14px) !important;
+		.bg-i(none) !important;
+	}
+}

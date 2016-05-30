@@ -3,7 +3,7 @@ header('Content-Type: text/html; charset=utf-8');
 include "process.php";
 
 $data = array(
-	"title"=>"乐车仔商城首页",
+	"title"=>"乐车仔商品列表页",
 	"description"=>"空调格 行车记录仪 汽车配件 汽车坐垫",
 	"keywords"=>"空调格 行车记录仪 汽车配件 汽车坐垫",
 	"login"=>"false",

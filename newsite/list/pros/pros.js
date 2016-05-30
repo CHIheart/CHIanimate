@@ -7,6 +7,7 @@
 
 define('pros',function(require,exports,module){
 	//百度分享
+	require.async("plugins/bdshare");
 	window._bd_share_config = {
 		common : {
 			bdText : '自定义分享内容',	
@@ -38,7 +39,7 @@ define('pros',function(require,exports,module){
 				sub=$(this).find("sub"),
 				sup=$(this).find("sup");
 			if(lis.length>5){
-				CHImovie($(this).find("div"),"ol",{
+				var movie=CHImovie($(this).find("div"),"ol",{
 					prev: sub,
 					next: sup
 				},{
@@ -46,9 +47,11 @@ define('pros',function(require,exports,module){
 					auto: false
 				},{
 					move:function(aim){
-						aim.click();
+						//必须得用trigger，不能用click
+						aim.trigger('click',[true]);
 					}
 				});
+				$(this).data('movie',movie);
 			}
 			else{
 				sub.add(sup).remove();
@@ -56,7 +59,13 @@ define('pros',function(require,exports,module){
 			}
 		})
 		//点击缩略图，更换大图信息（所有信息）
-		.find("li").click(function(event) {
+		.find("li").on('click',function(event,bFromMovie) {
+			if(!bFromMovie){
+				var movie=$(this).closest('.thumbs').data('movie');
+				if(movie){
+					movie.show($(this).index());
+				}
+			}
 			$(this).addClass('cur').siblings().removeClass('cur');
 			var img=$(this).find("img"),
 				signs=img.data('signs'),
