@@ -249,11 +249,11 @@ function parseContent($txtCnt,$aData){
 		}
 		$txtCnt=str_replace($sInclude,$sContent,$txtCnt);
 	}
-	$regModels='/\{\$(\w[\w\d]+)\}/i';
+	$regModels='/[^\{](\{\$(\w[\w\d]+)\})[^\}]/i';
 	preg_match_all($regModels, $txtCnt, $aModels);
 	for ($cntModels=0; $cntModels < count($aModels[0]); $cntModels++) { 
-		$sModel=$aModels[0][$cntModels];
-		$sKey=$aModels[1][$cntModels];
+		$sModel=$aModels[1][$cntModels];
+		$sKey=$aModels[2][$cntModels];
 		$value= isset($aData[$sKey]) ? $aData[$sKey] : "NO <var>{$sKey}</var>";
 		$txtCnt=str_replace($sModel, $value, $txtCnt);
 	}
