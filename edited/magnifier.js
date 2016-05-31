@@ -132,7 +132,6 @@ define(function(require,exports,module){
 				})() + defaultOptions.y
 			});
 			var src=img.data(defaultOptions.data);
-			console.log(src,this.src);
 			if(!src){
 				console.error("There missed a data-"+ defaultOptions.data +" on <img src='"+ img.attr("src") +"'>");
 				return false;
