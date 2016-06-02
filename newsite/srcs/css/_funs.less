@@ -72,6 +72,22 @@
 .bg-s(@h, @v){
 	background-size: @h @v;
 }
+//背景过线性渡色
+.bg-lg(@color1, @color2){
+	background: -webkit-linear-gradient(@color1, @color2); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(@color1, @color2); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(@color1, @color2); /* Firefox 3.6 - 15 */
+	background: linear-gradient(@color1, @color2); /* 标准的语法 */
+}
+.bg-lg-ie(@color1, @color2){
+	.parseRGB(@color1);
+	@argbcolor1 : argb(@rgbacolor);
+	.parseRGB(@color2);
+	@argbcolor2 : argb(@rgbacolor);
+	background-color: transparent\9;
+	filter:~"progid:DXImageTransform.Microsoft.gradient(startColorstr=@{argbcolor1},endColorstr=@{argbcolor2})\9";
+}
+
 //边框部分
 .bd(...){
 	border: @arguments;
@@ -138,6 +154,8 @@
 }
 .radius(...){
 	border-radius: @arguments;
+	-webkit-border-radius: @arguments;
+	-moz-border-radius: @arguments;
 }
 .round(){
 	border-radius: 50%;
@@ -546,4 +564,109 @@
 		filter: drop-shadow(@x @y @blur @c); 
 		filter: DropShadow(Color=@c,OffX=@x,OffY=@y,Positive=1)~"\9";
     }
+}
+//生成动画
+.anim(...){
+	animation: @arguments;
+	-webkit-animation: @arguments;
+}
+//CSS3转换
+.transform(...){
+	transform: @arguments;
+	-webkit-transform: @arguments;
+	-ms-transform: @arguments;
+}
+.translate(@x,@y){
+	transform+_: translate(@x,@y);
+	-webkit-transform+_: translate(@x,@y);
+	-ms-transform+_: translate(@x,@y);
+}
+.scale(@x){
+	transform+_: scale(@x,@x);
+	-webkit-transform+_: scale(@x,@x);
+	-ms-transform+_: scale(@x,@x);
+}
+.scale(@x,@y){
+	transform+_: scale(@x,@y);
+	-webkit-transform+_: scale(@x,@y);
+	-ms-transform+_: scale(@x,@y);
+}
+.skew(@x,@y){
+	transform+_: skew(~"@{x}deg",~"@{y}deg");
+	-webkit-transform+_: skew(~"@{x}deg",~"@{y}deg");
+	-ms-transform+_: skew(~"@{x}deg",~"@{y}deg");
+}
+.rotate(@r){
+	transform+_: rotate(~"@{r}deg");
+	-webkit-transform+_: rotate(~"@{r}deg");
+	-ms-transform+_: rotate(~"@{r}deg");
+}
+.translate3D(@x,@y,@z){
+	transform+_: translate3D(@x,@y,@z);
+	-webkit-transform+_: translate3D(@x,@y,@z);
+	-ms-transform+_: translate3D(@x,@y,@z);
+}
+.scale3D(@x){
+	transform+_: scale3D(@x,@x,@x);
+	-webkit-transform+_: scale3D(@x,@x,@x);
+	-ms-transform+_: scale3D(@x,@x,@x);
+}
+.scale3D(@x,@y,@z){
+	transform+_: scale3D(@x,@y,@z);
+	-webkit-transform+_: scale3D(@x,@y,@z);
+	-ms-transform+_: scale3D(@x,@y,@z);
+}
+.scaleX(@s){
+	transform+_: scaleX(@s);
+	-webkit-transform+_: scaleX(@s);
+	-ms-transform+_: scaleX(@s);
+}
+.scaleY(@s){
+	transform+_: scaleY(@s);
+	-webkit-transform+_: scaleY(@s);
+	-ms-transform+_: scaleY(@s);
+}
+.scaleZ(@s){
+	transform+_: scaleZ(@s);
+	-webkit-transform+_: scaleZ(@s);
+	-ms-transform+_: scaleZ(@s);
+}
+.rotate3D(@x,@y,@z,@r){
+	transform+_: rotate3D(@x,@y,@z,~"@{r}deg");
+	-webkit-transform+_: rotate3D(@x,@y,@z,~"@{r}deg");
+	-ms-transform+_: rotate3D(@x,@y,@z,~"@{r}deg");
+}
+.rotateX(@r){
+	transform+_: rotateX(~"@{r}deg");
+	-webkit-transform+_: rotateX(~"@{r}deg");
+	-ms-transform+_: rotateX(~"@{r}deg");
+}
+.rotateY(@r){
+	transform+_: rotateY(~"@{r}deg");
+	-webkit-transform+_: rotateY(~"@{r}deg");
+	-ms-transform+_: rotateY(~"@{r}deg");
+}
+.rotateZ(@r){
+	transform+_: rotateZ(~"@{r}deg");
+	-webkit-transform+_: rotateZ(~"@{r}deg");
+	-ms-transform+_: rotateZ(~"@{r}deg");
+}
+//CSS3动画，@name为动画名称，@mixin为预定义的一组动画值，比如使用xx%，或from to的
+.keyframes(@name,@mixin){
+	@keyframes @name{
+		@mixin();
+	}
+	@-webkit-keyframes @name{
+		@mixin();
+	}
+}
+//转换中心，2D或3D，FF/IE/OPERA不支持3D
+.origin(@x,@y){
+	transform-origin:@x @y;
+	-ms-transform-origin:@x @y; /* IE 9 */
+	-webkit-transform-origin:@x @y; /* Safari and Chrome */
+}
+.origin(@x,@y,@z){
+	transform-origin:@x @y @z;
+	-webkit-transform-origin:@x @y @z; /* Safari and Chrome */
 }

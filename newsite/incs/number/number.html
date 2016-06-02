@@ -1,0 +1,10 @@
+<link rel="stylesheet" href="number.css">
+<dl class="NUMBER" ng-controller="CtrlNumber" ng-init="min=1;max=9;num=1;" ng-class="{disabled:!!disabled};">
+	<dt>
+		<sub ng-click="down();">-</sub>
+		<input type="text" ng-pattern="/^\d+$/" ng-model="num" ng-change="judge();" ng-disabled="!!disabled;">
+		<sup ng-click="up();">+</sup>
+	</dt>
+	<dd class="ellipsis">还可以再买<b ng-bind="max-num"></b>件</dd>
+</dl>
+<script src="number.js"></script>

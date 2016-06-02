@@ -60,6 +60,11 @@ define('always',function(require,exports,module){
 		box.checked=!box.checked;
 		$(box).change();
 	});
+	require.async("plugins/refuseSelect",function(refuse){
+		$(".BOXGROUP").on('click', 'label', function(event) {
+			refuse(this);
+		});
+	});
 	return ;
 });
 

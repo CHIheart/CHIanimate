@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="cars.css">
+<table class="FullScreenPlugin" style="display:table;">
+	<tbody>
+		<tr>
+			<td>
+				<dl class="ALLCARS" ng-controller="CtrlAllCars">
+					<dt>
+						<strong>
+							<i class="lcz lcz-car"></i>
+							我的车型
+						</strong>
+						<q ng-click="close();">&times;</q>
+					</dt>
+					<dd>
+						<ul class="tabs clearfix">
+							<li ng-class="{'cur':step==1,'ok':step>1}"><i>1</i>品牌</li>
+							<li ng-class="{'cur':step==2,'ok':step>2}"><i>2</i>车系</li>
+							<li ng-class="{'cur':step==3,'ok':step>3}"><i>3</i>排量</li>
+							<li ng-class="{'cur':step==4,'ok':step>4}"><i>4</i>生产年份</li>
+							<li ng-class="{'cur':step==5,'ok':step>5}"><i>5</i>车架号</li>
+						</ul>
+						<a class="inputNow">没有我的车型？点击直接输入车架号 >></a>
+						<div class="Steps Step1">
+							<div class="indices">
+								<a>热门</a>
+								<p>
+									<a>A</a><a>B</a><a>C</a><a>D</a><a>F</a><a>G</a>
+									<a>H</a><a>J</a><a>K</a><a>L</a><a>M</a><a>N</a>
+									<a>O</a><a>P</a><a>Q</a><a>R</a><a>S</a><a>T</a>
+									<a>W</a><a>X</a><a>Y</a><a>Z</a>
+								</p>
+							</div>
+							<div class="brands list anchors">
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品</span></a>
+							</div>
+						</div>
+						<div class="Steps Step2"></div>
+					</dd>
+				</dl>
+			</td>
+		</tr>
+	</tbody>
+</table>

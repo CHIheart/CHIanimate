@@ -1,6 +1,7 @@
 @import (reference) "../../srcs/css/_funs";
 @import (reference) "../../srcs/css/_theme";
 @import (reference) "../../srcs/css/_style";
+@import (reference) "../../srcs/css/css.less";
 
 
 .Infors{
@@ -27,8 +28,9 @@
 	}
 	th{
 		.t-l();
-		.w(5em);
+		.w(6em);
 	}
+	//价格
 	.prices{
 		th,td{
 			.valign(bottom);
@@ -43,6 +45,7 @@
 			.c(@lightblack);
 		}
 	}
+	//活动
 	.acts{
 		th,td{
 			.bd-b(1px,solid,@lightgray);
@@ -65,7 +68,8 @@
 			}
 		}
 	}
-	.BOXGROUP{
+	//普通选项
+	.options{
 		label{
 			.fl();
 			.p(0,10px);
@@ -77,6 +81,34 @@
 			.none();
 			&:checked + label{
 				.bd-c(@red);
+				.bg-c(@red);
+				.c(white);
+			}
+		}
+	}
+	//有车需要登录的提示
+	.tip{
+		.hline(32px);
+	}
+	//车列表
+	.cars{
+		label{
+			.block();
+			.hline(32px);
+			&:before:extend(.lcz){
+				.whline(32px);
+				.cnt();
+				.fl();
+				.size(20px);
+				.t-c();
+			}
+		}
+		input{
+			.none();
+			&:checked + label{
+				.c(white);
+				.bg-c(@red);
+				&:before:extend(.lcz-car:before){}
 			}
 		}
 	}

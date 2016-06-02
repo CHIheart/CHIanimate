@@ -1,0 +1,45 @@
+//数字调节框
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+
+.NUMBER{
+	.size(0);
+	sub,sup,input{
+		.inblock();
+		.hline(30px);
+		.valign(top);
+	}
+	@bd-gray: 1px solid @lightgray;
+	sub,sup{
+		.t-c();
+		.c-p();
+		.bd(@bd-gray);
+		.w(30px);
+		.size(20px);
+	}
+	input{
+		.bd-t(@bd-gray);
+		.bd-b(@bd-gray);
+		.bd-w(1px,0);
+		.p(0,10px);
+		.w(40px);
+		.size(16px);
+		.c(@middleblack);
+		.t-r();
+	}
+	dd{
+		.size(14px);
+		.c(@lightblack);
+		.hline(30px);
+		b{
+			.c(@deepblack);
+			.bold();
+		}
+	}
+	&.disabled{
+		.c(@lightgray);
+		sub,sup,input{
+			.bd-c(@pale);
+		}
+	}
+}

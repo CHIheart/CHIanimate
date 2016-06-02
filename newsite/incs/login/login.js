@@ -58,15 +58,14 @@ define('LOGIN',function(require,exports,module){
 			return this;
 		}
 		$scope.hasAt=function(){
-			return $scope.passport.indexOf('@')>0;
+			return $("#passport").val().indexOf('@')>0;
 		}
 		$scope.beforeAt=function(){
-			var v=$scope.passport;
-			console.info(v);
+			var v=$("#passport").val();
 			return v.substring(0,v.indexOf('@'));
 		}
 		$scope.afterAt=function(){
-			var v=$scope.passport;
+			var v=$("#passport").val();
 			return v.substring(v.indexOf('@')+1);
 		}
 		$scope.setEmail=function(index){
@@ -90,6 +89,7 @@ define('LOGIN',function(require,exports,module){
 		//接收启动登录事件
 		$scope.$on('startLogin',function(event,fCallback){
 			$scope.open();
+			!$.isFunction(fCallback) && (fCallback=$.noop);
 			fAfterLogin=fCallback;
 		});
 	}]);

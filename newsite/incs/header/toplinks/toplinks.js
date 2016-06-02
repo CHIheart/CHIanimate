@@ -13,7 +13,7 @@ define('toplinks',function(require,exports,module){
 	//根据用户登陆状态来判断显示菜单的哪一部分
 	angular.module('Main')
 		.controller("CtrlTopLinks",['$scope','$timeout','$rootScope',function($scope,$timeout,$rootScope){
-			$scope.online;
+			$rootScope.online=$scope.online;
 			//登录动作，召唤登录框
 			$scope.login=function(){
 				$rootScope.$broadcast('startLogin');
@@ -21,7 +21,7 @@ define('toplinks',function(require,exports,module){
 			//登出动作，发送登出事件
 			$scope.logout=function(){
 				$timeout(function(){
-					$rootScope.online=false;
+					$rootScope.online=$scope.online=false;
 					//发送登出事件
 					$rootScope.$broadcast('logout');
 					$timeout(function(){
@@ -32,7 +32,7 @@ define('toplinks',function(require,exports,module){
 			//接收登录成功事件
 			$scope.$on('loginOK',function(event){
 				$timeout(function(){
-					$rootScope.online=true;
+					$rootScope.online=$scope.online=true;
 					show();
 				});
 			});

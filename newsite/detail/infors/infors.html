@@ -2,13 +2,13 @@
 <div class="Infors">
 	<h1>{$title}</h1>
 	<h2>{$intro}</h2>
-	<table>
+	<table ng-init="needCar={$needCar};">
 		<thead>
 			<tr class="prices">
 				<th>价格：</th>
 				<td>
 					<ins>￥<span ng-bind="curpro.price"></span></ins>
-					<del ng-bind="'￥'+curpro.price0"></del>
+					<del ng-bind="'￥'+curpro.price0" ng-if="!!curpro.price0"></del>
 				</td>
 			</tr>
 			<tr class="acts">
@@ -23,25 +23,38 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-if="needCar && online">
+			<tr ng-if="needCar && online;">
 				<th>选择车型：</th>
-				<td><a class="button button-mid button-red">选择车型</a></td>
+				<td><a class="button button-large button-red">选择车型</a> 点此新增车型</td>
 			</tr>
-			<tr ng-if="needCar">
+			<tr ng-if="needCar;">
 				<th>我的车库：</th>
 				<td>
-					<div class="tip" ng-if="!online;">本功能需要【<a ng-click="$broadcast('startLogin')">登录</a>】后才可使用</div>
-					<ul class="cars" ng-if="online;"></ul>
+					<div class="tip anchors" ng-if="!online;">本功能需要<a ng-click="startLogin();">【登录】</a>后才可使用</div>
+					<ul class="cars BOXGROUP" ng-if="online;">
+						<li ng-repeat="car in cars">
+							<input type="radio" name="cars" value="{{car.id}}" id="cars{{car.id}}" ng-checked="$first">
+							<label for="cars{{car.id}}">{{car.name}}</label>
+						</li>
+					</ul>
 				</td>
 			</tr>
 			<tr ng-repeat="opt in options track by $index">
 				<th>{{opt.name}}：</th>
-				<td class="BOXGROUP">
-					<input type="radio" name="option{{opt.id}}" ng-repeat-start="value in opt.values track by $index" value="{{value}}" id="option{{opt.id}}_{{$index + 1}}" ng-checked="$first" ng-model="option[{{opt.id}}]">
+				<td class="BOXGROUP options">
+					<input type="radio" name="option{{opt.id}}" ng-repeat-start="value in opt.values track by $index" value="{{value}}" ng-value="value" id="option{{opt.id}}_{{$index + 1}}" ng-checked="$first" ng-model="checked[opt.id]">
 					<label ng-repeat-end for="option{{opt.id}}_{{$index + 1}}" ng-click="freshCurpro();">{{value}}</label>
+				</td>
+			</tr>
+			<tr>
+				<th>数量：</th>
+				<td>
+					<input type="hidden" ng-model="curpro.id">
+					<!-- include src="/incs/number/number.html" -->
 				</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
+<!-- include src="/incs/cars/cars.html" condition="$aData['needCar'];" -->
 <script src="infors.js"></script>

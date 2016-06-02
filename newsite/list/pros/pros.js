@@ -110,6 +110,7 @@ define('pros',function(require,exports,module){
 				.success(function(data) {
 					if(data.result){
 						$scope.favors=data.ids;
+						$scope.$apply();
 					}else{
 						$rootScope.$broadcast('alert','操作失败',data.message,'frown');
 					}
@@ -121,7 +122,7 @@ define('pros',function(require,exports,module){
 			});
 			//某个产品是否被收藏过
 			$scope.favored=function(id){
-				return !!~$.inArray(id.toString(), $scope.favors);
+				return !!~$.inArray(id, $scope.favors);
 			}
 			//收藏某个产品，必须先登录
 			$scope.favor=function(id){
@@ -136,6 +137,8 @@ define('pros',function(require,exports,module){
 					})
 					.success(function(data) {
 						$rootScope.$broadcast('alert',data.title,data.content,'smile');
+						$scope.favors=data.favors;
+						$scope.$apply();
 					});
 				}
 				if(!$rootScope.online){

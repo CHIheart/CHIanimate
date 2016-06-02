@@ -1,0 +1,154 @@
+/**
+ * 选择车型插件
+ * @authors Your Name (you@example.org)
+ * @date    2016-06-02 16:27:58
+ * @version $Id$
+ */
+
+
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/css.less";
+
+.ALLCARS{
+	.wh(760px,540px);
+	.bg-c(white);
+	.ma();
+	> dt{
+		.bg-c(black);
+		.hline(56px);
+		.bold();
+		.c(white);
+		.p(0,20px);
+		strong{
+			.size(18px);
+			.fl();
+		}
+		q{
+			.size(24px);
+			.fr();
+			.c-p();
+		}
+	}
+	> dd{
+		> div{
+			&,& > div{
+				&:extend(.clearfix all);
+			}
+		}
+	}
+	//五个标题
+	.tabs{
+		.m(30px,20px,30px,40px);
+		li{
+			.relative();
+			.w(20%);
+			.fl();
+			.hline(36px);
+			.t-c();
+			.bg-c(@lightgray);
+			.radius(0,18px,18px,0);
+			.size(16px);
+			.c(@deepblack);
+			&:before,&:after{
+				.cnt();
+				.absolute();
+				.round();
+				.bg-c(white);
+			}
+			&:before{
+				.whline(44px);
+				.lt(-22px,-4px);
+			}
+			&:after{
+				.whline(32px) !important;
+				.lt(-19px,-1px);
+				.bd(3px,solid,@lightgray);
+			}
+			i{
+				.whline(36px);
+				.l(-18px);
+				.absolute();
+				.z(2);
+				.c(@deepblack);
+			}
+			//正在进行的步骤
+			&.cur{
+				.bg-c(@red);
+				.c(white);
+				&:after{
+					.bd-c(@red);
+				}
+			}
+			//完成了的步骤
+			&.ok{
+				i{
+					.none();
+				}
+				&:after:extend(.lcz,.lcz-check:before){
+					.c(@green);
+				}
+			}
+		}
+	}
+	//字母索引
+	.indices{
+		.size(14px);
+		.m(0,30px,20px,30px);
+		a{
+			.fl();
+			.hline(26px);
+			.p(0,7px);
+			.bg-c(@pale);
+			.c(@middleblack);
+			&.cur{
+				.bg-c(@red);
+				.c(white);
+			}
+		}
+		p{
+			.fr();
+			a{
+				.ml(6px);
+			}
+		}
+	}
+	//选项列表
+	.list{
+		.m(0,15px,0,30px);
+		a{
+			.fl();
+			.t-l();
+			.size(14px);
+			.bbox();
+			.w(23%);
+			.hline(50px);
+			.m(0,2%,16px,0);
+			.bd(1px,solid,@lightgray);
+			&.checked{
+				.bd-c(@red);
+			}
+			&:hover{
+				.bd-c(@red);
+			}
+			span:extend(.ellipsis){
+				.fl();
+				.maxw(8em);
+			}
+		}
+		var{
+			.fl();
+			.o();
+			.wh(30px);
+			.m(9px,10px,0,9px);
+		}
+		img{
+			.wh(30px);
+		}
+	}
+	//最后一条：直接输入
+	.inputNow{
+		.size(14px);
+	}
+	//品牌的大小类
+}
