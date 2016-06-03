@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="tabnav.css">
+<div class="TabNav clearfix" ng-controller="CtrlTabNav">
+	<div class="common clearfix">
+		<div class="product">
+			<var><img ng-src="{{curpro.image}}" alt=""></var>
+			<h3>{$title}<ins><span ng-bind="curpro.price"></span>元</ins></h3>
+		</div>
+		<ul class="nav anchors">
+			<li><a>详情描述</a></li>
+			<li><a>规格参数</a></li>
+			<li><a>商品提问(1866)</a></li>
+		</ul>
+		<div class="buttons">
+			<button ng-if="!!curpro.amount" type="button" class="button button-huge button-red"><i class="lcz lcz-cart-full"></i>加入购物车</button>
+			<a ng-if="!curpro.amount" class="button button-huge button-pale">暂无商品</a>
+		</div>
+	</div>
+</div>
+<script src="tabnav.js"></script>

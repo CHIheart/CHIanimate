@@ -14,6 +14,7 @@
 	.wh(760px,540px);
 	.bg-c(white);
 	.ma();
+	.relative();
 	> dt{
 		.bg-c(black);
 		.hline(56px);
@@ -24,8 +25,13 @@
 			.size(18px);
 			.fl();
 		}
+		i{
+			.size(30px);
+			.fl();
+			.m(12px,12px,0,0);
+		}
 		q{
-			.size(24px);
+			.size(32px);
 			.fr();
 			.c-p();
 		}
@@ -94,7 +100,7 @@
 	//字母索引
 	.indices{
 		.size(14px);
-		.m(0,30px,20px,30px);
+		.m(0,30px,30px,30px);
 		a{
 			.fl();
 			.hline(26px);
@@ -114,9 +120,9 @@
 		}
 	}
 	//选项列表
-	.list{
+	.list:extend(.clearfix all){
 		.m(0,15px,0,30px);
-		a{
+		a:extend(.transSlow){
 			.fl();
 			.t-l();
 			.size(14px);
@@ -147,8 +153,86 @@
 		}
 	}
 	//最后一条：直接输入
-	.inputNow{
+	.inputNow:extend(.transSlow){
 		.size(14px);
+		.absolute();
+		.w(100%);
+		.bbox();
+		.hline(40px);
+		.t-l();
+		.c(@lightblack);
+		.lb(0,10px);
+		.p(0,30px);
+		&:hover{
+			.c(black);
+		}
+	}
+	//已选项目
+	.chosen{
+		.t-l();
+		.m(30px,20px);
+		.size(16px);
+		.c(@middleblack);
+		a{
+			.inblock();
+			.valign(middle);
+			.size(14px);
+			.bd(2px,solid,@red);
+			.p(0,10px);
+			.hline(30px);
+		}
+		q{
+			.fr();
+			.size(24px);
+			.m(0,-4px,0,6px);
+		}
 	}
 	//品牌的大小类
+	.menu{
+		.maxh(260px);
+		.o-a();
+		dt{
+			.t-l();
+			.bd-l(6px,solid,@red);
+			.hline(30px);
+			.bg-c(@pale);
+			.size(14px);
+			.indent(10px);
+			.m(0,2%,14px,0);
+		}
+		dd:extend(.clearfix all){}
+		a{
+			.t-c();
+		}
+	}
+	//第五步
+	.Step5{
+		p{
+			.size(16px);
+			.c(@lightblack);
+			.t-l();
+			.p(30px,0,30px,20px);
+		}
+		div{
+			.pl(14px);
+		}
+		span{
+			.fl();
+			.valign(top);
+			.size(16px);
+			.c(@lightblack);
+			.ml(7px);
+			.t-c();
+			.w(36px);
+			input{
+				.whline(34px);
+				.bd(1px,solid,@lightgray);
+				.t-c();
+			}
+		}
+		.button{
+			.fr();
+			.m(30px,15px,0,0);
+		}
+	}
 }

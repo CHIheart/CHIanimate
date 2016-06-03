@@ -1,0 +1,64 @@
+@import (reference) "../../srcs/css/_funs";
+@import (reference) "../../srcs/css/_theme";
+@import (reference) "../../srcs/css/_style";
+
+.TabNav{
+	.h(68px);
+	.minw(1226px);
+	.bg-c(white);
+	.bd(1px,solid,@lightgray);
+	.bd-w(1px,0);
+	//左边的产品
+	.product{
+		.w(200px);
+		&,& > *{
+			.fl();
+		}
+		var{
+			.wh(40px);
+			.m(14px,10px,0,0);
+		}
+		img{
+			.full();
+		}
+		h3:extend(.ellipsis){
+			.size(16px);
+			.fl();
+			.w(150px);
+			.mt(14px);
+			.c(@deepblack);
+		}
+		ins{
+			.block();
+			.size(14px);
+			.c(@red);
+		}
+	}
+	//中间的导航
+	.nav{
+		.size(18px);
+		.t-c();
+		li{
+			.w(280px);
+			.fl();
+			.pt(25px);
+			&:first-child a{
+				.bd(0);
+			}
+		}
+		a{
+			.block();
+			.hline(18px);
+			.bd-l(1px,solid,@lightgray);
+		}
+	}
+	//右边的按钮
+	.buttons{
+		.w(186px);
+		.fr();
+		.t-r();
+		.button{
+			.mt(14px);
+		}
+	}
+}

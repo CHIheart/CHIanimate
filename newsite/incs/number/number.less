@@ -26,6 +26,10 @@
 		.size(16px);
 		.c(@middleblack);
 		.t-r();
+		&[disabled]{
+			.bg-c(white);
+			.c(@lightblack);
+		}
 	}
 	dd{
 		.size(14px);
@@ -40,6 +44,7 @@
 		.c(@lightgray);
 		sub,sup,input{
 			.bd-c(@pale);
+			.c-n();
 		}
 	}
 }

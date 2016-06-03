@@ -1,6 +1,7 @@
 @import (reference) "../srcs/css/_funs";
 @import (reference) "../srcs/css/_theme";
 @import (reference) "../srcs/css/_style";
+@import (reference) "../incs/quint/quint.less";
 
 .MainPro{
 	.bg-c(white);
@@ -15,3 +16,40 @@
 		.pl(10px);
 	}
 }
+//图文说明
+.Pictures{
+	.size(0);
+	img{
+		.maxw(100%);
+	}
+}
+//规格参数
+.Attribs{
+	.mt(20px);
+	.bbox();
+	var{
+		.fl();
+		.wh(200px);
+	}
+	img{
+		.full();
+	}
+	> dd{
+		.p(30px,30px,20px);
+		.bg-c(white);
+	}
+	ul{
+		.fr();
+		.w(900px);
+	}
+	li{
+		.w(280px);
+		.fl();
+		.ml(20px);
+		.size(14px);
+		.c(@middleblack);
+		.line(20px);
+		.h(50px);
+	}
+}
+.Contents dt:extend(.QUINT dt){}

@@ -1,7 +1,7 @@
-@import (reference) "../../srcs/css/_funs";
-@import (reference) "../../srcs/css/_theme";
-@import (reference) "../../srcs/css/_style";
-@import (reference) "../../srcs/css/css.less";
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+@import (reference) "../../../srcs/css/_style";
+@import (reference) "../../../srcs/css/css.less";
 
 
 .Infors{
@@ -37,7 +37,6 @@
 		}
 		ins{
 			.size(30px);
-			.decorate();
 			.c(@red);
 		}
 		del{
@@ -110,6 +109,19 @@
 				.bg-c(@red);
 				&:before:extend(.lcz-car:before){}
 			}
+		}
+	}
+	//结尾提示及按钮
+	tfoot{
+		th{
+			.t-r();
+			.bd-b(1px,solid,@lightgray);
+		}
+		td{
+			.pt(20px);
+		}
+		.button{
+			.mr(10px);
 		}
 	}
 }

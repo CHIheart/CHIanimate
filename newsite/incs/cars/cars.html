@@ -1,5 +1,6 @@
+<!-- 这块先不做，设计有问题 -->
 <link rel="stylesheet" href="cars.css">
-<table class="FullScreenPlugin" style="display:table;">
+<table class="FullScreenPlugin">
 	<tbody>
 		<tr>
 			<td>
@@ -12,6 +13,7 @@
 						<q ng-click="close();">&times;</q>
 					</dt>
 					<dd>
+						<!-- 一直显示 -->
 						<ul class="tabs clearfix">
 							<li ng-class="{'cur':step==1,'ok':step>1}"><i>1</i>品牌</li>
 							<li ng-class="{'cur':step==2,'ok':step>2}"><i>2</i>车系</li>
@@ -19,20 +21,27 @@
 							<li ng-class="{'cur':step==4,'ok':step>4}"><i>4</i>生产年份</li>
 							<li ng-class="{'cur':step==5,'ok':step>5}"><i>5</i>车架号</li>
 						</ul>
-						<a class="inputNow">没有我的车型？点击直接输入车架号 >></a>
-						<div class="Steps Step1">
+						<!-- 前4步显示 -->
+						<a class="inputNow" ng-if="step<5" ng-click="step=5;">没有我的车型？点击直接输入车架号 >></a>
+						<!-- 第一步 -->
+						<div class="Step1" ng-if="step==1">
 							<div class="indices">
-								<a>热门</a>
+								<a ng-mouseenter="showBrands();">热门</a>
 								<p>
-									<a>A</a><a>B</a><a>C</a><a>D</a><a>F</a><a>G</a>
+									<a ng-repeat="char in chars" ng-mouseenter="showBrands(char)">{{char}}</a>
+									<!-- <a>A</a><a>B</a><a>C</a><a>D</a><a>F</a><a>G</a>
 									<a>H</a><a>J</a><a>K</a><a>L</a><a>M</a><a>N</a>
 									<a>O</a><a>P</a><a>Q</a><a>R</a><a>S</a><a>T</a>
-									<a>W</a><a>X</a><a>Y</a><a>Z</a>
+									<a>W</a><a>X</a><a>Y</a><a>Z</a> -->
 								</p>
 							</div>
-							<div class="brands list anchors">
-								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
-								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品</span></a>
+							<div class="brands list">
+								<a ng-repeat="brand in brands" ng-click="set('brand',brand.id);set('brandName',brand.name);showSeries(brand.id);">
+									<var><img ng-src="brand.icon" alt="{{brand.name}}"></var>
+									<span>{{brand.name}}</span>
+								</a>
+								
+								<!-- <a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品</span></a>
 								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
 								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品名</span></a>
 								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名一个品牌名</span></a>
@@ -46,13 +55,73 @@
 								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
 								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品名</span></a>
 								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品牌名</span></a>
-								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品</span></a>
+								<a><var><img src="/srcs/images/none.jpg" alt=""></var> <span>一个品</span></a> -->
 							</div>
 						</div>
-						<div class="Steps Step2"></div>
+						<!-- 后四步显示 -->
+						<ol class="chosen clearfix anchors" ng-if="step>1">
+							您已选择：
+							<a ng-if="step>1"><q ng-click="step=1;">&times;</q>{{curcar.brandName}}</a>
+							<a ng-if="step>2"><q ng-click="step=2;">&times;</q>{{curcar.seryTypeName}}{{curcar.seryName}}</a>
+							<a ng-if="step>3"><q ng-click="step=3;">&times;</q>{{curcar.output}}</a>
+							<a ng-if="step>4"><q ng-click="step=4;">&times;</q>{{curcar.year}}</a>
+						</ol>
+						<!-- 第二步 -->
+						<dl class="Step2 list menu" ng-if="step==2">
+							<dt>上海大众</dt>
+							<dd>
+								<a>polo</a><a>凌度</a><a>帕萨特</a><a>朗境</a>
+								<a>朗行</a><a>朗逸</a><a>桑塔纳</a><a>途安</a>
+							</dd>
+							<dt>上海大众</dt>
+							<dd>
+								<a>polo</a><a>凌度</a><a>帕萨特</a><a>朗境</a>
+								<a>朗行</a><a>朗逸</a><a>桑塔纳</a><a>途安</a>
+							</dd>
+						</dl>
+						<!-- 第三步 -->
+						<div class="Step3 list menu" ng-if="step==3">
+							<a ng-repeat="output in outputs" ng-click="set('output',output);showYears(output);">{{output}}</a>
+							<!-- <a>1.0T</a><a>1.2T</a><a>1.4T</a><a>1.6T</a>
+							<a>1.8T</a><a>2.0T</a> -->
+						</div>
+						<!-- 第四步 -->
+						<div class="Step4 list menu" ng-if="step==4">
+							<a ng-repeat="year in years" ng-click="set('year',year);step=5;">{{year}}</a>
+							<!-- <a>2005</a><a>2006</a><a>2007</a><a>2008</a>
+							<a>2009</a><a>2010</a> -->
+						</div>
+						<!-- 第五步 -->
+						<div class="Step5" ng-if="step==5">
+							<p>请输入17位VIN码识别您的车型：</p>
+							<div class="clearfix">
+								<span ng-repeat="n in nums">{{n}}<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1" ng-change="nextBit();" ng-model="curcar.vin"></span>
+
+								<!-- <span>01<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>02<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>03<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>04<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>05<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>06<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>07<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>08<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>09<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>10<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>11<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>12<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>13<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>14<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>15<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>16<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span>
+								<span>17<input type="text" ng-required ng-pattern="/^\w\d$/i" maxlength="1"></span> -->
+							</div>
+							<input type="text" class="button button-huge button-red" value="确定">
+							<a class="inputNow">vin码在什么地方</a>
+						</div>
 					</dd>
 				</dl>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<script src="cars.js"></script>

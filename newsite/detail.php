@@ -239,12 +239,67 @@ $data = array(
 					"price0"=>1200,
 				),
 			)
+		),
+		array(
+			"topic"=>"我的足迹",
+			"pros"=>array(
+				array(
+					"href"=>"#linkurl",
+					"name"=>"第一产品首图",
+					"image"=>"/srcs/images/pro2.png",
+					"title"=>"这里的很主要，但没大图重",
+					"price"=>1000,
+					"price0"=>1200,
+				),
+				array(
+					"href"=>"#linkurl",
+					"name"=>"第一产品首图",
+					"image"=>"/srcs/images/pro2.png",
+					"title"=>"这里的很主要，但没大图重",
+					"price"=>1000,
+					"price0"=>1200,
+				),
+				array(
+					"href"=>"#linkurl",
+					"name"=>"第一产品首图",
+					"image"=>"/srcs/images/pro2.png",
+					"title"=>"这里的很主要，但没大图重",
+					"price"=>1000,
+					"price0"=>1200,
+				),
+				array(
+					"href"=>"#linkurl",
+					"name"=>"第一产品首图",
+					"image"=>"/srcs/images/pro2.png",
+					"title"=>"这里的很主要，但没大图重",
+					"price"=>1000,
+					"price0"=>1200,
+				),
+				array(
+					"href"=>"#linkurl",
+					"name"=>"第一产品首图",
+					"image"=>"/srcs/images/pro2.png",
+					"title"=>"这里的很主要，但没大图重",
+					"price"=>1000,
+					"price0"=>1200,
+				),
+				array(
+					"href"=>"#linkurl",
+					"name"=>"第一产品首图",
+					"image"=>"/srcs/images/pro2.png",
+					"title"=>"这里的很主要，但没大图重",
+					"price"=>1000,
+					"price0"=>1200,
+				),
+			)
 		)
 	),
 	"id"=>123,
 	"title"=>"高清1080p双镜头后视镜行车记录仪",
 	"intro"=>"带高德云狗 轨迹查询 双镜头记录仪 1080p，商品副标题，卖点，促销信息，产品介绍，内容等等一系列文案",
-	"needCar"=>"true"
+	"needCar"=>"true",
+	"content"=>"<img src=\"/srcs/images/none.jpg\" data-src=\"http://www.new.com/index/ppt/ban1.png\"/>
+	<img src=\"/srcs/images/none.jpg\" data-src=\"http://www.new.com/index/ppt/ban2.png\"/>"
 );
 
 echo outputPage("detail/detail.html",$data);

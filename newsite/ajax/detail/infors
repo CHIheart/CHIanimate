@@ -23,8 +23,8 @@
 			"price":1200.00,
 			"price0":1500.00,
 			"amount":8,
-			"image":"/detail/photo/proLarge.jpg",
-			"primary":"/detail/photo/proPrimary.jpg"
+			"image":"/detail/pro/photo/proLarge.jpg",
+			"primary":"/detail/pro/photo/proPrimary.jpg"
 		},
 		{
 			"id":2,
@@ -46,8 +46,8 @@
 			"price":120.00,
 			"price0":150.00,
 			"amount":6,
-			"image":"/detail/photo/proLarge1.jpg",
-			"primary":"/detail/photo/proPrimary1.jpg"
+			"image":"/detail/pro/photo/proLarge1.jpg",
+			"primary":"/detail/pro/photo/proPrimary1.jpg"
 		},
 		{
 			"id":3,
@@ -69,8 +69,8 @@
 			"price":1000.00,
 			"price0":1300.00,
 			"amount":9,
-			"image":"/detail/photo/proLarge2.jpg",
-			"primary":"/detail/photo/proPrimary2.jpg"
+			"image":"/detail/pro/photo/proLarge2.jpg",
+			"primary":"/detail/pro/photo/proPrimary2.jpg"
 		},
 		{
 			"id":4,
@@ -92,8 +92,8 @@
 			"price":100.00,
 			"price0":130.00,
 			"amount":12,
-			"image":"/detail/photo/proLarge3.jpg",
-			"primary":"/detail/photo/proPrimary3.jpg"
+			"image":"/detail/pro/photo/proLarge3.jpg",
+			"primary":"/detail/pro/photo/proPrimary3.jpg"
 		},
 		{
 			"id":5,
@@ -115,8 +115,8 @@
 			"price":800.00,
 			"price0":1100.00,
 			"amount":9,
-			"image":"/detail/photo/proLarge4.jpg",
-			"primary":"/detail/photo/proPrimary4.jpg"
+			"image":"/detail/pro/photo/proLarge4.jpg",
+			"primary":"/detail/pro/photo/proPrimary4.jpg"
 		},
 		{
 			"id":6,
@@ -138,8 +138,8 @@
 			"price":80.00,
 			"price0":110.00,
 			"amount":10,
-			"image":"/detail/photo/proLarge5.jpg",
-			"primary":"/detail/photo/proPrimary5.jpg"
+			"image":"/detail/pro/photo/proLarge5.jpg",
+			"primary":"/detail/pro/photo/proPrimary5.jpg"
 		},
 		{
 			"id":7,
@@ -161,8 +161,8 @@
 			"price":1400.00,
 			"price0":1600.00,
 			"amount":16,
-			"image":"/detail/photo/proLarge6.jpg",
-			"primary":"/detail/photo/proPrimary6.jpg"
+			"image":"/detail/pro/photo/proLarge6.jpg",
+			"primary":"/detail/pro/photo/proPrimary6.jpg"
 		},
 		{
 			"id":8,
@@ -184,8 +184,8 @@
 			"price":140.00,
 			"price0":160.00,
 			"amount":4,
-			"image":"/detail/photo/proLarge7.jpg",
-			"primary":"/detail/photo/proPrimary7.jpg"
+			"image":"/detail/pro/photo/proLarge7.jpg",
+			"primary":"/detail/pro/photo/proPrimary7.jpg"
 		},
 		{
 			"id":9,
@@ -207,8 +207,8 @@
 			"price":1300.00,
 			"price0":1400.00,
 			"amount":5,
-			"image":"/detail/photo/proLarge.jpg",
-			"primary":"/detail/photo/proPrimary.jpg"
+			"image":"/detail/pro/photo/proLarge.jpg",
+			"primary":"/detail/pro/photo/proPrimary.jpg"
 		},
 		{
 			"id":10,
@@ -230,8 +230,8 @@
 			"price":120.00,
 			"price0":140.00,
 			"amount":7,
-			"image":"/detail/photo/proLarge1.jpg",
-			"primary":"/detail/photo/proPrimary1.jpg"
+			"image":"/detail/pro/photo/proLarge1.jpg",
+			"primary":"/detail/pro/photo/proPrimary1.jpg"
 		}
 	]
 }

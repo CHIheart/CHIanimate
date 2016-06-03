@@ -1,0 +1,30 @@
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+@import (reference) "../../../srcs/css/_style";
+@import (reference) "../../../srcs/css/css.less";
+
+//推荐商品
+.Push{
+	.bd(1px,solid,@lightgray);
+	.p(10px,20px,20px);
+	.bbox();
+	.size(14px);
+	.mt(20px);
+	dt{
+		.hline(30px);
+		.mb(10px);
+	}
+	li{
+		.fl();
+	}
+	a:extend(.transSlow){
+		.wh(100px);
+		.block();
+		.bd(1px,solid,@lightgray);
+		.mr(20px);
+		.o();
+		&:hover{
+			.bd-c(@red);
+		}
+	}
+}
