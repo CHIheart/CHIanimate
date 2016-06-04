@@ -30,6 +30,7 @@ define('CARS',function(require,exports,module){
 		var ALLCARS;//所有的车型信息
 		$scope.brands;//当前显示品牌
 		$scope.indices=[];//品牌所有开头字母（按字母表排序）
+		$scope.letter='';//当前所显示的品牌的所属标签，为空显示热门，否则为一个字母
 		$scope.series;//当前显示车系（二级JSON）
 		$scope.outputs;//当前显示排量
 		$scope.years;//当前显示出厂年份
@@ -46,7 +47,7 @@ define('CARS',function(require,exports,module){
 			brand:0,//品牌id
 			brandName:"品牌名称",
 			index:"品牌名称首字母",
-			icon:"品牌LOGO地址",
+			logo:"品牌LOGO地址",
 			factory:0,//厂商id
 			factoryName:"厂商名称",
 			sery:0,//车系id
@@ -67,14 +68,24 @@ define('CARS',function(require,exports,module){
 			for(var letter in ALLCARS){
 				$scope.indices.push(letter);
 			}
-			console.log($scope.indices)
+			$scope.showBrands();
+		console.log($scope.brands);
 			$scope.$apply();
 		});
 		//显示品牌，无参时显示热门，有参数时显示开头字母为参数的品牌
 		$scope.showBrands=function(c){
+			$scope.letter=c;
+			$scope.brands=null;
+			if(!!c){
+				$scope.brands=ALLCARS[c];
+				return true;
+			}
 			$scope.brands=[];
-			for(var brand in $scope.allBrands){
-				(!c && brand.hot || c && brand.index==c) && $scope.brands.push(brand);
+			for(var letter in ALLCARS){
+				var brands=ALLCARS[letter];
+				for(var brand in brands){
+					if(brands[brand].hot=='1') $scope.brands.push(brands[brand]);
+				}
 			}
 		}
 		//显示车系

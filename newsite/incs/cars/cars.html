@@ -26,9 +26,9 @@
 						<!-- 第一步 -->
 						<div class="Step1" ng-if="step==1">
 							<div class="indices">
-								<a ng-mouseenter="showBrands();" ng-class="{'cur':!index};">热门</a>
+								<a ng-mouseenter="showBrands();" ng-class="{'cur':!letter};">热门</a>
 								<p>
-									<a ng-repeat="index in indices" ng-mouseenter="showBrands(index)" ng-class="{'cur':index=='{{index}}'}">{{index}}</a>
+									<a ng-repeat="index in indices" ng-mouseenter="showBrands(index)" ng-class="{'cur':letter=='{{index}}'}">{{index}}</a>
 									<!-- <a>A</a><a>B</a><a>C</a><a>D</a><a>F</a><a>G</a>
 									<a>H</a><a>J</a><a>K</a><a>L</a><a>M</a><a>N</a>
 									<a>O</a><a>P</a><a>Q</a><a>R</a><a>S</a><a>T</a>
@@ -37,7 +37,7 @@
 							</div>
 							<div class="brands list">
 								<a ng-repeat="brand in brands" ng-click="set('brand',brand.id);set('brandName',brand.name);showSeries(brand.id);">
-									<var><img ng-src="brand.icon" alt="{{brand.name}}"></var>
+									<var><img ng-src="{{brand.logo}}" alt="{{brand.name}}"></var>
 									<span>{{brand.name}}</span>
 								</a>
 								
