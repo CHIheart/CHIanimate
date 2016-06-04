@@ -8,8 +8,10 @@
 }
 ul,ol,li{ list-style:none;}
 q{ quotes:none;}
-a{
+a,ins{
 	.decorate();
+}
+a{
 	.c-p();
 }
 a img{
@@ -84,21 +86,21 @@ table{
 // .black8{
 // 	.bg-c-a(black,.8);
 // }
-//.fixed{
-//	.fixed();
-// 	_position:absolute;
-//}
-// .fixed-top{
-// 	.fixed();
-// 	.t();
-// 	// _top:expression(eval(document.documentElement.scrollTop));
-// }
-// .fixed-bottom{
-// 	.fixed();
-// 	.b();
-// 	// _bottom:auto;
-// 	// _top:expression(eval(document.documentElement.scrollTop + document.documentElement.clientHeight - this.clientHeight - (parseInt(this.currentStyle.marginTop) || 0) - (parseInt(this.currentStyle.marginBottom) || 0)));
-// }
+.fixed{
+	.fixed();
+	_position:absolute;
+}
+.fixed-top{
+	.fixed();
+	.t();
+	// _top:expression(eval(document.documentElement.scrollTop));
+}
+.fixed-bottom{
+	.fixed();
+	.b();
+	// _bottom:auto;
+	// _top:expression(eval(document.documentElement.scrollTop + document.documentElement.clientHeight - this.clientHeight - (parseInt(this.currentStyle.marginTop) || 0) - (parseInt(this.currentStyle.marginBottom) || 0)));
+}
 /*全屏插件，为了方便横竖居中，使用表格*/
 // .FullScreenPlugin{
 // 	.none();

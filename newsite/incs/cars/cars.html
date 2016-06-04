@@ -26,9 +26,9 @@
 						<!-- 第一步 -->
 						<div class="Step1" ng-if="step==1">
 							<div class="indices">
-								<a ng-mouseenter="showBrands();">热门</a>
+								<a ng-mouseenter="showBrands();" ng-class="{'cur':!index};">热门</a>
 								<p>
-									<a ng-repeat="char in chars" ng-mouseenter="showBrands(char)">{{char}}</a>
+									<a ng-repeat="index in indices" ng-mouseenter="showBrands(index)" ng-class="{'cur':index=='{{index}}'}">{{index}}</a>
 									<!-- <a>A</a><a>B</a><a>C</a><a>D</a><a>F</a><a>G</a>
 									<a>H</a><a>J</a><a>K</a><a>L</a><a>M</a><a>N</a>
 									<a>O</a><a>P</a><a>Q</a><a>R</a><a>S</a><a>T</a>

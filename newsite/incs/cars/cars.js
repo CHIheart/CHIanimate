@@ -7,7 +7,7 @@
 
 
 
-define(function(require,exports,module){
+define('CARS',function(require,exports,module){
 	angular.module('Main')
 	.controller('CtrlAllCars', ['$scope', '$timeout', '$rootScope', function($scope,$timeout,$rootScope){
 		//接收开启事件
@@ -16,7 +16,7 @@ define(function(require,exports,module){
 			if(curcar){
 				;
 			}
-			open();
+			$scope.open();
 		});
 		$scope.open=function(){
 			$(".ALLCARS").closest('.FullScreenPlugin').fadeIn();
@@ -27,10 +27,9 @@ define(function(require,exports,module){
 		//步骤计数
 		$scope.step=1;
 		//车总数据
-		var ALLCARS;
-		$scope.allBrands;//总品牌数据，为了节省遍历时间
+		var ALLCARS;//所有的车型信息
 		$scope.brands;//当前显示品牌
-		$scope.chars;//品牌所有开头字母（按字母表排序）
+		$scope.indices=[];//品牌所有开头字母（按字母表排序）
 		$scope.series;//当前显示车系（二级JSON）
 		$scope.outputs;//当前显示排量
 		$scope.years;//当前显示出厂年份
@@ -61,32 +60,15 @@ define(function(require,exports,module){
 		$scope.set=function(item,value){
 			$scope.curcar[item]=value;
 		}
-		//调取完数据后，先整理品牌及字母索引
+		//调取完数据后，先整理字母索引
 		require.async("datas/cars",function(data){
 			ALLCARS=data;
 			var bExist;
-			for(var car in ALLCARS){
-				car.index=car.index.toUpperCase();
-				//索引是一级数组，所以直接这么写
-				!~$.inArray(car.index, $scope.chars) && $scope.chars.push(car.index);
-				bExist=false;
-				//所有品牌是JSON数组，所以要这么写
-				for(var brand in $scope.allBrands){
-					if(brand.id==car.brand){
-						bExist=true;
-						break;
-					}
-				}
-				if(!bExist){
-					$scope.allBrands.push({
-						id: car.brand,
-						name: car.brandName,
-						icon: car.icon,
-						index: car.index,
-						hot: car.hot
-					})
-				}
+			for(var letter in ALLCARS){
+				$scope.indices.push(letter);
 			}
+			console.log($scope.indices)
+			$scope.$apply();
 		});
 		//显示品牌，无参时显示热门，有参数时显示开头字母为参数的品牌
 		$scope.showBrands=function(c){
@@ -98,8 +80,9 @@ define(function(require,exports,module){
 		//显示车系
 		$scope.showSeries=function(brandid){
 			$scope.series=[];
-			for(var )
+			
 		}
 	}])
 	return ;
 });
+seajs.use('CARS');

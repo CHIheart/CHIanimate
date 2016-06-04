@@ -34,9 +34,9 @@ body{
 	.bd(0);
 	.c-p();
 	.valign();
+	.t-c();
 	a&{
 		.inblock();
-		.t-c();
 		.bbox();
 	}
 	&-small{
@@ -53,6 +53,11 @@ body{
 		.w(120px);
 		.hline(30px);
 		.size(16px);
+	}
+	&-huge{
+		.w(160px);
+		.hline(40px);
+		.size(18px);
 	}
 
 	//红色的确定按钮
@@ -98,6 +103,7 @@ body{
 			.c(@red);
 		}
 	}
+	.cur a:extend(.anchors a:hover){}
 }
 
 //阴影

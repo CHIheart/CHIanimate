@@ -272,7 +272,7 @@ function parseContent($txtCnt,$aData){
 }
 
 function locateMedias(&$txtCnt,$urlAbs){
-	static $regMedias='/<(?:img|video|audio|embed|source)[^\>]*src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)"/i';
+	static $regMedias='/<(?:img|video|audio|embed|source)[^\>]*[^\-]src="((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+)"/i';
 	static $regUrls='/url\([\'\"]?((?:\.{0,2}\/)*(?:[\w\d]+\/)*[\w\d]+\.\w+(?:[\?\#][\w\d]+)*)[\'\"]?\)/';
 	static $regSuffix='/[\?\#][\w\d]+/i';
 	static $regRequire='/require(?:\.async)?\([\'\"]((?:\.{0,2}\/)*[\w\d]+(?:\/[\w\d]+)*(?:\.js)?)[\'\"]/i';
