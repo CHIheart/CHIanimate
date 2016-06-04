@@ -40,22 +40,24 @@
 		.t-c();
 		.c(@deepblack);
 	}
-	sub,sup{
-		.absolute();
-		.size(40px);
-		.t(100px);
-		.c(@deepgray);
-		.c-p();
-		&:extend(.transSlow);
-		&:hover{
-			.c(@middleblack);
+	&MOVIE{
+		sub,sup{
+			.absolute();
+			.size(40px);
+			.t(100px);
+			.c(@deepgray);
+			.c-p();
+			&:extend(.transSlow);
+			&:hover{
+				.c(@middleblack);
+			}
 		}
-	}
-	sub{
-		.l(-50px);
-	}
-	sup{
-		.r(-50px);
+		sub{
+			.l(-50px);
+		}
+		sup{
+			.r(-50px);
+		}
 	}
 	//带索引及前后箭头用的是quintmovie
 	&MOVIE{

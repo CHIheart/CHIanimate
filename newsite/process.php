@@ -91,6 +91,17 @@ function writeCache($urlAbs){
 		}
 	}
 	if($urlRootPage===$urlAbs){
+		if(!DEVELOPING){
+			array_walk($aCss, function($value,$key){
+				$fileLess=str_replace(".css", ".less", WEBROOT_AT_DISK.$value);
+				$fileCss =WEBROOT_AT_DISK.$value;
+				$command = "lessc --clean-css $fileLess $fileCss -s";
+				exec($command, $output, $returnCode);
+				if($returnCode !== 0) {
+					echo "$command excuted error!!!<br>";
+				}
+			});
+		}
 		$aCss=packageResources($aCss);
 		array_walk($aCss, function(&$value,$key){
 			$value="<link rel=\"stylesheet\" href=\"{$value}\">";
