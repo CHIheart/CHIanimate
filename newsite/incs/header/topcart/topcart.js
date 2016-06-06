@@ -115,7 +115,7 @@ define('topcart',function(require,exports,module){
 					}
 					else
 					{
-						$rootScope.$broadcast('alert','删除失败',data.message,'frown');
+						$rootScope.$broadcast('alert',data.title,data.content,'frown');
 					}
 				});
 				li=cart=delids=null;

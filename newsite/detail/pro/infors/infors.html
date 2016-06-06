@@ -2,73 +2,75 @@
 <div class="Infors">
 	<h1>{$title}</h1>
 	<h2>{$intro}</h2>
-	<table ng-init="needCar={$needCar};">
-		<thead>
-			<tr class="prices">
-				<th>价格：</th>
-				<td>
-					<ins>￥<span ng-bind="curpro.price"></span></ins>
-					<del ng-bind="'￥'+curpro.price0" ng-if="!!curpro.price0"></del>
-				</td>
-			</tr>
-			<tr class="acts">
-				<th>本店活动：</th>
-				<td>
-					<em>赠品</em>
-					<em>新品八折</em>
-					<em>包邮</em>
-					<em>超值换购</em>
-					<em>满2件减10元</em>
-				</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-if="needCar && online;">
-				<th>选择车型：</th>
-				<td><a class="button button-large button-red" ng-click="chooseCar();">选择车型</a> 点此新增车型</td>
-			</tr>
-			<tr ng-if="needCar;">
-				<th>我的车库：</th>
-				<td>
-					<div class="tip anchors" ng-if="!online;">本功能需要<a ng-click="startLogin();">【登录】</a>后才可使用</div>
-					<ul class="cars BOXGROUP" ng-if="online;">
-						<li ng-repeat="car in cars">
-							<input type="radio" name="cars" value="{{car.id}}" id="cars{{car.id}}" ng-checked="$first">
-							<label for="cars{{car.id}}">{{car.name}}</label>
-						</li>
-					</ul>
-				</td>
-			</tr>
-			<tr ng-repeat="opt in options track by $index">
-				<th>{{opt.name}}：</th>
-				<td class="BOXGROUP options">
-					<input type="radio" name="option{{opt.id}}" ng-repeat-start="value in opt.values track by $index" value="{{value}}" ng-value="value" id="option{{opt.id}}_{{$index + 1}}" ng-checked="$first" ng-model="checked[opt.id]">
-					<label ng-repeat-end for="option{{opt.id}}_{{$index + 1}}" ng-click="freshCurpro();">{{value}}</label>
-				</td>
-			</tr>
-			<tr>
-				<th>数量：</th>
-				<td>
-					<input type="hidden" ng-model="curpro.id">
-					<!-- include src="/incs/number/number.html" -->
-				</td>
-			</tr>
-		</tbody>
-		<tfoot>
-			<tr>
-				<th colspan="2" class="anchors">
-					<a href="#" class="more"><i class="lcz lcz-grids"></i>查看更多同类商品</a>
-				</th>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input ng-if="!!curpro.amount" type="submit" class="button button-huge button-white" value="立即购买">
-					<button ng-if="!!curpro.amount" type="button" class="button button-huge button-red"><i class="lcz lcz-cart-full"></i>加入购物车</button>
-					<a ng-if="!curpro.amount" class="button button-huge button-pale">暂无商品</a>
-				</td>
-			</tr>
-		</tfoot>
-	</table>
+	<form action="carts.php" method="post">
+		<table ng-init="needCar={$needCar};">
+			<thead>
+				<tr class="prices">
+					<th>价格：</th>
+					<td>
+						<ins>￥<span ng-bind="curpro.price"></span></ins>
+						<del ng-bind="'￥'+curpro.price0" ng-if="!!curpro.price0"></del>
+					</td>
+				</tr>
+				<tr class="acts">
+					<th>本店活动：</th>
+					<td>
+						<em>赠品</em>
+						<em>新品八折</em>
+						<em>包邮</em>
+						<em>超值换购</em>
+						<em>满2件减10元</em>
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-if="needCar && online;">
+					<th>选择车型：</th>
+					<td><a class="button button-large button-red" ng-click="chooseCar();">选择车型</a> 点此新增车型</td>
+				</tr>
+				<tr ng-if="needCar;">
+					<th>我的车库：</th>
+					<td>
+						<div class="tip anchors" ng-if="!online;">本功能需要<a ng-click="startLogin();">【登录】</a>后才可使用</div>
+						<ul class="cars BOXGROUP" ng-if="online;">
+							<li ng-repeat="car in cars">
+								<input type="radio" name="cars" value="{{car.id}}" id="cars{{car.id}}" ng-checked="$first" ng-model="carid">
+								<label for="cars{{car.id}}">{{car.name}}</label>
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr ng-repeat="opt in options track by $index">
+					<th>{{opt.name}}：</th>
+					<td class="BOXGROUP options">
+						<input type="radio" name="option{{opt.id}}" ng-repeat-start="value in opt.values track by $index" value="{{value}}" id="option{{opt.id}}_{{$index + 1}}" ng-checked="$first" ng-model="checked[opt.id]">
+						<label ng-repeat-end for="option{{opt.id}}_{{$index + 1}}" ng-click="freshCurpro();">{{value}}</label>
+					</td>
+				</tr>
+				<tr>
+					<th>数量：</th>
+					<td>
+						<input type="hidden" ng-value="curpro.id" name="proid">
+						<!-- include src="/incs/number/number.html" -->
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th colspan="2" class="anchors">
+						<a href="#" class="more"><i class="lcz lcz-grids"></i>查看更多同类商品</a>
+					</th>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input ng-if="!!curpro.amount" type="submit" class="button button-huge button-white" value="立即购买" ng-disabled="!judgeFormValid();">
+						<button ng-if="!!curpro.amount" type="button" class="button button-huge button-red" ng-disabled="!judgeFormValid();"><i class="lcz lcz-cart-full"></i>加入购物车</button>
+						<a ng-if="!curpro.amount" class="button button-huge button-pale">暂无商品</a>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</form>
 </div>
 <!-- include src="/incs/cars/cars.html" condition="$aData['needCar'];" -->
 <script src="infors.js"></script>

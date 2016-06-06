@@ -29,7 +29,7 @@ define('product',function(require,exports,module){
 				$scope.freshCurpro();
 				$scope.$apply();
 			}else{
-				$rootScope.$broadcast('alert', '数据错误',data.message);
+				$rootScope.$broadcast('alert', data.title,data.content);
 			}
 		});
 		
@@ -57,13 +57,18 @@ define('product',function(require,exports,module){
 		}
 
 		//当前选中的属性值
-		$scope.option={};
+		$scope.checked={/*
+			Num:Value //键是属性的id，值是属性的某一个值
+		*/};
+		//总选项列表，id为属性的id，values为此属性下所有的可选值
+		$scope.options=[/*
+			id:Num,
+			values:[val1,val2,...]
+		*/];
 		//整理属性
 		function tidyOptions(){
 			var pros=$scope.infors.pros,
 				opts,opt;
-			$scope.options=[];
-			$scope.checked={};
 			//当前属性是否已存在于属性列表中
 			function existOption(id){
 				for(var x=0;x<$scope.options.length;x++){
@@ -82,11 +87,11 @@ define('product',function(require,exports,module){
 							values:[]
 						};
 						//向选项列表中塞入数据
-						$scope.option[opts[m].id]='';
 						$scope.options.push(opt);
 						//同时初始化被选项为第一选项
 						$scope.checked[opts[m].id]=opts[m].value;
 					}
+					//如果当前属性值不存在，则塞入属性值
 					!~$.inArray(opts[m].value, opt.values) && opt.values.push(opts[m].value);
 				}
 			}
@@ -149,7 +154,7 @@ define('product',function(require,exports,module){
 		$scope.$on("loginOK",function(event){
 			if(!$scope.needCar) return;
 			$.ajax({
-				url: '/ajax/detail/cars',
+				url: '/ajax/cars/list',
 				type: 'POST',
 				dataType: 'json',
 				data: {},
@@ -159,7 +164,7 @@ define('product',function(require,exports,module){
 					$scope.cars=data.cars;
 					$scope.$apply();
 				}else{
-					$rootScope.$broadcast('alert', '数据错误',data.message);
+					$rootScope.$broadcast('alert', data.title,data.content);
 				}
 			});
 		});
@@ -167,6 +172,19 @@ define('product',function(require,exports,module){
 		//点击选择车型
 		$scope.chooseCar=function(){
 			$rootScope.$broadcast('startChooseCar',null);
+		}
+
+		//新增车型事件
+		$scope.$on("finishAddCar",function(event,newcar){
+			$scope.cars.unshift({
+				id:newcar.id,
+				name:[newcar.name,newcar.transmission].join(' ')
+			});
+		});
+
+		//判断表单是否可用，需要匹配车时要有车的选项
+		$scope.judgeFormValid=function(){
+			return ($scope.carid || !$scope.needCar) && $scope.nums;
 		}
 	}])
 	return ;

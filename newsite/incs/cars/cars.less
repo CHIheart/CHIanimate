@@ -43,12 +43,12 @@
 			}
 		}
 	}
-	//五个标题
+	//六个标题
 	.tabs{
 		.m(30px,20px,30px,40px);
 		li{
 			.relative();
-			.w(20%);
+			.w(16.66%);
 			.fl();
 			.hline(36px);
 			.t-c();
@@ -173,13 +173,14 @@
 		.m(30px,20px);
 		.size(16px);
 		.c(@middleblack);
-		a{
+		a:extend(.ellipsis){
 			.inblock();
 			.valign(middle);
 			.size(14px);
 			.bd(2px,solid,@red);
 			.p(0,10px);
 			.hline(30px);
+			.maxw(8em);
 		}
 		q{
 			.fr();
@@ -205,8 +206,15 @@
 			.t-c();
 		}
 	}
-	//第五步
-	.Step5{
+	//第五步，车型列表
+	.cars{
+		a{
+			.w(48%);
+			.m(0,2%,14px,0);
+		}
+	}
+	//第六步，输入VIN
+	.Step6{
 		p{
 			.size(16px);
 			.c(@lightblack);
@@ -233,6 +241,25 @@
 		.button{
 			.fr();
 			.m(30px,15px,0,0);
+		}
+	}
+	//第七步，完成
+	.Step7{
+		h6{
+			.size(40px);
+			.m(120px,0,40px,0);
+			.c(@green);
+		}
+		i.lcz-check{
+			.c(white);
+			.mr(10px);
+			.round();
+			.bg-c(@green);
+			.relative();
+			.t(4px);
+		}
+		p{
+			.c(@lightblack);
 		}
 	}
 }
