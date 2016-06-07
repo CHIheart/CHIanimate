@@ -10,7 +10,7 @@
 define('product',function(require,exports,module){
 	//主选项控制器
 	angular.module('Main')
-	.controller('CtrlPro', ['$scope','$rootScope','$timeout', function ($scope,$rootScope,$timeout) {
+	.controller('CtrlPro', ['$scope','$rootScope','$timeout','$http', function ($scope,$rootScope,$timeout,$http) {
 		$scope.infors={};
 		//调用整体信息
 		$.ajax({
@@ -162,6 +162,7 @@ define('product',function(require,exports,module){
 			.success(function(data) {
 				if(data.result){
 					$scope.cars=data.cars;
+					$scope.curcar.id=$scope.cars[0].id;
 					$scope.$apply();
 				}else{
 					$rootScope.$broadcast('alert', data.title,data.content);
@@ -183,8 +184,9 @@ define('product',function(require,exports,module){
 		});
 
 		//判断表单是否可用，需要匹配车时要有车的选项
+		$scope.curcar={};
 		$scope.judgeFormValid=function(){
-			return ($scope.carid || !$scope.needCar) && $scope.nums;
+			return (!!$scope.curcar.id || !$scope.needCar) && !!$scope.$$childHead.num;
 		}
 	}])
 	return ;

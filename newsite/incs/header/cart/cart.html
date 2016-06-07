@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="cart.css">
+<div class="HEADER container">
+	<div class="common">
+		<div class="LOGO">
+			<img src="/srcs/images/logo.png" alt="">
+		</div>
+		<h1>我的购物车</h1>
+		<!-- include src="../toplinks/toplinks.html" -->
+	</div>
+</div>
+<div class="List common BOXGROUP anchors">
+	<div class="Loading">
+		<img src="/srcs/images/waiting.gif" alt=""> 正在调用，请稍候……
+	</div>
+	<table>
+		<thead>
+			<tr>
+				<td width="40" class="right">
+					<input type="checkbox" id="CheckAll">
+					<label for="CheckAll">&nbsp;</label>
+				</td>
+				<td width="140">图片</td>
+				<th>商品名称</th>
+				<td width="120" class="right">单价</td>
+				<td width="280">数量</td>
+				<td width="120" class="right">小计</td>
+				<td width="140">操作</td>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- 第一部分是主产品 -->
+			<tr ng-repeat-start="cart in carts" data-parent="{{parentCart}}">
+				<td>
+					<input type="checkbox" id="box{{cartId}}" value="{{cartId}}">
+					<label for="box{{cartId}}">&nbsp;</label>
+				</td>
+				<td><img ng-src="{{image}}" alt="{{name}}"></td>
+				<th>
+					<h3>
+						<a ng-href="{{href}}">{{name}}</a>
+						<small>{{summary}}</small>
+					</h3>
+				</th>
+				<td>
+					<ins>{{priceCurrent(cartId);}}</ins>
+					<del>{{pricePrimary(cartId);}}</del>
+				</td>
+				<td>
+					<!-- include src="numberParams.html" -->
+				</td>
+				<td>
+					<ins>{{priceAll(cartId);}}</ins>
+				</td>
+				<td><q><i class="lcz lcz-times"></i></q></td>
+			</tr>
+			<!-- 第二部分是附属产品：配件/赠品等 -->
+			<tr ng-repeat="subcart in subcarts">
+				<td>
+					<input type="checkbox" id="box1">
+					<label for="box1">&nbsp;</label>
+				</td>
+				<td><img src="/srcs/images/pro.png" alt=""></td>
+				<th>
+					<h3>
+						<a href="#">这是一个产品名称可能很长这是一个产品名称可能很长</a>
+						<small>这个是产品的 说明这个是产品的 说明这个是产品的 说明</small>
+					</h3>
+				</th>
+				<td>
+					<ins>现价 元</ins>
+					<del>原价 元</del>
+				</td>
+				<td>
+					<!-- include src="/incs/number/number.html" -->
+				</td>
+				<td>
+					<ins>总价 元</ins>
+				</td>
+				<td><q><i class="lcz lcz-times"></i></q></td>
+			</tr ng-repeat-end>
+			<!-- <tr>
+				<td>
+					<input type="checkbox" id="box1">
+					<label for="box1">&nbsp;</label>
+				</td>
+				<td><img src="/srcs/images/pro.png" alt=""></td>
+				<th>
+					<h3>
+						<a href="#">这是一个产品名称可能很长这是一个产品名称可能很长</a>
+						<small>这个是产品的 说明这个是产品的 说明这个是产品的 说明</small>
+					</h3>
+				</th>
+				<td>
+					<ins>现价 元</ins>
+					<del>原价 元</del>
+				</td>
+				<td>
+					<!- - include src="/incs/number/number.html" - ->
+				</td>
+				<td>
+					<ins>总价 元</ins>
+				</td>
+				<td><q><i class="lcz lcz-times"></i></q></td>
+			</tr> -->
+		</tbody>
+	</table>
+</div>

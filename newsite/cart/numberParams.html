@@ -1,0 +1,10 @@
+<link rel="stylesheet" href="/incs/number/number.css">
+<dl class="NUMBER" ng-controller="CtrlNumber" ng-init="min={{min}};max={{max}};num={{num}};" ng-class="{disabled:!!disabled};">
+	<dt>
+		<sub ng-click="down();">-</sub>
+		<input type="text" ng-pattern="/^\d+$/" ng-value="num{{parentId}}" ng-model="num{{cartId}}" ng-change="judge();" ng-disabled="!!disabled;">
+		<sup ng-click="up();">+</sup>
+	</dt>
+	<dd class="ellipsis">还可以再买<b ng-bind="max-num"></b>件</dd>
+</dl>
+<script src="/incs/number/number.js"></script>

@@ -1,0 +1,144 @@
+//购物车用头部样式
+
+@import (reference) "../../../srcs/css/_funs";
+@import (reference) "../../../srcs/css/_theme";
+@import (reference) "../../../srcs/css/css.less";
+
+.HEADER{
+	.h(100px);
+	.bg-c(white);
+	.bd-b(2px,solid,@red);
+	h1{
+		.fl();
+		.size(28px);
+		.hline(100px);
+	}
+}
+.LOGO{
+	.wh(62px);
+	.pt(19px);
+	.mr(30px);
+	.fl();
+}
+.TOPLINKS{
+	.fr();
+	.pt(30px);
+}
+
+.USERMENU{
+	.w(120px);
+	.relative();
+	.t-c();
+	> dd{
+		.absolute();
+		.lt(0,1px) !important;
+		.bg-c(white);
+		.none();
+	}
+	&:hover{
+		dd{
+			.block();
+		}
+	}
+}
+
+.List{
+	.bg-c(white);
+	.m(20px,auto);
+	.right{
+		.t-r();
+	}
+	th,td{
+		.bd-b(1px,solid,@lightgray);
+	}
+	td{
+		.t-c();
+		img{
+			.wh(80px);
+		}
+		> input{
+			.none();
+		}
+	}
+	th{
+		.t-l();
+	}
+	thead *{
+		.h(70px);
+		.size(14px);
+		.c(@middleblack);
+	}
+	tbody{
+		th,td{
+			.h(100px);
+		}
+		td:first-child{
+			.t-r();
+		}
+	}
+	label{
+		.inblock();
+		.whline(14px);
+		.size(14px);
+		.bd(1px,solid,@lightgray);
+		.bg-c(white);
+		.c-p();
+	}
+	input:checked + label{
+		.bg-c(@green);
+		&:before:extend(.lcz,.lcz-check:before){
+			.c(white);
+		}
+	}
+	//产品名称跟描述
+	h3,small{
+		.fl();
+		.w(380px);
+		&:extend(.ellipsis);
+	}
+	h3{
+		.size(16px);
+		.line(24px);
+	}
+	small{
+		.size();
+		.c(@red);
+	}
+	//原价和现价
+	ins,del{
+		.block();
+		.t-r();
+		.line(24px);
+	}
+	ins{
+		.c(@red);
+		.size(16px);
+	}
+	del{
+		.c(@lightblack);
+		.size();
+	}
+	//删除
+	q:extend(.transSlow){
+		.inblock();
+		.whline(20px);
+		.round();
+		.size(14px);
+		.c(@lightblack);
+		.c-p();
+		&:hover{
+			.bg-c(@red);
+			.c(white);
+		}
+	}
+}
+
+//正在调用
+.Loading{
+	.hline(100px);
+	.t-c();
+	img{
+		.valign();
+		.mr(20px);
+	}
+}

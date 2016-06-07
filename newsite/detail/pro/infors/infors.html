@@ -24,17 +24,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-if="needCar && online;">
+				<tr ng-if="needCar && online">
 					<th>选择车型：</th>
 					<td><a class="button button-large button-red" ng-click="chooseCar();">选择车型</a> 点此新增车型</td>
 				</tr>
-				<tr ng-if="needCar;">
+				<tr ng-if="needCar">
 					<th>我的车库：</th>
 					<td>
 						<div class="tip anchors" ng-if="!online;">本功能需要<a ng-click="startLogin();">【登录】</a>后才可使用</div>
 						<ul class="cars BOXGROUP" ng-if="online;">
 							<li ng-repeat="car in cars">
-								<input type="radio" name="cars" value="{{car.id}}" id="cars{{car.id}}" ng-checked="$first" ng-model="carid">
+								<input type="radio" name="cars" value="{{car.id}}" id="cars{{car.id}}" ng-checked="$first" ng-model="curcar.id">
 								<label for="cars{{car.id}}">{{car.name}}</label>
 							</li>
 						</ul>
@@ -51,6 +51,7 @@
 					<th>数量：</th>
 					<td>
 						<input type="hidden" ng-value="curpro.id" name="proid">
+						<input type="hidden" ng-value="carid" name="carid">
 						<!-- include src="/incs/number/number.html" -->
 					</td>
 				</tr>
