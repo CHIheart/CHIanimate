@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/> 
+<meta name="renderer" content="webkit">
+<meta content="yes" name="apple-mobile-web-app-capable" /> 
+<meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
+<meta content="telephone=no,email=no" name="format-detection" />
+<meta name="apple-touch-fullscreen" content="yes">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="index.css" rel="stylesheet">
+</head>
+<body ng-app="MyApp">
+<form ng-controller="LoginFormCtrl" name="LoginForm">
+	<div ng-form ng-repeat="item in items" class="text-container" ng-include src="item.template" onload="compileAll('LoginForm');">
+		<!-- <input type="{{item.type}}" name="{{item.name}}" id="{{item.id}}" ng-model="form[item.model]" ng-class="item.className" need-at="{{item.needAt}}" ng-required="item.required">
+		<label for="{{item.id}}" ng-bind="item.placeholder"></label> -->
+	</div>
+</form>
+</body>
+</html>
+<script src="/srcs/js/jq1.10.2_sea2.3.0_angular1.2.29.js"></script>
+<script>
+	angular.module('MyApp', [])
+		.controller('LoginFormCtrl', ['$scope','$timeout','$compile', function ($scope,$timeout,$compile) {
+			$scope.form={
+				user_passport:'',
+				user_password:'',
+				user_email:''
+			};
+			// $scope.$watch("form",function(newValue){
+			// 	console.log(newValue);
+			// },true);
+	        $scope.items=[
+	            {
+	            	template:'tmpl-text.html',
+	                name:'user_passport',
+	                id:'user_passport',
+	                model:'user_passport',
+	                type:'text',
+	                placeholder:'用户名/邮箱/手机',
+	                needAt:true,
+	                data:'passport',
+	                className:'dir-text dir-email dir-passport',
+	                required:true,
+	                pattern:/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}|(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7}/
+	            },{
+	            	template:'tmpl-text.html',
+	                name:'user_password',
+	                id:'user_password',
+	                model:'user_password',
+	                type:'password',
+	                placeholder:'6-20位密码',
+	                needAt:false,
+	                data:'password',
+	                className:'dir-text',
+	                required:true,
+	                pattern:/^[\s\S]{6,20}$/
+	            },{
+	            	template:'tmpl-text.html',
+	                name:'user_email',
+	                id:'user_email',
+	                model:'user_email',
+	                type:'text',
+	                placeholder:'常用邮箱',
+	                needAt:false,
+	                data:'email',
+	                className:'dir-text dir-email',
+	                required:false,
+	                pattern:/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/
+	            }
+	        ];
+	        var n=0;
+	        $scope.compileAll=function(formName){
+	        	n++;
+	        	if(n!=$scope.items.length) return;
+		        $timeout(function(){
+		            var form=document.getElementsByName(formName)[0],
+		                items=form.childNodes;
+		            for(var n=0;n<items.length;n++){
+		                var item=angular.element(items[n]).removeAttr('ng-repeat ng-include src');
+		                $compile(item)(item.scope());
+		            }
+		        });
+	        }
+		}])
+		.directive('dirText', [function () {
+			return {
+				restrict: 'ACE',
+				require:'ngModel',
+				link: function (scope, iElement, iAttrs, ngModel) {
+					var model=iAttrs['ngModel'];
+					scope.$watch(model,function(newValue,oldValue){
+						if(!!newValue) iElement.addClass('text-full').removeClass('text-empty');
+						else if(!newValue) iElement.removeClass('text-full').addClass('text-empty');
+					});
+				}
+			};
+		}])
+		.directive('dirEmail', ['$compile','$timeout' ,function ($compile,$timeout) {
+			return {
+				restrict: 'ACE',
+				require:'ngModel',
+				link: function (scope, iElement, iAttrs, ngModel) {
+                    iElement.parent().append("<ul></ul>")
+                    var hosts='126.com|163.com|qq.com|sina.com|yeah.net|yahoo.com|yahoo.com.cn'.split('|'),
+                        skipWatch=false,
+                        ul=iElement.parent().find('ul').eq(0),
+                        li=angular.element('<li ng-repeat="email in emails | filter:host" ng-click="setEmail(email)">{{email}}</li>'),
+						model=iAttrs['ngModel'],
+						needAt=iAttrs['needAt']=='true' ? true: false;
+                    iElement.on("focus",function(){
+                        skipWatch=false;
+                    })
+                    $compile(li)(scope);
+                    ul.append(li);
+                    scope.$watch(model,function(newValue){
+                        if(skipWatch) return false;
+                        var indexAt=newValue.indexOf('@');
+                        if(needAt && !~indexAt){
+                            scope.emails=[];
+                            ul.hide();
+                            return false;
+                        }
+
+                        var passport,emails=[];
+                        if(needAt || ~indexAt){
+                            scope.host=newValue.substring(indexAt);
+                            passport=newValue.substring(0,indexAt);
+                        }else{
+                            passport=newValue;
+                            scope.host='';
+                        }
+                        for(var n=0;n<hosts.length;n++) emails.push(passport+'@'+hosts[n]);
+                        scope.emails=emails;
+                        emails=null;
+                        $timeout(function(){
+                            if(ul.children().length==1 && ul.children().eq(0).html()==newValue || !needAt && !passport) ul.hide();
+                            else ul.show();
+                        });
+                    });
+                    scope.setEmail=function(email){
+                        skipWatch=true;
+                        ngModel.$setViewValue(email);
+                        ul.hide();
+                    }
+				}
+			};
+		}])
+</script>

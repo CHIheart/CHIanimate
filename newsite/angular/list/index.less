@@ -1,0 +1,82 @@
+@charset "UTF-8";
+/**
+ * 
+ * @authors Your Name (you@example.org)
+ * @date    2016-07-14 09:35:40
+ * @version $Id$
+ */
+
+
+@import url(../../srcs/css/css.less);
+
+body{
+	.bg-c(white);
+}
+
+.text-container{
+	.hline(40px);
+	.w(200px);
+	.bd(1px,solid,silver);
+	.relative();
+	&,& label{
+		.bbox();
+		.p(0,10px);
+	}
+	input,label{
+		.size(14px);
+	}
+	input{
+		.full();
+		.bd(0);
+		.bg-c(transparent);
+		.line(38px);
+		.c(black);
+		~ ul{
+			.absolute();
+			.bg-c(white);
+			.z(2);
+			.bd(1px,solid,silver);
+			.w(100%);
+			.maxh(90px);
+			.o-a();
+			.lt(-1px,38px);
+			.none();
+			li{
+				.hline(30px);
+				.size(14px);
+				.c(black);
+				.p(0,10px);
+				&:hover{
+					.bg-c(red);
+					.c(white);
+				}
+			}
+		}
+	}
+	label:extend(.ellipsis){
+		.absolute();
+		.z(1);
+		.c(silver);
+		.lt();
+	}
+	input{
+		&.ng-invalid.ng-dirty{
+			+ label{
+				.bg-c(red);
+				.c(white);
+			}
+		}
+		&.chi-full,&.text-full,&.ng-dirty{
+			+ label{
+				.bg-c(white);
+				.size();
+				.line(20px);
+				.p(0,5px);
+				.lt(5px,-10px);
+			}
+		}
+	}
+}
+.ng-dirty.ng-invalid{
+	.out(1px,solid,red);
+}

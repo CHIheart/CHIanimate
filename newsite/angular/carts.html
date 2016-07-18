@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/> 
+<meta name="renderer" content="webkit">
+<meta content="yes" name="apple-mobile-web-app-capable" /> 
+<meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
+<meta content="telephone=no,email=no" name="format-detection" />
+<meta name="apple-touch-fullscreen" content="yes">
+<title>购物车列表模型</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body ng-app="Main" ng-controller="MainCtrl">
+
+<!-- <div ng-form dir-number min="1" max="9" value="4">
+</div>
+
+<div ng-form dir-number min="2" max="8" value="3">
+</div> -->
+
+<div ng-form ng-repeat="data in datas">
+    <input type="checkbox" value="{{data.id}}" ng-init="using=true;" ng-model="using">
+    <span ng-bind="using"></span>
+    <span dir-number ng-init='min=data.min; max=data.max; value=data.value;' ></span>
+</div>
+
+</body>
+</html>
+
+<script src="../srcs/js/jq1.10.2_sea2.3.0_angular1.2.29.js"></script>
+<script>
+
+angular.module('Main', [])
+    .directive('dirNumber', [function () {
+        return {
+            restrict: 'A',
+            // scope:{
+            //     min:"@",
+            //     max:"@",
+            //     value:"@"
+            // },
+            templateUrl:'number.html',
+            link: function (scope, iElement, iAttrs) {
+                scope.minus=function(){
+                    if(scope.value-scope.min>0){
+                        scope.value--;
+                    }else{
+                        scope.value=scope.min;
+                    }
+                }
+                scope.plus=function(){
+                    if(scope.value-scope.max<0){
+                        scope.value++;
+                    }else{
+                        scope.value=scope.max;
+                    }
+                }
+                scope.$watch("value",function(newValue,oldValue){
+                    if(isNaN(newValue)){
+                        scope.value= newValue.replace(/[^\d]/,'')*1;
+                    }
+                    if(scope.value-scope.max>0){
+                        scope.value=scope.max;
+                    }
+                    else if(scope.value-scope.min<0){
+                        scope.value=scope.min;
+                    }
+                });
+                /*scope.$watch("disabled",function(){
+                    console.log(arguments)
+                })*/
+            }
+        };
+    }])
+    .controller('MainCtrl', ['$scope', function ($scope) {
+        $scope.datas=[
+            {
+                id:1,
+                min:1,
+                max:9,
+                value:4
+            },{
+                id:2,
+                min:2,
+                max:8,
+                value:3
+            }
+        ]
+    }])
+
+
+</script>
