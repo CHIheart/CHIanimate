@@ -1,2 +1,4 @@
-		<input type="{{item.type}}" name="{{item.name}}" id="{{item.id}}" ng-model="form[item.model]" ng-class="item.className" need-at="{{item.needAt}}" ng-required="item.required">
-		<label for="{{item.id}}" ng-bind="item.placeholder"></label>
+<div class="text-container">
+	<input dir-text type="{{item.type}}" name="{{item.name}}" id="{{item.id}}" ng-model="form[item.model]" ng-required="item.required" ng-pattern="item.pattern" ng-maxlength="item.maxlength" ng-minlength="item.minlength">
+	<label for="{{item.id}}" ng-bind="item.placeholder"></label>
+</div>

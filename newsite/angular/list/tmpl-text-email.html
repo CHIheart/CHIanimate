@@ -1,0 +1,7 @@
+<div class="text-container">
+	<input dir-text dir-email type="text" name="{{item.name}}" id="{{item.id}}" ng-model="form[item.model]" need-at="{{item.needAt}}" ng-required="item.required" ng-pattern="item.pattern" ng-maxlength="item.maxlength" ng-minlength="item.minlength">
+	<label for="{{item.id}}" ng-bind="item.placeholder"></label>
+	<ul class='ng-hide'>
+		<li ng-repeat="email in emails | filter:host" ng-bind="email" ng-click="setEmail(email)"></li>
+	</ul>
+</div>

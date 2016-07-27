@@ -1,0 +1,5 @@
+<div class="number-container">
+	<button ng-click="minus()" ng-mousedown="combo('minus');" ng-mouseup="combo(false);" ng-mouseleave="combo(false);" ng-disabled="form[item.model]<=item.min">-</button>
+	<input dir-number type="text" ng-model="form[item.model]" min="{{item.min}}" max="{{item.max}}" step="{{item.step}}" ng-change="judge();" mode="{{item.mode}}" ng-readonly="item.mode=='float'">
+	<button ng-click="plus()" ng-mousedown="combo('plus');" ng-mouseup="combo(false);" ng-mouseleave="combo(false);" ng-disabled="form[item.model]>=item.max">+</button>
+</div>

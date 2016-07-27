@@ -1,0 +1,4 @@
+<div ng-form class="box-group" dir-checkboxes max="{{item.max}}" min="{{item.min}}" model="form['{{item.model}}']">
+	<input type="checkbox" ng-repeat-start="value in item.values" name="{{item.name}}" id="{{item.id+$index}}" ng-model="form[item.model][value.value]" value="{{value.value}}">
+	<label for="{{item.id+$index}}" ng-repeat-end ng-bind="value.label"></label>
+</div>
