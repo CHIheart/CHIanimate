@@ -452,6 +452,13 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+//webkit内核专用多行溢出截取
+.clamp(@n : 2){
+    overflow: hidden;
+    -webkit-line-clamp: @n;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
 .break(){
 	word-break: break-all;
 	word-wrap: break-word;
