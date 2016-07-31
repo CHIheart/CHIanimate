@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>抽屉效果</title>
+</head>
+<style>
+*{ margin:0px; padding:0px;}
+dl{ border:1px solid #eee; margin:10px;}
+dt{ font-size:14px; background-color:#f0f0f0;}
+dd{ font-size:12px; line-height:25px; padding:10px;}
+
+.v{ float:left; width:200px;}
+.v dt{ line-height:30px; padding:0px 10px; border-bottom:1px dashed #fff;}
+.cur{ background:#fee;}/*当前的展示项被附加本类*/
+
+.h{ width:300px; height:120px; overflow:hidden;}
+.h dt{ width:19px; text-align:center; line-height:15px; padding:10px 0px; border-right:1px dashed #fff;}
+.h dt,.h dd{ float:left; overflow:hidden; height:120px;}
+.h dd{ width:220px;}/*横向的dd要定宽，且要计算好内边距*/
+</style>
+
+<body>
+<dl class="v d1">
+	<dt>标题一</dt>
+    <dd>模式一，点哪个展开哪个，如果是已经展开的则缩回，不影响其它（可以展开任意多个，也可以关闭任意多个）</dd>
+	<dt>标题二</dt>
+    <dd>内容2</dd>
+	<dt>标题三</dt>
+    <dd>内容33333</dd>
+</dl>
+
+<dl class="v d2">
+	<dt>标题一</dt>
+    <dd>模式二，点哪个展开哪个，其它缩回，如果是已经展开的则不动，缩回与展开同时进行（只展开一个，不可全部关闭）</dd>
+	<dt>标题二</dt>
+    <dd>内容2</dd>
+	<dt>标题三</dt>
+    <dd>内容33333</dd>
+</dl>
+
+<dl class="v d3">
+	<dt>标题一</dt>
+    <dd>模式三，点哪个展开哪个，其它缩回，如果是已经展开的则缩回，缩回与展开同时进行（最多展开一个，可以全部关闭）</dd>
+	<dt>标题二</dt>
+    <dd>内容2</dd>
+	<dt>标题三</dt>
+    <dd>内容33333</dd>
+</dl>
+<div style="clear:both;"></div>
+
+<dl class="h d5">
+	<dt>标题一</dt>
+    <dd>横向模式，一般只用这一种，其它两种模式横向都很丑</dd>
+	<dt>标题二</dt>
+    <dd>内容2</dd>
+	<dt>标题三</dt>
+    <dd>内容33333</dd>
+</dl>
+
+
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script src="../77mobile/js/effect/drawer.min.js"></script>
+<script>
+$(function(){
+	CHIdrawer(".d1",'dt','dd',{type:1,dir:'v'});
+	CHIdrawer(".d2",'dt','dd',{type:2,dir:'v'});
+	CHIdrawer(".d3",'dt','dd',{type:3,dir:'v'});
+	CHIdrawer(".d5",'dt','dd',{type:2,dir:'h'});
+});
+</script>

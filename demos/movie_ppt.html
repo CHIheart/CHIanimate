@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+</head>
+<style>
+*{ margin:0px; padding:0px; list-style:none;}
+dl{ width:300px; height:200px; border:1px solid #ccc; margin:50px;}
+dt{ width:300px; height:150px;}
+ul{ width:300px; height:150px; overflow:hidden; position:relative;}
+ul li{ width:300px; height:150px; position:absolute; left:0px; top:0px;}
+
+dd{ width:300px; height:50px; overflow:hidden; background:#f0f0f0;}
+dd .cur{ background-color:#fee;}
+ol li{ width:100px; height:50px; float:left; line-height:50px; text-align:center;}
+</style>
+<body>
+<dl>
+	<dt><ul class="ppt">
+    	<li>1本特效需要两个效果组合</li>
+    	<li>2一个是PPT幻灯片效果</li>
+    	<li>3一个是MOVIE影片效果</li>
+    	<li>4两个效果都要生成实名对象</li>
+    	<li>5然后用在总的效果上做参数</li>
+    </ul></dt>
+    <dd class="movie"><ol>
+    	<li>1</li>
+    	<li>2</li>
+    	<li>3</li>
+    	<li>4</li>
+    	<li>5</li>
+    </ol></dd>
+</dl>
+
+<input class="stop" type="button" value="暂停">
+<input class="start" type="button" value="开始">
+<input class="prev" type="button" value="上张">
+<input class="next" type="button" value="下张">
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script src="../77mobile/js/effect/movie.js"></script>
+<script src="../77mobile/js/effect/ppt.js"></script>
+<script src="../77mobile/js/effect/movie_ppt.js"></script>
+<script>
+$(function(){
+	movie_ppt(".ppt",".movie",'','',{stop:'.stop',start:'.start',prev:'.prev',next:'.next'},{auto:false});
+});
+
+</script>

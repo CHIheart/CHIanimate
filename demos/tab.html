@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>标签切换效果</title>
+</head>
+<style>
+*{ margin:0px; padding:0px;}
+dl{ width:300px; height:200px; margin:50px; border:1px solid #ccc;}
+dt,dd{ clear:both;}
+dt{ height:30px; line-height:30px; font-size:12px; background:#eee;}
+dt b{ display:block; float:left; padding:0px 10px; font-weight:normal;}
+dt b.cur{ font-weight:bold; background:#fff;}
+dd{ padding:10px; font-size:12px; line-height:25px;}
+dd div{ clear:both;}
+</style>
+<body>
+<dl class="tab">
+	<dt><b>标签一</b><b>标题</b><b>很长一个标题</b></dt>
+    <dd>
+    	<div>标签的数量一定要与内容数量一致</div>
+    	<div>被激活的标签，会被附加 cur 类</div>
+    	<div>可以给外围定高，或不定高，也可以做成竖行排列的标签样式</div>
+    </dd>
+</dl>
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script src="../77mobile/js/effect/tab.js"></script>
+<!--<script src="../77mobile/js/effect/tab.min.js"></script>-->
+<script>
+$(function(){
+	CHItab(".tab","dt b","dd div");
+});
+</script>

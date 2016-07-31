@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable" /> 
+<meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
+<meta content="telephone=no" name="format-detection" />
+<title>使用各面的最大点移面</title>
+<link rel="stylesheet" type="text/css" href="../font-awesome-4.3.0/css/font-awesome.min.css">
+<style>
+*{ margin:0; padding:0;}
+body{ background-color:#2673ec; color:#fff; font-family:"微软雅黑";}
+html,body{ font-size:20px;}
+ul{ position:fixed; width:150px; list-style:none; background-color:#2673ec;}
+ul li{ clear:both; line-height:30px; text-align:center;}
+ul a{ color:#fff; display:block; text-decoration:none;}
+ul a.cur{ background-color:#fff; color:#2673ec;}
+
+.main{ margin:0 auto; width:800px;}
+.main div{ width:800px; height:600px; border:1px solid #fff;}
+</style>
+</head>
+<body>
+<ul class="indices">
+    <li><a href="#one">一</a></li>
+    <li><a href="#two">二</a></li>
+    <li><a href="#three">三</a></li>
+    <li><a href="#four">四</a></li>
+    <li><a href="#five">五</a></li>
+    <li><a href="#six">六</a></li>
+</ul>
+<div class="main">
+    <div id="one">一</div>
+    <div id="two">二</div>
+    <div id="three">三</div>
+    <div id="four">四</div>
+    <div id="five">五</div>
+    <div id="six">六</div>
+</div>
+
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script>
+/*
+导航与内容滚动监听效果，可以处理变化尺寸的内容，但暂时不支持动态添加的内容
+sJQnavs，查找到导航项目的JQ字符串
+sJQcontents，查找到内容项目的JQ字符串
+oOptions，配置参数集合对象，可以使用的属性有
+    dir，默认为v，纵向，还可以为h横向
+    offset，偏移，默认为0，为正数的话会延后响应，为负数的话会提前响应（一般为负数，以适应顶部的静止化导航遮挡的部分）
+oCallbacks，回调函数集合对象，可以使用的属性有
+    init()，初始化完成时执行的函数，只发生在window.onload事件上
+    show(oJQnavShowed,oJQnavHidden)，显示隐藏事件发生时的函数，仅当有新的项目被显示出来的时候才发生（重复点击被显示出来的内容则不会发生，在同一内容区域滚动时也不会发生）
+        参数1是被显示出来的导航项目的JQ对象，参数2是被隐藏掉的导航项目的JQ对象
+*/
+function CHInavigator(sJQnavs, sJQcontents, oOptions, oCallbacks) {
+    var timer = 0,
+        oJQnavs = $(sJQnavs),
+        oJQcontents = $(sJQcontents);
+    if (!oJQnavs.length || !oJQcontents.length) return false;
+    if (!$.isPlainObject(oOptions)) oOptions = {};
+    var dir = /^h$/i.test(oOptions.dir) ? 'h' : 'v',
+        scrollAttr = dir == 'v' ? 'scrollTop' : 'scrollLeft',
+        offsetAttr = dir == 'v' ? 'top' : 'left',
+        offset = isNaN(oOptions.offset) ? 0 : parseInt(oOptions.offset);
+    if (!$.isPlainObject(oCallbacks)) oCallbacks = {};
+    //绑定到窗口的load及scroll事件上
+    $(window).on('load scroll', function(event) {
+        clearTimeout(timer);
+        timer = 0;
+        timer = setTimeout(judge, 100);
+        if (event.type == 'load' && $.isFunction(oCallbacks.init)) oCallbacks.init();
+    });
+    //导航项目的点击，为了保证偏移的正确显示，屏蔽掉锚链接的默认行为，而改成手动滚动窗口
+    oJQnavs.click(function() {
+        if ($(this).hasClass("cur")) return true;
+        var index = oJQnavs.index(this);
+        light(index);
+        var offsetLength = oJQcontents.eq(index).offset()[offsetAttr] + offset,
+            oAnimate={};
+        oAnimate[scrollAttr] = offsetLength;
+        $("html,body").animate(oAnimate);
+        return false;
+    });
+    //点亮导航项目
+    function light(index) {
+        var THAT = oJQnavs.filter(".cur"),
+            piCur = oJQnavs.index(THAT),
+            THIS = oJQnavs.eq(index).addClass("cur");
+        if (index != piCur) { //显示出来的与隐藏掉的不为同一项目时才发生事件
+            if ($.isFunction(oCallbacks.show)) oCallbacks.show(THIS, THAT);
+            THAT.removeClass("cur");
+        }
+    }
+    //判断当前显示的内容范围
+    function judge() {
+        var scrollLength = $(window)[scrollAttr](),
+            piCurrent = 0,
+            piLength = oJQcontents.length;
+        for (var n = 0; n < piLength; n++) {
+            if (oJQcontents.eq(n).offset()[offsetAttr] + offset > scrollLength) {
+                n--;
+                break;
+            }
+        }
+        piCurrent = n < 0 ? 0 : (n >= piLength ? piLength - 1 : n);
+        light(piCurrent);
+    }
+}
+</script>
+<script>
+$(function(){
+	var sJQnav=$(".indices li a")
+	CHInavigator(sJQnav,".main div",{
+		offset:-150,
+		dir:'v'
+	},{
+		init:function(){
+			console.log("初始化完成");
+		},
+		show:function(THIS,THAT){
+            console.warn(THIS.text(),THAT.text());
+			console.log("被取消掉的是第"+sJQnav.index(THAT));
+			console.log("被显示出来的是第"+(sJQnav.index(THIS)));
+		}
+	});
+});
+</script>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>图片居中较正效果</title>
+</head>
+<style>
+div{ clear:both;}
+.correct a{ display:block; float:left; width:100px; height:100px; overflow:hidden; border:1px solid #ccc;}
+.correct a img{ border:0px;}
+</style>
+<body>
+<div class="list correct">
+    <a href="#"><img src="../77mobile/images/bg.jpg" width="470" height="1088"></a>
+    <a href="#"><img src="../77mobile/images/bg.png" width="35" height="35"></a>
+    <a href="#"><img src="../77mobile/images/none.jpg" width="200" height="200"></a>
+    <a href="#"><img src="../77mobile/images/bg2.jpg" width="1088" height="470"></a>
+</div>
+<div class="list2 correct">
+    <a href="#"><img src="../77mobile/images/bg.jpg" width="470" height="1088"></a>
+    <a href="#"><img src="../77mobile/images/bg.png" width="35" height="35"></a>
+    <a href="#"><img src="../77mobile/images/none.jpg" width="200" height="200"></a>
+    <a href="#"><img src="../77mobile/images/bg2.jpg" width="1088" height="470"></a>
+</div>
+<div class="list3">
+    <a href="#"><img src="../77mobile/images/bg.jpg" width="470" height="1088"></a>
+    <a href="#"><img src="../77mobile/images/bg.png" width="35" height="35"></a>
+    <a href="#"><img src="../77mobile/images/none.jpg" width="200" height="200"></a>
+    <a href="#"><img src="../77mobile/images/bg2.jpg" width="1088" height="470"></a>
+</div>
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script src="../77mobile/js/effect/correct.min.js"></script>
+<script>
+$(function(){
+	CHIpros(".list",'','',true);//满图
+	CHIpros(".list2",'','',false);//全图
+	CHIimgs(".list3",300);
+});
+</script>

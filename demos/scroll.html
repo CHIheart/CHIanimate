@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>循环滚动效果</title>
+</head>
+<style>
+*{ margin:0px; padding:0px;}
+div{ width:500px; height:120px; border:1px solid #ccc; margin:50px; overflow:hidden;}
+ul{ list-style:none;}
+li{ margin-right:10px; float:left;}
+li img{ max-height:120px;}
+</style>
+<body>
+<div class="scroll"><ul>
+	<li><img src="../77mobile/images/bg.jpg"></li>
+	<li><img src="../77mobile/images/bg.png"></li>
+	<li><img src="../77mobile/images/bg2.gif"></li>
+	<li><img src="../77mobile/images/bg2.jpg"></li>
+	<li><img src="../77mobile/images/bg3.jpg"></li>
+</ul></div>
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<!--<script src="../77mobile/js/e/scroll.js"></script>-->
+<script src="../77mobile/js/effect/scroll.min.js"></script>
+<script>
+$(function(){
+	CHIscroll(".scroll");
+});
+</script>

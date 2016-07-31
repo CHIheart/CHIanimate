@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>循环分页效果</title>
+</head>
+<style>
+*{ margin:0px; padding:0px;}
+body{ padding:20px;}
+div.page{ border:1px solid #ccc; width:100px; height:100px; overflow:hidden; float:left; text-align:center;}
+.page div{}
+ul,ol{ list-style:none;}
+ul li{ width:100px; height:100px; color:#999;}
+ol li{ width:20px; height:20px; line-height:20px; text-align:center; float:left}
+div span{ display:block; width:100px; height:100px; font-size:60px; line-height:98px; font-family:Arial, Helvetica, sans-serif;}
+</style>
+<body>
+连续循环的分页效果
+<div class="page n0">
+    <div>
+        <span>0</span>
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <span>8</span>
+        <span>9</span>
+    </div>
+</div>
+<div class="page n1">
+    <div>
+        <span>0</span>
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <span>8</span>
+        <span>9</span>
+    </div>
+</div>
+<div class="page n2">
+    <div>
+        <span>0</span>
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <span>8</span>
+        <span>9</span>
+    </div>
+</div>
+<div class="page n3">
+    <div>
+        <span>0</span>
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <span>8</span>
+        <span>9</span>
+    </div>
+</div>
+<input type="button" class="stop" value="暂停" />
+<input type="button" class="start" value="开始" />
+<input type="button" class="prev" value="上一个" />
+<input type="button" class="next" value="下一个" />
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script src="../77mobile/js/jq/easing.js"></script>
+<script>
+rand=function(){return Math.floor(Math.random()*(9))+0;}
+
+$(function(){
+	var n0=CHIpage(".n0",'div','u',function(){n1.off();});
+	var n1=CHIpage(".n1",'div','u',function(){n2.off();});
+	var n2=CHIpage(".n2",'div','u',function(){n3.off();});
+	var n3=CHIpage(".n3",'div','u');
+	$(".start").one('click',function(){
+		n0.on();
+		setTimeout(n1.on,1000);
+		setTimeout(n2.on,2000);
+		setTimeout(n3.on,3000);
+	});
+	$(".stop").one('click',function(){
+		n0.off();
+	});
+});
+function CHIpage(JQstr,kidTag,dir,cbfuns)
+{
+	//使用JQ找得到对象
+	function FIND(jqstr){return jqstr && $(jqstr).size();}
+	if(!FIND(JQstr))return;
+	if(!cbfuns)cbfuns={};
+	function isPos(n){return n && /^[\+]?[0]*[1-9][\d]*$/.test(n);}
+	var o=new Object();
+	/*target*/var t=$(JQstr).eq(0);
+	if(!kidTag)kidTag="ul";
+	/*kid*/var k=t.find(kidTag).eq(0);
+	if(!k.size())return;
+	/*children*/var ks=k.children();
+	/*watch*/var w=0;
+	
+	//低端浏览器，没有Array.indexOf()函数
+	if(!Array.prototype.indexOf)
+	Array.prototype.indexOf=function(ele){
+		for(var n=0; n<this.length; n++)
+		{
+			if(ele===this[n]) return n;
+		}
+		return -1;
+	}
+	/*direction*/var d=dir && (["u","d","l","r"].indexOf(dir)>=0) ? dir : "l";
+	/*prefix*/var p=(d=='l' || d=='u')?"-":"+";
+	var speed=1000;
+	
+	var m,c,os;//margin,css,outerSize
+	if(d=='l' || d=='r')
+	{
+		m="marginLeft";
+		c="width";
+		os="outerWidth";
+	}
+	else
+	{
+		m="marginTop";
+		c="height";
+		os="outerHeight";
+	}
+	
+	//计算元素的外围总尺寸
+	function totalSize(jqObj,attr)
+	{
+		attr=attr.toLowerCase();
+		var mapResult;
+		if(attr=="w")
+		{
+			mapResult=jqObj.map(function(){return $(this).outerWidth(true);});
+		}
+		else if(attr=="h")
+		{
+			mapResult=jqObj.map(function(){return $(this).outerHeight(true);});
+		}
+		return eval(mapResult.get().join("+"));
+	}
+	/*size*/var s=t[c]();
+	/*allSize*/var aS=totalSize(ks,c.substr(0,1));
+	/*eachSize*/var eS=ks[os](true);
+	/*total*/var tt=ks.size();
+	if(s>aS)return;//如果外围尺寸大于内容尺寸，则不滚动
+	
+	//计算可以显示出来的子元素个数，在原有子元素队尾，取相同数量的新元素，并将它们复制到原有子元素队列的前方
+	/*num*/var n=Math.ceil(s/eS);
+	/*newkids*/var nk=ks.slice(0,n).clone();
+	k.children().last().after(nk);
+	/*allNum*/var an=tt+n;
+	k[c](eS*an);
+	if(p=='+')k.css(m,-aS);
+	else k.css(m,0);
+	var active=false,stopping=false;
+	
+	function run()
+	{
+		var n,b=false;//next,bool
+		var ml=parseInt(k.css(m)) * -1;//margin length
+		if(b) k.css(m,n);
+		var ao={}; ao[m]=p+'='+eS;
+		k.animate(ao,speed,'linear',function(){
+			if(p=='-')
+			{
+				if(ml>=aS-eS)
+				{
+					k.css(m,'0px');
+					if(stopping)
+					{
+						var x=rand();
+						console.log(x);
+						ao[m]=p+"="+x*eS;
+						k.animate(ao,x/2*1000,'',function(){
+							if(cbfuns instanceof Function)cbfuns();
+						});
+						return x;
+					}
+					else run();
+				}
+				else run();
+			}
+			else
+			{
+				if(ml==eS)
+					k.css(m,-aS+'px');
+			}
+			if(speed>200) speed-=200;
+		});
+	}
+	var cbfun_each,cbfun_all;
+	
+	o.on=function(){
+		run();
+	}
+	o.off=function(){
+		stopping=true
+	}
+	return o;
+}
+
+</script>

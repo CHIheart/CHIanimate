@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>幻灯片效果</title>
+</head>
+<style>
+*{ margin:0px; padding:0px;}
+body{ padding:20px;}
+ul{ border:1px solid #ccc; width:100px; height:100px; overflow:hidden; position:relative;}
+ul,ol{ list-style:none;}
+ul li{ width:100px; height:100px; float:left; font-size:12px; color:#999; position:absolute; left:0px; top:0px;}
+.cur{ color:#000; font-size:14px; background:#fee;}/*代码中处于当前指向的元素被附加本类，索引上的元素*/
+ol li{ width:20px; height:20px; line-height:20px; text-align:center; float:left}
+</style>
+<body>
+有头有尾，可用序号控制的分页播放
+<ul class="ppt">
+    <li>本效果有头有尾</li>
+    <li>可外设控制器及索引</li>
+    <li>不同于page的分页效果</li>
+    <li>可以设置最小展示量</li>
+    <li>小于最小量就没有效果</li>
+</ul>
+<ol class="indices">
+	<li>1</li>
+	<li>2</li>
+	<li>3</li>
+	<li>4</li>
+	<li>5</li>
+</ol>
+<input type="button" class="stop" value="暂停" />
+<input type="button" class="start" value="开始" />
+<input type="button" class="prev" value="上一个" />
+<input type="button" class="next" value="下一个" />
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<!--<script src="../77mobile/js/e/ppt.js"></script>-->
+<script src="../77mobile/js/effect/ppt.min.js"></script>
+<script>
+$(function(){
+	CHIppt(".ppt",'',{indices:'.indices',stop:'.stop',start:'.start',prev:'.prev',next:'.next'});
+});
+</script>

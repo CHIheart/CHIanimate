@@ -69,3 +69,4 @@ input[readonly]{ background-color:#252525; border:1px solid #252525; color:#fff;
 #Information .btn:hover,#Information q:hover{ background-color:#696969;}
 
 .contextMenuIcon{ width:20px !important; text-align:center;}
+.CHIbg{ position: fixed; left:0; top:0; background-color: rgba(0,0,0,.5); width:100%; height:100%; z-index: 555; display:none;}

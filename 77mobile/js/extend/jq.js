@@ -35,10 +35,8 @@ $.fn.twinkle = function(oOptions) {
 		delay = isPosInt(oOptions.delay) ? oOptions.delay : 0;
 	return this.each(function() {
 		var offset = $(this).offset(),
-			left = offset.left /*+ parseInt($(this).css("marginLeft"))*/
-			,
-			top = offset.top /*+ parseInt($(this).css('marginTop'))*/
-			,
+			left = offset.left,
+			top = offset.top,
 			clone = $(this).clone(),
 			width = $(this).width(),
 			height = $(this).height(),

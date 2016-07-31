@@ -28,9 +28,8 @@ function CHItab(sJQcontainer, sJQtitles, sJQcontents, oOptions, oCallbacks) {
 
 	var piDelay = isPos(oOptions.delay) ? oOptions.delay : 3000,
 		bMouseStop = "mstop" in oOptions ? Boolean(oOptions.mstop) : true,
-		bAuto = oOptions.auto ? oOptions.auto : false;
-
-	var oResult = {},
+		bAuto = oOptions.auto ? oOptions.auto : false,
+		oResult = {},
 		oJQcontainer = $(sJQcontainer).eq(0),
 		oJQtitles = oJQcontainer.find(sJQtitles),
 		oJQcontents = oJQcontainer.find(sJQcontents),
@@ -48,7 +47,7 @@ function CHItab(sJQcontainer, sJQtitles, sJQcontents, oOptions, oCallbacks) {
 		oResult.show(this)
 	});
 	oResult.show = function(oDomTitle) {
-		stop();
+		off();
 		niCurrent = get(oDomTitle);
 		oJQtitles.not(oDomTitle).removeClass("cur");
 		$(oDomTitle).addClass("cur");
@@ -57,29 +56,29 @@ function CHItab(sJQcontainer, sJQtitles, sJQcontents, oOptions, oCallbacks) {
 		if (oCallbacks.hide) oCallbacks.hide(oJQtitles.not(oDomTitle), oJQcontents.not(cur));
 		cur.show();
 		if (oCallbacks.show) oCallbacks.show(oJQtitles.eq(niCurrent), cur);
-		if (bAuto) start();
+		if (bAuto) on();
 	}
 	var timer = 0;
 
-	function start() {
+	function on() {
 		if (!timer) timer = setTimeout(oResult.next, piDelay);
 	}
 
-	function stop() {
+	function off() {
 		clearTimeout(timer);
 		timer = 0;
 	}
-	oResult.on = function() {
+	oResult.start = function() {
 		bAuto = true;
-		start();
+		on();
 	};
-	oResult.off = function() {
+	oResult.stop = function() {
 		bAuto = false;
-		stop();
+		off();
 	};
 	if (bMouseStop) oJQcontainer.mouseleave(function() {
-		if (bAuto) start()
-	}).mouseenter(stop);
+		if (bAuto) on()
+	}).mouseenter(off);
 	oResult.next = function() {
 		niCurrent++;
 		niCurrent %= piLength;

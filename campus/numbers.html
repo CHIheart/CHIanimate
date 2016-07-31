@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/> 
+<meta name="renderer" content="webkit">
+<meta content="yes" name="apple-mobile-web-app-capable" /> 
+<meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
+<meta content="telephone=no,email=no" name="format-detection" />
+<meta name="apple-touch-fullscreen" content="yes">
+<title>数字滚动效果</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<style>
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+div{
+	float:left;
+	width:100px;
+	height:100px;
+	border:1px solid silver;
+	/*overflow:hidden;*/
+}
+ul{
+	position:relative;
+}
+li{
+	width:100px;
+	height:100px;
+	line-height:100px;
+	font-size:60px;
+	text-align:center;
+	position:absolute;
+	/*top:0;
+	left:0;*/
+}
+</style>
+</head>
+<body>
+<div>
+	<ul>
+		<li>0</li>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+		<li>0</li>
+	</ul>
+</div>
+<div>
+	<ul>
+		<li>0</li>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+		<li>0</li>
+	</ul>
+</div>
+<div>
+	<ul>
+		<li>0</li>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+		<li>0</li>
+	</ul>
+</div>
+</body>
+</html>
+<script src="jquery1.10.2.js"></script>
+<script src="iscroll-infinite.js"></script>
+<script>
+var scrolls=[];
+$("div").each(function(index, el) {
+	var id=this.id="#scroll"+(index);
+	var e=id+" li";
+	var myscroll=new IScroll(this,{
+		snap:"li",
+		useTransform:false,
+		infiniteElements: $(el).find("li"),
+		dataset: function(start,count){
+			console.log(this.updateCache)
+			this.updateCache(start,[0,1,2,3,4,5,6,7,8,9]);
+		},
+		dataFiller: function(el, data) {
+			el.innerHTML = data;
+		},
+		cacheSize: 10
+	});
+	scrolls.push(myscroll);
+});
+</script>

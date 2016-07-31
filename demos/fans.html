@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>折扇效果</title>
+</head>
+<style>
+*{ margin:0px; padding:0px;}
+ul{ position:relative; width:300px; height:200px; margin:20px; float:left; overflow:hidden; border:1px solid #ccc; list-style:none;}
+li{ width:180px; height:180px; position:absolute; top:0px; padding:10px; font-size:12px;}
+.cur{ font-style:italic; font-size:16px; font-weight:bold;}/*当前的展示项被附加本类*/
+</style>
+<body>
+<ul class="relax">
+	<li style="background:#fee;">舒展模式下，不会自动播放</li>
+	<li style="background:#efe;">舒展模式下，不会自动播放</li>
+	<li style="background:#eef;">舒展模式下，不会自动播放</li>
+	<li style="background:#fee;">舒展模式下，不会自动播放</li>
+	<li style="background:#efe;">舒展模式下，不会自动播放</li>
+	<li style="background:#eef;">舒展模式下，不会自动播放</li>
+</ul>
+<ul class="normal">
+	<li style="background:#fee;">普通模式下，可以自动播放</li>
+	<li style="background:#efe;">且一定有一个是展开状态的</li>
+	<li style="background:#eef;">普通模式下，可以自动播放</li>
+	<li style="background:#fee;">且一定有一个是展开状态的</li>
+	<li style="background:#efe;">普通模式下，可以自动播放</li>
+	<li style="background:#eef;">且一定有一个是展开状态的</li>
+</ul>
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script src="../77mobile/js/effect/fans.js"></script>
+<!--<script src="../77mobile/js/effect/fans.min.js"></script>-->
+<script>
+$(function(){
+	CHIfans(".relax",'',{relax:true});
+	CHIfans(".normal",'',{relax:false,auto:true});
+});
+</script>

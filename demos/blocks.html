@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>自动分块式幻灯片效果</title>
+</head>
+<style>
+*{ margin:0px; padding:0px; font-family:"微软雅黑"; font-size:14px; quotes:none; font-style:normal; list-style:none;}
+#PPT,#PPT2{ width:329px; height:201px; position:relative; overflow:hidden; font-size:0px;}
+#PPT div,#PPT2 div{ position:absolute;}
+</style>
+<body>
+<div id="PPT">
+	<img src="2-1.jpg" width="329" height="201">
+	<!--<img src="2-2.jpg" width="329" height="201">
+	<img src="2-3.jpg" width="329" height="201">-->
+</div>
+<div id="PPT2">
+	<img src="2-2.jpg" width="329" height="201">
+</div>
+
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script src="../77mobile/js/effect/blocks.js"></script>
+<!--<script src="../77mobile/js/effect/blocks.min.js"></script>-->
+<script>
+
+$(function(){
+	CHIblocks("#PPT",'','',{v:4,h:4});
+	CHIblocks("#PPT2",'','',{v:4,h:4});
+});
+</script>

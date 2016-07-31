@@ -26,13 +26,13 @@ oCallbacks，回调函数列表对象，可以使用的属性有
 
 function CHIblocks(sJQcontainer, sJQimgs, oControllers, oOptions, oCallbacks) {
 	function FIND(sJQ) {
-		return sJQ && $(sJQ).size()
+		return sJQ && $(sJQ).length;
 	}
 	if (!FIND(sJQcontainer)) return false;
 	if (!sJQimgs) sJQimgs = "img";
 	var oJQcontainer = $(sJQcontainer).eq(0),
 		oJQimgs = oJQcontainer.find(sJQimgs);
-	if (!oJQimgs.size()) return false;
+	if (!oJQimgs.length) return false;
 	if (!oControllers) oControllers = {};
 	if (!oOptions) oOptions = {};
 	if (!oCallbacks) oCallbacks = {};
@@ -56,10 +56,10 @@ function CHIblocks(sJQcontainer, sJQimgs, oControllers, oOptions, oCallbacks) {
 	function indices(n) {
 		return [n % piHblocks, Math.floor(n / piHblocks)]
 	}
-	var piDelay = isPos(oOptions.delay) ? int(oOptions.delay) : 5e3;
-	var bAuto = "auto" in oOptions ? Boolean(oOptions.auto) : true;
-	var bMouseStop = "mstop" in oOptions ? Boolean(oOptions.mstop) : true;
-	var oResult = {},
+	var piDelay = isPos(oOptions.delay) ? int(oOptions.delay) : 5e3,
+		bAuto = "auto" in oOptions ? Boolean(oOptions.auto) : true,
+		bMouseStop = "mstop" in oOptions ? Boolean(oOptions.mstop) : true,
+		oResult = {},
 		numbers = [],
 		piHblocks = isPos(oOptions.h) ? int(oOptions.h) : 2,
 		piVblocks = isPos(oOptions.v) ? int(oOptions.v) : 2,
@@ -80,7 +80,7 @@ function CHIblocks(sJQcontainer, sJQimgs, oControllers, oOptions, oCallbacks) {
 	}
 	numbers = numbers.join(",");
 	var oJQblocks = oJQcontainer.children().css("backgroundImage", "url(" + oJQimgs.get(0).src + ")"),
-		piLength = oJQimgs.size(),
+		piLength = oJQimgs.length,
 		niCurrent = 0,
 		niLock = 0;
 	oResult.show = function(index) {

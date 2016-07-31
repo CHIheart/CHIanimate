@@ -8,7 +8,6 @@
 */
 var CHIbg;
 (function(){
-	return;
 	var win=$(window);
 	CHIbg=$("<div>").addClass("CHIbg");
 	CHIbg.appendTo("body");

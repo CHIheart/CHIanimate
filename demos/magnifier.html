@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>全局可用的放大镜</title>
+</head>
+<style>
+*{ margin:0px; padding:0px; list-style:none;}
+#Magnifier{ width:100px; height:100px; border:1px solid #ccc; background:#fee; overflow:hidden;}
+li{ width:100px; height:100px; border:1px solid #000; overflow:hidden; float:left; margin:100px;}
+p,ul,ol{ clear:both;}
+</style>
+<body>
+<p>将窗口缩小到正好能显示成4个元素的时候，就可以看到自动效果在四张图片上的不同</p>
+<ul class="list">
+    <li><img src="../77mobile/images/bg.jpg" width="470" height="1088"></li>
+    <li><img src="../77mobile/images/bg.png" width="35" height="35"></li>
+    <li><img src="../77mobile/images/none.jpg" width="200" height="200"></li>
+    <li><img src="../77mobile/images/bg2.jpg" width="1088" height="470"></li>
+</ul><br>
+
+<p>这里也可以分别设置每个图片在需要时的样子，放大镜的位置可以自行设置</p>
+<ol>
+    <li><img src="../77mobile/images/bg.jpg" width="470" height="1088" class="up"></li>
+    <li><img src="../77mobile/images/bg.png" width="35" height="35" class="down"></li>
+    <li><img src="../77mobile/images/none.jpg" width="200" height="200" class="left"></li>
+    <li><img src="../77mobile/images/bg2.jpg" width="1088" height="470" class="right"></li>
+</ol>
+</body>
+</html>
+<script src="../77mobile/js/jq/jquery.js"></script>
+<script src="../77mobile/js/effect/correct.min.js"></script>
+<!--<script src="../77mobile/js/e/magnifier.js"></script>-->
+<script src="../77mobile/js/effect/magnifier.min.js"></script>
+<script>
+var mag=new CHImagnifier();
+$(function(){
+	mag.init("ul img");//初始化一个列表
+	mag.init(".up",1000,1);
+	mag.init(".right",1000,2);
+	mag.init(".down",1000,3);
+	mag.init(".left",1000,4);
+});
+$(window).load(function(){
+	CHIpros("li",'','',false);//满图
+});
+</script>

@@ -22,6 +22,31 @@ var CurrentActionWay='|';
 var CurrentColorNumber=0;
 var picker/*选色器*/,infor/*信息窗*/;
 $(function(){
+	var win=$(window),CHIbg;
+	CHIbg=$("<div>").addClass("CHIbg");
+	CHIbg.appendTo("body");
+	CHIbg.open=function(cbfun){
+		this.fadeIn(function(){
+			if(cbfun)cbfun();
+		});
+		return this;
+	}
+	CHIbg.close=function(cbfun){
+		this.blur().fadeOut(function(){
+			if(cbfun)cbfun();
+		}).unbind();
+		return this;
+	}
+	CHIbg.focus=function(obj){
+		this.blur().one('click',function(){
+			if(obj.close) obj.close();
+		});
+		return this;
+	}
+	CHIbg.blur=function(){
+		this.unbind('click');
+		return this;
+	}
 	paper=Raphael('Canvas',GlobalWidth,GlobalHeight);
 	for(var i=0;i<GlobalWidth/GlobalUnit;i++)
 	{
