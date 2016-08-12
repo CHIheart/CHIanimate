@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/> 
+<meta name="renderer" content="webkit">
+<meta content="yes" name="apple-mobile-web-app-capable" /> 
+<meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
+<meta content="telephone=no,email=no" name="format-detection" />
+<meta name="apple-touch-fullscreen" content="yes">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+}
+.SELECT{
+    margin:10px;
+    width:160px;
+    float:left;
+}
+.SELECT dt{
+    width:100%;
+    box-sizing:border-box;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    border:1px solid gray;
+    height:40px;
+    line-height:40px;
+    font-size:14px;
+    padding:0 30px 0 10px;
+}
+.SELECT dt.ARROW:before{
+    content:'';
+    width:0;
+    height:0;
+    border:5px solid transparent;
+    border-top-color:black;
+    float:right;
+    margin-right:-20px;
+    margin-top:16px;
+}
+.SELECT dt:empty:after{
+    content:'请选择';
+}
+.SELECT.on dt.ARROW:before{
+    border-color:transparent transparent black;
+    margin-top:12px;
+}
+.SELECT dd{
+    display:none;
+    position:absolute;
+    width:calc(100% - 2px);
+    line-height:32px;
+    font-size:14px;
+    border:1px solid gray;
+    box-sizing:border-box:;
+}
+.SELECT dd a{
+    display:block;
+    padding:0 10px;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+    text-decoration:none;
+    color:black;
+}
+.SELECT dd a:hover{
+    background-color:silver;
+}
+.SELECT dd a.selected,.SELECT dd a.selected:hover{
+    background-color:red;
+    color:white;
+}
+.SELECT.on{
+    position:relative;
+}
+.SELECT.on dd{
+    display:block;
+}
+</style>
+</head>
+<body ng-app="AppMain">
+
+<dl class="SELECT" dir-select ng-controller="CtrlNormalSelect">
+    <input type="hidden" value="{{selectedItem.id}}">
+    <dt class="ARROW" ng-bind-html="selectedItem.html"></dt>
+    <dd>
+        <a ng-repeat="item in items track by $index" ng-class="{'selected':selectedItem==item}" ng-href="{{item.href}}" data-id="{{item.id}}" ng-bind-html="item.html" ng-click="selectItem(item);"></a>
+    </dd>
+</dl>
+
+
+</body>
+</html>
+<script src="../srcs/js/angular1.2.29.js"></script>
+<script src="../srcs/js/angular-sanitize1.2.29.js"></script>
+
+<script>
+var database=[{id:1,href:'#',html:'一个选项一个选项<small>副内容</small>'},{id:2,href:'#',html:'新加内容<small>副内容</small>'}];
+angular.module('AppMain',['ngSanitize'])
+    .directive('dirSelect', ['$window',function ($window) {
+        return {
+            restrict: 'A',
+            link: function (scope, iElement, iAttrs) {
+                var jqEle=angular.element(iElement);
+                jqEle.on('click', function(event) {
+                    angular.element(this).toggleClass('on');
+                });
+                scope.selectedItem='';
+                scope.selectItem=function(item){
+                    scope.selectedItem=item;
+                }
+            }
+        };
+    }])
+    .controller('CtrlNormalSelect', ['$scope', function ($scope) {
+        $scope.items=database;
+    }])
+</script>
