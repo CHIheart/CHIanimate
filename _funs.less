@@ -572,11 +572,6 @@
 		filter: DropShadow(Color=@c,OffX=@x,OffY=@y,Positive=1)~"\9";
     }
 }
-//生成动画
-.anim(...){
-	animation: @arguments;
-	-webkit-animation: @arguments;
-}
 //CSS3转换
 .transform(...){
 	transform: @arguments;
@@ -657,6 +652,11 @@
 	transform+_: rotateZ(~"@{r}deg");
 	-webkit-transform+_: rotateZ(~"@{r}deg");
 	-ms-transform+_: rotateZ(~"@{r}deg");
+}
+//生成动画
+.anim(...){
+	animation: @arguments;
+	-webkit-animation: @arguments;
 }
 //CSS3动画，@name为动画名称，@mixin为预定义的一组动画值，比如使用xx%，或from to的
 .keyframes(@name,@mixin){
