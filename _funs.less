@@ -150,11 +150,6 @@
 .out(...){
 	outline: @arguments;
 }
-.r(...){
-	-webkit-border-radius: @arguments;
-	-moz-border-radius: @arguments;
-	border-radius: @arguments;
-}
 .radius(...){
 	-webkit-border-radius: @arguments;
 	-moz-border-radius: @arguments;
@@ -182,17 +177,17 @@
 }
 //盒阴影
 .bsd(...){
-	box-shadow: @arguments;
+	box-shadow+: @arguments;
 }
 .shadow(box,@rest...){
-	box-shadow: @rest;
+	box-shadow+: @rest;
 }
 //文本阴影
 .tsd(...){
-	text-shadow: @arguments;
+	text-shadow+: @arguments;
 }
 .shadow(text,@rest...){
-	text-shadow: @rest;
+	text-shadow+: @rest;
 }
 //鼠标
 .cur(@shape){
@@ -235,9 +230,13 @@
 .w(@width : auto){
 	width: @width;
 }
-.wh(@size){
+.wh(@size) when(length(@size)=1){
 	width: @size;
 	height: @size;
+}
+.wh(@dimen) when(length(@dimen)=2){
+	width: extract(@dimen, 1);
+	height: extract(@dimen, 2);
 }
 .wh(@w, @h){
 	width: @w;
@@ -749,11 +748,6 @@
 	-moz-animation: @arguments;
 	-o-animation: @arguments;
 }
-//生成动画
-.anim(...){
-	animation: @arguments;
-	-webkit-animation: @arguments;
-}
 //CSS3动画，@name为动画名称，@mixin为预定义的一组动画值，比如使用xx%，或from to的
 .keyframes(@name,@mixin){
 	@keyframes @name{
@@ -775,4 +769,18 @@
 	transform-origin:@x @y @z;
 	-webkit-transform-origin:@x @y @z; /* Safari and Chrome */
 	-moz-transform-origin:@x @y @z; /* Safari and Chrome */
+}
+// 引入字体，参数分别是：
+// @name  ：字体名，字符串
+// @url   ：路径，字符串
+// @type  ：类型，字符串（otf:opentype，ttf:truetype）
+// @bold  ：是否加粗，关键字，bold/normal
+// @italic：是否斜体，关键字，italic/normal
+.font(@name; @url; @type; @bold : normal; @italic : normal){
+	@font-face{
+		font-family: @name;
+		src: url(@url) format(@type);
+		font-weight: @bold;
+		font-style: @italic;
+	}
 }
