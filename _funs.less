@@ -514,11 +514,11 @@
 }
 //CSS转换/过渡
 .transition(...){
-	transition: @arguments;
-	-webkit-transition: @arguments;
-	-moz-transition: @arguments;
-	-ms-transition: @arguments;
-	-o-transition: @arguments;
+	transition+: @arguments;
+	-webkit-transition+: @arguments;
+	-moz-transition+: @arguments;
+	-ms-transition+: @arguments;
+	-o-transition+: @arguments;
 }
 
 //满尺寸，通常用于图片
@@ -743,10 +743,10 @@
 }
 //生成动画
 .anim(...){
-	animation: @arguments;
-	-webkit-animation: @arguments;
-	-moz-animation: @arguments;
-	-o-animation: @arguments;
+	animation+: @arguments;
+	-webkit-animation+: @arguments;
+	-moz-animation+: @arguments;
+	-o-animation+: @arguments;
 }
 //CSS3动画，@name为动画名称，@mixin为预定义的一组动画值，比如使用xx%，或from to的
 .keyframes(@name,@mixin){
