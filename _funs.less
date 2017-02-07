@@ -784,3 +784,121 @@
 		font-style: @italic;
 	}
 }
+
+// 弹性盒布局样式
+.d-f(){
+	display: flex;
+	display: -webkit-flex;
+}
+.flex(){
+	display: flex;
+	display: -webkit-flex;
+}
+.flex(dir, @dir : row){
+	-webkit-flex-direction: @dir;
+	   -moz-flex-direction: @dir;
+	    -ms-flex-direction: @dir;
+	        flex-direction: @dir;
+}
+.flex-row(){
+	-webkit-flex-direction: row;
+	   -moz-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+}
+.flex-row(true){
+	-webkit-flex-direction: row-reverse;
+	   -moz-flex-direction: row-reverse;
+	    -ms-flex-direction: row-reverse;
+	        flex-direction: row-reverse;
+}
+.flex-col(){
+	-webkit-flex-direction: column;
+	   -moz-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.flex-col(true){
+	-webkit-flex-direction: column-reverse;
+	   -moz-flex-direction: column-reverse;
+	    -ms-flex-direction: column-reverse;
+	        flex-direction: column-reverse;
+}
+.flex(wrap,@wrap : nowrap){
+	-webkit-flex-wrap: @wrap;
+	   -moz-flex-wrap: @wrap;
+	    -ms-flex-wrap: @wrap;
+	        flex-wrap: @wrap;
+}
+.flex-wrap(){
+	-webkit-flex-wrap: wrap;
+	   -moz-flex-wrap: wrap;
+	    -ms-flex-wrap: wrap;
+	        flex-wrap: wrap;
+}
+.flex-nowrap(){
+	-webkit-flex-wrap: nowrap;
+	   -moz-flex-wrap: nowrap;
+	    -ms-flex-wrap: nowrap;
+	        flex-wrap: nowrap;
+}
+.flex-wrap(true){
+	-webkit-flex-wrap: wrap-reverse;
+	   -moz-flex-wrap: wrap-reverse;
+	    -ms-flex-wrap: wrap-reverse;
+	        flex-wrap: wrap-reverse;
+}
+.flex-just(@way : flex-start){
+	-webkit-justify-content: @way;
+	   -moz-justify-content: @way;
+	    -ms-justify-content: @way;
+	        justify-content: @way;
+}
+.flex-items(@way : flex-start){
+	-webkit-align-items: @way;
+	   -moz-align-items: @way;
+	    -ms-align-items: @way;
+	        align-items: @way;
+}
+.flex-align(@way : flex-start){
+	-webkit-align-content: @way;
+	   -moz-align-content: @way;
+	    -ms-align-content: @way;
+	        align-content: @way;
+}
+// order就不缩了，没几个字
+.flex(@grow , @shrink , @basis){
+	flex: @grow @shrink @basis;
+}
+.flex-none(){
+	flex: none; // 0 0 auto
+}
+.flex-auto(){
+	flex: auto; // 1 1 auto
+}
+.flex-self(@way : auto){
+	-webkit-align-self: @way;
+	   -moz-align-self: @way;
+	    -ms-align-self: @way;
+	        align-self: @way;
+}
+
+// 数字次数的循环
+.for(@mixin, @end, @begin : 1, @delta : 1){
+	.for-inner-loop(@counter : @begin) when(@counter <= @end){
+		@mixin();
+		.for-inner-loop(@counter + @delta);
+	}
+	.for-inner-loop();
+}
+
+// 一个数组的循环
+// 由于LESS变量作用域的问题，导致无法把长度跟项目元素设置成局部变量
+// 所以要自己在@mixin里边使用length跟extract获取长度跟项目元素
+.each(@mixin, @array){
+	.each-inner-loop(@counter : 1) when(@counter <= length(@array)){
+		@mixin();
+		.each-inner-loop(@counter + 1);
+	}
+	.each-inner-loop();
+}
