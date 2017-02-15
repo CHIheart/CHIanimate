@@ -794,12 +794,6 @@
 	display: flex;
 	display: -webkit-flex;
 }
-.flex(dir, @dir : row){
-	-webkit-flex-direction: @dir;
-	   -moz-flex-direction: @dir;
-	    -ms-flex-direction: @dir;
-	        flex-direction: @dir;
-}
 .flex-row(){
 	-webkit-flex-direction: row;
 	   -moz-flex-direction: row;
@@ -823,12 +817,6 @@
 	   -moz-flex-direction: column-reverse;
 	    -ms-flex-direction: column-reverse;
 	        flex-direction: column-reverse;
-}
-.flex(wrap,@wrap : nowrap){
-	-webkit-flex-wrap: @wrap;
-	   -moz-flex-wrap: @wrap;
-	    -ms-flex-wrap: @wrap;
-	        flex-wrap: @wrap;
 }
 .flex-wrap(){
 	-webkit-flex-wrap: wrap;
@@ -867,8 +855,8 @@
 	        align-content: @way;
 }
 // order就不缩了，没几个字
-.flex(@grow , @shrink , @basis){
-	flex: @grow @shrink @basis;
+.flex(@args){
+	flex: @args;
 }
 .flex-none(){
 	flex: none; // 0 0 auto
@@ -881,6 +869,11 @@
 	   -moz-align-self: @way;
 	    -ms-align-self: @way;
 	        align-self: @way;
+}
+.order(@n){
+	-webkit-order: @n;
+	   -moz-order: @n;
+	        order: @n;
 }
 
 // 数字次数的循环
