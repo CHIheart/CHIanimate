@@ -861,13 +861,22 @@
 }
 // order就不缩了，没几个字
 .flex(@args){
-    flex: @args;
+    -webkit-flex: @args;
+       -moz-flex: @args;
+        -ms-flex: @args;
+            flex: @args;
 }
-.flex-none(){
-    flex: none; // 0 0 auto
+.flex-none(){// 0 0 none
+    -webkit-flex: none;
+       -moz-flex: none;
+        -ms-flex: none;
+            flex: none;
 }
-.flex-auto(){
-    flex: auto; // 1 1 auto
+.flex-auto(){// 1 1 auto
+    -webkit-flex: auto;
+       -moz-flex: auto;
+        -ms-flex: auto;
+            flex: auto;
 }
 .flex-self(@way : auto){
     -webkit-align-self: @way;
