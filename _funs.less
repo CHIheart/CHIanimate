@@ -764,16 +764,39 @@
 }
 //转换中心，2D或3D，FF/IE/OPERA不支持3D
 .origin(@x,@y){
-    -webkit-transform-origin:@x @y; /* Safari and Chrome */
-       -moz-transform-origin:@x @y; /* Safari and Chrome */
-        -ms-transform-origin:@x @y; /* IE 9 */
-         -o-transform-origin:@x @y; /* Safari and Chrome */
-            transform-origin:@x @y;
+    -webkit-transform-origin: @x @y; /* Safari and Chrome */
+       -moz-transform-origin: @x @y; /* Safari and Chrome */
+        -ms-transform-origin: @x @y; /* IE 9 */
+         -o-transform-origin: @x @y; /* Safari and Chrome */
+            transform-origin: @x @y;
 }
 .origin(@x,@y,@z){
-    -webkit-transform-origin:@x @y @z; /* Safari and Chrome */
-       -moz-transform-origin:@x @y @z; /* Safari and Chrome */
-            transform-origin:@x @y @z;
+    -webkit-transform-origin: @x @y @z; /* Safari and Chrome */
+       -moz-transform-origin: @x @y @z; /* Safari and Chrome */
+            transform-origin: @x @y @z;
+}
+// 将当前元素作为3D容器使用，其内部元素可以使用3D转换，如果不使用3D则传入flat值
+.threeD(@d: preserve-3d){
+    -webkit-transform-style: @d;
+       -moz-transform-style: @d;
+            transform-style: @d;
+}
+// 设置当前元素3D旋转的背面可见性，如果可见则传入visible
+.back(@vis: hidden){
+    -webkit-backface-visibility: @vis;
+       -moz-backface-visibility: @vis;
+        -ms-backface-visibility: @vis;
+            backface-visibility: @vis;
+}
+// 设置容器内部的子元素的透视灭点？
+.pers(@v: 150){
+    -webkit-perspective: @v;
+            perspective: @v;
+}
+// 设置容器上3D透视效果的原点（相对于容器本身）
+.pers-o(@x: 0, @y:0){
+    -webkit-perspective-origin: @x @y;
+            perspective-origin: @x @y;
 }
 // 引入字体，参数分别是：
 // @name  ：字体名，字符串
